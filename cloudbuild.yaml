@@ -12,19 +12,47 @@ steps:
     args:
       - 'push'
       - '$_REGION-docker.pkg.dev/$PROJECT_ID/$_REPO_NAME/cgn-wiki:$SHORT_SHA'
-
-  # 3. Deploy container to Cloud Run
+# 3. Deploy to Cloud Run and output direct URL to build logs
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: gcloud
+    entrypoint: 'bash'
     args:
-      - 'run'
-      - 'deploy'
-      - 'cgn-wiki'
-      - '--image=$_REGION-docker.pkg.dev/$PROJECT_ID/$_REPO_NAME/cgn-wiki:$SHORT_SHA'
-      - '--region=$_REGION'
-      - '--platform=managed'
-      - '--allow-unauthenticated'
-      - '--port=8080'
+      - '-c'
+      - |
+        set -e
+        # Sanitize branch name for Cloud Run tag (RFC 1035: lowercase, numbers, hyphens)
+        CLEAN_TAG=$(echo "$BRANCH_NAME" | tr '[:upper:]' '[:lower:]' | sed -e 's/[^a-z0-9-]/-/g' -e 's/^-*//' -e 's/-*$//' | cut -c1-60)
+
+        if [ "$BRANCH_NAME" = "main" ]; then
+          echo "Deploying to PRODUCTION (main)..."
+          gcloud run deploy cgn-wiki \
+            --image=$_REGION-docker.pkg.dev/$PROJECT_ID/$_REPO_NAME/cgn-wiki:$SHORT_SHA \
+            --region=$_REGION \
+            --platform=managed \
+            --port=8080
+
+          DEPLOY_URL=$(gcloud run services describe cgn-wiki --region=$_REGION --format='value(status.url)')
+        else
+          echo "Deploying DEVELOPER PREVIEW for tag: [${CLEAN_TAG}]..."
+          gcloud run deploy cgn-wiki \
+            --image=$_REGION-docker.pkg.dev/$PROJECT_ID/$_REPO_NAME/cgn-wiki:$SHORT_SHA \
+            --region=$_REGION \
+            --platform=managed \
+            --port=8080 \
+            --no-traffic \
+            --tag="${CLEAN_TAG}"
+
+          # Extract the exact URL assigned to this specific revision tag
+          DEPLOY_URL=$(gcloud run services describe cgn-wiki --region=$_REGION \
+            --format="value(status.traffic.filter(tag=${CLEAN_TAG}).extract(url))")
+        fi
+
+        echo ""
+        echo "================================================================="
+        echo " DIRECT ACCESS URL FOR THIS BUILD:"
+        echo " ${DEPLOY_URL}"
+        echo "================================================================="
+        echo ""
+
 
 substitutions:
   _REGION: us-central1
