@@ -13,19 +13,38 @@ steps:
       - 'push'
       - '$_REGION-docker.pkg.dev/$PROJECT_ID/$_REPO_NAME/cgn-wiki:$SHORT_SHA'
 
-  # 3. Deploy container to Cloud Run
+# 3. Deploy container to Cloud Run with Revision Tagging
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: gcloud
+    entrypoint: 'bash'
     args:
-      - 'run'
-      - 'deploy'
-      - 'cgn-wiki'
-      - '--image=$_REGION-docker.pkg.dev/$PROJECT_ID/$_REPO_NAME/cgn-wiki:$SHORT_SHA'
-      - '--region=$_REGION'
-      - '--platform=managed'
-      - '--allow-unauthenticated'
-      - '--port=8080'
-
+      - '-c'
+      - |
+        # Sanitize branch name to conform to DNS-1035 tag constraints
+        CLEAN_TAG=$(echo "$BRANCH_NAME" | tr '[:upper:]' '[:lower:]' | tr -cs 'a-z0-9' '-' | cut -c1-60)
+        
+        if [ "$BRANCH_NAME" = "main" ]; then
+          # Production: receive 100% of live traffic
+          gcloud run deploy cgn-wiki \
+            --image=$_REGION-docker.pkg.dev/$PROJECT_ID/$_REPO_NAME/cgn-wiki:$SHORT_SHA \
+            --region=$_REGION \
+            --platform=managed \
+            --allow-unauthenticated \
+            --port=8080
+        else
+          # Developer Preview: tag revision without routing root traffic
+          gcloud run deploy cgn-wiki \
+            --image=$_REGION-docker.pkg.dev/$PROJECT_ID/$_REPO_NAME/cgn-wiki:$SHORT_SHA \
+            --region=$_REGION \
+            --platform=managed \
+            --allow-unauthenticated \
+            --port=8080 \
+            --no-traffic \
+            --tag="$CLEAN_TAG"
+            
+          echo "========================================================"
+          echo "Developer preview URL: https://${CLEAN_TAG}---cgn-wiki-216117029862.us-central1.run.app"
+          echo "========================================================"
+        fi
 substitutions:
   _REGION: us-central1
   _REPO_NAME: app-images
