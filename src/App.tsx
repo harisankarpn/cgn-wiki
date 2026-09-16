@@ -119,8 +119,8 @@ function GlobalThemeStyles() {
         position: fixed;
         top: 0;
         left: 0;
-        width: 100vw;
-        height: 100vh;
+        width: 125vw; 
+        height: 125vh;
         background: url(${bgImage}) center/cover no-repeat;
         z-index: -999;
         pointer-events: none;
