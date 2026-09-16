@@ -854,6 +854,7 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
          margin: 0 !important;
        }
      `}</style>
+        {dragState.isDragging && dragState.id !== null && (
         <div style={{
           position: 'fixed',
           left: 0, top: 0,
