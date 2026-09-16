@@ -842,8 +842,25 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
   };
 
   return (
-    <div style={{ height: '100vh', width: '100vw', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: 'var(--bg-main)', padding: '40px', fontFamily: 'system-ui, sans-serif', position: 'relative', overflow: 'hidden' }}>
+    <div style={{ height: '100vh', width: '100vw', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', backgroundColor: 'var(--bg-main)', fontFamily: 'system-ui, sans-serif', position: 'relative', overflow: 'hidden' }}>
       
+      {/* Decorative Background Elements */}
+      <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', overflow: 'hidden', pointerEvents: 'none', zIndex: 0 }}>
+        <div style={{ position: 'absolute', top: '-10%', left: '-5%', width: '40%', height: '50%', background: 'radial-gradient(circle, rgba(66, 133, 244, 0.08) 0%, transparent 70%)', borderRadius: '50%' }}></div>
+        <div style={{ position: 'absolute', bottom: '-10%', right: '-5%', width: '40%', height: '50%', background: 'radial-gradient(circle, rgba(52, 168, 83, 0.08) 0%, transparent 70%)', borderRadius: '50%' }}></div>
+        
+        <div style={{ position: 'absolute', top: '45%', left: '60px', transform: 'translateY(-50%)', opacity: 0.6 }}>
+           <div style={{ fontSize: '36px', fontFamily: 'Georgia, serif', fontStyle: 'italic', color: '#1a73e8', fontWeight: 'bold', lineHeight: 1.2 }}>One<br/>Cloud</div>
+           <div style={{ fontSize: '18px', color: 'var(--text-secondary)', marginTop: '8px', fontWeight: 600, lineHeight: 1.2 }}>Many<br/>Possibilities</div>
+           <div style={{ width: '40px', height: '4px', background: '#1a73e8', marginTop: '16px', borderRadius: '2px' }}></div>
+        </div>
+        
+        <div style={{ position: 'absolute', top: '35%', right: '80px', transform: 'translateY(-50%)', opacity: 0.6, textAlign: 'right' }}>
+           <div style={{ fontSize: '36px', fontFamily: 'Georgia, serif', fontStyle: 'italic', color: '#1a73e8', fontWeight: 'bold', lineHeight: 1.2 }}>Ideas<br/>to Impact</div>
+           <div style={{ width: '60px', height: '4px', background: '#ea4335', marginTop: '16px', float: 'right', borderRadius: '2px' }}></div>
+        </div>
+      </div>
+
       {dragState.isDragging && dragState.id !== null && (
         <div style={{
           position: 'fixed',
@@ -865,8 +882,6 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
             const r = Math.floor(id / 4);
             const c = id % 4;
             
-            // Corrected Mathematical Interlocking Formula:
-            // Adjacent edges now perfectly oppose each other via parity check.
             const even = (r + c) % 2 === 0;
             
             const top = r === 0 ? 0 : (even ? 1 : -1);
@@ -889,166 +904,171 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
         </defs>
       </svg>
 
-      <div style={{ position: 'absolute', top: '30px', right: '40px', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '16px', zIndex: 10 }}>
-        
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '6px' }}>
-          <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-            Target Design
-          </span>
-          <div style={{ 
-            width: '80px', height: '80px', borderRadius: '8px', 
-            border: '1px solid var(--border-main)', overflow: 'hidden', 
-            boxShadow: 'var(--shadow-sm)', backgroundColor: 'var(--bg-card)', position: 'relative'
-          }}>
-            <div style={{ transform: 'scale(0.2)', transformOrigin: 'top left', width: '400px', height: '400px' }}>
-              <CodeGeneratedPuzzleArtwork />
-            </div>
-          </div>
+      {/* Top Left: Logo Brand */}
+      <div style={{ position: 'absolute', top: '30px', left: '40px', display: 'flex', alignItems: 'center', gap: '12px', zIndex: 10 }}>
+        <div style={{ width: '40px', height: '40px' }}>
+           <NewGCPLogo size={40} />
         </div>
+        <div>
+          <div style={{ fontSize: '18px', fontWeight: 800, color: 'var(--text-main)', lineHeight: 1.1 }}>GCP Tech</div>
+          <div style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>Transformation</div>
+        </div>
+      </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div style={{ 
-            display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 16px', 
-            background: 'var(--bg-card)', border: '1px solid var(--border-main)', 
-            borderRadius: '8px', fontWeight: 'bold', fontSize: '18px', 
-            boxShadow: 'var(--shadow-sm)', color: '#dc2626'
-          }}>
-            <Clock size={20} />
+      {/* Top Right: Timer, Retry, Target Design */}
+      <div style={{ position: 'absolute', top: '30px', right: '40px', display: 'flex', alignItems: 'flex-start', gap: '20px', zIndex: 10 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '10px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 16px', background: 'var(--bg-card)', border: '1px solid var(--border-main)', borderRadius: '8px', fontWeight: 'bold', fontSize: '16px', boxShadow: 'var(--shadow-sm)', color: '#dc2626' }}>
+            <Clock size={18} />
             {formatTime(timeLeft)}
           </div>
           <button 
             onClick={handleRetry} 
-            style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid var(--border-main)', background: 'var(--bg-card)', color: 'var(--text-secondary)', fontWeight: 600, cursor: 'pointer', transition: 'background 0.2s', boxShadow: 'var(--shadow-sm)' }}
+            style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid var(--border-main)', background: 'var(--bg-card)', color: 'var(--text-main)', fontWeight: 600, fontSize: '15px', cursor: 'pointer', transition: 'background 0.2s', boxShadow: 'var(--shadow-sm)' }}
           >
             Retry
           </button>
         </div>
-
+        
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', background: 'var(--bg-card)', padding: '12px', borderRadius: '12px', boxShadow: 'var(--shadow-sm)', border: '1px solid var(--border-main)' }}>
+          <span style={{ fontSize: '10px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '8px' }}>Target Design</span>
+          <div style={{ width: '70px', height: '70px', borderRadius: '6px', border: '1px solid var(--border-soft)', overflow: 'hidden', position: 'relative' }}>
+            <div style={{ transform: 'scale(0.175)', transformOrigin: 'top left', width: '400px', height: '400px' }}>
+              <CodeGeneratedPuzzleArtwork />
+            </div>
+          </div>
+        </div>
       </div>
 
+      {/* Bottom Left: Skip Puzzle */}
       <div style={{ position: 'absolute', bottom: '30px', left: '40px', zIndex: 10 }}>
         <button 
           onClick={onSkip} 
-          style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid var(--border-main)', background: 'var(--bg-card)', color: 'var(--text-secondary)', fontWeight: 600, cursor: 'pointer', transition: 'background 0.2s', boxShadow: 'var(--shadow-sm)' }}
+          style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid var(--border-main)', background: 'var(--bg-card)', color: 'var(--text-main)', fontWeight: 600, fontSize: '14px', cursor: 'pointer', transition: 'background 0.2s', boxShadow: 'var(--shadow-sm)' }}
         >
           Skip Puzzle
         </button>
       </div>
 
-      <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-        <h1 style={{ color: 'var(--text-main)', margin: '0 0 12px', fontSize: '32px' }}>Innovation Wiki Access</h1>
-        <p style={{ color: 'var(--text-secondary)', margin: 0, fontSize: '16px' }}>
-          {isSolved ? 'Assembly complete. System unlocked.' : isFailed ? 'Time expired. Please try again.' : 'Drag the matching pieces into the grid to build the artwork and unlock the platform.'}
-        </p>
-      </div>
-
-      <div style={{ display: 'flex', gap: '40px', alignItems: 'flex-start', flexWrap: 'wrap', justifyContent: 'center' }}>
+      {/* CENTER MAIN CONTENT */}
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', zIndex: 5, width: '100%', maxWidth: '1000px', marginTop: '60px' }}>
         
-        <div 
-          id="puzzle-grid"
-          style={{ 
-            display: 'grid', 
-            gridTemplateColumns: `repeat(${GRID_SIZE}, ${TILE_SIZE}px)`, 
-            gridTemplateRows: `repeat(${GRID_SIZE}, ${TILE_SIZE}px)`, 
-            gap: '0px', 
-            padding: '12px', 
-            background: 'var(--bg-card)', 
-            borderRadius: '16px', 
-            boxShadow: isSolved ? '0 0 30px rgba(52, 168, 83, 0.4)' : isFailed ? '0 0 30px rgba(220, 38, 38, 0.4)' : 'var(--shadow-sm)', 
-            border: `2px solid ${isSolved ? '#34a853' : isFailed ? '#dc2626' : 'var(--border-main)'}`,
-            transition: 'all 0.5s ease',
-            position: 'relative'
-          }}
-        >
-          {!isSolved && !isFailed && (
-            <div style={{ position: 'absolute', top: '12px', left: '12px', opacity: 0.08, pointerEvents: 'none' }}>
-               <CodeGeneratedPuzzleArtwork />
-            </div>
-          )}
-
-          {slots.map((pieceId, index) => (
-            <div 
-              key={index}
-              style={{ 
-                width: `${TILE_SIZE}px`, 
-                height: `${TILE_SIZE}px`, 
-                position: 'relative',
-                border: pieceId === null ? '1px dashed var(--border-main)' : 'none',
-                borderRadius: '6px'
-              }}
-            >
-              {pieceId !== null && (
-                <div 
-                  onPointerDown={(e) => handlePointerDown(e, pieceId, 'grid')}
-                  style={{ width: '100%', height: '100%', cursor: 'grab', zIndex: 2 }}
-                >
-                  {renderPuzzlePiece(pieceId)}
-                </div>
-              )}
-            </div>
-          ))}
+        <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+          <h1 style={{ color: 'var(--text-main)', margin: '0 0 8px', fontSize: '30px', fontWeight: 800 }}>Innovation Wiki Access</h1>
+          <p style={{ color: 'var(--text-secondary)', margin: 0, fontSize: '15px' }}>
+            {isSolved ? 'Assembly complete. System unlocked.' : isFailed ? 'Time expired. Please try again.' : 'Drag the matching pieces into the grid to build the artwork and unlock the platform.'}
+          </p>
         </div>
 
-        <div className="puzzle-pool" style={{ 
-          width: '500px', height: '430px', 
-          overflowY: 'auto', overflowX: 'hidden',
-          display: 'flex', flexDirection: 'column', 
-          padding: '24px', background: 'var(--bg-card)', 
-          borderRadius: '16px', border: '1px solid var(--border-main)' 
-        }}>
-          {isSolved ? (
-            <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', animation: 'fadeIn 0.5s ease' }}>
-              <div style={{ width: '60px', height: '60px', borderRadius: '50%', backgroundColor: '#dcfce7', color: '#166534', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '20px' }}>
-                <ShieldCheck size={32} />
+        <div style={{ display: 'flex', gap: '30px', alignItems: 'flex-start', justifyContent: 'center', width: '100%' }}>
+          
+          <div 
+            id="puzzle-grid"
+            style={{ 
+              display: 'grid', 
+              gridTemplateColumns: `repeat(${GRID_SIZE}, ${TILE_SIZE}px)`, 
+              gridTemplateRows: `repeat(${GRID_SIZE}, ${TILE_SIZE}px)`, 
+              gap: '0px', 
+              padding: '12px', 
+              background: 'var(--bg-card)', 
+              borderRadius: '16px', 
+              boxShadow: isSolved ? '0 0 30px rgba(52, 168, 83, 0.4)' : isFailed ? '0 0 30px rgba(220, 38, 38, 0.4)' : 'var(--shadow-sm)', 
+              border: `2px solid ${isSolved ? '#34a853' : isFailed ? '#dc2626' : 'var(--border-main)'}`,
+              transition: 'all 0.5s ease',
+              position: 'relative'
+            }}
+          >
+            {!isSolved && !isFailed && (
+              <div style={{ position: 'absolute', top: '12px', left: '12px', opacity: 0.08, pointerEvents: 'none' }}>
+                 <CodeGeneratedPuzzleArtwork />
               </div>
-              <h3 style={{ margin: '0 0 20px', color: 'var(--text-main)' }}>Verification Successful</h3>
-              <button 
-                onClick={onComplete}
-                style={{ padding: '14px 28px', borderRadius: '8px', border: 'none', background: '#1a73e8', color: 'white', fontSize: '16px', fontWeight: 600, cursor: 'pointer', boxShadow: '0 4px 12px rgba(26, 115, 232, 0.3)' }}
+            )}
+
+            {slots.map((pieceId, index) => (
+              <div 
+                key={index}
+                style={{ 
+                  width: `${TILE_SIZE}px`, 
+                  height: `${TILE_SIZE}px`, 
+                  position: 'relative',
+                  border: pieceId === null ? '1px dashed var(--border-main)' : 'none',
+                  borderRadius: '6px'
+                }}
               >
-                Enter Innovation Wiki
-              </button>
-            </div>
-          ) : isFailed ? (
-            <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', animation: 'fadeIn 0.5s ease' }}>
-              <div style={{ width: '60px', height: '60px', borderRadius: '50%', backgroundColor: '#fee2e2', color: '#dc2626', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '20px' }}>
-                <X size={32} />
-              </div>
-              <h3 style={{ margin: '0 0 12px', color: 'var(--text-main)' }}>Time's Up!</h3>
-              <p style={{ margin: '0 0 20px', color: 'var(--text-secondary)', textAlign: 'center' }}>You ran out of time to complete the puzzle.</p>
-              <button 
-                onClick={handleRetry}
-                style={{ padding: '14px 28px', borderRadius: '8px', border: 'none', background: '#dc2626', color: 'white', fontSize: '16px', fontWeight: 600, cursor: 'pointer', boxShadow: '0 4px 12px rgba(220, 38, 38, 0.3)' }}
-              >
-                Try Again
-              </button>
-            </div>
-          ) : (
-            <>
-              <h3 style={{ margin: '0 0 24px', fontSize: '18px', color: 'var(--text-main)', textAlign: 'center' }}>Drag Pieces to the Board</h3>
-              <div style={{ 
-                display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '30px 20px', justifyItems: 'center', paddingBottom: '20px' 
-              }}>
-                {poolPieces.map(pieceId => (
+                {pieceId !== null && (
                   <div 
-                    key={pieceId}
-                    style={{ width: '100px', height: '100px', position: 'relative' }}
+                    onPointerDown={(e) => handlePointerDown(e, pieceId, 'grid')}
+                    style={{ width: '100%', height: '100%', cursor: 'grab', zIndex: 2 }}
                   >
-                    <div 
-                      onPointerDown={(e) => handlePointerDown(e, pieceId, 'pool')}
-                      style={{ 
-                        width: '100%', height: '100%', 
-                        cursor: 'grab', zIndex: 1, touchAction: 'none'
-                      }}
-                    >
-                      {renderPuzzlePiece(pieceId)}
-                    </div>
+                    {renderPuzzlePiece(pieceId)}
                   </div>
-                ))}
+                )}
               </div>
-            </>
-          )}
+            ))}
+          </div>
+
+          <div className="puzzle-pool" style={{ 
+            width: '460px', height: '430px', 
+            overflowY: 'auto', overflowX: 'hidden',
+            display: 'flex', flexDirection: 'column', 
+            padding: '24px', background: 'var(--bg-card)', 
+            borderRadius: '16px', border: '1px solid var(--border-main)' 
+          }}>
+            {isSolved ? (
+              <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', animation: 'fadeIn 0.5s ease' }}>
+                <div style={{ width: '60px', height: '60px', borderRadius: '50%', backgroundColor: '#dcfce7', color: '#166534', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '20px' }}>
+                  <ShieldCheck size={32} />
+                </div>
+                <h3 style={{ margin: '0 0 20px', color: 'var(--text-main)' }}>Verification Successful</h3>
+                <button 
+                  onClick={onComplete}
+                  style={{ padding: '14px 28px', borderRadius: '8px', border: 'none', background: '#1a73e8', color: 'white', fontSize: '16px', fontWeight: 600, cursor: 'pointer', boxShadow: '0 4px 12px rgba(26, 115, 232, 0.3)' }}
+                >
+                  Enter Innovation Wiki
+                </button>
+              </div>
+            ) : isFailed ? (
+              <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', animation: 'fadeIn 0.5s ease' }}>
+                <div style={{ width: '60px', height: '60px', borderRadius: '50%', backgroundColor: '#fee2e2', color: '#dc2626', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '20px' }}>
+                  <X size={32} />
+                </div>
+                <h3 style={{ margin: '0 0 12px', color: 'var(--text-main)' }}>Time's Up!</h3>
+                <p style={{ margin: '0 0 20px', color: 'var(--text-secondary)', textAlign: 'center' }}>You ran out of time to complete the puzzle.</p>
+                <button 
+                  onClick={handleRetry}
+                  style={{ padding: '14px 28px', borderRadius: '8px', border: 'none', background: '#dc2626', color: 'white', fontSize: '16px', fontWeight: 600, cursor: 'pointer', boxShadow: '0 4px 12px rgba(220, 38, 38, 0.3)' }}
+                >
+                  Try Again
+                </button>
+              </div>
+            ) : (
+              <>
+                <h3 style={{ margin: '0 0 24px', fontSize: '16px', color: 'var(--text-main)', textAlign: 'left', fontWeight: 700 }}>Drag Pieces to the Board</h3>
+                <div style={{ 
+                  display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '30px 20px', justifyItems: 'center', paddingBottom: '20px' 
+                }}>
+                  {poolPieces.map(pieceId => (
+                    <div 
+                      key={pieceId}
+                      style={{ width: '100px', height: '100px', position: 'relative' }}
+                    >
+                      <div 
+                        onPointerDown={(e) => handlePointerDown(e, pieceId, 'pool')}
+                        style={{ 
+                          width: '100%', height: '100%', 
+                          cursor: 'grab', zIndex: 1, touchAction: 'none'
+                        }}
+                      >
+                        {renderPuzzlePiece(pieceId)}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
         </div>
+
       </div>
     </div>
   );
