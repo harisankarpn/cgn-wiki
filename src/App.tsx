@@ -669,12 +669,10 @@ const TILE_SIZE = 100;
 const INITIAL_PIECES = Array.from({ length: TOTAL_PIECES }, (_, i) => i);
 
 function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: () => void }) {
-  // Full 16 pieces start in the pool
   const [poolPieces, setPoolPieces] = useState<number[]>(() => 
     [...INITIAL_PIECES].sort(() => Math.random() - 0.5)
   );
 
-  // Left side starts empty
   const [slots, setSlots] = useState<(number | null)[]>(Array(TOTAL_PIECES).fill(null));
 
   const [dragState, setDragState] = useState<{
@@ -686,7 +684,7 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
   }>({ id: null, source: null, isDragging: false, x: 0, y: 0 });
 
   const [isSolved, setIsSolved] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(120); // 2 minute timer
+  const [timeLeft, setTimeLeft] = useState(120); 
   const [isFailed, setIsFailed] = useState(false);
 
   useEffect(() => {
@@ -741,7 +739,6 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
   const handlePointerDown = (e: React.PointerEvent, pieceId: number, source: 'pool' | 'grid') => {
     if (isFailed || isSolved) return;
     
-    // We instantly center the dragging piece to the cursor to ignore any CSS "zoom" calculation bugs.
     const zoom = parseFloat(window.getComputedStyle(document.body).zoom || '1');
     
     setDragState({
@@ -754,7 +751,6 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
     
     (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
 
-    // Immediately remove from current location so it exists ONLY in the drag overlay
     if (source === 'pool') {
       setPoolPieces(prev => prev.filter(p => p !== pieceId));
     } else {
@@ -788,30 +784,25 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
         const gridLeft = gridRect.left / zoom;
         const gridTop = gridRect.top / zoom;
 
-        // Determine correct slot coordinates
         const slotRow = Math.floor(dragState.id / GRID_SIZE);
         const slotCol = dragState.id % GRID_SIZE;
         
-        // 12px internal padding in the grid container
         const targetX = gridLeft + 12 + (slotCol * TILE_SIZE);
         const targetY = gridTop + 12 + (slotRow * TILE_SIZE);
 
         const pointerX = e.clientX / zoom;
         const pointerY = e.clientY / zoom;
 
-        // Check if pointer is near the target slot
         const slotCenterX = targetX + (TILE_SIZE / 2);
         const slotCenterY = targetY + (TILE_SIZE / 2);
 
         if (Math.abs(pointerX - slotCenterX) < 60 && Math.abs(pointerY - slotCenterY) < 60) {
-          // Snap Success - Placed in Grid
           setSlots(prev => {
             const newSlots = [...prev];
             newSlots[dragState.id!] = dragState.id;
             return newSlots;
           });
         } else {
-          // Snap Failed - Return to Pool
           setPoolPieces(prev => [...prev, dragState.id!]);
         }
       }
@@ -833,11 +824,10 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
     return (
       <div style={{ 
         width: '150px', height: '150px', position: 'absolute',
-        top: '-25px', left: '-25px', // Center the 150x150 piece over the 100x100 relative container
+        top: '-25px', left: '-25px',
         overflow: 'visible', pointerEvents: 'none',
-        clipPath: `url(#jigsaw-${pieceId})` // Mask permanently applied
+        clipPath: `url(#jigsaw-${pieceId})` 
       }}>
-        {/* We invert the position of the artwork relative to the mask's row/col to align perfectly */}
         <div style={{ position: 'absolute', top: `${25 - (row * TILE_SIZE)}px`, left: `${25 - (col * TILE_SIZE)}px`, width: '400px', height: '400px' }}>
           <CodeGeneratedPuzzleArtwork />
         </div>
@@ -854,7 +844,6 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
   return (
     <div style={{ height: '100vh', width: '100vw', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: 'var(--bg-main)', padding: '40px', fontFamily: 'system-ui, sans-serif', position: 'relative', overflow: 'hidden' }}>
       
-      {/* Global Drag Overlay (Fixes all Z-index, overflow, and coordinate jumping issues) */}
       {dragState.isDragging && dragState.id !== null && (
         <div style={{
           position: 'fixed',
@@ -869,18 +858,22 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
         </div>
       )}
 
-      {/* Dynamic Jigsaw SVG Paths */}
+      {/* FIXED MATHEMATICAL JIGSAW SVG PATHS */}
       <svg width="0" height="0" style={{ position: 'absolute', pointerEvents: 'none' }}>
         <defs>
           {INITIAL_PIECES.map(id => {
             const r = Math.floor(id / 4);
             const c = id % 4;
-            const top = r === 0 ? 0 : (c % 2 === r % 2 ? 1 : -1);
-            const right = c === 3 ? 0 : (c % 2 !== r % 2 ? 1 : -1);
-            const bottom = r === 3 ? 0 : (c % 2 !== r % 2 ? 1 : -1);
-            const left = c === 0 ? 0 : (c % 2 === r % 2 ? 1 : -1);
             
-            // Jigsaw shapes drawn relative to a 150x150 box. Logical 100x100 grid starts at 25,25.
+            // Corrected Mathematical Interlocking Formula:
+            // Adjacent edges now perfectly oppose each other via parity check.
+            const even = (r + c) % 2 === 0;
+            
+            const top = r === 0 ? 0 : (even ? 1 : -1);
+            const right = c === 3 ? 0 : (even ? 1 : -1);
+            const bottom = r === 3 ? 0 : (even ? 1 : -1);
+            const left = c === 0 ? 0 : (even ? 1 : -1);
+            
             const path = `M 25,25 
               ${top === 0 ? 'L 125,25' : top === 1 ? 'L 60,25 C 60,0 90,0 90,25 L 125,25' : 'L 60,25 C 60,50 90,50 90,25 L 125,25'}
               ${right === 0 ? 'L 125,125' : right === 1 ? 'L 125,60 C 150,60 150,90 125,90 L 125,125' : 'L 125,60 C 100,60 100,90 125,90 L 125,125'}
@@ -896,7 +889,6 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
         </defs>
       </svg>
 
-      {/* Top Right: Timer, Retry & Target Design */}
       <div style={{ position: 'absolute', top: '30px', right: '40px', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '16px', zIndex: 10 }}>
         
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '6px' }}>
@@ -952,7 +944,6 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
 
       <div style={{ display: 'flex', gap: '40px', alignItems: 'flex-start', flexWrap: 'wrap', justifyContent: 'center' }}>
         
-        {/* LEFT CONTAINER: The Target Grid */}
         <div 
           id="puzzle-grid"
           style={{ 
@@ -969,7 +960,6 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
             position: 'relative'
           }}
         >
-          {/* Subtle background hint of the target image */}
           {!isSolved && !isFailed && (
             <div style={{ position: 'absolute', top: '12px', left: '12px', opacity: 0.08, pointerEvents: 'none' }}>
                <CodeGeneratedPuzzleArtwork />
@@ -987,7 +977,6 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
                 borderRadius: '6px'
               }}
             >
-              {/* If a piece is actively in this grid slot, render it here so it can be picked up again */}
               {pieceId !== null && (
                 <div 
                   onPointerDown={(e) => handlePointerDown(e, pieceId, 'grid')}
@@ -1000,7 +989,6 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
           ))}
         </div>
 
-        {/* RIGHT CONTAINER: The Pool */}
         <div className="puzzle-pool" style={{ 
           width: '500px', height: '430px', 
           overflowY: 'auto', overflowX: 'hidden',
