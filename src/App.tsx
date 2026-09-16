@@ -52,6 +52,7 @@ import {
 } from 'lucide-react';
 
 import puzzleBg from './background.jpeg';
+import bgImage from './background.jpeg';
 
 /* =========================================================
    TYPES
@@ -845,8 +846,8 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
   };
 
   return (
-    <div style={{ height: '100vh', width: '100vw', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: 'var(--bg-main)', padding: '40px', fontFamily: 'system-ui, sans-serif', position: 'relative', overflow: 'hidden' }}>
-      
+    // <div style={{ height: '100vh', width: '100vw', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: 'var(--bg-main)', padding: '40px', fontFamily: 'system-ui, sans-serif', position: 'relative', overflow: 'hidden' }}>
+    <div style={{ height: '100vh', width: '100vw', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: `url(${bgImage}) center/cover no-repeat`, padding: '40px', fontFamily: 'system-ui, sans-serif', position: 'relative', overflow: 'hidden' }}>
       {dragState.isDragging && dragState.id !== null && (
         <div style={{
           position: 'fixed',
