@@ -857,6 +857,19 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
         margin: 0 !important;
       }
      `}</style>
+       <img 
+        src={bgImage} 
+        alt="Top Left Graphic" 
+        style={{ 
+          position: 'absolute', 
+          top: '30px', 
+          left: '40px', 
+          height: '60px',
+          width: 'auto',
+          objectFit: 'contain',
+          zIndex: 10 
+        }} 
+      />
         {dragState.isDragging && dragState.id !== null && (
         <div style={{
           position: 'fixed',
