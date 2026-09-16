@@ -671,10 +671,21 @@ const GRID_SIZE = 4;
 const TOTAL_PIECES = GRID_SIZE * GRID_SIZE;
 const TILE_SIZE = 100; 
 const INITIAL_PIECES = Array.from({ length: TOTAL_PIECES }, (_, i) => i);
-const MISSING_PIECE = 11;
 
 function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: () => void }) {
-  const [availablePieces, setAvailablePieces] = useState<number[]>([MISSING_PIECE]);
+  const MISSING_PIECE = 11;
+  const DECOY_SHAPES = [2, 6, 14];
+
+  const [poolPieces, setPoolPieces] = useState(() => {
+    const pieces = [
+      { uid: 'correct', shapeId: MISSING_PIECE, isCorrect: true },
+      { uid: 'decoy-1', shapeId: DECOY_SHAPES[0], isCorrect: false },
+      { uid: 'decoy-2', shapeId: DECOY_SHAPES[1], isCorrect: false },
+      { uid: 'decoy-3', shapeId: DECOY_SHAPES[2], isCorrect: false }
+    ];
+    return pieces.sort(() => Math.random() - 0.5);
+  });
+
   const [slots, setSlots] = useState<(number | null)[]>(() => {
     const init = Array(TOTAL_PIECES).fill(null);
     for (let i = 0; i < TOTAL_PIECES; i++) {
@@ -684,16 +695,17 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
   });
 
   const [dragState, setDragState] = useState<{
-    id: number | null;
+    uid: string | null;
+    shapeId: number | null;
     isDragging: boolean;
     x: number;
     y: number;
     offsetX: number;
     offsetY: number;
-  }>({ id: null, isDragging: false, x: 0, y: 0, offsetX: 0, offsetY: 0 });
+  }>({ uid: null, shapeId: null, isDragging: false, x: 0, y: 0, offsetX: 0, offsetY: 0 });
 
   const [isSolved, setIsSolved] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(180); 
+  const [timeLeft, setTimeLeft] = useState(120); 
   const [isFailed, setIsFailed] = useState(false);
 
   useEffect(() => {
@@ -737,7 +749,14 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
   }, [slots]);
 
   const handleRetry = () => {
-    setAvailablePieces([MISSING_PIECE]);
+    const pieces = [
+      { uid: 'correct', shapeId: MISSING_PIECE, isCorrect: true },
+      { uid: 'decoy-1', shapeId: DECOY_SHAPES[0], isCorrect: false },
+      { uid: 'decoy-2', shapeId: DECOY_SHAPES[1], isCorrect: false },
+      { uid: 'decoy-3', shapeId: DECOY_SHAPES[2], isCorrect: false }
+    ];
+    setPoolPieces(pieces.sort(() => Math.random() - 0.5));
+    
     const init = Array(TOTAL_PIECES).fill(null);
     for (let i = 0; i < TOTAL_PIECES; i++) {
       if (i !== MISSING_PIECE) init[i] = i;
@@ -745,17 +764,18 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
     setSlots(init);
     setIsSolved(false);
     setIsFailed(false);
-    setTimeLeft(180);
-    setDragState({ id: null, isDragging: false, x: 0, y: 0, offsetX: 0, offsetY: 0 });
+    setTimeLeft(120);
+    setDragState({ uid: null, shapeId: null, isDragging: false, x: 0, y: 0, offsetX: 0, offsetY: 0 });
   };
 
-  const handlePointerDown = (e: React.PointerEvent, pieceId: number) => {
+  const handlePointerDown = (e: React.PointerEvent, piece: { uid: string, shapeId: number }) => {
     if (isFailed || isSolved) return;
     const target = e.currentTarget as HTMLElement;
     const rect = target.getBoundingClientRect();
     
     setDragState({
-      id: pieceId,
+      uid: piece.uid,
+      shapeId: piece.shapeId,
       isDragging: true,
       x: rect.left,
       y: rect.top,
@@ -779,26 +799,29 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
 
     const handlePointerUp = (e: PointerEvent) => {
       const gridEl = document.getElementById('puzzle-grid');
-      if (gridEl && dragState.id !== null) {
+      if (gridEl && dragState.uid !== null) {
         const gridRect = gridEl.getBoundingClientRect();
-        const slotRow = Math.floor(dragState.id / GRID_SIZE);
-        const slotCol = dragState.id % GRID_SIZE;
+        const slotRow = Math.floor(MISSING_PIECE / GRID_SIZE);
+        const slotCol = MISSING_PIECE % GRID_SIZE;
         
         const targetX = gridRect.left + (slotCol * TILE_SIZE);
         const targetY = gridRect.top + (slotRow * TILE_SIZE);
 
-        if (Math.abs(e.clientX - targetX - (TILE_SIZE/2)) < 40 && 
-            Math.abs(e.clientY - targetY - (TILE_SIZE/2)) < 40) {
+        if (Math.abs(e.clientX - targetX - (TILE_SIZE/2)) < 50 && 
+            Math.abs(e.clientY - targetY - (TILE_SIZE/2)) < 50) {
           
-          setAvailablePieces(prev => prev.filter(p => p !== dragState.id));
-          setSlots(prev => {
-            const newSlots = [...prev];
-            newSlots[dragState.id!] = dragState.id;
-            return newSlots;
-          });
+          const draggedPiece = poolPieces.find(p => p.uid === dragState.uid);
+          if (draggedPiece && draggedPiece.isCorrect) {
+            setPoolPieces(prev => prev.filter(p => p.uid !== dragState.uid));
+            setSlots(prev => {
+              const newSlots = [...prev];
+              newSlots[MISSING_PIECE] = MISSING_PIECE;
+              return newSlots;
+            });
+          }
         }
       }
-      setDragState({ id: null, isDragging: false, x: 0, y: 0, offsetX: 0, offsetY: 0 });
+      setDragState({ uid: null, shapeId: null, isDragging: false, x: 0, y: 0, offsetX: 0, offsetY: 0 });
     };
 
     window.addEventListener('pointermove', handlePointerMove);
@@ -807,20 +830,23 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
       window.removeEventListener('pointermove', handlePointerMove);
       window.removeEventListener('pointerup', handlePointerUp);
     };
-  }, [dragState.isDragging, dragState.offsetX, dragState.offsetY, dragState.id]);
+  }, [dragState.isDragging, dragState.offsetX, dragState.offsetY, dragState.uid, poolPieces]);
 
-  const renderPuzzlePiece = (pieceId: number | null, isGridSolved: boolean) => {
+  const renderPuzzlePiece = (pieceId: number | null, isGridSolved: boolean, shapeIdOverride?: number) => {
     if (pieceId === null) return null;
     const row = Math.floor(pieceId / GRID_SIZE);
     const col = pieceId % GRID_SIZE;
+    const shapeToUse = shapeIdOverride !== undefined ? shapeIdOverride : pieceId;
+    
     return (
       <div style={{ 
-        width: '100%', height: '100%', position: 'relative',
+        width: '150px', height: '150px', position: 'absolute',
+        top: '-25px', left: '-25px',
         overflow: 'visible', pointerEvents: 'none',
-        clipPath: isGridSolved ? 'none' : `url(#jigsaw-${pieceId})`,
+        clipPath: isGridSolved ? 'none' : `url(#jigsaw-${shapeToUse})`,
         transition: 'clip-path 0.5s ease'
       }}>
-        <div style={{ position: 'absolute', top: `-${row * TILE_SIZE}px`, left: `-${col * TILE_SIZE}px` }}>
+        <div style={{ position: 'absolute', top: `-${row * TILE_SIZE - 25}px`, left: `-${col * TILE_SIZE - 25}px` }}>
           <CodeGeneratedPuzzleArtwork />
         </div>
       </div>
@@ -847,11 +873,11 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
             const bottom = r === 3 ? 0 : (c % 2 !== r % 2 ? 1 : -1);
             const left = c === 0 ? 0 : (c % 2 === r % 2 ? 1 : -1);
             
-            const path = `M 0,0 
-              ${top === 0 ? 'L 100,0' : top === 1 ? 'L 35,0 C 35,-25 65,-25 65,0 L 100,0' : 'L 35,0 C 35,25 65,25 65,0 L 100,0'}
-              ${right === 0 ? 'L 100,100' : right === 1 ? 'L 100,35 C 125,35 125,65 100,65 L 100,100' : 'L 100,35 C 75,35 75,65 100,65 L 100,100'}
-              ${bottom === 0 ? 'L 0,100' : bottom === 1 ? 'L 65,100 C 65,125 35,125 35,100 L 0,100' : 'L 65,100 C 65,75 35,75 35,100 L 0,100'}
-              ${left === 0 ? 'L 0,0' : left === 1 ? 'L 0,65 C -25,65 -25,35 0,35 L 0,0' : 'L 0,65 C 25,65 25,35 0,35 L 0,0'} Z`;
+            const path = `M 25,25 
+              ${top === 0 ? 'L 125,25' : top === 1 ? 'L 60,25 C 60,0 90,0 90,25 L 125,25' : 'L 60,25 C 60,50 90,50 90,25 L 125,25'}
+              ${right === 0 ? 'L 125,125' : right === 1 ? 'L 125,60 C 150,60 150,90 125,90 L 125,125' : 'L 125,60 C 100,60 100,90 125,90 L 125,125'}
+              ${bottom === 0 ? 'L 25,125' : bottom === 1 ? 'L 90,125 C 90,150 60,150 60,125 L 25,125' : 'L 90,125 C 90,100 60,100 60,125 L 25,125'}
+              ${left === 0 ? 'L 25,25' : left === 1 ? 'L 25,90 C 0,90 0,60 25,60 L 25,25' : 'L 25,90 C 50,90 50,60 25,60 L 25,25'} Z`;
 
             return (
               <clipPath id={`jigsaw-${id}`} key={id}>
@@ -912,7 +938,7 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
       <div style={{ textAlign: 'center', marginBottom: '32px' }}>
         <h1 style={{ color: 'var(--text-main)', margin: '0 0 12px', fontSize: '32px' }}>Innovation Wiki Access</h1>
         <p style={{ color: 'var(--text-secondary)', margin: 0, fontSize: '16px' }}>
-          {isSolved ? 'Assembly complete. System unlocked.' : isFailed ? 'Time expired. Please try again.' : 'Drag the missing piece into the grid to build the artwork and unlock the platform.'}
+          {isSolved ? 'Assembly complete. System unlocked.' : isFailed ? 'Time expired. Please try again.' : 'Drag the matching piece into the grid to build the artwork and unlock the platform.'}
         </p>
       </div>
 
@@ -931,7 +957,6 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
             boxShadow: isSolved ? '0 0 30px rgba(52, 168, 83, 0.4)' : isFailed ? '0 0 30px rgba(220, 38, 38, 0.4)' : 'var(--shadow-sm)', 
             border: `2px solid ${isSolved ? '#34a853' : isFailed ? '#dc2626' : 'var(--border-main)'}`,
             transition: 'all 0.5s ease',
-            // Allow pieces to extend tabs past the box edges visually without clipping
             overflow: 'visible' 
           }}
         >
@@ -945,6 +970,7 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
                 border: pieceId !== null ? 'none' : '1px dashed var(--border-main)',
                 transition: 'opacity 0.2s',
                 borderRadius: isSolved ? '0' : '6px',
+                position: 'relative',
                 zIndex: pieceId !== null ? 2 : 1
               }}
             >
@@ -953,7 +979,7 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
           ))}
         </div>
 
-        <div style={{ width: '450px', minHeight: '430px', display: 'flex', alignContent: 'flex-start', flexWrap: 'wrap', gap: '8px', padding: '16px', background: 'var(--bg-card)', borderRadius: '16px', border: '1px solid var(--border-main)' }}>
+        <div style={{ width: '450px', minHeight: '430px', display: 'flex', flexDirection: 'column', gap: '16px', padding: '24px', background: 'var(--bg-card)', borderRadius: '16px', border: '1px solid var(--border-main)' }}>
           {isSolved ? (
             <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', animation: 'fadeIn 0.5s ease' }}>
               <div style={{ width: '60px', height: '60px', borderRadius: '50%', backgroundColor: '#dcfce7', color: '#166534', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '20px' }}>
@@ -982,29 +1008,35 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
               </button>
             </div>
           ) : (
-            availablePieces.map(pieceId => {
-              const isDragging = dragState.id === pieceId;
-              return (
-                <div 
-                  key={pieceId}
-                  onPointerDown={(e) => handlePointerDown(e, pieceId)}
-                  style={{ 
-                    width: `${TILE_SIZE}px`, 
-                    height: `${TILE_SIZE}px`, 
-                    cursor: isDragging ? 'grabbing' : 'grab',
-                    position: isDragging ? 'fixed' : 'relative',
-                    left: isDragging ? 0 : 'auto',
-                    top: isDragging ? 0 : 'auto',
-                    transform: isDragging ? `translate(${dragState.x}px, ${dragState.y}px) scale(1.05)` : 'translate(0px, 0px) scale(1)',
-                    zIndex: isDragging ? 100 : 1,
-                    transition: isDragging ? 'none' : 'transform 0.3s cubic-bezier(0.2, 0, 0, 1)',
-                    filter: 'drop-shadow(0px 8px 16px rgba(0,0,0,0.2))'
-                  }}
-                >
-                  {renderPuzzlePiece(pieceId, false)}
-                </div>
-              );
-            })
+            <>
+              <h3 style={{ margin: 0, fontSize: '18px', color: 'var(--text-main)', textAlign: 'center' }}>Select the matching piece</h3>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '20px', marginTop: '16px' }}>
+                {poolPieces.map(piece => {
+                  const isDragging = dragState.uid === piece.uid;
+                  return (
+                    <div 
+                      key={piece.uid}
+                      onPointerDown={(e) => handlePointerDown(e, piece)}
+                      style={{ 
+                        width: '100px', height: '100px', 
+                        margin: '25px auto', 
+                        cursor: isDragging ? 'grabbing' : 'grab',
+                        position: isDragging ? 'fixed' : 'relative',
+                        left: isDragging ? 0 : 'auto',
+                        top: isDragging ? 0 : 'auto',
+                        transform: isDragging ? `translate(${dragState.x}px, ${dragState.y}px) scale(1.05)` : 'translate(0px, 0px) scale(1)',
+                        zIndex: isDragging ? 100 : 1,
+                        touchAction: 'none',
+                        transition: isDragging ? 'none' : 'transform 0.3s cubic-bezier(0.2, 0, 0, 1)',
+                        filter: 'drop-shadow(0px 8px 16px rgba(0,0,0,0.15))'
+                      }}
+                    >
+                      {renderPuzzlePiece(MISSING_PIECE, false, piece.shapeId)}
+                    </div>
+                  );
+                })}
+              </div>
+            </>
           )}
         </div>
       </div>
