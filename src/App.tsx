@@ -847,7 +847,7 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
 
   return (
     // <div style={{ height: '100vh', width: '100vw', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: 'var(--bg-main)', padding: '40px', fontFamily: 'system-ui, sans-serif', position: 'relative', overflow: 'hidden' }}>
-   <div style={{ minHeight: '100vh', width: '100%', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundImage: `url(${bgImage})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', padding: '40px', fontFamily: 'system-ui, sans-serif', position: 'relative' }}>
+  <div style={{ minHeight: '100vh', width: '100%', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundImage: `url(${bgImage})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundAttachment: 'fixed', padding: '40px', fontFamily: 'system-ui, sans-serif', position: 'relative' }}>
       {dragState.isDragging && dragState.id !== null && (
         <div style={{
           position: 'fixed',
@@ -964,11 +964,11 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
             position: 'relative'
           }}
         >
-          {!isSolved && !isFailed && (
+          /* {!isSolved && !isFailed && (
             <div style={{ position: 'absolute', top: '12px', left: '12px', opacity: 0.08, pointerEvents: 'none' }}>
                <CodeGeneratedPuzzleArtwork />
             </div>
-          )}
+          )} */
 
           {slots.map((pieceId, index) => (
             <div 
