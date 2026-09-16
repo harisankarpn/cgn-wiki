@@ -627,6 +627,9 @@ const TOTAL_PIECES = GRID_SIZE * GRID_SIZE;
 const TILE_SIZE = 100; 
 const INITIAL_PIECES = Array.from({ length: TOTAL_PIECES }, (_, i) => i);
 
+// Robust fallback string for the puzzle image in case the bundler URL fails
+const PUZZLE_BG = 'url("/src/background.jpeg"), linear-gradient(135deg, #d2e3fc, #e8f0fe)';
+
 function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: () => void }) {
   const [poolPieces, setPoolPieces] = useState<number[]>(() => 
     [...INITIAL_PIECES].sort(() => Math.random() - 0.5)
@@ -787,7 +790,15 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
         overflow: 'visible', pointerEvents: 'none',
         clipPath: `url(#jigsaw-${pieceId})` 
       }}>
-        <div style={{ position: 'absolute', top: `${25 - (row * TILE_SIZE)}px`, left: `${25 - (col * TILE_SIZE)}px`, width: '400px', height: '400px', backgroundImage: 'url(src/background.jpeg)', backgroundSize: '400px 400px' }}>
+        <div style={{ 
+          position: 'absolute', 
+          top: `${25 - (row * TILE_SIZE)}px`, 
+          left: `${25 - (col * TILE_SIZE)}px`, 
+          width: '400px', height: '400px', 
+          backgroundImage: PUZZLE_BG, 
+          backgroundSize: '400px 400px',
+          backgroundRepeat: 'no-repeat'
+        }}>
         </div>
       </div>
     );
@@ -801,46 +812,39 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
 
   return (
     <div style={{ 
-      height: '100vh', width: '100vw', 
+      minHeight: '100vh', width: '100%', 
       display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', 
       background: 'linear-gradient(135deg, #f4f8ff 0%, #eef4ff 100%)', 
       fontFamily: 'system-ui, sans-serif', position: 'relative', overflow: 'hidden' 
     }}>
       
-      {/* Decorative Wavy Background matching image0.png */}
-      <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', overflow: 'hidden', pointerEvents: 'none', zIndex: 0 }}>
-        {/* Soft radial glows */}
+      {/* Decorative Wavy Background perfectly covering viewport */}
+      <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 0 }}>
         <div style={{ position: 'absolute', top: '10%', left: '10%', width: '40%', height: '50%', background: 'radial-gradient(circle, rgba(255,255,255,0.8) 0%, transparent 70%)' }}></div>
         <div style={{ position: 'absolute', bottom: '10%', right: '10%', width: '40%', height: '50%', background: 'radial-gradient(circle, rgba(255,255,255,0.8) 0%, transparent 70%)' }}></div>
         
-        {/* Left Side decorative text */}
         <div style={{ position: 'absolute', top: '45%', left: '80px', transform: 'translateY(-50%)', opacity: 0.35 }}>
            <div style={{ fontSize: '38px', fontFamily: 'Georgia, serif', fontStyle: 'italic', color: '#1a73e8', fontWeight: 'bold', lineHeight: 1.1 }}>One<br/>Cloud</div>
            <div style={{ fontSize: '16px', color: '#475569', marginTop: '12px', fontWeight: 600, lineHeight: 1.3 }}>Many<br/>Possibilities</div>
            <div style={{ width: '32px', height: '3px', background: '#1a73e8', marginTop: '16px', borderRadius: '2px' }}></div>
         </div>
         
-        {/* Right Side decorative text */}
         <div style={{ position: 'absolute', top: '35%', right: '120px', transform: 'translateY(-50%)', opacity: 0.35, textAlign: 'right' }}>
            <div style={{ fontSize: '38px', fontFamily: 'Georgia, serif', fontStyle: 'italic', color: '#1a73e8', fontWeight: 'bold', lineHeight: 1.1 }}>Ideas<br/>to Impact</div>
            <div style={{ width: '40px', height: '3px', background: '#ea4335', marginTop: '16px', float: 'right', borderRadius: '2px' }}></div>
         </div>
 
-        {/* Bottom Left Custom SVG Wave */}
-        <svg position="absolute" bottom="0" left="0" width="400" height="300" style={{ position: 'absolute', bottom: 0, left: 0, opacity: 0.7 }}>
+        <svg width="400" height="300" style={{ position: 'absolute', bottom: 0, left: 0, opacity: 0.7 }}>
           <path d="M 0 300 L 0 50 Q 150 200 350 150 T 450 300 Z" fill="rgba(215, 230, 255, 0.4)" />
           <path d="M 0 300 L 0 100 Q 100 250 300 200 T 500 300 Z" fill="rgba(230, 240, 255, 0.6)" />
         </svg>
 
-        {/* Bottom Right Custom SVG Wave + Network Dots */}
-        <svg position="absolute" bottom="0" right="0" width="500" height="400" style={{ position: 'absolute', bottom: 0, right: 0, opacity: 0.8 }}>
+        <svg width="500" height="400" style={{ position: 'absolute', bottom: 0, right: 0, opacity: 0.8 }}>
           <path d="M 500 400 L 500 150 Q 300 150 200 300 T -50 400 Z" fill="rgba(215, 230, 255, 0.3)" />
-          
           <path d="M 380 180 Q 420 120 480 150" stroke="#b4c7e6" strokeWidth="2" fill="none" strokeDasharray="4 4" />
           <path d="M 380 180 Q 280 200 220 280" stroke="#b4c7e6" strokeWidth="2" fill="none" />
           <path d="M 220 280 Q 150 250 80 320" stroke="#b4c7e6" strokeWidth="2" fill="none" />
           <path d="M 380 180 Q 350 250 400 320" stroke="#b4c7e6" strokeWidth="2" fill="none" />
-
           <circle cx="380" cy="180" r="8" fill="#4285F4" />
           <circle cx="480" cy="150" r="6" fill="#FBBC04" />
           <circle cx="220" cy="280" r="10" fill="#34A853" />
@@ -938,7 +942,7 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
             Target Design
           </span>
           <div style={{ width: '70px', height: '70px', borderRadius: '6px', border: '1px solid #f1f5f9', overflow: 'hidden', position: 'relative' }}>
-            <div style={{ transform: 'scale(0.175)', transformOrigin: 'top left', width: '400px', height: '400px', backgroundImage: 'url(src/background.jpeg)', backgroundSize: '400px 400px' }}>
+            <div style={{ transform: 'scale(0.175)', transformOrigin: 'top left', width: '400px', height: '400px', backgroundImage: PUZZLE_BG, backgroundSize: '400px 400px' }}>
             </div>
           </div>
         </div>
@@ -990,7 +994,7 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
           >
             {/* Subtle background hint of the target image */}
             {!isSolved && !isFailed && (
-              <div style={{ position: 'absolute', top: '14px', left: '14px', opacity: 0.12, pointerEvents: 'none', width: '400px', height: '400px', backgroundImage: 'url(src/background.jpeg)', backgroundSize: '400px 400px' }}>
+              <div style={{ position: 'absolute', top: '14px', left: '14px', opacity: 0.12, pointerEvents: 'none', width: '400px', height: '400px', backgroundImage: PUZZLE_BG, backgroundSize: '400px 400px' }}>
               </div>
             )}
 
@@ -1752,7 +1756,7 @@ function EnhancedProblem({ data, platformColor, platformIcon: PlatformIcon }: an
           </div>
         </div>
         <div className="t-right" style={{ color: platformColor }}>
-          <Send size={24} className="t-send" />
+          <Send size={24} className="st-send" />
           <div className="t-tag">{data.tagline}</div>
         </div>
       </div>
