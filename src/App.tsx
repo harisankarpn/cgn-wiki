@@ -111,14 +111,12 @@ function GlobalThemeStyles() {
         transition: background-color 0.3s ease, color 0.3s ease;
       }
 
-      /* Pulse Animation for Theme Toggle */
       @keyframes themePulse {
         0% { box-shadow: 0 0 0 0 rgba(66, 133, 244, 0.6); }
         70% { box-shadow: 0 0 0 12px rgba(66, 133, 244, 0); }
         100% { box-shadow: 0 0 0 0 rgba(66, 133, 244, 0); }
       }
 
-      /* Reduce overall header padding and min-height */
       .premium-hero {
         min-height: 90px !important;
         padding: 12px 40px !important;
@@ -132,7 +130,6 @@ function GlobalThemeStyles() {
         border-bottom-color: var(--border-main) !important;
       }
 
-      /* Base Overrides for External CSS */
       .dark .app, .dark .no-sidebar-app, .dark .main-page-content { background-color: var(--bg-main) !important; }
       .dark .platform-card-row { background-color: var(--bg-main) !important; border-bottom-color: var(--border-main) !important; }
       .dark .platform-card { background: var(--bg-card) !important; border-color: var(--border-main) !important; color: var(--text-main) !important; box-shadow: var(--shadow-sm) !important; }
@@ -176,10 +173,21 @@ function GlobalThemeStyles() {
       .dark .poc-row p { color: var(--text-secondary) !important; }
       .dark .feedback-panel h4, .dark .demo-panel h4 { color: var(--text-main) !important; }
 
-      /* Scoped Component Overrides */
       .dark .p-card, .dark .s-card { background-color: var(--bg-card) !important; border-color: var(--border-main) !important; }
       .dark .p-callout, .dark .s-callout { background-color: var(--bg-hover) !important; }
       .dark .p-trans, .dark .s-trans { background-color: var(--bg-hover) !important; border-color: var(--border-main) !important; }
+
+      /* Pool Scrollbar Customization */
+      .puzzle-pool::-webkit-scrollbar {
+        width: 8px;
+      }
+      .puzzle-pool::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .puzzle-pool::-webkit-scrollbar-thumb {
+        background-color: var(--border-main);
+        border-radius: 10px;
+      }
     `}</style>
   );
 }
@@ -197,8 +205,6 @@ const NewGCPLogo = ({ size = 200 }: { size?: number }) => (
         <stop offset="66%" stopColor="#EA4335" />
         <stop offset="100%" stopColor="#FBBC04" />
       </linearGradient>
-      
-      {/* Node Glow Filters */}
       <filter id="glow-blue" x="-50%" y="-50%" width="200%" height="200%">
         <feGaussianBlur stdDeviation="15" result="blur" />
         <feComposite in="SourceGraphic" in2="blur" operator="over" />
@@ -215,26 +221,20 @@ const NewGCPLogo = ({ size = 200 }: { size?: number }) => (
         <feGaussianBlur stdDeviation="15" result="blur" />
         <feComposite in="SourceGraphic" in2="blur" operator="over" />
       </filter>
-      
       <filter id="cloud-shadow" x="-20%" y="-20%" width="140%" height="140%">
         <feDropShadow dx="0" dy="8" stdDeviation="12" floodOpacity="0.15" />
       </filter>
     </defs>
 
-    {/* Background Decorative Rings */}
     <circle cx="200" cy="200" r="160" stroke="var(--border-main, #e2e8f0)" strokeWidth="1" fill="none" />
     <circle cx="200" cy="200" r="115" stroke="var(--border-soft, #f1f5f9)" strokeWidth="8" fill="none" />
-    
-    {/* Main Colored Gradient Ring */}
     <circle cx="200" cy="200" r="140" stroke="url(#ring-grad)" strokeWidth="4" fill="none" />
 
-    {/* Small Decorator Dots */}
     <circle cx="101" cy="101" r="4" fill="#34A853" />
     <circle cx="299" cy="101" r="4" fill="#EA4335" />
     <circle cx="299" cy="299" r="4" fill="#FBBC04" />
     <circle cx="101" cy="299" r="4" fill="#4285F4" />
 
-    {/* CENTER GCP CLOUD SHAPE */}
     <g transform="translate(0, 25)" filter="url(#cloud-shadow)">
       <path d="M 150 230 L 250 230 A 30 30 0 0 0 250 170 A 50 50 0 0 0 150 170 A 30 30 0 0 0 150 230 Z" fill="var(--bg-main, #ffffff)" />
       <g fill="none" strokeWidth="24" strokeLinecap="butt">
@@ -245,7 +245,6 @@ const NewGCPLogo = ({ size = 200 }: { size?: number }) => (
       </g>
     </g>
 
-    {/* TOP NODE (Blue Globe) */}
     <circle cx="200" cy="60" r="32" fill="#4285F4" filter="url(#glow-blue)" opacity="0.8" />
     <circle cx="200" cy="60" r="32" fill="#4285F4" stroke="var(--bg-main, #ffffff)" strokeWidth="6" />
     <g transform="translate(184, 44)" stroke="#ffffff" strokeWidth="2.5" fill="none">
@@ -254,7 +253,6 @@ const NewGCPLogo = ({ size = 200 }: { size?: number }) => (
       <path d="M4 16h24 M16 4v24" />
     </g>
 
-    {/* RIGHT NODE (Red Gear) */}
     <circle cx="340" cy="200" r="32" fill="#EA4335" filter="url(#glow-red)" opacity="0.8" />
     <circle cx="340" cy="200" r="32" fill="#EA4335" stroke="var(--bg-main, #ffffff)" strokeWidth="6" />
     <g transform="translate(324, 184)" stroke="#ffffff" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round">
@@ -262,7 +260,6 @@ const NewGCPLogo = ({ size = 200 }: { size?: number }) => (
       <path d="M16 8V5 M16 27v-3 M8 16H5 M27 16h-3 M10.3 10.3l-2.1-2.1 M27.8 27.8l-2.1-2.1 M10.3 21.7l-2.1 2.1 M27.8 4.2l-2.1 2.1" />
     </g>
 
-    {/* BOTTOM NODE (Yellow Users) */}
     <circle cx="200" cy="340" r="32" fill="#FBBC04" filter="url(#glow-yellow)" opacity="0.8" />
     <circle cx="200" cy="340" r="32" fill="#FBBC04" stroke="var(--bg-main, #ffffff)" strokeWidth="6" />
     <g transform="translate(184, 324)" stroke="#ffffff" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round">
@@ -274,7 +271,6 @@ const NewGCPLogo = ({ size = 200 }: { size?: number }) => (
       <path d="M28 22a6 6 0 0 0-6-6" />
     </g>
 
-    {/* LEFT NODE (Green Laptop) */}
     <circle cx="60" cy="200" r="32" fill="#34A853" filter="url(#glow-green)" opacity="0.8" />
     <circle cx="60" cy="200" r="32" fill="#34A853" stroke="var(--bg-main, #ffffff)" strokeWidth="6" />
     <g transform="translate(44, 184)" stroke="#ffffff" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round">
@@ -673,10 +669,12 @@ const TILE_SIZE = 100;
 const INITIAL_PIECES = Array.from({ length: TOTAL_PIECES }, (_, i) => i);
 
 function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: () => void }) {
+  // Full 16 pieces start in the pool
   const [poolPieces, setPoolPieces] = useState<number[]>(() => 
     [...INITIAL_PIECES].sort(() => Math.random() - 0.5)
   );
 
+  // Left side starts empty
   const [slots, setSlots] = useState<(number | null)[]>(Array(TOTAL_PIECES).fill(null));
 
   const [dragState, setDragState] = useState<{
@@ -685,12 +683,10 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
     isDragging: boolean;
     x: number;
     y: number;
-    offsetX: number;
-    offsetY: number;
-  }>({ id: null, source: null, isDragging: false, x: 0, y: 0, offsetX: 0, offsetY: 0 });
+  }>({ id: null, source: null, isDragging: false, x: 0, y: 0 });
 
   const [isSolved, setIsSolved] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(120); 
+  const [timeLeft, setTimeLeft] = useState(120); // 2 minute timer
   const [isFailed, setIsFailed] = useState(false);
 
   useEffect(() => {
@@ -739,33 +735,33 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
     setIsSolved(false);
     setIsFailed(false);
     setTimeLeft(120);
-    setDragState({ id: null, source: null, isDragging: false, x: 0, y: 0, offsetX: 0, offsetY: 0 });
+    setDragState({ id: null, source: null, isDragging: false, x: 0, y: 0 });
   };
 
   const handlePointerDown = (e: React.PointerEvent, pieceId: number, source: 'pool' | 'grid') => {
     if (isFailed || isSolved) return;
-    const target = e.currentTarget as HTMLElement;
-    const rect = target.getBoundingClientRect();
+    
+    // We instantly center the dragging piece to the cursor to ignore any CSS "zoom" calculation bugs.
+    const zoom = parseFloat(window.getComputedStyle(document.body).zoom || '1');
     
     setDragState({
       id: pieceId,
       source,
       isDragging: true,
-      x: rect.left,
-      y: rect.top,
-      offsetX: e.clientX - rect.left,
-      offsetY: e.clientY - rect.top,
+      x: (e.clientX / zoom) - (TILE_SIZE / 2),
+      y: (e.clientY / zoom) - (TILE_SIZE / 2),
     });
     
-    target.setPointerCapture(e.pointerId);
+    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
 
-    // Remove from current location immediately
+    // Immediately remove from current location so it exists ONLY in the drag overlay
     if (source === 'pool') {
       setPoolPieces(prev => prev.filter(p => p !== pieceId));
     } else {
       setSlots(prev => {
         const newSlots = [...prev];
-        newSlots[pieceId] = null;
+        const slotIndex = newSlots.indexOf(pieceId);
+        if (slotIndex !== -1) newSlots[slotIndex] = null;
         return newSlots;
       });
     }
@@ -775,39 +771,51 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
     if (!dragState.isDragging) return;
 
     const handlePointerMove = (e: PointerEvent) => {
+      const zoom = parseFloat(window.getComputedStyle(document.body).zoom || '1');
       setDragState(prev => ({
         ...prev,
-        x: e.clientX - prev.offsetX,
-        y: e.clientY - prev.offsetY
+        x: (e.clientX / zoom) - (TILE_SIZE / 2),
+        y: (e.clientY / zoom) - (TILE_SIZE / 2)
       }));
     };
 
     const handlePointerUp = (e: PointerEvent) => {
       const gridEl = document.getElementById('puzzle-grid');
+      const zoom = parseFloat(window.getComputedStyle(document.body).zoom || '1');
+      
       if (gridEl && dragState.id !== null) {
         const gridRect = gridEl.getBoundingClientRect();
+        const gridLeft = gridRect.left / zoom;
+        const gridTop = gridRect.top / zoom;
+
+        // Determine correct slot coordinates
         const slotRow = Math.floor(dragState.id / GRID_SIZE);
         const slotCol = dragState.id % GRID_SIZE;
         
-        // Target calculation (padding inside the grid is 12px)
-        const targetX = gridRect.left + 12 + (slotCol * TILE_SIZE);
-        const targetY = gridRect.top + 12 + (slotRow * TILE_SIZE);
+        // 12px internal padding in the grid container
+        const targetX = gridLeft + 12 + (slotCol * TILE_SIZE);
+        const targetY = gridTop + 12 + (slotRow * TILE_SIZE);
 
-        // Snap distance threshold
-        if (Math.abs(e.clientX - targetX - 50) < 50 && 
-            Math.abs(e.clientY - targetY - 50) < 50) {
-          // Snap Success
+        const pointerX = e.clientX / zoom;
+        const pointerY = e.clientY / zoom;
+
+        // Check if pointer is near the target slot
+        const slotCenterX = targetX + (TILE_SIZE / 2);
+        const slotCenterY = targetY + (TILE_SIZE / 2);
+
+        if (Math.abs(pointerX - slotCenterX) < 60 && Math.abs(pointerY - slotCenterY) < 60) {
+          // Snap Success - Placed in Grid
           setSlots(prev => {
             const newSlots = [...prev];
             newSlots[dragState.id!] = dragState.id;
             return newSlots;
           });
         } else {
-          // Snap Failed: Return to Pool
+          // Snap Failed - Return to Pool
           setPoolPieces(prev => [...prev, dragState.id!]);
         }
       }
-      setDragState({ id: null, source: null, isDragging: false, x: 0, y: 0, offsetX: 0, offsetY: 0 });
+      setDragState({ id: null, source: null, isDragging: false, x: 0, y: 0 });
     };
 
     window.addEventListener('pointermove', handlePointerMove);
@@ -816,23 +824,20 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
       window.removeEventListener('pointermove', handlePointerMove);
       window.removeEventListener('pointerup', handlePointerUp);
     };
-  }, [dragState.isDragging, dragState.offsetX, dragState.offsetY, dragState.id]);
+  }, [dragState.isDragging, dragState.id]);
 
-  const renderPuzzlePiece = (pieceId: number | null) => {
-    if (pieceId === null) return null;
+  const renderPuzzlePiece = (pieceId: number) => {
     const row = Math.floor(pieceId / GRID_SIZE);
     const col = pieceId % GRID_SIZE;
     
     return (
       <div style={{ 
         width: '150px', height: '150px', position: 'absolute',
-        top: '-25px', left: '-25px',
+        top: '-25px', left: '-25px', // Center the 150x150 piece over the 100x100 relative container
         overflow: 'visible', pointerEvents: 'none',
-        // ClipPath stays active at all times to prevent overlapping full-images
-        clipPath: `url(#jigsaw-${pieceId})`,
-        transition: 'clip-path 0.5s ease'
+        clipPath: `url(#jigsaw-${pieceId})` // Mask permanently applied
       }}>
-        {/* The artwork is offset inversely to the row/col to align properly inside the clip bounds */}
+        {/* We invert the position of the artwork relative to the mask's row/col to align perfectly */}
         <div style={{ position: 'absolute', top: `${25 - (row * TILE_SIZE)}px`, left: `${25 - (col * TILE_SIZE)}px`, width: '400px', height: '400px' }}>
           <CodeGeneratedPuzzleArtwork />
         </div>
@@ -849,6 +854,21 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
   return (
     <div style={{ height: '100vh', width: '100vw', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: 'var(--bg-main)', padding: '40px', fontFamily: 'system-ui, sans-serif', position: 'relative', overflow: 'hidden' }}>
       
+      {/* Global Drag Overlay (Fixes all Z-index, overflow, and coordinate jumping issues) */}
+      {dragState.isDragging && dragState.id !== null && (
+        <div style={{
+          position: 'fixed',
+          left: 0, top: 0,
+          width: '100px', height: '100px',
+          transform: `translate(${dragState.x}px, ${dragState.y}px) scale(1.05)`,
+          zIndex: 9999,
+          pointerEvents: 'none',
+          filter: 'drop-shadow(0 12px 24px rgba(0,0,0,0.25))'
+        }}>
+          {renderPuzzlePiece(dragState.id)}
+        </div>
+      )}
+
       {/* Dynamic Jigsaw SVG Paths */}
       <svg width="0" height="0" style={{ position: 'absolute', pointerEvents: 'none' }}>
         <defs>
@@ -932,7 +952,7 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
 
       <div style={{ display: 'flex', gap: '40px', alignItems: 'flex-start', flexWrap: 'wrap', justifyContent: 'center' }}>
         
-        {/* LEFT CONTAINER: The Grid */}
+        {/* LEFT CONTAINER: The Target Grid */}
         <div 
           id="puzzle-grid"
           style={{ 
@@ -951,52 +971,39 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
         >
           {/* Subtle background hint of the target image */}
           {!isSolved && !isFailed && (
-            <div style={{ position: 'absolute', top: '12px', left: '12px', opacity: 0.1, pointerEvents: 'none' }}>
+            <div style={{ position: 'absolute', top: '12px', left: '12px', opacity: 0.08, pointerEvents: 'none' }}>
                <CodeGeneratedPuzzleArtwork />
             </div>
           )}
 
-          {slots.map((pieceId, index) => {
-            const isDragging = dragState.id === pieceId && dragState.source === 'grid';
-            return (
-              <div 
-                key={index}
-                style={{ 
-                  width: `${TILE_SIZE}px`, 
-                  height: `${TILE_SIZE}px`, 
-                  position: 'relative',
-                  border: pieceId === null ? '1px dashed var(--border-main)' : 'none',
-                  borderRadius: '6px'
-                }}
-              >
-                {/* The actual puzzle piece if dropped in this slot */}
-                {pieceId !== null && (
-                  <div 
-                    onPointerDown={(e) => handlePointerDown(e, pieceId, 'grid')}
-                    style={{ 
-                      width: '100px', height: '100px',
-                      position: isDragging ? 'fixed' : 'absolute',
-                      left: isDragging ? 0 : 0,
-                      top: isDragging ? 0 : 0,
-                      transform: isDragging ? `translate(${dragState.x}px, ${dragState.y}px) scale(1.05)` : 'translate(0px, 0px) scale(1)',
-                      zIndex: isDragging ? 100 : 2,
-                      cursor: isDragging ? 'grabbing' : 'grab',
-                      transition: isDragging ? 'none' : 'transform 0.3s cubic-bezier(0.2, 0, 0, 1)',
-                      filter: isDragging ? 'drop-shadow(0px 8px 16px rgba(0,0,0,0.15))' : 'none'
-                    }}
-                  >
-                    {renderPuzzlePiece(pieceId)}
-                  </div>
-                )}
-              </div>
-            );
-          })}
+          {slots.map((pieceId, index) => (
+            <div 
+              key={index}
+              style={{ 
+                width: `${TILE_SIZE}px`, 
+                height: `${TILE_SIZE}px`, 
+                position: 'relative',
+                border: pieceId === null ? '1px dashed var(--border-main)' : 'none',
+                borderRadius: '6px'
+              }}
+            >
+              {/* If a piece is actively in this grid slot, render it here so it can be picked up again */}
+              {pieceId !== null && (
+                <div 
+                  onPointerDown={(e) => handlePointerDown(e, pieceId, 'grid')}
+                  style={{ width: '100%', height: '100%', cursor: 'grab', zIndex: 2 }}
+                >
+                  {renderPuzzlePiece(pieceId)}
+                </div>
+              )}
+            </div>
+          ))}
         </div>
 
         {/* RIGHT CONTAINER: The Pool */}
-        <div style={{ 
+        <div className="puzzle-pool" style={{ 
           width: '500px', height: '430px', 
-          overflowY: 'auto',
+          overflowY: 'auto', overflowX: 'hidden',
           display: 'flex', flexDirection: 'column', 
           padding: '24px', background: 'var(--bg-card)', 
           borderRadius: '16px', border: '1px solid var(--border-main)' 
@@ -1032,31 +1039,24 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
             <>
               <h3 style={{ margin: '0 0 24px', fontSize: '18px', color: 'var(--text-main)', textAlign: 'center' }}>Drag Pieces to the Board</h3>
               <div style={{ 
-                display: 'flex', flexWrap: 'wrap', gap: '28px', justifyContent: 'center', paddingBottom: '20px' 
+                display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '30px 20px', justifyItems: 'center', paddingBottom: '20px' 
               }}>
-                {poolPieces.map(pieceId => {
-                  const isDragging = dragState.id === pieceId && dragState.source === 'pool';
-                  return (
+                {poolPieces.map(pieceId => (
+                  <div 
+                    key={pieceId}
+                    style={{ width: '100px', height: '100px', position: 'relative' }}
+                  >
                     <div 
-                      key={pieceId}
                       onPointerDown={(e) => handlePointerDown(e, pieceId, 'pool')}
                       style={{ 
-                        width: '100px', height: '100px', 
-                        cursor: isDragging ? 'grabbing' : 'grab',
-                        position: isDragging ? 'fixed' : 'relative',
-                        left: isDragging ? 0 : 'auto',
-                        top: isDragging ? 0 : 'auto',
-                        transform: isDragging ? `translate(${dragState.x}px, ${dragState.y}px) scale(1.05)` : 'translate(0px, 0px) scale(1)',
-                        zIndex: isDragging ? 100 : 1,
-                        touchAction: 'none',
-                        transition: isDragging ? 'none' : 'transform 0.3s cubic-bezier(0.2, 0, 0, 1)',
-                        filter: 'drop-shadow(0px 8px 16px rgba(0,0,0,0.15))'
+                        width: '100%', height: '100%', 
+                        cursor: 'grab', zIndex: 1, touchAction: 'none'
                       }}
                     >
                       {renderPuzzlePiece(pieceId)}
                     </div>
-                  );
-                })}
+                  </div>
+                ))}
               </div>
             </>
           )}
