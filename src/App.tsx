@@ -850,9 +850,12 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
      <div style={{ minHeight: '100vh', width: '100%', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px', fontFamily: 'system-ui, sans-serif', position: 'relative' }}>
      <style>{`
       body {
-         background: url(${bgImage}) center/cover fixed no-repeat !important;
-         margin: 0 !important;
-       }
+        background: url(${bgImage}) center/cover fixed no-repeat !important;
+        background-color: var(--bg-main);
+        color: var(--text-main);
+        transition: background-color 0.3s ease, color 0.3s ease;
+        margin: 0 !important;
+      }
      `}</style>
         {dragState.isDragging && dragState.id !== null && (
         <div style={{
