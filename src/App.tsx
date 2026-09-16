@@ -285,7 +285,8 @@ const NewGCPLogo = ({ size = 200 }: { size?: number }) => (
 ========================================================= */
 
 const CodeGeneratedPuzzleArtwork = () => (
-  <div style={{ width: '400px', height: '400px', background: 'var(--bg-card)', position: 'relative', boxSizing: 'border-box', overflow: 'hidden' }}>
+  // <div style={{ width: '400px', height: '400px', background: 'var(--bg-card)', position: 'relative', boxSizing: 'border-box', overflow: 'hidden' }}>
+  <div style={{ width: '400px', height: '400px', background: 'url(src/background.jpeg) center/cover no-repeat', position: 'relative', boxSizing: 'border-box', overflow: 'hidden' }}>
     
     <div style={{ position: 'absolute', top: 0, left: 0, width: '200px', height: '200px', background: 'radial-gradient(circle at top left, rgba(66, 133, 244, 0.15), transparent 70%)' }}></div>
     <div style={{ position: 'absolute', bottom: 0, right: 0, width: '200px', height: '200px', background: 'radial-gradient(circle at bottom right, rgba(251, 188, 4, 0.15), transparent 70%)' }}></div>
