@@ -994,12 +994,12 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
         </div>
 
         <div className="puzzle-pool" style={{ 
-          width: '500px', height: '430px', 
-          overflowY: 'auto', overflowX: 'hidden',
-          display: 'flex', flexDirection: 'column', 
-          padding: '24px', background: 'var(--bg-card)', 
-          borderRadius: '16px', border: '1px solid var(--border-main)' 
-        }}>
+        width: '500px', height: '428px', boxSizing: 'border-box',
+         overflowY: 'auto', overflowX: 'hidden',
+        display: 'flex', flexDirection: 'column', 
+        padding: '24px', background: 'var(--bg-card)', 
+         borderRadius: '16px', border: '1px solid var(--border-main)' 
+      }}>
           {isSolved ? (
             <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', animation: 'fadeIn 0.5s ease' }}>
               <div style={{ width: '60px', height: '60px', borderRadius: '50%', backgroundColor: '#dcfce7', color: '#166534', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '20px' }}>
