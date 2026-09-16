@@ -109,11 +109,21 @@ function GlobalThemeStyles() {
       }
 
       body {
-        background: url(${bgImage}) center/cover fixed no-repeat !important;
-        background-color: var(--bg-main);
+        background-color: transparent !important;
         color: var(--text-main);
-        transition: background-color 0.3s ease, color 0.3s ease;
         margin: 0 !important;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: url(${bgImage}) center/cover no-repeat;
+        z-index: -999;
+        pointer-events: none;
       }
 
       @keyframes themePulse {
