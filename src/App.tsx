@@ -964,11 +964,11 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
             position: 'relative'
           }}
         >
-          /* {!isSolved && !isFailed && (
-            <div style={{ position: 'absolute', top: '12px', left: '12px', opacity: 0.08, pointerEvents: 'none' }}>
-               <CodeGeneratedPuzzleArtwork />
-            </div>
-          )} */
+          // {!isSolved && !isFailed && (
+           // <div style={{ position: 'absolute', top: '12px', left: '12px', opacity: 0.08, pointerEvents: 'none' }}>
+            //   <CodeGeneratedPuzzleArtwork />
+          //  </div>
+          // )} 
 
           {slots.map((pieceId, index) => (
             <div 
