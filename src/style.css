@@ -72,7 +72,7 @@ button {
 }
 
 .no-sidebar-app {
-  background: var(--background);
+  background: transparent;
 }
 
 .no-sidebar-main {
@@ -245,37 +245,13 @@ button {
   align-items: center;
   gap: 42px;
   padding: 16px 60px;
-  background: radial-gradient(circle at 15% 110%, rgba(66, 133, 244, 0.24), transparent 32%),
-              radial-gradient(circle at 62% 115%, rgba(52, 168, 83, 0.22), transparent 30%),
-              radial-gradient(circle at 88% 18%, rgba(124, 77, 255, 0.18), transparent 28%),
-              linear-gradient(115deg, #f8fbff 0%, #edf6ff 38%, #dff4f1 64%, #e9edff 100%);
   border-bottom: 1px solid #d8e6f4;
+  background: transparent !important;
 }
 
-.premium-hero::before {
-  content: "";
-  position: absolute;
-  width: 780px;
-  height: 250px;
-  right: 180px;
-  bottom: 150px;
-  border-radius: 50%;
-  background: linear-gradient(90deg, rgba(52, 168, 83, 0.16), rgba(66, 133, 244, 0.24), rgba(124, 77, 255, 0.14));
-  transform: rotate(-8deg);
-  filter: blur(2px);
-  pointer-events: none;
-}
-
+.premium-hero::before,
 .premium-hero::after {
-  content: "";
-  position: absolute;
-  width: 300px;
-  height: 300px;
-  right: -80px;
-  top: -120px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(66, 133, 244, 0.17), rgba(124, 77, 255, 0.08), transparent 70%);
-  pointer-events: none;
+  display: none !important;
 }
 
 .hero-copy,
@@ -419,7 +395,7 @@ button {
   display: grid;
   gap: 12px;
   padding: 14px 38px;
-  background: #ffffff;
+  background: transparent;
   border-bottom: 1px solid #edf1f6;
 }
 
@@ -515,7 +491,7 @@ button {
 .main-page-content {
   flex: 1;
   padding: 14px 38px 34px;
-  background: #ffffff;
+  background: transparent;
 }
 
 /* WIKI HOME */
@@ -1007,7 +983,7 @@ button {
   gap: 20px;
   padding: 0 40px;
   border-top: 1px solid #dce7f3;
-  background: linear-gradient(90deg, #ffffff, #f8fbff);
+  background: transparent;
 }
 
 .footer-left {
