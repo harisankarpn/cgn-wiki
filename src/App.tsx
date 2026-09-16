@@ -281,47 +281,6 @@ const NewGCPLogo = ({ size = 200 }: { size?: number }) => (
 );
 
 /* =========================================================
-   PURE CODE-GENERATED PUZZLE ARTWORK 
-========================================================= */
-
-const CodeGeneratedPuzzleArtwork = () => (
-  <div style={{ width: '400px', height: '400px', background: 'var(--bg-card)', position: 'relative', boxSizing: 'border-box', overflow: 'hidden' }}>
-    
-    <div style={{ position: 'absolute', top: 0, left: 0, width: '200px', height: '200px', background: 'radial-gradient(circle at top left, rgba(66, 133, 244, 0.15), transparent 70%)' }}></div>
-    <div style={{ position: 'absolute', bottom: 0, right: 0, width: '200px', height: '200px', background: 'radial-gradient(circle at bottom right, rgba(251, 188, 4, 0.15), transparent 70%)' }}></div>
-    <div style={{ position: 'absolute', bottom: 0, left: 0, width: '200px', height: '200px', background: 'radial-gradient(circle at bottom left, rgba(52, 168, 83, 0.15), transparent 70%)' }}></div>
-    
-    <div style={{ position: 'absolute', top: '24px', left: '24px', textAlign: 'left' }}>
-      <div style={{ fontSize: '26px', fontFamily: 'Georgia, serif', fontStyle: 'italic', color: '#1a73e8', lineHeight: '1.1', fontWeight: 'bold' }}>One<br/>Cloud</div>
-      <div style={{ fontSize: '13px', color: 'var(--text-main)', marginTop: '6px', fontWeight: 600 }}>Many<br/>Possibilities</div>
-      <div style={{ width: '40px', height: '4px', background: 'linear-gradient(90deg, #4285F4, #34A853)', marginTop: '6px', borderRadius: '2px' }}></div>
-    </div>
-    
-    <div style={{ position: 'absolute', top: '24px', right: '24px', textAlign: 'right' }}>
-      <div style={{ fontSize: '26px', fontFamily: 'Georgia, serif', fontStyle: 'italic', color: '#1a73e8', lineHeight: '1.1', fontWeight: 'bold' }}>Ideas<br/>to Impact</div>
-      <div style={{ width: '60px', height: '4px', background: 'linear-gradient(90deg, #EA4335, #FBBC04, #34A853)', marginTop: '6px', float: 'right', borderRadius: '2px' }}></div>
-    </div>
-    
-    <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -60%)' }}>
-       <NewGCPLogo size={200} />
-    </div>
-
-    <div style={{ position: 'absolute', bottom: '65px', left: '0', width: '100%', textAlign: 'center' }}>
-      <h2 style={{ margin: 0, color: 'var(--text-main)', fontSize: '32px', fontWeight: 800, letterSpacing: '-0.5px' }}>GCP Tech</h2>
-      <h2 style={{ margin: 0, color: '#1a73e8', fontSize: '24px', fontWeight: 700, letterSpacing: '-0.5px' }}>Transformation Solutions</h2>
-      <p style={{ margin: '4px 0 0', color: 'var(--text-secondary)', fontSize: '14px', fontWeight: 500 }}>One Cloud &nbsp;&bull;&nbsp; Many Possibilities</p>
-    </div>
-
-    <div style={{ position: 'absolute', bottom: '16px', display: 'flex', justifyContent: 'space-around', width: '100%', padding: '0 24px', boxSizing: 'border-box' }}>
-       <div style={{ textAlign: 'center', color: '#4285F4', display: 'flex', flexDirection: 'column', alignItems: 'center' }}><Users size={24}/><div style={{ fontSize: '12px', fontWeight: 700, marginTop: '4px', color: 'var(--text-main)' }}>People</div></div>
-       <div style={{ textAlign: 'center', color: '#34A853', display: 'flex', flexDirection: 'column', alignItems: 'center' }}><Lightbulb size={24}/><div style={{ fontSize: '12px', fontWeight: 700, marginTop: '4px', color: 'var(--text-main)' }}>Innovation</div></div>
-       <div style={{ textAlign: 'center', color: '#EA4335', display: 'flex', flexDirection: 'column', alignItems: 'center' }}><BarChart3 size={24}/><div style={{ fontSize: '12px', fontWeight: 700, marginTop: '4px', color: 'var(--text-main)' }}>Impact</div></div>
-       <div style={{ textAlign: 'center', color: '#FBBC04', display: 'flex', flexDirection: 'column', alignItems: 'center' }}><TrendingUp size={24}/><div style={{ fontSize: '12px', fontWeight: 700, marginTop: '4px', color: 'var(--text-main)' }}>Growth</div></div>
-    </div>
-  </div>
-);
-
-/* =========================================================
    TOP PLATFORM NAVIGATION & CONTENT DATA
 ========================================================= */
 
@@ -660,7 +619,7 @@ const wikiTableRows = [
 ];
 
 /* =========================================================
-   SPLASH PUZZLE COMPONENT (REFACTORED TO MATCH image0.png)
+   SPLASH PUZZLE COMPONENT
 ========================================================= */
 
 const GRID_SIZE = 4;
@@ -828,8 +787,7 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
         overflow: 'visible', pointerEvents: 'none',
         clipPath: `url(#jigsaw-${pieceId})` 
       }}>
-        <div style={{ position: 'absolute', top: `${25 - (row * TILE_SIZE)}px`, left: `${25 - (col * TILE_SIZE)}px`, width: '400px', height: '400px' }}>
-          <CodeGeneratedPuzzleArtwork />
+        <div style={{ position: 'absolute', top: `${25 - (row * TILE_SIZE)}px`, left: `${25 - (col * TILE_SIZE)}px`, width: '400px', height: '400px', backgroundImage: 'url(src/background.jpeg)', backgroundSize: '400px 400px' }}>
         </div>
       </div>
     );
@@ -980,8 +938,7 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
             Target Design
           </span>
           <div style={{ width: '70px', height: '70px', borderRadius: '6px', border: '1px solid #f1f5f9', overflow: 'hidden', position: 'relative' }}>
-            <div style={{ transform: 'scale(0.175)', transformOrigin: 'top left', width: '400px', height: '400px' }}>
-              <CodeGeneratedPuzzleArtwork />
+            <div style={{ transform: 'scale(0.175)', transformOrigin: 'top left', width: '400px', height: '400px', backgroundImage: 'url(src/background.jpeg)', backgroundSize: '400px 400px' }}>
             </div>
           </div>
         </div>
@@ -1033,8 +990,7 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
           >
             {/* Subtle background hint of the target image */}
             {!isSolved && !isFailed && (
-              <div style={{ position: 'absolute', top: '14px', left: '14px', opacity: 0.12, pointerEvents: 'none' }}>
-                 <CodeGeneratedPuzzleArtwork />
+              <div style={{ position: 'absolute', top: '14px', left: '14px', opacity: 0.12, pointerEvents: 'none', width: '400px', height: '400px', backgroundImage: 'url(src/background.jpeg)', backgroundSize: '400px 400px' }}>
               </div>
             )}
 
