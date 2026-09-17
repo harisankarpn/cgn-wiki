@@ -149,11 +149,13 @@ function GlobalThemeStyles() {
       .dark .app, 
       .dark .no-sidebar-app, 
       .dark .main-page-content,
-      .dark .platform-card-row,
-      .dark .premium-hero { 
+      .dark .platform-card-row { 
        background-color: transparent !important; 
        background: transparent !important;
-       border-bottom-color: var(--border-main) !important;
+      }
+      .dark .premium-hero { 
+       background-color: var(--bg-card) !important; 
+       border-bottom: 1px solid var(--border-main) !important;
       }
       .dark .puzzle-piece,
       .dark .puzzle-slot-empty,
@@ -185,8 +187,14 @@ function GlobalThemeStyles() {
       .dark .solution-tabs button:hover { background: var(--bg-hover) !important; }
       .dark .solution-tabs button.active { background: var(--bg-hover) !important; color: var(--text-main) !important; }
       
-      .dark .premium-title { color: var(--text-main) !important; }
-      .dark .outcome-item { color: var(--text-main) !important; }
+      .dark .premium-title, 
+      .dark .premium-title span:not(.title-highlight) { color: var(--text-main) !important; }
+      .dark .title-highlight { color: #8ab4f8 !important; }
+      
+      .dark .outcome-item, 
+      .dark .outcome-item span { color: var(--text-secondary) !important; }
+      .dark .outcome-divider { background-color: var(--border-main) !important; border-color: var(--border-main) !important; }
+      
       .dark .breadcrumbs { color: var(--text-muted) !important; }
 
       .dark .section-heading h3 { color: var(--text-main) !important; }
