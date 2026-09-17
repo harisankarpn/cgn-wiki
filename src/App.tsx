@@ -1141,18 +1141,19 @@ function App() {
           <div className="hero-copy" style={{ width: '100%', maxWidth: '100%', display: 'flex', alignItems: 'center', gap: '20px' }}>
             
             {/* Added clipPath to forcefully cut the GIF into a circle */}
-            <div style={{ width: '75px', height: '75px', borderRadius: '50%', overflow: 'hidden', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+           <div style={{ width: '75px', height: '75px', borderRadius: '50%', overflow: 'hidden', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <img 
                 src={gcpGif} 
                 alt="GCP Animation" 
                 style={{ 
-                  width: '120%', 
-                  height: '120%', 
+                  width: '108%',   /* Reduced from 120% to bring the left/right icons into frame */
+                  height: '108%',  /* Reduced from 120% */
                   objectFit: 'cover', 
-                  transform: 'translateY(-5%)' 
+                  transform: 'translateY(-6%)' /* Pulls the image up just enough to hide the text */
                 }} 
               />
             </div>
+            
             
             <div>
               <h1 className="premium-title" style={{ fontSize: '2.2rem', margin: 0, lineHeight: 1.2 }}>
