@@ -59,7 +59,7 @@ import gcpGif from './gcp.gif';
    TYPES
 ========================================================= */
 
-type SolutionId = 'core' | 'elevate' | 'sme' | 'accelerate';
+type SolutionId = 'core' | 'elevate' | 'sme' | 'accelerate' | 'crado';
 type NavigationId = 'home' | SolutionId;
 type SectionId = 'overview' | 'problem' | 'solution' | 'benefits' | 'usage' | 'impact' | 'access' | 'feedback' | 'demo';
 
@@ -367,6 +367,7 @@ const solutions = [
   { id: 'elevate' as NavigationId, name: 'Elevate360', subtitle: 'Operational Governance', icon: BarChart3, color: '#16a34a' },
   { id: 'sme' as NavigationId, name: 'Digital SME', subtitle: 'Real-Time Case Execution', icon: Bot, color: '#7c3aed' },
   { id: 'accelerate' as NavigationId, name: 'Project Accelerate', subtitle: 'Customer Experience & Risk Control', icon: Zap, color: '#f59e0b' },
+  { id: 'crado' as NavigationId, name: 'CRADO', subtitle: 'Automated Billing Orchestrator', icon: FileText, color: '#0ea5e9' },
 ];
 
 const FEEDBACK_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSf0zu4Q-0kTjP03BLKMIPfQLePmL0P3xyAaaWr5COiuTGKqlA/viewform?usp=publish-editor';
@@ -668,6 +669,79 @@ const solutionContent = {
     feedback: FEEDBACK_URL,
     demo: '',
   },
+  // Add this crado block right after the closing brace of accelerate: { ... },
+
+  crado: {
+    shortName: 'CRADO',
+    name: 'CRADO (Calculation of Revenue Adjustment and Drafting Orchestrator)',
+    tagline: 'Automating Billing Calculations for GCP Billing',
+    quote: '"Calculate. Draft. Resolve."',
+    pillars: 'Financial Precision | Standardized Communication | Operational Efficiency',
+    overview: 'A custom AI Agent built on Gemini Enterprise (go/ge-mercuri) that connects to internal data sources to automate template selection per Billing use case, perform complex billing math, and draft customer and internal communications.',
+    objectives: [
+      'Automate template selection based on specific billing use cases.',
+      'Perform complex billing math with zero calculation inaccuracies.',
+      'Automatically generate pre-filled, professional email drafts for customers and consults.',
+      'Reduce Average Handle Time (AHT) and improve overall SLA adherence.'
+    ],
+    audience: 'Billing support agents and financial operations teams.',
+    metadata: { type: 'AI Billing Agent', users: 'Billing Support Teams', domain: 'Real-Time Case Execution', status: 'Development in Progress' },
+    problem: {
+      description: 'The manual billing support process is time-intensive and error-prone, leading to calculation inaccuracies and delayed response times that negatively impact SLAs and customer experience.',
+      cards: [
+        { title: 'Time-Intensive Workflows', description: 'Manual data gathering and template selection heavily inflate Average Handle Time.', icon: Clock, color: '#fdf2f8', iconBg: '#fce7f3', iconColor: '#db2777' },
+        { title: 'Error-Prone Calculations', description: 'Manual math leads to critical calculation inaccuracies for credits and debits.', icon: ShieldAlert, color: '#eff6ff', iconBg: '#dbeafe', iconColor: '#2563eb' },
+        { title: 'Delayed Responses', description: 'SLA breaches and frustrated customers due to slow manual drafting processes.', icon: Unlink, color: '#f5f3ff', iconBg: '#ede9fe', iconColor: '#7c3aed' }
+      ],
+      callout: 'Manual billing workflows introduce financial risk and slow down support, directly hurting the customer experience.',
+      transition: 'This gap led to CRADO — an AI agent designed to automate complex billing calculations and standardize communication.',
+      tagline: 'Calculate. Draft. Resolve.'
+    },
+    solution: {
+      description: 'CRADO connects to internal data sources to completely automate template selection, execute complex billing math, and draft seamless communications.',
+      cards: [
+        { title: 'Financial Precision', description: 'Ensures 100% accuracy in calculating credits, debits, and adjustments.', icon: Target, color: '#ecfdf5', iconBg: '#d1fae5', iconColor: '#059669' },
+        { title: 'Standardized Communication', description: 'Automatically generates pre-filled, professional email drafts for customers.', icon: MessageSquare, color: '#eff6ff', iconBg: '#dbeafe', iconColor: '#2563eb' },
+        { title: 'Operational Efficiency', description: 'Reduces Average Handle Time (AHT) and dramatically improves SLA adherence.', icon: Zap, color: '#fff7ed', iconBg: '#ffedd5', iconColor: '#ea580c' }
+      ],
+      calloutIcon: Lightbulb,
+      callout: 'Provides 100% financial accuracy while freeing agents from tedious manual math and repetitive email drafting.',
+      transition: 'CRADO transforms a highly manual, error-prone billing process into a fast, precise, and automated engine.',
+      tagline: 'Calculate. Draft. Resolve.'
+    },
+    benefits: [
+      { title: 'Financial Precision', description: 'Ensures 100% accuracy in calculating credits, debits, and adjustments.' },
+      { title: 'Standardized Communication', description: 'Automatically generates pre-filled, professional email drafts that can be shared with customers and to raise consults.' },
+      { title: 'Operational Efficiency', description: 'Reduces Average Handle Time (AHT) and improves SLA adherence by automating manual tasks.' }
+    ],
+    usage: {
+      description: 'CRADO is currently in active development, leveraging Gemini Enterprise to redefine billing operations.',
+      metrics: [
+        { label: 'Project Status', value: 'In Dev', change: 'Building on ge-mercuri' },
+        { label: 'Target Accuracy', value: '100%', change: 'Financial precision' },
+        { label: 'AHT Impact', value: 'Reducing', change: 'Targeting significant drop' },
+        { label: 'Drafting Engine', value: 'Active', change: 'Automating templates' }
+      ],
+      highlights: [
+        { title: 'Gemini Enterprise Integration', description: 'Built securely on go/ge-mercuri to interact safely with internal billing data sources.', badge: 'AI-Powered' },
+        { title: 'Zero-Error Math Engine', description: 'Designed specifically to eliminate the human error inherent in manual credit and debit calculations.', badge: 'Precision' },
+        { title: 'Automated Consults', description: 'Reduces internal friction by auto-drafting technical consult requests with the exact required variables.', badge: 'Efficiency' }
+      ]
+    },
+    impact: {
+      title: 'Streamlined Billing & Case Execution',
+      description: 'Drives financial precision and operational efficiency, directly impacting core execution metrics for billing support.',
+      metrics: [
+        { icon: TrendingUp, title: 'Increased Productivity', subtitle: 'Lower AHT via automation' },
+        { icon: ShieldCheck, title: 'Consult Preventability', subtitle: 'Standardized accurate data' },
+        { icon: Star, title: 'Improved Customer Experience', subtitle: 'Faster, error-free resolutions' }
+      ]
+    },
+    access: 'Development in Progress (go/ge-mercuri)',
+    poc: defaultPOCs,
+    feedback: FEEDBACK_URL,
+    demo: '',
+  }
 };
 
 /* =========================================================
