@@ -1119,7 +1119,7 @@ function App() {
   }
 
   return (
-      <div className={`app no-sidebar-app ${theme}`}>
+     <div className={`app no-sidebar-app ${theme}`}>
       <GlobalThemeStyles />
       <ThemeToggle />
       <main className="main no-sidebar-main" style={{ minHeight: '100vh' }}>
@@ -1127,8 +1127,19 @@ function App() {
         <section className="hero top-hero premium-hero" style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', position: 'relative' }}>
           <div className="hero-copy" style={{ width: '100%', maxWidth: '100%', display: 'flex', alignItems: 'center', gap: '20px' }}>
             
-            {/* Swapped the SVG component for the GIF image tag */}
-            <img src={gcpGif} alt="GCP Animation" style={{ width: '75px', height: '75px', objectFit: 'contain', flexShrink: 0 }} />
+            {/* Added clipPath to forcefully cut the GIF into a circle */}
+            <img 
+              src={gcpGif} 
+              alt="GCP Animation" 
+              style={{ 
+                width: '75px', 
+                height: '75px', 
+                objectFit: 'cover', 
+                borderRadius: '50%', 
+                clipPath: 'circle(50%)', 
+                flexShrink: 0 
+              }} 
+            />
             
             <div>
               <h1 className="premium-title" style={{ fontSize: '2.2rem', margin: 0, lineHeight: 1.2 }}>
