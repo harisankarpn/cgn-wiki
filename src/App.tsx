@@ -936,8 +936,8 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
         </div>
 
       </div>
-
-      <div style={{ position: 'absolute', bottom: '30px', right: '110px', zIndex: 10 }}>
+       
+      <div style={{ position: 'absolute', bottom: '30px', left: '40px', zIndex: 10 }}>
         <button 
           onClick={onSkip} 
           style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid var(--border-main)', background: 'var(--bg-card)', color: 'var(--text-secondary)', fontWeight: 600, cursor: 'pointer', transition: 'background 0.2s', boxShadow: 'var(--shadow-sm)' }}
