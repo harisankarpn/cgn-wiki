@@ -392,19 +392,38 @@ button {
 
 /* FIVE TOP NAVIGATION CARDS */
 .platform-card-row {
-  display: grid;
+  display: flex;             
+  flex-wrap: nowrap;         
+  overflow-x: auto;          
   gap: 12px;
-  padding: 14px 38px;
+  padding: 14px 38px 24px;   
   background: transparent;
   border-bottom: 1px solid #edf1f6;
+  scroll-behavior: smooth;
 }
 
-.platform-card-row.five-platforms {
+/* Google-Colored Horizontal Scrollbar */
+.platform-card-row::-webkit-scrollbar {
+  height: 4px; /* Thin line */
+}
+.platform-card-row::-webkit-scrollbar-track {
+  background: transparent; 
+}
+.platform-card-row::-webkit-scrollbar-thumb {
+  background: linear-gradient(90deg, #34a853, #fbbc05, #ea4335, #4285f4);
+  border-radius: 10px;
+}
+
+/* .platform-card-row.five-platforms {
   grid-template-columns: repeat(5, minmax(0, 1fr));
-}
+}  */
 
-.platform-card {
+ .platform-card-row.five-platforms {}
+
+ .platform-card {
   position: relative;
+  flex: 0 0 auto;            /* Prevent cards from squishing */
+  width: 280px;              /* Fixed width to force scrolling */
   min-height: 104px;
   display: flex;
   align-items: center;
