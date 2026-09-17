@@ -53,6 +53,7 @@ import {
 
 import puzzleBg from './background.jpeg';
 import bgImage from './background.jpeg';
+import gcpGif from './gcp.gif';
 
 /* =========================================================
    TYPES
@@ -136,10 +137,20 @@ function GlobalThemeStyles() {
         min-height: 90px !important;
         padding: 12px 40px !important;
       }
-
-      .dark .premium-hero {
-        background: transparent !important;
-        border-bottom-color: var(--border-main) !important;
+      
+      .dark .app, 
+      .dark .no-sidebar-app, 
+      .dark .main-page-content,
+      .dark .platform-card-row,
+      .dark .premium-hero { 
+       background-color: transparent !important; 
+       background: transparent !important;
+       border-bottom-color: var(--border-main) !important;
+      }
+      .dark .puzzle-piece,
+      .dark .puzzle-slot-empty,
+      .dark .puzzle-pool {
+      background-color: transparent !important;
       }
 
       .dark .app, .dark .no-sidebar-app, .dark .main-page-content { background-color: transparent !important; }
@@ -937,14 +948,14 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
 
       </div>
        
-      <div style={{ position: 'absolute', bottom: '30px', left: '40px', zIndex: 10 }}>
-        <button 
-          onClick={onSkip} 
-          style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid var(--border-main)', background: 'var(--bg-card)', color: 'var(--text-secondary)', fontWeight: 600, cursor: 'pointer', transition: 'background 0.2s', boxShadow: 'var(--shadow-sm)' }}
-        >
-          Skip Puzzle
-        </button>
-      </div>
+     <div style={{ position: 'fixed', bottom: '40px', left: '40px', zIndex: 50 }}>
+  <button 
+    onClick={onSkip} 
+    style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid var(--border-main)', background: 'var(--bg-card)', color: 'var(--text-secondary)', fontWeight: 600, cursor: 'pointer', transition: 'background 0.2s', boxShadow: 'var(--shadow-sm)' }}
+  >
+    Skip Puzzle
+  </button>
+</div>
 
       <div style={{ textAlign: 'center', marginBottom: '32px' }}>
         <h1 style={{ color: 'var(--text-main)', margin: '0 0 12px', fontSize: '32px' }}>Innovation Wiki Access</h1>
@@ -1116,7 +1127,8 @@ function App() {
         <section className="hero top-hero premium-hero" style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', position: 'relative' }}>
           <div className="hero-copy" style={{ width: '100%', maxWidth: '100%', display: 'flex', alignItems: 'center', gap: '20px' }}>
             
-            <NewGCPLogo size={75} />
+            {/* Swapped the SVG component for the GIF image tag */}
+            <img src={gcpGif} alt="GCP Animation" style={{ width: '75px', height: '75px', objectFit: 'contain', flexShrink: 0 }} />
             
             <div>
               <h1 className="premium-title" style={{ fontSize: '2.2rem', margin: 0, lineHeight: 1.2 }}>
@@ -1135,7 +1147,6 @@ function App() {
 
           </div>
         </section>
-
         <section className="platform-card-row five-platforms">
           {solutions.map((platform) => {
             const Icon = platform.icon;
