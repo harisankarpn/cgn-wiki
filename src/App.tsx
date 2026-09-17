@@ -1127,7 +1127,7 @@ function App() {
         <section className="hero top-hero premium-hero" style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', position: 'relative' }}>
           <div className="hero-copy" style={{ width: '100%', maxWidth: '100%', display: 'flex', alignItems: 'center', gap: '20px' }}>
             
-            {/* Added clipPath to forcefully cut the GIF into a circle */}
+            {/* Shifts the image upward by targeting the top 15%, cropping out the bottom text */}
             <img 
               src={gcpGif} 
               alt="GCP Animation" 
@@ -1135,8 +1135,8 @@ function App() {
                 width: '75px', 
                 height: '75px', 
                 objectFit: 'cover', 
+                objectPosition: 'center 15%', 
                 borderRadius: '50%', 
-                clipPath: 'circle(50%)', 
                 flexShrink: 0 
               }} 
             />
