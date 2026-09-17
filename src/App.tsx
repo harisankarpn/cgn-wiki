@@ -128,10 +128,10 @@ function GlobalThemeStyles() {
       }
 
       /* Completely hide the light wave image in dark mode and apply solid dark background */
-      .dark body::before {
+      body.dark::before {
         display: none !important;
       }
-      .dark body {
+      body.dark {
         background-color: var(--bg-main) !important;
       }
 
@@ -158,8 +158,7 @@ function GlobalThemeStyles() {
        border-bottom: 1px solid var(--border-main) !important;
       }
       .dark .puzzle-piece,
-      .dark .puzzle-slot-empty,
-      .dark .puzzle-pool {
+      .dark .puzzle-slot-empty {
       background-color: transparent !important;
       }
 
