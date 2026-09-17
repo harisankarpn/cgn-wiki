@@ -138,15 +138,12 @@ function GlobalThemeStyles() {
       }
 
       .dark .premium-hero {
-        background: radial-gradient(circle at 15% 110%, rgba(66, 133, 244, 0.15), transparent 32%),
-                    radial-gradient(circle at 62% 115%, rgba(52, 168, 83, 0.1), transparent 30%),
-                    radial-gradient(circle at 88% 18%, rgba(124, 77, 255, 0.1), transparent 28%),
-                    var(--bg-main) !important;
+        background: transparent !important;
         border-bottom-color: var(--border-main) !important;
       }
 
-      .dark .app, .dark .no-sidebar-app, .dark .main-page-content { background-color: var(--bg-main) !important; }
-      .dark .platform-card-row { background-color: var(--bg-main) !important; border-bottom-color: var(--border-main) !important; }
+      .dark .app, .dark .no-sidebar-app, .dark .main-page-content { background-color: transparent !important; }
+      .dark .platform-card-row { background-color: transparent !important; border-bottom-color: var(--border-main) !important; }
       .dark .platform-card { background: var(--bg-card) !important; border-color: var(--border-main) !important; color: var(--text-main) !important; box-shadow: var(--shadow-sm) !important; }
       .dark .platform-copy h3 { color: var(--text-main) !important; }
       .dark .platform-copy p { color: var(--text-secondary) !important; }
@@ -940,7 +937,7 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
 
       </div>
 
-      <div style={{ position: 'absolute', bottom: '30px', left: '40px', zIndex: 10 }}>
+      <div style={{ position: 'absolute', bottom: '30px', right: '110px', zIndex: 10 }}>
         <button 
           onClick={onSkip} 
           style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid var(--border-main)', background: 'var(--bg-card)', color: 'var(--text-secondary)', fontWeight: 600, cursor: 'pointer', transition: 'background 0.2s', boxShadow: 'var(--shadow-sm)' }}
