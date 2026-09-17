@@ -1119,7 +1119,7 @@ function App() {
   }
 
   return (
-    <div className={`app no-sidebar-app ${theme}`}>
+      <div className={`app no-sidebar-app ${theme}`}>
       <GlobalThemeStyles />
       <ThemeToggle />
       <main className="main no-sidebar-main" style={{ minHeight: '100vh' }}>
