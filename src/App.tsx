@@ -1119,7 +1119,7 @@ function App() {
   }
 
   return (
-     <div className={`app no-sidebar-app ${theme}`}>
+    <div className={`app no-sidebar-app ${theme}`}>
       <GlobalThemeStyles />
       <ThemeToggle />
       <main className="main no-sidebar-main" style={{ minHeight: '100vh' }}>
@@ -1127,19 +1127,19 @@ function App() {
         <section className="hero top-hero premium-hero" style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', position: 'relative' }}>
           <div className="hero-copy" style={{ width: '100%', maxWidth: '100%', display: 'flex', alignItems: 'center', gap: '20px' }}>
             
-            {/* Circular wrapper that zooms in (135%) and shifts up to crop out the text */}
-            <div style={{ width: '75px', height: '75px', borderRadius: '50%', overflow: 'hidden', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <img 
-                src={gcpGif} 
-                alt="GCP Animation" 
-                style={{ 
-                  width: '135%', 
-                  height: '135%', 
-                  objectFit: 'cover', 
-                  transform: 'translateY(-8%)' 
-                }} 
-              />
-            </div>
+            {/* Shifts the image upward by targeting the top 15%, cropping out the bottom text */}
+            <img 
+              src={gcpGif} 
+              alt="GCP Animation" 
+              style={{ 
+                width: '75px', 
+                height: '75px', 
+                objectFit: 'cover', 
+                objectPosition: 'center 15%', 
+                borderRadius: '50%', 
+                flexShrink: 0 
+              }} 
+            />
             
             <div>
               <h1 className="premium-title" style={{ fontSize: '2.2rem', margin: 0, lineHeight: 1.2 }}>
