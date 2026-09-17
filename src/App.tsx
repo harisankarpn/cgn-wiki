@@ -127,6 +127,14 @@ function GlobalThemeStyles() {
         pointer-events: none;
       }
 
+      /* Completely hide the light wave image in dark mode and apply solid dark background */
+      .dark body::before {
+        display: none !important;
+      }
+      .dark body {
+        background-color: var(--bg-main) !important;
+      }
+
       @keyframes themePulse {
         0% { box-shadow: 0 0 0 0 rgba(66, 133, 244, 0.6); }
         70% { box-shadow: 0 0 0 12px rgba(66, 133, 244, 0); }
@@ -153,8 +161,6 @@ function GlobalThemeStyles() {
       background-color: transparent !important;
       }
 
-      .dark .app, .dark .no-sidebar-app, .dark .main-page-content { background-color: transparent !important; }
-      .dark .platform-card-row { background-color: transparent !important; border-bottom-color: var(--border-main) !important; }
       .dark .platform-card { background: var(--bg-card) !important; border-color: var(--border-main) !important; color: var(--text-main) !important; box-shadow: var(--shadow-sm) !important; }
       .dark .platform-copy h3 { color: var(--text-main) !important; }
       .dark .platform-copy p { color: var(--text-secondary) !important; }
@@ -1127,7 +1133,7 @@ function App() {
         <section className="hero top-hero premium-hero" style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', position: 'relative' }}>
           <div className="hero-copy" style={{ width: '100%', maxWidth: '100%', display: 'flex', alignItems: 'center', gap: '20px' }}>
             
-            {/* Shifts the image upward by targeting the top 15%, cropping out the bottom text */}
+            {/* Added clipPath to forcefully cut the GIF into a circle */}
             <img 
               src={gcpGif} 
               alt="GCP Animation" 
@@ -1135,8 +1141,8 @@ function App() {
                 width: '75px', 
                 height: '75px', 
                 objectFit: 'cover', 
-                objectPosition: 'center 15%', 
                 borderRadius: '50%', 
+                clipPath: 'circle(50%)', 
                 flexShrink: 0 
               }} 
             />
