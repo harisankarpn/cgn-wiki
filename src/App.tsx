@@ -1146,10 +1146,10 @@ function App() {
                 src={gcpGif} 
                 alt="GCP Animation" 
                 style={{ 
-                  width: '108%',   /* Reduced from 120% to bring the left/right icons into frame */
-                  height: '108%',  /* Reduced from 120% */
+                  width: '100%',   /* Reduced from 120% to bring the left/right icons into frame */
+                  height: '100%',  /* Reduced from 120% */
                   objectFit: 'cover', 
-                  transform: 'translateY(-6%)' /* Pulls the image up just enough to hide the text */
+                  transform: 'translateY(-1%)' /* Pulls the image up just enough to hide the text */
                 }} 
               />
             </div>
