@@ -54,6 +54,7 @@ import {
 import puzzleBg from './background.jpeg';
 import bgImage from './background.jpeg';
 import gcpGif from './gcp.gif';
+import coreVideo from './C.O.R.E.mp4';
 
 /* =========================================================
    TYPES
@@ -448,7 +449,7 @@ const solutionContent = {
     access: 'https://stack-cognizant.web.app/login',
     poc: defaultPOCs,
     feedback: FEEDBACK_URL,
-    demo: '',
+    demo: coreVideo,
   },
 
   elevate: {
