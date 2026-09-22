@@ -390,47 +390,241 @@ button {
   font-size: 12px;
 }
 
+
 /* =========================================================
-   TOP PLATFORM CARDS - ASYMMETRIC GRID
+   DASHBOARD HUB (NEW ASYMMETRIC GRID VIEW)
 ========================================================= */
-.platform-card-row {
+
+.dashboard-hub-container {
   display: grid;
   grid-template-columns: 320px 1fr;
   gap: 24px;
-  padding: 14px 38px 24px;   
-  background: transparent;
-  border-bottom: 1px solid #edf1f6;
+  padding: 24px 40px 40px;
   width: 100%;
   box-sizing: border-box;
 }
 
-.platform-card-row.five-platforms .right-grid-container {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-}
-
-.platform-card {
+.hub-hero-card {
   position: relative;
+  background: linear-gradient(180deg, #e8f0fe 0%, #ffffff 100%); /* Light blue gradient */
+  border-radius: 16px;
+  border: 1px solid #dce8fa;
+  padding: 40px 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(26, 115, 232, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  height: 100%;
+}
+
+.hub-hero-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(26, 115, 232, 0.15);
+}
+
+/* Dashboard Decorative Blobs */
+.hub-hero-blob-1 {
+  position: absolute;
+  top: -30px;
+  right: -30px;
+  width: 180px;
+  height: 180px;
+  background: #cce0fc;
+  border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+  opacity: 0.8;
+  z-index: 0;
+}
+
+.hub-hero-blob-2 {
+  position: absolute;
+  bottom: -30px;
+  left: -30px;
+  width: 180px;
+  height: 180px;
+  background: #ceead6;
+  border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  opacity: 0.8;
+  z-index: 0;
+}
+
+.hub-hero-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hub-hero-icon {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 24px;
+}
+
+.hub-hero-card h3 {
+  font-size: 24px;
+  color: #0c1d3d;
+  margin: 0 0 12px;
+  font-weight: 700;
+}
+
+.hub-hero-card p {
+  font-size: 14px;
+  color: #405476;
+  margin: 0 0 32px;
+  line-height: 1.5;
+}
+
+.hub-hero-arrow {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #1a73e8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  box-shadow: 0 4px 12px rgba(26, 115, 232, 0.3);
+}
+
+.hub-grid-right {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.hub-grid-row {
+  display: flex;
+  gap: 20px;
+}
+
+.hub-card {
+  position: relative;
+  flex: 1;
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #edf1f6;
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(20, 49, 92, 0.04);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hub-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(20, 49, 92, 0.08);
+}
+
+.hub-card-blob {
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  opacity: 0.08;
+  z-index: 0;
+}
+
+.hub-card-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.hub-card-icon-wrap {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.hub-card h4 {
+  font-size: 18px;
+  color: #0c1d3d;
+  margin: 0 0 8px;
+  font-weight: 700;
+}
+
+.hub-card p {
+  font-size: 13px;
+  color: #68758c;
+  margin: 0;
+}
+
+.hub-card-arrow {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+/* =========================================================
+   TOP PLATFORM NAVIGATION (RESTORED HORIZONTAL SCROLL)
+========================================================= */
+
+.platform-card-row {
+  display: flex;             
+  flex-wrap: nowrap;         
+  overflow-x: auto;          
+  gap: 12px;
+  padding: 14px 38px 24px;   
+  background: transparent;
+  border-bottom: 1px solid #edf1f6;
+  scroll-behavior: smooth;
+}
+
+.platform-card-row::-webkit-scrollbar {
+  height: 4px;
+}
+.platform-card-row::-webkit-scrollbar-track {
+  background: transparent; 
+}
+.platform-card-row::-webkit-scrollbar-thumb {
+  background: linear-gradient(90deg, #34a853, #fbbc05, #ea4335, #4285f4);
+  border-radius: 10px;
+}
+
+.platform-card {
+  position: relative;
+  flex: 0 0 auto;            
+  width: 280px;              
+  min-height: 104px;
+  display: flex;
+  flex-direction: row; 
+  align-items: center;
+  justify-content: flex-start;
   gap: 14px;
-  padding: 24px 16px;
+  padding: 15px 16px;
   border: 1px solid #d9e5f2;
   border-radius: 11px;
   background: linear-gradient(145deg, #ffffff, #fbfdff);
   color: #0c1d3d;
+  text-align: left;
   box-shadow: 0 4px 14px rgba(24, 55, 95, 0.05);
   transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
-}
-
-.platform-card.hero-card {
-  height: 100%;
-  justify-content: center;
-  background: linear-gradient(180deg, #e8f0fe 0%, #ffffff 100%);
 }
 
 .platform-card:hover {
@@ -1034,11 +1228,14 @@ button {
 
 /* RESPONSIVE */
 @media (max-width: 1250px) {
-  .platform-card-row {
+  .dashboard-hub-container {
     grid-template-columns: 1fr;
   }
-  .platform-card-row.five-platforms .right-grid-container {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .hub-grid-row.top-row {
+    flex-wrap: wrap;
+  }
+  .hub-card {
+    min-width: 250px;
   }
   .premium-hero {
     grid-template-columns: 1fr;
@@ -1052,8 +1249,8 @@ button {
 }
 
 @media (max-width: 900px) {
-  .platform-card-row.five-platforms .right-grid-container {
-    grid-template-columns: 1fr;
+  .hub-grid-row {
+    flex-direction: column;
   }
   .profile-text,
   .google-wordmark {
@@ -1084,6 +1281,9 @@ button {
 }
 
 @media (max-width: 650px) {
+  .dashboard-hub-container {
+    padding: 24px 16px;
+  }
   .main-topbar {
     padding: 0 14px;
   }
