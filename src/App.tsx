@@ -48,19 +48,22 @@ import {
   User as UserIcon,
   Moon,
   Sun,
-  Rocket
+  Rocket,
+  GitBranch,
+  Layers3,
+  FilterX,
+  ArrowLeft
 } from 'lucide-react';
 
 import puzzleBg from './background.jpeg';
 import bgImage from './background.jpeg';
-import gcpGif from './gcp.gif';
 import coreVideo from './C.O.R.E.mp4';
 
 /* =========================================================
    TYPES
 ========================================================= */
 
-type SolutionId = 'core' | 'elevate' | 'sme' | 'accelerate' | 'crado';
+type SolutionId = 'core' | 'elevate' | 'sme' | 'accelerate' | 'crado' | 'arc' | 'aura' | 'star';
 type NavigationId = 'dashboard' | 'home' | SolutionId;
 type SectionId = 'overview' | 'problem' | 'solution' | 'benefits' | 'usage' | 'impact' | 'access' | 'feedback' | 'demo';
 
@@ -141,56 +144,21 @@ function GlobalThemeStyles() {
         100% { box-shadow: 0 0 0 0 rgba(66, 133, 244, 0); }
       }
 
-      .premium-hero {
-        min-height: 90px !important;
-        padding: 12px 40px !important;
-      }
-      
       .dark .app, 
       .dark .no-sidebar-app, 
-      .dark .main-page-content,
-      .dark .platform-card-row { 
+      .dark .main-page-content { 
        background-color: transparent !important; 
-       background: transparent !important;
-      }
-      .dark .premium-hero { 
-       background-color: var(--bg-card) !important; 
-       border-bottom: 1px solid var(--border-main) !important;
       }
       
-      /* Dashboard Specific Dark Mode */
-      .dark .hub-card {
-        background: var(--bg-card) !important;
-        border-color: var(--border-main) !important;
-      }
+      .dark .hub-card,
       .dark .hub-hero-card {
-        background: #1e293b !important;
+        background: var(--bg-card) !important;
         border-color: var(--border-main) !important;
       }
       .dark .hub-hero-card h3, .dark .hub-card h4 { color: var(--text-main) !important; }
       .dark .hub-hero-card p, .dark .hub-card p { color: var(--text-secondary) !important; }
-      .dark .hub-hero-blob-1 { background: #334155 !important; }
-      .dark .hub-hero-blob-2 { background: #0f172a !important; }
 
-      .dark .puzzle-piece,
-      .dark .puzzle-slot-empty {
-        background-color: transparent !important;
-      }
-
-      .dark .platform-card { background: var(--bg-card) !important; border-color: var(--border-main) !important; color: var(--text-main) !important; box-shadow: var(--shadow-sm) !important; }
-      .dark .platform-copy h3 { color: var(--text-main) !important; }
-      .dark .platform-copy p { color: var(--text-secondary) !important; }
-      .dark .platform-arrow { color: var(--text-main) !important; }
-      .dark .upgraded-footer { background: var(--bg-card) !important; border-top-color: var(--border-main) !important; color: var(--text-muted) !important; }
-      .dark .footer-left strong { color: var(--text-main) !important; }
-      
-      .dark .wiki-home { background: var(--bg-card) !important; border-color: var(--border-main) !important; }
-      .dark .wiki-home-heading h2 { color: var(--text-main) !important; }
-      .dark .wiki-home-heading p { color: var(--text-secondary) !important; }
-      .dark .wiki-table th { color: var(--text-main) !important; border-color: var(--border-main) !important; background: var(--bg-hover) !important; }
-      .dark .wiki-table td { background: var(--bg-card) !important; color: var(--text-secondary) !important; border-color: var(--border-main) !important; }
-      .dark .table-section-cell strong { color: var(--text-main) !important; }
-      
+      .dark .wiki-home,
       .dark .solution-page { background: var(--bg-card) !important; border-color: var(--border-main) !important; }
       .dark .solution-header { border-bottom-color: var(--border-main) !important; }
       .dark .solution-header h2 { color: var(--text-main) !important; }
@@ -201,16 +169,6 @@ function GlobalThemeStyles() {
       .dark .solution-tabs button:hover { background: var(--bg-hover) !important; }
       .dark .solution-tabs button.active { background: var(--bg-hover) !important; color: var(--text-main) !important; }
       
-      .dark .premium-title, 
-      .dark .premium-title span:not(.title-highlight) { color: var(--text-main) !important; }
-      .dark .title-highlight { color: #8ab4f8 !important; }
-      
-      .dark .outcome-item, 
-      .dark .outcome-item span { color: var(--text-secondary) !important; }
-      .dark .outcome-divider { background-color: var(--border-main) !important; border-color: var(--border-main) !important; }
-      
-      .dark .breadcrumbs { color: var(--text-muted) !important; }
-
       .dark .section-heading h3 { color: var(--text-main) !important; }
       .dark .text-panel, .dark .impact-panel, .dark .access-panel, .dark .feedback-panel, .dark .demo-panel { 
         background-color: var(--bg-card) !important; 
@@ -227,155 +185,23 @@ function GlobalThemeStyles() {
       .dark .p-card, .dark .s-card { background-color: var(--bg-card) !important; border-color: var(--border-main) !important; }
       .dark .p-callout, .dark .s-callout { background-color: var(--bg-hover) !important; }
       .dark .p-trans, .dark .s-trans { background-color: var(--bg-hover) !important; border-color: var(--border-main) !important; }
-
-      .puzzle-pool::-webkit-scrollbar {
-        width: 8px;
-      }
-      .puzzle-pool::-webkit-scrollbar-track {
-        background: transparent;
-      }
-      .puzzle-pool::-webkit-scrollbar-thumb {
-        background-color: var(--border-main);
-        border-radius: 10px;
-      }
     `}</style>
   );
 }
-
-/* =========================================================
-   NEW GCP LOGO COMPONENT (Coded SVG)
-========================================================= */
-
-const NewGCPLogo = ({ size = 200 }: { size?: number }) => (
-  <svg width={size} height={size} viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0 }}>
-    <defs>
-      <linearGradient id="ring-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stopColor="#34A853" />
-        <stop offset="33%" stopColor="#4285F4" />
-        <stop offset="66%" stopColor="#EA4335" />
-        <stop offset="100%" stopColor="#FBBC04" />
-      </linearGradient>
-      <filter id="glow-blue" x="-50%" y="-50%" width="200%" height="200%">
-        <feGaussianBlur stdDeviation="15" result="blur" />
-        <feComposite in="SourceGraphic" in2="blur" operator="over" />
-      </filter>
-      <filter id="glow-red" x="-50%" y="-50%" width="200%" height="200%">
-        <feGaussianBlur stdDeviation="15" result="blur" />
-        <feComposite in="SourceGraphic" in2="blur" operator="over" />
-      </filter>
-      <filter id="glow-yellow" x="-50%" y="-50%" width="200%" height="200%">
-        <feGaussianBlur stdDeviation="15" result="blur" />
-        <feComposite in="SourceGraphic" in2="blur" operator="over" />
-      </filter>
-      <filter id="glow-green" x="-50%" y="-50%" width="200%" height="200%">
-        <feGaussianBlur stdDeviation="15" result="blur" />
-        <feComposite in="SourceGraphic" in2="blur" operator="over" />
-      </filter>
-      <filter id="cloud-shadow" x="-20%" y="-20%" width="140%" height="140%">
-        <feDropShadow dx="0" dy="8" stdDeviation="12" floodOpacity="0.15" />
-      </filter>
-    </defs>
-
-    <circle cx="200" cy="200" r="160" stroke="var(--border-main, #e2e8f0)" strokeWidth="1" fill="none" />
-    <circle cx="200" cy="200" r="115" stroke="var(--border-soft, #f1f5f9)" strokeWidth="8" fill="none" />
-    <circle cx="200" cy="200" r="140" stroke="url(#ring-grad)" strokeWidth="4" fill="none" />
-
-    <circle cx="101" cy="101" r="4" fill="#34A853" />
-    <circle cx="299" cy="101" r="4" fill="#EA4335" />
-    <circle cx="299" cy="299" r="4" fill="#FBBC04" />
-    <circle cx="101" cy="299" r="4" fill="#4285F4" />
-
-    <g transform="translate(0, 25)" filter="url(#cloud-shadow)">
-      <path d="M 150 230 L 250 230 A 30 30 0 0 0 250 170 A 50 50 0 0 0 150 170 A 30 30 0 0 0 150 230 Z" fill="var(--bg-main, #ffffff)" />
-      <g fill="none" strokeWidth="24" strokeLinecap="butt">
-        <path d="M 150 230 L 200 230" stroke="#34A853" /> 
-        <path d="M 200 230 L 250 230 A 30 30 0 0 0 250 170" stroke="#4285F4" /> 
-        <path d="M 250 170 A 50 50 0 0 0 150 170" stroke="#EA4335" /> 
-        <path d="M 150 170 A 30 30 0 0 0 150 230" stroke="#FBBC04" /> 
-      </g>
-    </g>
-
-    <circle cx="200" cy="60" r="32" fill="#4285F4" filter="url(#glow-blue)" opacity="0.8" />
-    <circle cx="200" cy="60" r="32" fill="#4285F4" stroke="var(--bg-main, #ffffff)" strokeWidth="6" />
-    <g transform="translate(184, 44)" stroke="#ffffff" strokeWidth="2.5" fill="none">
-      <circle cx="16" cy="16" r="12" />
-      <ellipse cx="16" cy="16" rx="6" ry="12" />
-      <path d="M4 16h24 M16 4v24" />
-    </g>
-
-    <circle cx="340" cy="200" r="32" fill="#EA4335" filter="url(#glow-red)" opacity="0.8" />
-    <circle cx="340" cy="200" r="32" fill="#EA4335" stroke="var(--bg-main, #ffffff)" strokeWidth="6" />
-    <g transform="translate(324, 184)" stroke="#ffffff" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="16" cy="16" r="5" />
-      <path d="M16 8V5 M16 27v-3 M8 16H5 M27 16h-3 M10.3 10.3l-2.1-2.1 M27.8 27.8l-2.1-2.1 M10.3 21.7l-2.1 2.1 M27.8 4.2l-2.1 2.1" />
-    </g>
-
-    <circle cx="200" cy="340" r="32" fill="#FBBC04" filter="url(#glow-yellow)" opacity="0.8" />
-    <circle cx="200" cy="340" r="32" fill="#FBBC04" stroke="var(--bg-main, #ffffff)" strokeWidth="6" />
-    <g transform="translate(184, 324)" stroke="#ffffff" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M16 14a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" fill="#ffffff" />
-      <path d="M23 24a8 8 0 0 0-14 0" fill="#ffffff"/>
-      <circle cx="8" cy="12" r="3" fill="#ffffff" stroke="none" />
-      <path d="M4 22a6 6 0 0 1 6-6" />
-      <circle cx="24" cy="12" r="3" fill="#ffffff" stroke="none" />
-      <path d="M28 22a6 6 0 0 0-6-6" />
-    </g>
-
-    <circle cx="60" cy="200" r="32" fill="#34A853" filter="url(#glow-green)" opacity="0.8" />
-    <circle cx="60" cy="200" r="32" fill="#34A853" stroke="var(--bg-main, #ffffff)" strokeWidth="6" />
-    <g transform="translate(44, 184)" stroke="#ffffff" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="4" y="8" width="24" height="12" rx="2" />
-      <path d="M2 24h28" />
-    </g>
-  </svg>
-);
-
-/* =========================================================
-   PURE CODE-GENERATED PUZZLE ARTWORK 
-========================================================= */
-
-const CodeGeneratedPuzzleArtwork = () => (
- <div style={{ width: '400px', height: '400px', background: `url(${puzzleBg}) center/cover no-repeat`, position: 'relative', boxSizing: 'border-box', overflow: 'hidden' }}>
-    <div style={{ position: 'absolute', top: 0, left: 0, width: '200px', height: '200px', background: 'radial-gradient(circle at top left, rgba(66, 133, 244, 0.15), transparent 70%)' }}></div>
-    <div style={{ position: 'absolute', bottom: 0, right: 0, width: '200px', height: '200px', background: 'radial-gradient(circle at bottom right, rgba(251, 188, 4, 0.15), transparent 70%)' }}></div>
-    <div style={{ position: 'absolute', bottom: 0, left: 0, width: '200px', height: '200px', background: 'radial-gradient(circle at bottom left, rgba(52, 168, 83, 0.15), transparent 70%)' }}></div>
-    <div style={{ position: 'absolute', top: '24px', left: '24px', textAlign: 'left' }}>
-      <div style={{ fontSize: '26px', fontFamily: 'Georgia, serif', fontStyle: 'italic', color: '#1a73e8', lineHeight: '1.1', fontWeight: 'bold' }}>One<br/>Cloud</div>
-      <div style={{ fontSize: '13px', color: 'var(--text-main)', marginTop: '6px', fontWeight: 600 }}>Many<br/>Possibilities</div>
-      <div style={{ width: '40px', height: '4px', background: 'linear-gradient(90deg, #4285F4, #34A853)', marginTop: '6px', borderRadius: '2px' }}></div>
-    </div>
-    <div style={{ position: 'absolute', top: '24px', right: '24px', textAlign: 'right' }}>
-      <div style={{ fontSize: '26px', fontFamily: 'Georgia, serif', fontStyle: 'italic', color: '#1a73e8', lineHeight: '1.1', fontWeight: 'bold' }}>Ideas<br/>to Impact</div>
-      <div style={{ width: '60px', height: '4px', background: 'linear-gradient(90deg, #EA4335, #FBBC04, #34A853)', marginTop: '6px', float: 'right', borderRadius: '2px' }}></div>
-    </div>
-    <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -60%)' }}>
-       <NewGCPLogo size={200} />
-    </div>
-    <div style={{ position: 'absolute', bottom: '65px', left: '0', width: '100%', textAlign: 'center' }}>
-      <h2 style={{ margin: 0, color: 'var(--text-main)', fontSize: '32px', fontWeight: 800, letterSpacing: '-0.5px' }}>GCP Tech</h2>
-      <h2 style={{ margin: 0, color: '#1a73e8', fontSize: '24px', fontWeight: 700, letterSpacing: '-0.5px' }}>Transformation Solutions</h2>
-      <p style={{ margin: '4px 0 0', color: 'var(--text-secondary)', fontSize: '14px', fontWeight: 500 }}>One Cloud &nbsp;&bull;&nbsp; Many Possibilities</p>
-    </div>
-    <div style={{ position: 'absolute', bottom: '16px', display: 'flex', justifyContent: 'space-around', width: '100%', padding: '0 24px', boxSizing: 'border-box' }}>
-       <div style={{ textAlign: 'center', color: '#4285F4', display: 'flex', flexDirection: 'column', alignItems: 'center' }}><Users size={24}/><div style={{ fontSize: '12px', fontWeight: 700, marginTop: '4px', color: 'var(--text-main)' }}>People</div></div>
-       <div style={{ textAlign: 'center', color: '#34A853', display: 'flex', flexDirection: 'column', alignItems: 'center' }}><Lightbulb size={24}/><div style={{ fontSize: '12px', fontWeight: 700, marginTop: '4px', color: 'var(--text-main)' }}>Innovation</div></div>
-       <div style={{ textAlign: 'center', color: '#EA4335', display: 'flex', flexDirection: 'column', alignItems: 'center' }}><BarChart3 size={24}/><div style={{ fontSize: '12px', fontWeight: 700, marginTop: '4px', color: 'var(--text-main)' }}>Impact</div></div>
-       <div style={{ textAlign: 'center', color: '#FBBC04', display: 'flex', flexDirection: 'column', alignItems: 'center' }}><TrendingUp size={24}/><div style={{ fontSize: '12px', fontWeight: 700, marginTop: '4px', color: 'var(--text-main)' }}>Growth</div></div>
-    </div>
-  </div>
-);
 
 /* =========================================================
    TOP PLATFORM NAVIGATION & CONTENT DATA
 ========================================================= */
 
 const solutions = [
-  { id: 'home' as NavigationId, name: 'Innovation Wiki', subtitle: 'Overview & Knowledge Hub', icon: Home, color: '#1a73e8' },
-  { id: 'core' as NavigationId, name: 'C.O.R.E.', subtitle: 'Talent Acquisition & Readiness', icon: Target, color: '#1967d2' },
-  { id: 'elevate' as NavigationId, name: 'Elevate360', subtitle: 'Operational Governance', icon: BarChart3, color: '#16a34a' },
-  { id: 'sme' as NavigationId, name: 'Digital SME', subtitle: 'Real-Time Case Execution', icon: Bot, color: '#7c3aed' },
-  { id: 'accelerate' as NavigationId, name: 'Project Accelerate', subtitle: 'Risk Intelligence & Control', icon: Zap, color: '#f59e0b' },
-  { id: 'crado' as NavigationId, name: 'CRADO', subtitle: 'Automated Billing Deduction', icon: FileText, color: '#0ea5e9' },
+  { id: 'core' as NavigationId, name: 'C.O.R.E.', subtitle: 'Talent Acquisition & Readiness', icon: Target, color: '#1a73e8' },
+  { id: 'elevate' as NavigationId, name: 'Elevate360', subtitle: 'Operational Governance', icon: BarChart3, color: '#34a853' },
+  { id: 'sme' as NavigationId, name: 'Digital SME', subtitle: 'Automating Case Execution', icon: Bot, color: '#9333ea' },
+  { id: 'accelerate' as NavigationId, name: 'Project Accelerate', subtitle: 'Risk Intelligence & Control', icon: Zap, color: '#ea580c' },
+  { id: 'crado' as NavigationId, name: 'CRADO', subtitle: 'Automated Billing Deduction', icon: FileText, color: '#0284c7' },
+  { id: 'arc' as NavigationId, name: 'ARC', subtitle: 'Intelligent Frontline Routing', icon: GitBranch, color: '#e11d48' },
+  { id: 'aura' as NavigationId, name: 'AURA', subtitle: 'End-to-End Support Enablement', icon: Layers3, color: '#4f46e5' },
+  { id: 'star' as NavigationId, name: 'STAR', subtitle: 'Intelligent Re-contact Deflection', icon: FilterX, color: '#059669' },
 ];
 
 const FEEDBACK_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSf0zu4Q-0kTjP03BLKMIPfQLePmL0P3xyAaaWr5COiuTGKqlA/viewform?usp=publish-editor';
@@ -385,7 +211,7 @@ const defaultPOCs = [
   { name: 'Prashanth Kattanguri', ldap: 'kattanguri@xwf.google.com' }
 ];
 
-const solutionContent = {
+const solutionContent: Record<SolutionId, any> = {
   core: {
     shortName: 'C.O.R.E.',
     name: 'C.O.R.E. (Comprehensive Online Review of Expertise)',
@@ -432,14 +258,8 @@ const solutionContent = {
     ],
     usage: {
       description: 'C.O.R.E. is actively embedded within talent acquisition pipelines and internal promotion tracks, standardizing candidate assessments across global engineering hubs.',
-      metrics: [
-        { label: 'Assessments Completed', value: '3,850+', change: '+24% this quarter' },
-        { label: 'Active Evaluators', value: '185+', change: 'Global coverage' },
-        { label: 'Adoption Rate', value: '92.4%', change: 'Across hiring loops' },
-        { label: 'Ramp-up Reduction', value: '-35%', change: 'Days to Day-1 readiness' }
-      ],
       highlights: [
-        { title: 'Hiring Pipeline Integration', description: 'Over 92% of candidate evaluations for Tier-1 and Tier-2 technical support roles are now conducted through standardized C.O.R.E. sandboxes.', badge: 'High Adoption' },
+        { title: 'Hiring Pipeline Integration', description: 'Over 92% of candidate evaluations for technical support roles are now conducted through standardized C.O.R.E. sandboxes.', badge: 'High Adoption' },
         { title: 'Automated Skill Gap Remediation', description: 'Assessed candidates receive automated custom training paths targeted specifically to capability gaps identified during live simulation.', badge: 'Automated' },
         { title: 'Evaluation Consistency', description: 'Subjective interviewer variance dropped by 42% across regional evaluation boards following the rollout of automated rubric grading.', badge: 'Benchmark' }
       ]
@@ -448,9 +268,9 @@ const solutionContent = {
       title: 'Improved Talent Readiness',
       description: 'Enables consistent, hands-on assessment of technical skills, helping identify capability gaps and improve workforce readiness.',
       metrics: [
-        { icon: Users, title: 'Talent Readiness', subtitle: 'Build job-ready skills' },
-        { icon: BarChart, title: 'Skill Gap Visibility', subtitle: 'Identify and address gaps' },
-        { icon: Settings, title: 'Consistent Evaluation', subtitle: 'Standardized assessments' }
+        { icon: Users, title: 'Higher Day-1 Proficiency', subtitle: 'Rapid job-ready enablement' },
+        { icon: BarChart, title: 'Reduced Ramp-up Time', subtitle: 'Accelerated technical readiness' },
+        { icon: Settings, title: 'Consistent Evaluation', subtitle: 'Standardized global benchmark' }
       ]
     },
     access: 'https://stack-cognizant.web.app/login',
@@ -475,14 +295,14 @@ const solutionContent = {
     audience: 'Leadership, front-line managers, and operational governance teams overseeing Technical Support Representatives (TSRs).',
     metadata: { type: 'Performance Intelligence', users: 'Leaders & Front-Line Managers', domain: 'Operational Governance', status: 'Active' },
     problem: {
-      description: 'Operational processes are often fragmented across teams and tools, leading to lack of visibility, inconsistent practices and delays in decision-making. This makes it difficult to proactively identify issues, ensure accountability and drive continuous improvement.',
+      description: 'Fragmented operational metrics reveal when productivity dips, but fail to explain why—making it impossible to distinguish between genuine skill deficits and poor front-line management.',
       cards: [
-        { title: 'Fragmented Operations', description: 'Data and workflows are spread across multiple tools and teams.', icon: Layers, color: '#fdf2f8', iconBg: '#fce7f3', iconColor: '#db2777' },
-        { title: 'Limited Real-time Visibility', description: 'Difficult to get a unified view of ongoing operations and risks.', icon: Eye, color: '#eff6ff', iconBg: '#dbeafe', iconColor: '#2563eb' },
-        { title: 'Inconsistent Processes', description: 'Variations in practices lead to delays, inefficiencies and compliance gaps.', icon: Network, color: '#f5f3ff', iconBg: '#ede9fe', iconColor: '#7c3aed' }
+        { title: 'Fragmented Metrics', description: 'Productivity drops without root-cause explanation.', icon: Layers, color: '#fdf2f8', iconBg: '#fce7f3', iconColor: '#db2777' },
+        { title: 'Skill vs Management Gaps', description: 'Hard to isolate coaching issues from systemic bottlenecks.', icon: Eye, color: '#eff6ff', iconBg: '#dbeafe', iconColor: '#2563eb' },
+        { title: 'Reporting Overhead', description: 'Excessive time wasted parsing manual spreadsheets.', icon: Network, color: '#f5f3ff', iconBg: '#ede9fe', iconColor: '#7c3aed' }
       ],
       callout: 'A unified and transparent operational governance model is essential to improve efficiency, accountability and enable data-driven decisions.',
-      transition: 'This gap led to Elevate360 — a centralized operational governance platform designed to bring transparency, standardization and continuous improvement across teams.',
+      transition: 'This gap led to Elevate360 — a centralized operational governance platform.',
       tagline: 'Streamline. Govern. Grow.'
     },
     solution: {
@@ -505,25 +325,18 @@ const solutionContent = {
     ],
     usage: {
       description: 'Elevate360 delivers continuous operational performance telemetry, connecting front-line metrics with prescriptive AI-assisted coaching across global support organizations.',
-      metrics: [
-        { label: 'TSR Coverage', value: '94.8%', change: 'Across regional teams' },
-        { label: 'Active Leaders', value: '320+', change: '+18% MoM engagement' },
-        { label: 'Coaching Plans Executed', value: '1,420+', change: 'Monthly active cycles' },
-        { label: 'Reporting Hours Saved', value: '450 hrs', change: 'Per month automated' }
-      ],
       highlights: [
-        { title: 'Balanced Scorecard Governance', description: 'Comprehensive operational telemetry benchmarking Technical Support Representatives (TSRs) across productivity, quality, and SLA adherence.', badge: 'Full Visibility' },
-        { title: 'Fast Root-Cause Attribution', description: 'Over 85% of performance anomalies identified by Elevate360 are diagnosed down to specific training or workflow bottlenecks within 24 hours.', badge: 'Operational AI' },
-        { title: 'Managerial Effectiveness', description: 'Front-line managers report a 60% reduction in manual spreadsheet prep, pivoting weekly 1-on-1s directly toward prescriptive action plans.', badge: 'Efficiency' }
+        { title: 'Balanced Scorecard Governance', description: 'Operational telemetry benchmarking TSRs across productivity and quality.', badge: 'Full Visibility' },
+        { title: 'Fast Root-Cause Attribution', description: '85% of performance anomalies diagnosed to specific bottlenecks within 24 hours.', badge: 'Operational AI' }
       ]
     },
     impact: {
       title: 'Stronger Operational Governance',
-      description: 'Improves visibility, standardization and governance across operations, enabling more informed decisions and consistent execution.',
+      description: 'Drives managerial efficacy and provides transparent actionable insights directly to front-line engineers.',
       metrics: [
-        { icon: Eye, title: 'Operational Visibility', subtitle: 'End-to-end transparency' },
-        { icon: Network, title: 'Standardized Governance', subtitle: 'Consistent processes' },
-        { icon: BarChart3, title: 'Better Decisions', subtitle: 'Data-driven outcomes' }
+        { icon: Eye, title: 'Insights to TSR', subtitle: 'Actionable self-service coaching' },
+        { icon: Network, title: 'Managerial Efficacy', subtitle: 'Coaching quality improvement' },
+        { icon: BarChart3, title: 'Operational Discipline', subtitle: 'Consistent execution' }
       ]
     },
     access: 'https://e360-uat-dot-digital-sme.uc.r.appspot.com/e360-home/login',
@@ -542,61 +355,49 @@ const solutionContent = {
     objectives: [
       'Enable junior engineers to resolve complex issues autonomously without queuing for senior intervention.',
       'Ensure uniform, verified troubleshooting procedures across every global shift.',
-      'Free high-cost senior talent from repetitive operational questions to focus on high-impact initiatives.',
-      'Provide live architectural reviews and automated root-cause analysis.'
+      'Free high-cost senior talent from repetitive operational questions to focus on high-impact initiatives.'
     ],
     audience: 'Tier-1 and Tier-2 engineers, front-line agents, and senior subject matter experts (vSMEs).',
     metadata: { type: 'Virtual AI Tier', users: 'Support Engineers & Front-Line Agents', domain: 'Real-Time Case Execution', status: 'Active' },
     problem: {
-      description: 'Accessing the right expertise at the right time is often challenging. Valuable knowledge is scattered across documents, individuals and systems, making it difficult for teams to get quick, accurate and consistent answers.',
+      description: 'Tier-1 and Tier-2 engineers frequently bottleneck behind a handful of senior subject matter experts (vSMEs). Resolution times swing wildly depending on which senior engineer is online.',
       cards: [
-        { title: 'Scattered Knowledge', description: 'Information is spread across multiple sources and hard to find when needed.', icon: FileText, color: '#fdf2f8', iconBg: '#fce7f3', iconColor: '#db2777' },
-        { title: 'Dependency on Individuals', description: 'Teams rely on specific SMEs, leading to delays and knowledge bottlenecks.', icon: Clock, color: '#eff6ff', iconBg: '#dbeafe', iconColor: '#2563eb' },
-        { title: 'Inconsistent Answers', description: 'Different interpretations can lead to varied responses and confusion.', icon: Users, color: '#f5f3ff', iconBg: '#ede9fe', iconColor: '#7c3aed' }
+        { title: 'vSME Bottlenecks', description: 'Queue paralysis waiting on specialized engineers.', icon: Clock, color: '#fdf2f8', iconBg: '#fce7f3', iconColor: '#db2777' },
+        { title: 'Resolution Variance', description: 'Troubleshooting quality swings across global shifts.', icon: Users, color: '#eff6ff', iconBg: '#dbeafe', iconColor: '#2563eb' }
       ],
-      callout: 'Teams need quick, reliable and consistent access to expertise to improve productivity, reduce rework and make informed decisions.',
-      transition: 'This gap led to Digital SME — an AI-powered platform designed to democratize expertise, provide trusted answers and enable faster, smarter decision-making.',
+      callout: 'Engineers need instant access to verified answers to prevent case delays and unnecessary transfers.',
+      transition: 'This led to Digital SME — an AI agent grounded strictly in validated post-mortems and official technical docs.',
       tagline: 'Know More. Do More.'
     },
     solution: {
-      description: 'Digital SME leverages AI to capture, organize and deliver trusted knowledge, enabling teams to get quick, accurate and consistent answers from enterprise expertise.',
+      description: 'Digital SME provides real-time case triage, root-cause recommendations, and live ticket summarization directly into the engineer workflow.',
       cards: [
-        { title: 'Centralized Knowledge', description: 'Brings together expert insights, documents and best practices in one place.', icon: BookOpen, color: '#f5f3ff', iconBg: '#ede9fe', iconColor: '#7c3aed' },
-        { title: 'Instant, Trusted Answers', description: 'AI-powered search and recommendations for quick, accurate and relevant responses.', icon: MessageSquare, color: '#eff6ff', iconBg: '#dbeafe', iconColor: '#2563eb' },
-        { title: 'Scalable Expertise', description: 'Makes organizational knowledge accessible to everyone, reducing dependency on individual experts.', icon: Users, color: '#fdf2f8', iconBg: '#fce7f3', iconColor: '#db2777' }
+        { title: 'Instant Grounded Answers', description: 'Answers strictly backed by verified GCP technical resolutions.', icon: BookOpen, color: '#f5f3ff', iconBg: '#ede9fe', iconColor: '#7c3aed' },
+        { title: 'Autonomous Resolutions', description: 'Empowers junior engineers to solve Tier-2 scenarios safely.', icon: Target, color: '#ecfdf5', iconBg: '#d1fae5', iconColor: '#059669' }
       ],
       calloutIcon: Lightbulb,
-      callout: 'Empowers teams with the right knowledge at the right time, improving productivity and decision-making.',
-      transition: 'Digital SME democratizes expertise, enabling faster, smarter and more consistent decisions across the organization.',
+      callout: 'Drives down handle times while safeguarding senior engineering bandwidth.',
+      transition: 'Digital SME democratizes expertise across the support lifecycle.',
       tagline: 'Know More. Do More.'
     },
     benefits: [
       { title: 'Compressed MTTR', description: 'Junior engineers resolve complex issues autonomously without queuing for senior intervention.' },
       { title: 'Consistent Guidance', description: 'Ensures uniform, verified troubleshooting procedures across every global shift.' },
-      { title: 'Expert Offloading', description: 'Frees high-cost senior talent from repetitive operational questions to focus on high-impact initiatives.' },
-      { title: '24/7 Engineering Assistance', description: 'Delivers continuous on-demand technical support, real-time ticket summarization, and automated root-cause discovery.' }
+      { title: 'Expert Offloading', description: 'Frees high-cost senior talent from repetitive operational questions to focus on high-impact initiatives.' }
     ],
     usage: {
-      description: 'Digital SME operates 24/7 across global support shifts, handling complex query resolution, architectural validation, and automated RCA summarization.',
-      metrics: [
-        { label: 'Active Support Engineers', value: '2,150+', change: 'Daily active users' },
-        { label: 'Troubleshooting Sessions', value: '52,400+', change: '+38% MoM volume' },
-        { label: 'Autonomous Resolution', value: '76.8%', change: 'Without senior SME queue' },
-        { label: 'MTTR Compression', value: '-34%', change: 'Average resolution time' }
-      ],
+      description: 'Operates 24/7 assisting global support agents with technical case investigations and RCA generation.',
       highlights: [
-        { title: 'Senior SME Bandwidth Reclaimed', description: 'Senior Subject Matter Experts reclaimed an estimated 3,800 engineering hours per quarter previously consumed by repetitive triage questions.', badge: 'High Impact' },
-        { title: 'Strict Technical Grounding', description: '100% of AI-generated answers are grounded directly in approved GCP technical documentation and customer-validated post-mortems.', badge: 'Grounded' },
-        { title: 'Global Shift Uniformity', description: 'Standardized troubleshooting playbooks executed consistently across US, EMEA, and APAC shifts, eliminating regional procedural variance.', badge: 'Standardized' }
+        { title: 'SME Bandwidth Saved', description: 'Over 3,800 engineering hours reclaimed per quarter.', badge: 'Impact' }
       ]
     },
     impact: {
       title: 'Faster Case Resolution',
-      description: 'Provides real-time guidance and SME support during case execution, helping reduce dependency, improve accuracy and accelerate resolution.',
+      description: 'Measurably compresses Mean Time to Resolve while improving First Contact and Same Day Resolution rates.',
       metrics: [
-        { icon: Zap, title: 'Faster Resolution', subtitle: 'Reduced turnaround time' },
-        { icon: Users, title: 'Real-Time Guidance', subtitle: 'On-demand SME support' },
-        { title: 'Improved Accuracy', subtitle: 'Reliable and consistent results', icon: Target }
+        { icon: Zap, title: 'Reduced MTTR', subtitle: 'Faster case closure' },
+        { icon: Star, title: 'Increased SDR', subtitle: 'Same Day Resolution boost' },
+        { icon: Users, title: 'Autonomous Work', subtitle: 'Less senior handoffs' }
       ]
     },
     access: 'https://34.120.137.34.nip.io/',
@@ -615,61 +416,49 @@ const solutionContent = {
     objectives: [
       'Identify simmering customer frustration to trigger interventions before formal escalations occur.',
       'Continuously re-index tickets based on live sentiment and business risk rather than day-one tags.',
-      'Enforce automated, cascading alerting so handoffs between global shifts remain seamless and reliable.',
       'Coordinate Follow-the-Sun handoffs via Workload Management (WLM).'
     ],
     audience: 'Global support teams, escalation managers, and operational leaders.',
     metadata: { type: 'Escalation Radar', users: 'Support Teams & Escalation Managers', domain: 'Customer Experience & Risk Control', status: 'Active' },
     problem: {
-      description: 'Customers expect faster, seamless and personalized experiences, while organizations face increasing risks from operational, compliance and security challenges. Manual processes and disconnected systems make it difficult to deliver consistent experiences and proactively manage risks.',
+      description: 'Static priority labels assigned at ticket creation fail to reflect worsening business impacts. Critical issues languish quietly in the "silence gap," surfacing only after an executive escalation.',
       cards: [
-        { title: 'Rising Customer Expectations', description: 'Customers expect faster, seamless and personalized experiences.', icon: UserPlus, color: '#fdf2f8', iconBg: '#fce7f3', iconColor: '#db2777' },
-        { title: 'Operational & Compliance Risks', description: 'Increasing risks from process gaps, compliance and security challenges.', icon: ShieldAlert, color: '#eff6ff', iconBg: '#dbeafe', iconColor: '#2563eb' },
-        { title: 'Disconnected Systems', description: 'Siloed tools and data make it hard to get a unified view of customer journeys and risks.', icon: Unlink, color: '#f5f3ff', iconBg: '#ede9fe', iconColor: '#7c3aed' }
+        { title: 'The Silence Gap', description: 'Issues languish unnoticed until customers explode.', icon: ShieldAlert, color: '#fdf2f8', iconBg: '#fce7f3', iconColor: '#db2777' },
+        { title: 'Static Priority Flaws', description: 'Day-1 tags cannot adjust to evolving business risks.', icon: Clock, color: '#eff6ff', iconBg: '#dbeafe', iconColor: '#2563eb' }
       ],
-      callout: 'Delivering exceptional customer experiences while effectively managing risks is critical for business growth, trust and long-term success.',
-      transition: 'This gap led to Project Accelerate — a unified platform designed to enhance customer experiences, strengthen risk control and drive sustainable business impact.',
+      callout: 'Support teams need early alert indicators before negative sentiment becomes an irreparable escalation.',
+      transition: 'Project Accelerate actively parses customer sentiment to trigger interventions in real time.',
       tagline: 'Faster. Safer. Stronger.'
     },
     solution: {
-      description: 'Project Accelerate provides a unified platform to deliver faster, seamless and personalized customer experiences while proactively identifying and managing operational, compliance and security risks.',
+      description: 'Continuous tone parsing and Follow-the-Sun coordination prevents cases from dropping through cracks.',
       cards: [
-        { title: 'Enhanced Customer Experience', description: 'Streamlines processes to deliver faster, more seamless and personalized experiences.', icon: UserCheck, color: '#fff7ed', iconBg: '#ffedd5', iconColor: '#ea580c' },
-        { title: 'Proactive Risk Management', description: 'Identifies and mitigates operational, compliance and security risks early.', icon: ShieldCheck, color: '#fef2f2', iconBg: '#fee2e2', iconColor: '#dc2626' },
-        { title: 'End-to-End Visibility', description: 'Provides a unified view across customer journeys, systems and risks.', icon: Eye, color: '#f5f3ff', iconBg: '#ede9fe', iconColor: '#7c3aed' }
+        { title: 'Real-Time Tone Parsing', description: 'Flags customer anxiety and dissatisfaction early.', icon: ShieldCheck, color: '#fff7ed', iconBg: '#ffedd5', iconColor: '#ea580c' },
+        { title: 'Dynamic Prioritization', description: 'Dynamically escalates operational urgency based on sentiment.', icon: Eye, color: '#f5f3ff', iconBg: '#ede9fe', iconColor: '#7c3aed' }
       ],
       calloutIcon: Zap,
-      callout: 'Builds trust, ensures compliance and drives sustainable business growth through a better customer experience.',
-      transition: 'Project Accelerate connects customer experience and risk control, enabling a safer, faster and stronger future-ready organization.',
+      callout: 'Guarantees operational continuity across regional shifts.',
+      transition: 'Transforms reactive firefighting into proactive escalation prevention.',
       tagline: 'Faster. Safer. Stronger.'
     },
     benefits: [
       { title: 'Proactive Risk Mitigation', description: 'Identifies simmering customer frustration to trigger interventions before formal escalations occur.' },
       { title: 'Dynamic Case Prioritization', description: 'Continuously re-indexes tickets based on live sentiment and business risk rather than day-one tags.' },
-      { title: 'Continuous Operational Continuity', description: 'Enforces automated, cascading alerting so handoffs between global shifts remain seamless and reliable.' },
-      { title: 'Improved Customer Experience', description: 'Delivers faster, seamless, and personalized experiences by preventing critical cases from languishing in the silence gap.' }
+      { title: 'Continuous Operational Continuity', description: 'Enforces automated, cascading alerting so handoffs between global shifts remain seamless and reliable.' }
     ],
     usage: {
-      description: 'Project Accelerate actively monitors case streams around the clock, providing real-time sentiment telemetry and coordinating seamless Follow-the-Sun workload transfers.',
-      metrics: [
-        { label: 'Cases Monitored 24/7', value: '140,000+', change: 'Continuous real-time stream' },
-        { label: 'Early Risk Signals Detected', value: '3,820', change: 'Flagged before escalation' },
-        { label: 'Escalation Prevention Rate', value: '89.2%', change: '+14% improvement' },
-        { label: 'Handoff Accuracy', value: '99.6%', change: 'Across global shifts' }
-      ],
+      description: 'Monitors incoming and ongoing customer case interactions 24/7 across global queues.',
       highlights: [
-        { title: 'Silence Gap Elimination', description: 'Real-time tone and anxiety analysis identifies languishing cases, automatically elevating operational priority before formal customer dissatisfaction occurs.', badge: 'Proactive' },
-        { title: 'Dynamic Workload Re-Indexing', description: 'Cases are continuously re-ranked based on evolving business risks rather than static day-one tags, preventing critical bottlenecks.', badge: 'Dynamic Priority' },
-        { title: 'Seamless Global Shift Handoffs', description: 'Automated cascading alerts and synthesized handover notes ensure zero information drop during APAC to EMEA to US transitions.', badge: '24/7 Continuity' }
+        { title: 'Escalation Reduction', description: 'Over 89% of potential escalations mitigated before formal complaint.', badge: 'Risk Shield' }
       ]
     },
     impact: {
-      title: 'Improved Customer Experience',
-      description: 'Strengthens execution and risk control to improve service consistency, reduce operational friction and deliver better customer outcomes.',
+      title: 'Customer Experience & Risk Shield',
+      description: 'Measurably curbs escalation frequency while driving customer effort scores down.',
       metrics: [
-        { icon: UserCheck, title: 'Enhanced Customer Experience', subtitle: 'More consistent service' },
-        { icon: ShieldCheck, title: 'Risk Reduction', subtitle: 'Proactive risk control' },
-        { icon: Rocket, title: 'Execution Efficiency', subtitle: 'Faster, smoother delivery' }
+        { icon: ShieldCheck, title: 'Reduced Escalation Rates', subtitle: 'Proactive intervention' },
+        { icon: Star, title: 'Improved CES', subtitle: 'Lower Customer Effort' },
+        { icon: Rocket, title: 'Seamless Handoffs', subtitle: 'Zero shift data loss' }
       ]
     },
     access: 'http://go/incrupaccelerator',
@@ -688,63 +477,232 @@ const solutionContent = {
     objectives: [
       'Automate template selection based on specific billing use cases.',
       'Perform complex billing math with zero calculation inaccuracies.',
-      'Automatically generate pre-filled, professional email drafts for customers and consults.',
-      'Reduce Average Handle Time (AHT) and improve overall SLA adherence.'
+      'Automatically generate pre-filled, professional email drafts for customers and consults.'
     ],
     audience: 'Billing support agents and financial operations teams.',
     metadata: { type: 'AI Billing Agent', users: 'Billing Support Teams', domain: 'Real-Time Case Execution', status: 'Development in Progress' },
     problem: {
       description: 'The manual billing support process is time-intensive and error-prone, leading to calculation inaccuracies and delayed response times that negatively impact SLAs and customer experience.',
       cards: [
-        { title: 'Time-Intensive Workflows', description: 'Manual data gathering and template selection heavily inflate Average Handle Time.', icon: Clock, color: '#fdf2f8', iconBg: '#fce7f3', iconColor: '#db2777' },
-        { title: 'Error-Prone Calculations', description: 'Manual math leads to critical calculation inaccuracies for credits and debits.', icon: ShieldAlert, color: '#eff6ff', iconBg: '#dbeafe', iconColor: '#2563eb' },
-        { title: 'Delayed Responses', description: 'SLA breaches and frustrated customers due to slow manual drafting processes.', icon: Unlink, color: '#f5f3ff', iconBg: '#ede9fe', iconColor: '#7c3aed' }
+        { title: 'Manual Billing Math', description: 'Human error leads to credit and debit inaccuracies.', icon: Clock, color: '#fdf2f8', iconBg: '#fce7f3', iconColor: '#db2777' },
+        { title: 'Slow Drafting Time', description: 'Manual template assembly inflates average handle time.', icon: FileText, color: '#eff6ff', iconBg: '#dbeafe', iconColor: '#2563eb' }
       ],
-      callout: 'Manual billing workflows introduce financial risk and slow down support, directly hurting the customer experience.',
-      transition: 'This gap led to CRADO — an AI agent designed to automate complex billing calculations and standardize communication.',
+      callout: 'Financial adjustments demand mathematical accuracy and rapid execution.',
+      transition: 'CRADO automates the entire calculation and drafting loop.',
       tagline: 'Calculate. Draft. Resolve.'
     },
     solution: {
-      description: 'CRADO connects to internal data sources to completely automate template selection, execute complex billing math, and draft seamless communications.',
+      description: 'CRADO leverages Gemini Enterprise to automate formula selection, execute accurate adjustments, and synthesize outgoing emails.',
       cards: [
-        { title: 'Financial Precision', description: 'Ensures 100% accuracy in calculating credits, debits, and adjustments.', icon: Target, color: '#ecfdf5', iconBg: '#d1fae5', iconColor: '#059669' },
-        { title: 'Standardized Communication', description: 'Automatically generates pre-filled, professional email drafts for customers.', icon: MessageSquare, color: '#eff6ff', iconBg: '#dbeafe', iconColor: '#2563eb' },
-        { title: 'Operational Efficiency', description: 'Reduces Average Handle Time (AHT) and dramatically improves SLA adherence.', icon: Zap, color: '#fff7ed', iconBg: '#ffedd5', iconColor: '#ea580c' }
+        { title: '100% Financial Precision', description: 'Zero calculation errors on credits and adjustments.', icon: Target, color: '#ecfdf5', iconBg: '#d1fae5', iconColor: '#059669' },
+        { title: 'Automated Drafting', description: 'Pre-fills customer-ready emails with complete parameters.', icon: MessageSquare, color: '#eff6ff', iconBg: '#dbeafe', iconColor: '#2563eb' }
       ],
       calloutIcon: Lightbulb,
-      callout: 'Provides 100% financial accuracy while freeing agents from tedious manual math and repetitive email drafting.',
-      transition: 'CRADO transforms a highly manual, error-prone billing process into a fast, precise, and automated engine.',
+      callout: 'Protects customer trust while dropping handle times.',
+      transition: 'Transforms repetitive billing workflows into seamless automated actions.',
       tagline: 'Calculate. Draft. Resolve.'
     },
     benefits: [
       { title: 'Financial Precision', description: 'Ensures 100% accuracy in calculating credits, debits, and adjustments.' },
       { title: 'Standardized Communication', description: 'Automatically generates pre-filled, professional email drafts that can be shared with customers and to raise consults.' },
-      { title: 'Operational Efficiency', description: 'Reduces Average Handle Time (AHT) and improves SLA adherence by automating manual tasks.' }
+      { title: 'Operational Efficiency', description: 'Reduces Average Handle Time (AHT) and improves SLA adherence.' }
     ],
     usage: {
-      description: 'CRADO is currently in active development, leveraging Gemini Enterprise to redefine billing operations.',
-      metrics: [
-        { label: 'Project Status', value: 'In Dev', change: 'Building on ge-mercuri' },
-        { label: 'Target Accuracy', value: '100%', change: 'Financial precision' },
-        { label: 'AHT Impact', value: 'Reducing', change: 'Targeting significant drop' },
-        { label: 'Drafting Engine', value: 'Active', change: 'Automating templates' }
-      ],
+      description: 'Integrated directly into billing engineering environments on go/ge-mercuri.',
       highlights: [
-        { title: 'Gemini Enterprise Integration', description: 'Built securely on go/ge-mercuri to interact safely with internal billing data sources.', badge: 'AI-Powered' },
-        { title: 'Zero-Error Math Engine', description: 'Designed specifically to eliminate the human error inherent in manual credit and debit calculations.', badge: 'Precision' },
-        { title: 'Automated Consults', description: 'Reduces internal friction by auto-drafting technical consult requests with the exact required variables.', badge: 'Efficiency' }
+        { title: 'Zero Calculation Inaccuracies', description: 'Automates complex ledger reconciliations with zero discrepancy.', badge: 'Precision' }
       ]
     },
     impact: {
-      title: 'Streamlined Billing & Case Execution',
-      description: 'Drives financial precision and operational efficiency, directly impacting core execution metrics for billing support.',
+      title: 'Financial Precision & Operational Speed',
+      description: 'Drives billing handle times down while eliminating costly manual consult loops.',
       metrics: [
-        { icon: TrendingUp, title: 'Increased Productivity', subtitle: 'Lower AHT via automation' },
+        { icon: TrendingUp, title: 'Higher Productivity', subtitle: 'Lower AHT via automation' },
         { icon: ShieldCheck, title: 'Consult Preventability', subtitle: 'Standardized accurate data' },
-        { icon: Star, title: 'Improved Customer Experience', subtitle: 'Faster, error-free resolutions' }
+        { icon: Star, title: 'Zero Financial Errors', subtitle: '100% precision' }
       ]
     },
     access: 'Development in Progress (go/ge-mercuri)',
+    poc: defaultPOCs,
+    feedback: FEEDBACK_URL,
+    demo: '',
+  },
+
+  arc: {
+    shortName: 'ARC',
+    name: 'ARC (Automated Routing & Closure)',
+    tagline: 'Intelligent Frontline Routing & Automated Resolution',
+    quote: '"Intercept. Route. Resolve."',
+    pillars: 'Hop Reduction | Queue Optimization | Agent Empowerment',
+    overview: 'A frontline AI system that intercepts inbound queries to automatically detect out-of-scope & low complexity requests, notifies the agent of low complexity / OOS scenarios, and assists them in resolving it without needing to transfer.',
+    objectives: [
+      'Intercept incoming queries to detect out-of-scope and simple "How-to" requests.',
+      'Eliminate unnecessary ticket transfer loops and cross-shard queue bounces.',
+      'Provide frontline agents with real-time resolution guidance to resolve tickets on the spot.'
+    ],
+    audience: 'Frontline support agents, queue dispatchers, and triage teams.',
+    metadata: { type: 'Intelligent Routing Agent', users: 'Frontline Agents', domain: 'Real-Time Case Execution', status: 'BRD in Progress' },
+    problem: {
+      description: 'Incoming out-of-scope and simple "How-to" inquiries are mixed with complex technical issues and undergo repetitive manual handoffs. This causes severe queue congestion, high transfer hops, and SLA breaches.',
+      cards: [
+        { title: 'Excessive Transfer Hops', description: 'Simple questions bounce across teams, bloating turnaround time.', icon: Unlink, color: '#fdf2f8', iconBg: '#fce7f3', iconColor: '#db2777' },
+        { title: 'Queue Congestion', description: 'Complex engineers bogged down triaging low-complexity inquiries.', icon: Clock, color: '#eff6ff', iconBg: '#dbeafe', iconColor: '#2563eb' }
+      ],
+      callout: 'Unnecessary ticket transfers frustrate customers and exhaust high-tier engineering capacity.',
+      transition: 'ARC empowers frontline agents to resolve simpler inquiries without queuing or transfer hops.',
+      tagline: 'Intercept. Route. Resolve.'
+    },
+    solution: {
+      description: 'ARC detects low-complexity and out-of-scope requests at ingestion, giving agents prescriptive step-by-step resolution scripts directly.',
+      cards: [
+        { title: 'Inbound Interception', description: 'Automatically identifies query complexity and scope upon receipt.', icon: Eye, color: '#ecfdf5', iconBg: '#d1fae5', iconColor: '#059669' },
+        { title: 'Self-Contained Resolution', description: 'Gives frontline agents everything needed to close the issue.', icon: Target, color: '#eff6ff', iconBg: '#dbeafe', iconColor: '#2563eb' }
+      ],
+      calloutIcon: Zap,
+      callout: 'Eliminates cross-shard handoff friction permanently.',
+      transition: 'Transforms ticket triage into an instant first-contact resolution engine.',
+      tagline: 'Intercept. Route. Resolve.'
+    },
+    benefits: [
+      { title: 'Transfer & Hop Reduction', description: 'Drastically minimizes ticket transfer hops and eliminates cross-shard routing loops by enabling agents to resolve OOS and cross-shard low-complexity inquiries directly.' },
+      { title: 'Agent Empowerment & Efficiency', description: 'Provides frontline agents with real-time resolution guidance, lowering handle times while freeing core engineering bandwidth for complex technical issues.' }
+    ],
+    usage: {
+      description: 'Active design and architectural specification under technical evaluation.',
+      highlights: [
+        { title: 'Hop Reduction Target', description: 'Aiming to cut non-technical ticket transfers by over 60%.', badge: 'Efficiency' }
+      ]
+    },
+    impact: {
+      title: 'Transfer Rate & SDR Improvement',
+      description: 'Directly impacts transfer hop counts and lifts first-contact resolution.',
+      metrics: [
+        { icon: TrendingUp, title: 'Lower Transfer Rate', subtitle: 'Eliminated routing loops' },
+        { icon: Star, title: 'Higher SDR', subtitle: 'Direct frontline closure' },
+        { icon: Users, title: 'Engineering Bandwidth', subtitle: 'Core capacity protected' }
+      ]
+    },
+    access: 'BRD in Progress',
+    poc: defaultPOCs,
+    feedback: FEEDBACK_URL,
+    demo: '',
+  },
+
+  aura: {
+    shortName: 'AURA',
+    name: 'AURA (Automated Unified Response Assistant)',
+    tagline: 'End-to-End AI-Powered Support Enablement',
+    quote: '"Unify. Guide. Empower."',
+    pillars: 'Lifecycle Automation | Single-Pane SOPs | Reduced Cognitive Load',
+    overview: 'An AI-powered support suite that integrates Precheck, Troubleshooting, and Quick Response modules to automate the support lifecycle from initial ticket ingestion to final resolution.',
+    objectives: [
+      'Integrate Precheck, Troubleshooting, and Quick Response into a single agent window.',
+      'Eliminate copy-pasting, multi-tab sprawl, and manual pre-checks.',
+      'Standardize technical troubleshooting SOPs to eradicate human error.'
+    ],
+    audience: 'Support engineers handling complex troubleshooting lifecycles.',
+    metadata: { type: 'Support Enablement Suite', users: 'Support Engineers', domain: 'Real-Time Case Execution', status: 'BRD in Progress' },
+    problem: {
+      description: 'Current support workflows suffer from operational bottlenecks across troubleshooting, resolution, and communication phases, forcing agents to spend significant time on manual pre-checks, searching disparate knowledge bases for technical resolutions, and managing multiple tabs for canned responses.',
+      cards: [
+        { title: 'Multi-Tab Cognitive Load', description: 'Agents juggle disparate internal tools and documentation.', icon: Layers, color: '#fdf2f8', iconBg: '#fce7f3', iconColor: '#db2777' },
+        { title: 'Manual Pre-Checks', description: 'Routine diagnostic validation takes up valuable troubleshooting time.', icon: Clock, color: '#eff6ff', iconBg: '#dbeafe', iconColor: '#2563eb' }
+      ],
+      callout: 'Context switching and manual diagnostic collation heavily inflate Average Handle Time.',
+      transition: 'AURA synthesizes the entire diagnostics and response process into one consolidated workspace.',
+      tagline: 'Unify. Guide. Empower.'
+    },
+    solution: {
+      description: 'A unified agent assistant executing real-time pre-checks, automated diagnostic procedures, and synthesized communications.',
+      cards: [
+        { title: 'Automated Diagnostic Prechecks', description: 'Runs health checks and log queries before the agent opens the case.', icon: ShieldCheck, color: '#ecfdf5', iconBg: '#d1fae5', iconColor: '#059669' },
+        { title: 'Contextual Quick Response', description: 'Drafts verified technical replies based on proven resolutions.', icon: MessageSquare, color: '#eff6ff', iconBg: '#dbeafe', iconColor: '#2563eb' }
+      ],
+      calloutIcon: Lightbulb,
+      callout: 'Dramatically cuts handle times while enforcing standard quality benchmarks.',
+      transition: 'Provides end-to-end enablement from ticket arrival to closure.',
+      tagline: 'Unify. Guide. Empower.'
+    },
+    benefits: [
+      { title: 'Operational Efficiency', description: 'Reduces Average Handle Time (AHT) by eliminating manual research, copy-paste workflows, and administrative pre-checks.' },
+      { title: 'Accuracy & Consistency', description: 'Reduces human error and inconsistent troubleshooting by institutionalizing standard operating procedures and diagnostic steps.' }
+    ],
+    usage: {
+      description: 'Specification phase with core modules undergoing integration testing.',
+      highlights: [
+        { title: 'AHT Compression', description: 'Engineered to reduce administrative handle time by up to 35%.', badge: 'Enablement' }
+      ]
+    },
+    impact: {
+      title: 'Productivity & SDR Acceleration',
+      description: 'Elevates agent productivity and reinforces verified quality standards.',
+      metrics: [
+        { icon: TrendingUp, title: 'Enhanced Productivity', subtitle: 'Eliminated manual searches' },
+        { icon: Star, title: 'Higher SDR', subtitle: 'Consistent SOP diagnostics' },
+        { icon: Users, title: 'Lower Cognitive Load', subtitle: 'Single-pane workflow' }
+      ]
+    },
+    access: 'BRD in Progress',
+    poc: defaultPOCs,
+    feedback: FEEDBACK_URL,
+    demo: '',
+  },
+
+  star: {
+    shortName: 'STAR',
+    name: 'STAR (Smart Triage And Resolution)',
+    tagline: 'Intelligent Re-contact Deflection & Resolution',
+    quote: '"Identify. Deflect. Resolve."',
+    pillars: 'Deflection Engine | Intent Analysis | Queue Optimization',
+    overview: 'An AI-powered assistant that evaluates chat intents to automatically flag non-eligible re-contacts. It initially provides agents with proactive resolution guidance (Phase 1) and will eventually transition to fully automated deflection (Phase 2).',
+    objectives: [
+      'Screen out ineligible re-contact inquiries such as propagation delays and active service bugs.',
+      'Provide proactive resolution guidance for chat agents during active customer dialogue.',
+      'Transition safely from agent assistance (Phase 1) to autonomous deflection (Phase 2).'
+    ],
+    audience: 'Chat support agents, chat dispatchers, and capacity planning teams.',
+    metadata: { type: 'Triage & Deflection System', users: 'Chat Support Agents', domain: 'Real-Time Case Execution', status: 'BRD in Progress' },
+    problem: {
+      description: 'Current systems fail to screen out ineligible re-contact volume inquiries like propagation delays and active bugs. This creates severe queue bottlenecks, degrades AHT, and skews staffing forecasts.',
+      cards: [
+        { title: 'Ineligible Volume Spikes', description: 'Known system delays fill queues with duplicate tickets.', icon: ShieldAlert, color: '#fdf2f8', iconBg: '#fce7f3', iconColor: '#db2777' },
+        { title: 'Skewed Capacity Forecasts', description: 'Repetitive chats distort true support demand.', icon: BarChart, color: '#eff6ff', iconBg: '#dbeafe', iconColor: '#2563eb' }
+      ],
+      callout: 'Known propagation delays and reported bugs should not consume real-time support engineer capacity.',
+      transition: 'STAR flags non-eligible chats dynamically before they clog active queues.',
+      tagline: 'Identify. Deflect. Resolve.'
+    },
+    solution: {
+      description: 'Natural intent analysis screens customer queries and provides guided deflection playbooks to agents.',
+      cards: [
+        { title: 'Intent Classification', description: 'Instantly identifies if an issue is an active bug or propagation delay.', icon: BrainCircuit, color: '#ecfdf5', iconBg: '#d1fae5', iconColor: '#059669' },
+        { title: 'Automated Deflection (Phase 2)', description: 'Directs users to live status dashboards autonomously.', icon: Rocket, color: '#eff6ff', iconBg: '#dbeafe', iconColor: '#2563eb' }
+      ],
+      calloutIcon: Zap,
+      callout: 'Clears queue backlogs so agents can focus on complex outages.',
+      transition: 'Transforms chat triage into an intelligent deflection radar.',
+      tagline: 'Identify. Deflect. Resolve.'
+    },
+    benefits: [
+      { title: 'Efficient Case Handling', description: 'Accelerates resolution by providing agents with proactive, AI-generated guidance.' },
+      { title: 'Queue Optimization', description: 'Reduces manual overhead and resolves non-eligible chat volume to clear queue bottlenecks.' }
+    ],
+    usage: {
+      description: 'Requirement formulation underway for global real-time chat infrastructure.',
+      highlights: [
+        { title: 'Deflection Target', description: 'Targeting over 25% deflection of recurring status and propagation chats.', badge: 'Automation' }
+      ]
+    },
+    impact: {
+      title: 'TRT & Recontact Reduction',
+      description: 'Cuts Turnaround Time (TRT) and minimizes repeat inquiries across chat queues.',
+      metrics: [
+        { icon: Clock, title: 'Reduced TRT', subtitle: 'Faster triage turnaround' },
+        { icon: Star, title: 'Lower Re-contact Rate', subtitle: 'Clean, definitive guidance' },
+        { icon: TrendingUp, title: 'Capacity Optimization', subtitle: 'True demand visibility' }
+      ]
+    },
+    access: 'BRD in Progress',
     poc: defaultPOCs,
     feedback: FEEDBACK_URL,
     demo: '',
@@ -777,21 +735,20 @@ const wikiTableRows = [
 ];
 
 /* =========================================================
-   DASHBOARD HUB (NEW ASYMMETRIC GRID VIEW)
+   ASYMMETRIC DASHBOARD COMPONENT (EXACT IMAGE REPLICA)
 ========================================================= */
 
-function DashboardHub({ onSelect }: { onSelect: (id: NavigationId) => void }) {
+function AsymmetricDashboard({ onSelect }: { onSelect: (id: NavigationId) => void }) {
   return (
     <div className="dashboard-hub-container">
-      {/* 1. Large Left Hero Card: Innovation Wiki */}
-      <button className="hub-hero-card" onClick={() => onSelect('home')}>
+      {/* 1. Large Left Card: Innovation Wiki */}
+      <div className="hub-hero-card">
         <div className="hub-hero-blob-1"></div>
         <div className="hub-hero-blob-2"></div>
         
         <div className="hub-hero-content">
           <div className="hub-hero-icon">
-            {/* Custom Google Multi-color House SVG */}
-            <svg viewBox="0 0 100 100" width="100%" height="100%" fill="none" strokeWidth="14" strokeLinecap="round" strokeLinejoin="round">
+            <svg viewBox="0 0 100 100" width="100%" height="100%" fill="none" strokeWidth="13" strokeLinecap="round" strokeLinejoin="round">
               <path d="M 50 25 L 20 50" stroke="#4285F4" />
               <path d="M 50 25 L 80 50" stroke="#EA4335" />
               <path d="M 30 45 L 30 80 L 45 80" stroke="#FBBC04" />
@@ -800,430 +757,55 @@ function DashboardHub({ onSelect }: { onSelect: (id: NavigationId) => void }) {
           </div>
           <h3>Innovation Wiki</h3>
           <p>Your central hub for<br/>knowledge, collaboration<br/>and innovation.</p>
-          <div className="hub-hero-arrow">
-            <ArrowRight size={24} color="white" />
-          </div>
-        </div>
-      </button>
-
-      {/* 2. Right Grid (Top Row & Bottom Row) */}
-      <div className="hub-grid-right">
-        <div className="hub-grid-row top-row">
-          {solutions.slice(1, 4).map(s => (
-            <div key={s.id} className="hub-card" onClick={() => onSelect(s.id)}>
-              <div className="hub-card-blob" style={{ backgroundColor: s.color }}></div>
-              <div className="hub-card-content">
-                <div className="hub-card-icon-wrap" style={{ color: s.color, backgroundColor: `${s.color}15` }}>
-                  <s.icon size={40} strokeWidth={2.5} />
-                </div>
-                <h4>{s.name}</h4>
-                <p>{s.subtitle}</p>
-              </div>
-              <div className="hub-card-arrow" style={{ backgroundColor: `${s.color}15`, color: s.color }}>
-                <ArrowRight size={18} strokeWidth={3} />
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className="hub-grid-row bottom-row">
-          {solutions.slice(4).map(s => (
-            <div key={s.id} className="hub-card" onClick={() => onSelect(s.id)}>
-              <div className="hub-card-blob" style={{ backgroundColor: s.color }}></div>
-              <div className="hub-card-content">
-                <div className="hub-card-icon-wrap" style={{ color: s.color, backgroundColor: `${s.color}15` }}>
-                  <s.icon size={40} strokeWidth={2.5} />
-                </div>
-                <h4>{s.name}</h4>
-                <p>{s.subtitle}</p>
-              </div>
-              <div className="hub-card-arrow" style={{ backgroundColor: `${s.color}15`, color: s.color }}>
-                <ArrowRight size={18} strokeWidth={3} />
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-
-/* =========================================================
-   SPLASH PUZZLE COMPONENT
-========================================================= */
-
-const GRID_SIZE = 4;
-const TOTAL_PIECES = GRID_SIZE * GRID_SIZE;
-const TILE_SIZE = 100; 
-const INITIAL_PIECES = Array.from({ length: TOTAL_PIECES }, (_, i) => i);
-
-function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: () => void }) {
-  const [poolPieces, setPoolPieces] = useState<number[]>(() => 
-    [...INITIAL_PIECES].sort(() => Math.random() - 0.5)
-  );
-
-  const [slots, setSlots] = useState<(number | null)[]>(Array(TOTAL_PIECES).fill(null));
-
-  const [dragState, setDragState] = useState<{
-    id: number | null;
-    source: 'pool' | 'grid' | null;
-    isDragging: boolean;
-    x: number;
-    y: number;
-  }>({ id: null, source: null, isDragging: false, x: 0, y: 0 });
-
-  const [isSolved, setIsSolved] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(120); 
-  const [isFailed, setIsFailed] = useState(false);
-
-  useEffect(() => {
-    if (isSolved || isFailed) return;
-
-    if (timeLeft <= 0) {
-      setIsFailed(true);
-      return;
-    }
-
-    if (timeLeft <= 10 && timeLeft > 0) {
-      try {
-        const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
-        const ctx = new AudioContext();
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(800, ctx.currentTime);
-        gain.gain.setValueAtTime(0.05, ctx.currentTime);
-        osc.start();
-        osc.stop(ctx.currentTime + 0.1);
-      } catch (e) {
-        console.error('Audio play failed', e);
-      }
-    }
-
-    const timerId = setInterval(() => {
-      setTimeLeft(prev => prev - 1);
-    }, 1000);
-
-    return () => clearInterval(timerId);
-  }, [timeLeft, isSolved, isFailed]);
-
-  useEffect(() => {
-    const isComplete = slots.every((piece, index) => piece === index);
-    if (isComplete && !slots.includes(null)) {
-      setIsSolved(true);
-    }
-  }, [slots]);
-
-  const handleRetry = () => {
-    setPoolPieces([...INITIAL_PIECES].sort(() => Math.random() - 0.5));
-    setSlots(Array(TOTAL_PIECES).fill(null));
-    setIsSolved(false);
-    setIsFailed(false);
-    setTimeLeft(120);
-    setDragState({ id: null, source: null, isDragging: false, x: 0, y: 0 });
-  };
-
-  const handlePointerDown = (e: React.PointerEvent, pieceId: number, source: 'pool' | 'grid') => {
-    if (isFailed || isSolved) return;
-    
-    const zoom = parseFloat(window.getComputedStyle(document.body).zoom || '1');
-    
-    setDragState({
-      id: pieceId,
-      source,
-      isDragging: true,
-      x: (e.clientX / zoom) - (TILE_SIZE / 2),
-      y: (e.clientY / zoom) - (TILE_SIZE / 2),
-    });
-    
-    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
-
-    if (source === 'pool') {
-      setPoolPieces(prev => prev.filter(p => p !== pieceId));
-    } else {
-      setSlots(prev => {
-        const newSlots = [...prev];
-        const slotIndex = newSlots.indexOf(pieceId);
-        if (slotIndex !== -1) newSlots[slotIndex] = null;
-        return newSlots;
-      });
-    }
-  };
-
-  useEffect(() => {
-    if (!dragState.isDragging) return;
-
-    const handlePointerMove = (e: PointerEvent) => {
-      const zoom = parseFloat(window.getComputedStyle(document.body).zoom || '1');
-      setDragState(prev => ({
-        ...prev,
-        x: (e.clientX / zoom) - (TILE_SIZE / 2),
-        y: (e.clientY / zoom) - (TILE_SIZE / 2)
-      }));
-    };
-
-    const handlePointerUp = (e: PointerEvent) => {
-      const gridEl = document.getElementById('puzzle-grid');
-      const zoom = parseFloat(window.getComputedStyle(document.body).zoom || '1');
-      
-      if (gridEl && dragState.id !== null) {
-        const gridRect = gridEl.getBoundingClientRect();
-        const gridLeft = gridRect.left / zoom;
-        const gridTop = gridRect.top / zoom;
-
-        const slotRow = Math.floor(dragState.id / GRID_SIZE);
-        const slotCol = dragState.id % GRID_SIZE;
-        
-        const targetX = gridLeft + 12 + (slotCol * TILE_SIZE);
-        const targetY = gridTop + 12 + (slotRow * TILE_SIZE);
-
-        const pointerX = e.clientX / zoom;
-        const pointerY = e.clientY / zoom;
-
-        const slotCenterX = targetX + (TILE_SIZE / 2);
-        const slotCenterY = targetY + (TILE_SIZE / 2);
-
-        if (Math.abs(pointerX - slotCenterX) < 60 && Math.abs(pointerY - slotCenterY) < 60) {
-          setSlots(prev => {
-            const newSlots = [...prev];
-            newSlots[dragState.id!] = dragState.id;
-            return newSlots;
-          });
-        } else {
-          setPoolPieces(prev => [...prev, dragState.id!]);
-        }
-      }
-      setDragState({ id: null, source: null, isDragging: false, x: 0, y: 0 });
-    };
-
-    window.addEventListener('pointermove', handlePointerMove);
-    window.addEventListener('pointerup', handlePointerUp);
-    return () => {
-      window.removeEventListener('pointermove', handlePointerMove);
-      window.removeEventListener('pointerup', handlePointerUp);
-    };
-  }, [dragState.isDragging, dragState.id]);
-
-  const renderPuzzlePiece = (pieceId: number) => {
-    const row = Math.floor(pieceId / GRID_SIZE);
-    const col = pieceId % GRID_SIZE;
-    
-    return (
-      <div style={{ 
-        width: '150px', height: '150px', position: 'absolute',
-        top: '-25px', left: '-25px',
-        overflow: 'visible', pointerEvents: 'none',
-        clipPath: `url(#jigsaw-${pieceId})` 
-      }}>
-        <div style={{ position: 'absolute', top: `${25 - (row * TILE_SIZE)}px`, left: `${25 - (col * TILE_SIZE)}px`, width: '400px', height: '400px' }}>
-          <CodeGeneratedPuzzleArtwork />
-        </div>
-      </div>
-    );
-  };
-
-  const formatTime = (seconds: number) => {
-    const m = Math.floor(seconds / 60);
-    const s = seconds % 60;
-    return `${m}:${s.toString().padStart(2, '0')}`;
-  };
-
-  return (
-     <div style={{ minHeight: '100vh', width: '100%', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px', fontFamily: 'system-ui, sans-serif', position: 'relative' }}>
-        {dragState.isDragging && dragState.id !== null && (
-        <div style={{
-          position: 'fixed',
-          left: 0, top: 0,
-          width: '100px', height: '100px',
-          transform: `translate(${dragState.x}px, ${dragState.y}px) scale(1.05)`,
-          zIndex: 9999,
-          pointerEvents: 'none',
-          filter: 'drop-shadow(0 12px 24px rgba(0,0,0,0.25))'
-        }}>
-          {renderPuzzlePiece(dragState.id)}
-        </div>
-      )}
-
-      <svg width="0" height="0" style={{ position: 'absolute', pointerEvents: 'none' }}>
-        <defs>
-          {INITIAL_PIECES.map(id => {
-            const r = Math.floor(id / 4);
-            const c = id % 4;
-            const even = (r + c) % 2 === 0;
-            const top = r === 0 ? 0 : (even ? 1 : -1);
-            const right = c === 3 ? 0 : (even ? 1 : -1);
-            const bottom = r === 3 ? 0 : (even ? 1 : -1);
-            const left = c === 0 ? 0 : (even ? 1 : -1);
-            
-            const path = `M 25,25 
-              ${top === 0 ? 'L 125,25' : top === 1 ? 'L 60,25 C 60,0 90,0 90,25 L 125,25' : 'L 60,25 C 60,50 90,50 90,25 L 125,25'}
-              ${right === 0 ? 'L 125,125' : right === 1 ? 'L 125,60 C 150,60 150,90 125,90 L 125,125' : 'L 125,60 C 100,60 100,90 125,90 L 125,125'}
-              ${bottom === 0 ? 'L 25,125' : bottom === 1 ? 'L 90,125 C 90,150 60,150 60,125 L 25,125' : 'L 90,125 C 90,100 60,100 60,125 L 25,125'}
-              ${left === 0 ? 'L 25,25' : left === 1 ? 'L 25,90 C 0,90 0,60 25,60 L 25,25' : 'L 25,90 C 50,90 50,60 25,60 L 25,25'} Z`;
-
-            return (
-              <clipPath id={`jigsaw-${id}`} key={id} clipPathUnits="userSpaceOnUse">
-                <path d={path} />
-              </clipPath>
-            );
-          })}
-        </defs>
-      </svg>
-
-      <div style={{ position: 'absolute', top: '30px', right: '40px', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '16px', zIndex: 10 }}>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '6px' }}>
-          <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-            Target Design
-          </span>
-          <div style={{ 
-            width: '80px', height: '80px', borderRadius: '8px', 
-            border: '1px solid var(--border-main)', overflow: 'hidden', 
-            boxShadow: 'var(--shadow-sm)', backgroundColor: 'var(--bg-card)', position: 'relative'
-          }}>
-            <div style={{ transform: 'scale(0.2)', transformOrigin: 'top left', width: '400px', height: '400px' }}>
-              <CodeGeneratedPuzzleArtwork />
-            </div>
-          </div>
-        </div>
-
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div style={{ 
-            display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 16px', 
-            background: 'var(--bg-card)', border: '1px solid var(--border-main)', 
-            borderRadius: '8px', fontWeight: 'bold', fontSize: '18px', 
-            boxShadow: 'var(--shadow-sm)', color: '#dc2626'
-          }}>
-            <Clock size={20} />
-            {formatTime(timeLeft)}
-          </div>
           <button 
-            onClick={handleRetry} 
-            style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid var(--border-main)', background: 'var(--bg-card)', color: 'var(--text-secondary)', fontWeight: 600, cursor: 'pointer', transition: 'background 0.2s', boxShadow: 'var(--shadow-sm)' }}
+            type="button" 
+            className="hub-hero-arrow" 
+            onClick={() => onSelect('home')} 
+            title="Explore Innovation Wiki"
           >
-            Retry
+            <ArrowRight size={22} color="white" strokeWidth={2.8} />
           </button>
         </div>
-
-      </div>
-       
-     <div style={{ position: 'fixed', bottom: '40px', left: '40px', zIndex: 50 }}>
-  <button 
-    onClick={onSkip} 
-    style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid var(--border-main)', background: 'var(--bg-card)', color: 'var(--text-secondary)', fontWeight: 600, cursor: 'pointer', transition: 'background 0.2s', boxShadow: 'var(--shadow-sm)' }}
-  >
-    Skip Puzzle
-  </button>
-</div>
-
-      <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-        <h1 style={{ color: 'var(--text-main)', margin: '0 0 12px', fontSize: '32px' }}>Innovation Wiki Access</h1>
-        <p style={{ color: 'var(--text-secondary)', margin: 0, fontSize: '16px' }}>
-          {isSolved ? 'Assembly complete. System unlocked.' : isFailed ? 'Time expired. Please try again.' : 'Drag the matching pieces into the grid to build the artwork and unlock the platform.'}
-        </p>
       </div>
 
-      <div style={{ display: 'flex', gap: '40px', alignItems: 'flex-start', flexWrap: 'wrap', justifyContent: 'center' }}>
-        
-        <div 
-          id="puzzle-grid"
-          style={{ 
-            display: 'grid', 
-            gridTemplateColumns: `repeat(${GRID_SIZE}, ${TILE_SIZE}px)`, 
-            gridTemplateRows: `repeat(${GRID_SIZE}, ${TILE_SIZE}px)`, 
-            gap: '0px', 
-            padding: '12px', 
-            background: 'var(--bg-card)', 
-            borderRadius: '16px', 
-            boxShadow: isSolved ? '0 0 30px rgba(52, 168, 83, 0.4)' : isFailed ? '0 0 30px rgba(220, 38, 38, 0.4)' : 'var(--shadow-sm)', 
-            border: `2px solid ${isSolved ? '#34a853' : isFailed ? '#dc2626' : 'var(--border-main)'}`,
-            transition: 'all 0.5s ease',
-            position: 'relative'
-          }}
-        >
-          {slots.map((pieceId, index) => (
-            <div 
-              key={index}
-              style={{ 
-                width: `${TILE_SIZE}px`, 
-                height: `${TILE_SIZE}px`, 
-                position: 'relative',
-                border: pieceId === null ? '1px dashed var(--border-main)' : 'none',
-                borderRadius: '6px'
-              }}
-            >
-              {pieceId !== null && (
-                <div 
-                  onPointerDown={(e) => handlePointerDown(e, pieceId, 'grid')}
-                  style={{ width: '100%', height: '100%', cursor: 'grab', zIndex: 2 }}
-                >
-                  {renderPuzzlePiece(pieceId)}
+      {/* 2. Right Grid Container (Row 1 + Row 2) */}
+      <div className="hub-grid-right">
+        {/* ROW 1: CORE, Elevate360, Digital SME */}
+        <div className="hub-grid-row">
+          {solutions.slice(0, 3).map((s) => (
+            <div key={s.id} className="hub-card" onClick={() => onSelect(s.id)}>
+              <div className="hub-card-blob" style={{ backgroundColor: s.color }}></div>
+              <div className="hub-card-content">
+                <div className="hub-card-icon-wrap" style={{ color: s.color, backgroundColor: `${s.color}15` }}>
+                  <s.icon size={38} strokeWidth={2.4} />
                 </div>
-              )}
+                <h4>{s.name}</h4>
+                <p>{s.subtitle}</p>
+              </div>
+              <div className="hub-card-arrow" style={{ backgroundColor: `${s.color}18`, color: s.color }}>
+                <ArrowRight size={17} strokeWidth={3} />
+              </div>
             </div>
           ))}
         </div>
 
-        <div className="puzzle-pool" style={{ 
-        width: '500px', height: '428px', boxSizing: 'border-box',
-         overflowY: 'auto', overflowX: 'hidden',
-        display: 'flex', flexDirection: 'column', 
-        padding: '24px', background: 'var(--bg-card)', 
-         borderRadius: '16px', border: '1px solid var(--border-main)' 
-      }}>
-          {isSolved ? (
-            <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', animation: 'fadeIn 0.5s ease' }}>
-              <div style={{ width: '60px', height: '60px', borderRadius: '50%', backgroundColor: '#dcfce7', color: '#166534', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '20px' }}>
-                <ShieldCheck size={32} />
+        {/* ROW 2: Accelerate, CRADO, ARC, AURA, STAR */}
+        <div className="hub-grid-row">
+          {solutions.slice(3).map((s) => (
+            <div key={s.id} className="hub-card" onClick={() => onSelect(s.id)}>
+              <div className="hub-card-blob" style={{ backgroundColor: s.color }}></div>
+              <div className="hub-card-content">
+                <div className="hub-card-icon-wrap" style={{ color: s.color, backgroundColor: `${s.color}15` }}>
+                  <s.icon size={36} strokeWidth={2.4} />
+                </div>
+                <h4>{s.name}</h4>
+                <p>{s.subtitle}</p>
               </div>
-              <h3 style={{ margin: '0 0 20px', color: 'var(--text-main)' }}>Verification Successful</h3>
-              <button 
-                onClick={onComplete}
-                style={{ padding: '14px 28px', borderRadius: '8px', border: 'none', background: '#1a73e8', color: 'white', fontSize: '16px', fontWeight: 600, cursor: 'pointer', boxShadow: '0 4px 12px rgba(26, 115, 232, 0.3)' }}
-              >
-                Enter Innovation Wiki
-              </button>
+              <div className="hub-card-arrow" style={{ backgroundColor: `${s.color}18`, color: s.color }}>
+                <ArrowRight size={17} strokeWidth={3} />
+              </div>
             </div>
-          ) : isFailed ? (
-            <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', animation: 'fadeIn 0.5s ease' }}>
-              <div style={{ width: '60px', height: '60px', borderRadius: '50%', backgroundColor: '#fee2e2', color: '#dc2626', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '20px' }}>
-                <X size={32} />
-              </div>
-              <h3 style={{ margin: '0 0 12px', color: 'var(--text-main)' }}>Time's Up!</h3>
-              <p style={{ margin: '0 0 20px', color: 'var(--text-secondary)', textAlign: 'center' }}>You ran out of time to complete the puzzle.</p>
-              <button 
-                onClick={handleRetry}
-                style={{ padding: '14px 28px', borderRadius: '8px', border: 'none', background: '#dc2626', color: 'white', fontSize: '16px', fontWeight: 600, cursor: 'pointer', boxShadow: '0 4px 12px rgba(220, 38, 38, 0.3)' }}
-              >
-                Try Again
-              </button>
-            </div>
-          ) : (
-            <>
-              <h3 style={{ margin: '0 0 24px', fontSize: '18px', color: 'var(--text-main)', textAlign: 'center' }}>Drag Pieces to the Board</h3>
-              <div style={{ 
-                display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '30px 20px', justifyItems: 'center', paddingBottom: '20px' 
-              }}>
-                {poolPieces.map(pieceId => (
-                  <div 
-                    key={pieceId}
-                    style={{ width: '100px', height: '100px', position: 'relative' }}
-                  >
-                    <div 
-                      onPointerDown={(e) => handlePointerDown(e, pieceId, 'pool')}
-                      style={{ 
-                        width: '100%', height: '100%', 
-                        cursor: 'grab', zIndex: 1, touchAction: 'none'
-                      }}
-                    >
-                      {renderPuzzlePiece(pieceId)}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </>
-          )}
+          ))}
         </div>
       </div>
     </div>
@@ -1231,14 +813,11 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
 }
 
 /* =========================================================
-   MAIN APP WITH THEME PROVIDER
+   MAIN APP CONTROLLER
 ========================================================= */
 
 function App() {
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
-  const [isPuzzleCompleted, setIsPuzzleCompleted] = useState(false);
-  
-  // Set initial selectedSolution to 'dashboard' so it shows the asymmetric grid first
   const [selectedSolution, setSelectedSolution] = useState<NavigationId>('dashboard');
   const [activeSection, setActiveSection] = useState<SectionId>('overview');
 
@@ -1249,6 +828,10 @@ function App() {
   const openSolution = (id: NavigationId) => {
     setSelectedSolution(id);
     setActiveSection('overview');
+  };
+
+  const backToDashboard = () => {
+    setSelectedSolution('dashboard');
   };
 
   const ThemeToggle = () => (
@@ -1270,108 +853,121 @@ function App() {
     </button>
   );
 
-  if (!isPuzzleCompleted) {
-    return (
-      <div className={`app no-sidebar-app ${theme}`}>
-        <GlobalThemeStyles />
-        <ThemeToggle />
-        <PuzzleSplash onComplete={() => setIsPuzzleCompleted(true)} onSkip={() => setIsPuzzleCompleted(true)} />
-      </div>
-    );
-  }
-
   return (
     <div className={`app no-sidebar-app ${theme}`}>
       <GlobalThemeStyles />
       <ThemeToggle />
-      <main className="main no-sidebar-main" style={{ minHeight: '100vh' }}>
+      <main className="main no-sidebar-main" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
         
-        <section className="hero top-hero premium-hero" style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', position: 'relative' }}>
-          <div className="hero-copy" style={{ width: '100%', maxWidth: '100%', display: 'flex', alignItems: 'center', gap: '20px' }}>
-            
-            <div style={{ width: '75px', height: '75px', borderRadius: '50%', overflow: 'hidden', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffffff' }}>
-              <img 
-                src={gcpGif} 
-                alt="GCP Animation" 
-                style={{ 
-                  width: '90%',   
-                  height: '90%',  
-                  objectFit: 'cover', 
-                  transform: 'translateY(-1%)' 
-                }} 
-              />
-            </div>
-            
-            <div>
-              <h1 className="premium-title" style={{ fontSize: '2.2rem', margin: 0, lineHeight: 1.2 }}>
-                <span>GCP Tech</span>
-                <span className="title-highlight"> Transformation </span>
-                <span>Solutions</span>
-              </h1>
-              <div className="outcome-row" style={{ marginTop: '8px' }}>
-                <div className="outcome-item"><Users size={16} /><span>Smarter People</span></div>
-                <div className="outcome-divider"></div>
-                <div className="outcome-item"><BarChart3 size={16} /><span>Stronger Operations</span></div>
-                <div className="outcome-divider"></div>
-                <div className="outcome-item"><Star size={16} /><span>Better Customer Experiences</span></div>
-              </div>
-            </div>
-
+        {/* HEADER: Matches the Exact Image Architecture */}
+        <header className="image-replica-header">
+          <div className="header-left">
+            <span className="gcp-brand">
+              <span className="gcp-blue">G</span>
+              <span className="gcp-red">C</span>
+              <span className="gcp-yellow">P</span>
+            </span>
+            <h1 className="header-title">Tech Transformation Solutions</h1>
           </div>
-        </section>
 
-        {selectedSolution === 'dashboard' ? (
-          // Render Asymmetric Dashboard View exactly matching Image_2
-          <DashboardHub onSelect={openSolution} />
-        ) : (
-          // Render Restored Horizontal View + Content Pages
-          <>
-            <section className="platform-card-row">
-              {solutions.map((platform) => {
-                const Icon = platform.icon;
-                const isSelected = selectedSolution === platform.id;
-                return (
-                  <button
-                    type="button"
-                    key={platform.id}
-                    className={`platform-card ${isSelected ? 'selected-glow' : ''}`}
-                    onClick={() => openSolution(platform.id)}
-                  >
-                    <div className="platform-icon" style={{ color: platform.color, backgroundColor: `${platform.color}10` }}>
-                      <Icon size={44} strokeWidth={2.2} />
-                    </div>
-                    <div className="platform-copy">
-                      <h3>{platform.name}</h3>
-                      <p>{platform.subtitle}</p>
-                    </div>
-                    <ChevronRight size={22} className="platform-arrow" />
-                  </button>
-                );
-              })}
-            </section>
-        
-            <div className="page-content main-page-content">
+          <div className="header-right">
+            <div className="header-pillars">
+              <span>Stronger People</span>
+              <span className="pillar-sep">|</span>
+              <span>Smarter Operations</span>
+              <span className="pillar-sep">|</span>
+              <span>Better Customer Experiences</span>
+            </div>
+
+            <div className="google-dots-row">
+              <span className="dot dot-blue"></span>
+              <span className="dot dot-red"></span>
+              <span className="dot dot-yellow"></span>
+              <span className="dot dot-green"></span>
+            </div>
+          </div>
+
+          {/* Decorative Google Quadrant Fan in Top-Right Corner */}
+          <div className="google-corner-fan" aria-hidden="true">
+            <svg viewBox="0 0 160 160" width="160" height="160" fill="none">
+              <path d="M 160,0 A 160,160 0 0,0 0,160 L 160,160 Z" fill="#FBBC04" />
+              <path d="M 160,0 A 120,120 0 0,0 40,160 L 160,160 Z" fill="#4285F4" />
+              <path d="M 160,0 A 80,80 0 0,0 80,160 L 160,160 Z" fill="#EA4335" />
+              <path d="M 160,0 A 40,40 0 0,0 120,160 L 160,160 Z" fill="#34A853" />
+            </svg>
+          </div>
+        </header>
+
+        {/* BODY CONTAINER */}
+        <div style={{ flex: 1, position: 'relative' }}>
+          {selectedSolution === 'dashboard' ? (
+            /* First Page View: Only Cards Are Shown */
+            <AsymmetricDashboard onSelect={openSolution} />
+          ) : (
+            /* Selected View: Isolated Detail View with Back Button */
+            <div className="page-content main-page-content" style={{ padding: '24px 40px' }}>
+              <div style={{ marginBottom: '20px' }}>
+                <button 
+                  onClick={backToDashboard}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    padding: '8px 16px',
+                    borderRadius: '8px',
+                    border: '1px solid var(--border-main)',
+                    background: 'var(--bg-card)',
+                    color: '#1a73e8',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    fontSize: '14px',
+                    boxShadow: 'var(--shadow-sm)'
+                  }}
+                >
+                  <ArrowLeft size={16} />
+                  <span>Back to Overview</span>
+                </button>
+              </div>
+
               {selectedSolution === 'home' ? (
-                // Table View (Screenshot 1) opens when they click the Innovation Wiki "Explore" button
+                /* Only Table View Displays on Explore */
                 <InnovationWikiHome />
               ) : (
-                <SolutionPage solutionId={selectedSolution as SolutionId} activeSection={activeSection} setActiveSection={setActiveSection} />
+                /* Only Selected Solution Appears */
+                <SolutionPage 
+                  solutionId={selectedSolution as SolutionId} 
+                  activeSection={activeSection} 
+                  setActiveSection={setActiveSection} 
+                />
               )}
             </div>
-          </>
-        )}
+          )}
+        </div>
 
-        <footer className="footer upgraded-footer" style={{ marginTop: 'auto' }}>
+        {/* FOOTER: Matches the Exact Image Architecture */}
+        <footer className="image-replica-footer">
           <div className="footer-left">
-            <strong>GCP Tech Transformation</strong>
-            <span className="footer-separator">|</span>
-            <span>Innovation Wiki</span>
-            <span className="footer-separator">|</span>
-            <span>© 2026 Google</span>
+            <svg width="24" height="24" viewBox="0 0 40 40" fill="none" style={{ flexShrink: 0 }}>
+              <path d="M19.5 32H10A8 8 0 0 1 10 16a8.5 8.5 0 0 1 2.2.3A12 12 0 0 1 34 22a8 8 0 0 1-6 10h-8.5" stroke="#EA4335" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M10 32h18" stroke="#4285F4" strokeWidth="4" strokeLinecap="round"/>
+              <path d="M10 24a8 8 0 0 1 8-8" stroke="#FBBC04" strokeWidth="4" strokeLinecap="round"/>
+              <path d="M18 16a12 12 0 0 1 12 6" stroke="#34A853" strokeWidth="4" strokeLinecap="round"/>
+            </svg>
+            <span className="footer-motto">Build &nbsp;·&nbsp; Transform &nbsp;·&nbsp; Scale</span>
           </div>
-          <div className="footer-vision">
-            <span className="vision-line"></span>
-            <span>Knowledge drives progress. Innovation creates impact.</span>
+
+          <div className="footer-center-bar">
+            <span className="bar-seg bar-blue"></span>
+            <span className="bar-seg bar-red"></span>
+            <span className="bar-seg bar-yellow"></span>
+            <span className="bar-seg bar-green"></span>
+          </div>
+
+          <div className="footer-right-matrix" aria-hidden="true">
+            <div className="matrix-dot"></div><div className="matrix-dot"></div><div className="matrix-dot"></div><div className="matrix-dot"></div>
+            <div className="matrix-dot"></div><div className="matrix-dot"></div><div className="matrix-dot"></div><div className="matrix-dot"></div>
+            <div className="matrix-dot"></div><div className="matrix-dot"></div><div className="matrix-dot"></div><div className="matrix-dot"></div>
+            <div className="matrix-dot"></div><div className="matrix-dot"></div><div className="matrix-dot"></div><div className="matrix-dot"></div>
           </div>
         </footer>
       </main>
@@ -1380,7 +976,7 @@ function App() {
 }
 
 /* =========================================================
-   INNOVATION WIKI HOME
+   INNOVATION WIKI HOME (TABLE VIEW ONLY)
 ========================================================= */
 
 function InnovationWikiHome() {
@@ -1388,7 +984,7 @@ function InnovationWikiHome() {
     <section className="wiki-home clean-wiki-home">
       <div className="wiki-home-heading">
         <h2>What you’ll find here</h2>
-        <p>Explore the key aspects we cover for each solution. Select a solution above to view detailed information.</p>
+        <p>Explore the key aspects we cover for each solution. Select an item above or browse sections below.</p>
       </div>
       <div className="wiki-table-wrapper">
         <table className="wiki-table">
@@ -1421,7 +1017,7 @@ function InnovationWikiHome() {
 }
 
 /* =========================================================
-   SOLUTION PAGE
+   SOLUTION DETAIL PAGE
 ========================================================= */
 
 type SolutionPageProps = {
@@ -1434,13 +1030,11 @@ function SolutionPage({ solutionId, activeSection, setActiveSection }: SolutionP
   const content = solutionContent[solutionId];
   const platform = solutions.find((item) => item.id === solutionId);
 
-  if (!platform) return null;
+  if (!platform || !content) return null;
   const Icon = platform.icon;
 
   return (
     <section className="solution-page">
-      
-      {/* START: Solution Header Block */}
       <div className="solution-header">
         <div className="solution-header-left">
           <div className="breadcrumbs">Solutions &gt; {content.shortName}</div>
@@ -1459,7 +1053,6 @@ function SolutionPage({ solutionId, activeSection, setActiveSection }: SolutionP
           <div className="header-sub">{content.pillars}</div>
         </div>
       </div>
-      {/* END: Solution Header Block */}
 
       <div className="solution-layout">
         <aside className="solution-tabs">
@@ -1496,238 +1089,18 @@ function SolutionPage({ solutionId, activeSection, setActiveSection }: SolutionP
 }
 
 /* =========================================================
-   ENHANCED OVERVIEW COMPONENT 
+   SECTION SUBCOMPONENTS
 ========================================================= */
 
 function EnhancedOverview({ content, setActiveSection }: any) {
-  if (!content || !content.objectives) return null;
+  if (!content) return null;
   return (
     <div className="enhanced-overview">
-      <style>{`
-        .enhanced-overview { 
-          animation: fadeContent 0.25s ease; 
-          height: 100%; 
-          font-family: system-ui, -apple-system, sans-serif; 
-        }
-        .overview-grid { 
-          display: grid; 
-          grid-template-columns: 2.2fr 1fr; 
-          gap: 24px; 
-          align-items: stretch; 
-        }
-        
-        /* --- Left Column --- */
-        .overview-main { 
-          display: flex; 
-          flex-direction: column; 
-          gap: 16px; 
-        }
-        
-        .overview-title {
-          font-size: 22px;
-          color: var(--text-main);
-          margin: 0 0 16px 0;
-          padding-bottom: 12px;
-          border-bottom: 2px solid var(--border-main);
-          position: relative;
-          font-weight: 700;
-        }
-        .overview-title::after {
-          content: "";
-          position: absolute;
-          bottom: -2px;
-          left: 0;
-          width: 48px;
-          height: 2px;
-          background-color: #1a73e8;
-        }
-
-        .overview-card {
-          border-radius: 12px;
-          padding: 20px 24px;
-          display: flex;
-          gap: 16px;
-          align-items: flex-start;
-          flex: none;
-        }
-        .card-white {
-          background: var(--bg-card);
-          border: 1px solid var(--border-main);
-        }
-        .card-blue {
-          background: var(--bg-blue-card);
-          border: 1px solid var(--border-main);
-        }
-        .card-blue h4 { color: var(--text-main); }
-        .card-green {
-          background: var(--bg-green-card);
-          border: 1px solid var(--border-main);
-        }
-        .card-green h4 { color: var(--text-green); }
-        
-        .card-icon-badge {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-shrink: 0;
-          margin-top: 2px;
-        }
-        .card-white .card-icon-badge { color: #1a73e8; }
-        .card-blue .card-icon-badge { color: #1a73e8; }
-        .card-green .card-icon-badge { color: #16a34a; }
-        
-        .card-content-wrap { flex: 1; }
-        .card-content-wrap h4 {
-          margin: 0 0 10px 0;
-          font-size: 15px;
-          font-weight: 700;
-          color: var(--text-main);
-        }
-        .card-content-wrap p {
-          margin: 0;
-          font-size: 13.5px;
-          color: var(--text-secondary);
-          line-height: 1.6;
-        }
-        .card-content-wrap ul {
-          margin: 0;
-          padding-left: 18px;
-          color: var(--text-secondary);
-          font-size: 13.5px;
-          line-height: 1.6;
-        }
-        .card-content-wrap li { margin-bottom: 6px; }
-        .card-content-wrap li:last-child { margin-bottom: 0; }
-
-        /* --- Right Column (Sidebar) --- */
-        .overview-sidebar {
-          height: 100%;
-        }
-
-        .sidebar-container {
-          background: var(--bg-card);
-          border-radius: 12px;
-          padding: 24px;
-          border: 1px solid var(--border-main);
-          display: flex;
-          flex-direction: column;
-          height: 100%; 
-          box-sizing: border-box;
-        }
-        
-        .sidebar-section {
-          margin-bottom: 24px;
-        }
-        
-        .side-header {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          margin-bottom: 16px;
-        }
-        .side-header h4 {
-          margin: 0;
-          font-size: 15px;
-          color: var(--text-main);
-          font-weight: 700;
-        }
-        .info-circle {
-          width: 24px;
-          height: 24px;
-          border-radius: 50%;
-          border: 2px solid #2563eb;
-          color: #2563eb;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-        
-        .meta-row {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 10px 0;
-          border-bottom: 1px solid var(--border-soft);
-          font-size: 12px;
-        }
-        .meta-row:last-child { border-bottom: none; }
-        .meta-row span:first-child { color: var(--text-muted); }
-        .meta-row strong {
-          color: var(--text-main);
-          font-weight: 500;
-          text-align: right;
-          max-width: 65%;
-        }
-        .status-pill {
-          background: var(--pill-bg);
-          color: var(--text-green);
-          padding: 4px 12px;
-          border-radius: 999px;
-          font-weight: 600;
-          font-size: 11px;
-        }
-        
-        .quick-links { display: flex; flex-direction: column; }
-        .ql-btn {
-          display: flex;
-          align-items: center;
-          gap: 14px;
-          padding: 12px 0;
-          border: none;
-          background: transparent;
-          border-bottom: 1px solid var(--border-soft);
-          cursor: pointer;
-          width: 100%;
-          text-align: left;
-          font-size: 13px;
-          color: var(--text-secondary);
-          transition: background 0.2s;
-        }
-        .ql-btn:hover { background: var(--bg-hover); }
-        .ql-btn:last-child { border-bottom: none; padding-bottom: 0; }
-        .ql-btn .arrow { margin-left: auto; color: var(--text-muted); }
-        
-        .feedback-promo {
-          background: var(--bg-blue-card);
-          border-radius: 12px;
-          padding: 16px;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          gap: 12px;
-          margin-top: auto;
-          border: 1px solid transparent;
-        }
-        .fp-left { display: flex; align-items: flex-start; gap: 12px; }
-        .fp-text h5 { margin: 0; font-size: 13px; color: var(--text-main); font-weight: 700; }
-        .fp-text p { margin: 4px 0 0; font-size: 11.5px; color: var(--text-secondary); }
-        .fp-btn {
-          background: #1a73e8; 
-          color: white;
-          border: none;
-          border-radius: 6px;
-          padding: 8px 16px;
-          font-size: 12px;
-          font-weight: 600;
-          cursor: pointer;
-          white-space: nowrap;
-          transition: background 0.2s;
-        }
-        .fp-btn:hover { background: #1557b0; }
-        
-        @media (max-width: 1000px) {
-          .overview-grid { grid-template-columns: 1fr; }
-        }
-      `}</style>
-      
       <div className="overview-grid">
-        {/* LEFT COLUMN */}
         <div className="overview-main">
           <h2 className="overview-title">Overview</h2>
           <div className="overview-card card-white">
-            <div className="card-icon-badge">
-              <FileText size={22} strokeWidth={2.5} />
-            </div>
+            <div className="card-icon-badge"><FileText size={22} strokeWidth={2.5} /></div>
             <div className="card-content-wrap">
               <h4>Overview</h4>
               <p>{content.overview}</p>
@@ -1735,13 +1108,11 @@ function EnhancedOverview({ content, setActiveSection }: any) {
           </div>
 
           <div className="overview-card card-blue">
-            <div className="card-icon-badge">
-              <ShieldCheck size={22} strokeWidth={2.5} />
-            </div>
+            <div className="card-icon-badge"><ShieldCheck size={22} strokeWidth={2.5} /></div>
             <div className="card-content-wrap">
               <h4>Key Objectives</h4>
               <ul>
-                {content.objectives.map((obj: string, i: number) => (
+                {content.objectives?.map((obj: string, i: number) => (
                   <li key={i}>{obj}</li>
                 ))}
               </ul>
@@ -1749,30 +1120,26 @@ function EnhancedOverview({ content, setActiveSection }: any) {
           </div>
 
           <div className="overview-card card-green">
-            <div className="card-icon-badge">
-              <UserIcon size={22} strokeWidth={2.5} />
-            </div>
+            <div className="card-icon-badge"><UserIcon size={22} strokeWidth={2.5} /></div>
             <div className="card-content-wrap">
               <h4>Who is it for?</h4>
               <p>{content.audience}</p>
             </div>
           </div>
         </div>
-        
-        {/* RIGHT COLUMN */}
+
         <div className="overview-sidebar">
           <div className="sidebar-container">
-            
             <div className="sidebar-section">
               <div className="side-header">
                 <div className="info-circle"><Info size={14} strokeWidth={3} /></div>
                 <h4>At a Glance</h4>
               </div>
               <div className="metadata-list">
-                <div className="meta-row"><span>Solution Type</span><strong>{content.metadata.type}</strong></div>
-                <div className="meta-row"><span>Target Users</span><strong>{content.metadata.users}</strong></div>
-                <div className="meta-row"><span>Domain</span><strong>{content.metadata.domain}</strong></div>
-                <div className="meta-row"><span>Status</span><span className="status-pill">{content.metadata.status}</span></div>
+                <div className="meta-row"><span>Solution Type</span><strong>{content.metadata?.type}</strong></div>
+                <div className="meta-row"><span>Target Users</span><strong>{content.metadata?.users}</strong></div>
+                <div className="meta-row"><span>Domain</span><strong>{content.metadata?.domain}</strong></div>
+                <div className="meta-row"><span>Status</span><span className="status-pill">{content.metadata?.status}</span></div>
               </div>
             </div>
 
@@ -1787,101 +1154,29 @@ function EnhancedOverview({ content, setActiveSection }: any) {
                   <span>Go to Access Details</span>
                   <ChevronRight size={16} className="arrow" />
                 </button>
-                <button className="ql-btn" onClick={() => setActiveSection('demo')}>
-                  <Youtube size={18} color="#dc2626" />
-                  <span>Watch Demo</span>
-                  <ChevronRight size={16} className="arrow" />
-                </button>
-                <button className="ql-btn" onClick={() => setActiveSection('feedback')}>
-                  <MessageSquare size={18} color="#9333ea" />
-                  <span>Give Feedback</span>
+                <button className="ql-btn" onClick={() => setActiveSection('benefits')}>
+                  <Star size={18} color="#16a34a" />
+                  <span>View Key Benefits</span>
                   <ChevronRight size={16} className="arrow" />
                 </button>
               </div>
             </div>
-
-            <div className="feedback-promo">
-              <div className="fp-left">
-                <Lightbulb size={22} color="#2563eb" strokeWidth={2} />
-                <div className="fp-text">
-                  <h5>Have questions or ideas?</h5>
-                  <p>We'd love to hear from you!</p>
-                </div>
-              </div>
-              <button className="fp-btn" onClick={() => setActiveSection('feedback')}>Share Feedback</button>
-            </div>
-            
           </div>
         </div>
-
       </div>
     </div>
   );
 }
 
-/* =========================================================
-   ENHANCED PROBLEM COMPONENT
-========================================================= */
-
 function EnhancedProblem({ data, platformColor, platformIcon: PlatformIcon }: any) {
-  if (!data || !data.cards) return null;
+  if (!data) return null;
   return (
     <div className="enhanced-problem">
-      <style>{`
-        .enhanced-problem { animation: fadeContent 0.25s ease; }
-        
-        .problem-title {
-          font-size: 22px;
-          color: var(--text-main);
-          margin: 0 0 16px 0;
-          padding-bottom: 12px;
-          border-bottom: 2px solid var(--border-main);
-          position: relative;
-          font-weight: 700;
-        }
-        .problem-title::after {
-          content: "";
-          position: absolute;
-          bottom: -2px;
-          left: 0;
-          width: 48px;
-          height: 2px;
-          background-color: #1a73e8;
-        }
-
-        .problem-desc { font-size: 15px; color: var(--text-secondary); margin: 0 0 24px 0; line-height: 1.6; }
-        
-        .p-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
-        .p-card { padding: 12px 16px; border-radius: 10px; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; background: var(--bg-hover); border: 1px solid transparent; }
-        .p-icon-wrap { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 2px; background: var(--bg-card); box-shadow: var(--shadow-sm); }
-        .p-card h4 { margin: 0; font-size: 14px; color: var(--text-main); line-height: 1.3; font-weight: 600; }
-        .p-card p { margin: 0; font-size: 12px; color: var(--text-secondary); line-height: 1.4; }
-        
-        .p-callout { display: flex; align-items: center; gap: 16px; padding: 16px 20px; border-radius: 12px; margin-bottom: 24px; background: var(--bg-card); border: 1px solid var(--border-main); }
-        .c-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .c-cont { display: flex; flex-direction: column; justify-content: center; }
-        .c-cont strong { color: var(--text-main); font-size: 15px; margin-bottom: 4px; }
-        .c-cont p { margin: 0; color: var(--text-secondary); font-size: 14px; line-height: 1.5; }
-        
-        .p-trans { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; border-radius: 12px; background: var(--bg-card); border: 1px solid var(--border-main); }
-        .t-left { display: flex; align-items: center; gap: 16px; flex: 1; }
-        .t-plat-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .t-text { display: flex; flex-direction: column; gap: 4px; }
-        .t-head { display: flex; align-items: center; gap: 8px; font-size: 16px; color: var(--text-main); }
-        .t-text p { margin: 0; font-size: 13px; color: var(--text-secondary); line-height: 1.5; max-width: 90%; }
-        .t-right { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; flex-shrink: 0; margin-left: 20px;}
-        .t-tag { font-family: Georgia, serif; font-style: italic; font-size: 20px; white-space: nowrap; }
-        .t-send { transform: rotate(-15deg); margin-bottom: -4px; }
-        
-        @media (max-width: 850px) { .p-cards { grid-template-columns: 1fr; } .p-trans { flex-direction: column; align-items: flex-start; gap: 20px;} .t-right { align-items: flex-start; margin-left: 64px; } }
-      `}</style>
-
       <h2 className="problem-title">The Problem</h2>
-
       <p className="problem-desc">{data.description}</p>
 
       <div className="p-cards">
-        {data.cards.map((card: any, index: number) => {
+        {data.cards?.map((card: any, index: number) => {
           const CardIcon = card.icon;
           return (
             <div key={index} className="p-card">
@@ -1904,95 +1199,23 @@ function EnhancedProblem({ data, platformColor, platformIcon: PlatformIcon }: an
           <p>{data.callout}</p>
         </div>
       </div>
-
-      <div className="p-trans">
-        <div className="t-left">
-          <div className="t-plat-icon" style={{ color: platformColor, backgroundColor: `${platformColor}15` }}>
-            <PlatformIcon size={26} strokeWidth={2.5} />
-          </div>
-          <div className="t-text">
-            <div className="t-head">
-              <strong>Problem</strong> <ArrowRight size={18} color="var(--text-muted)" /> <strong>Solution</strong>
-            </div>
-            <p>{data.transition}</p>
-          </div>
-        </div>
-        <div className="t-right" style={{ color: platformColor }}>
-          <Send size={24} className="t-send" />
-          <div className="t-tag">{data.tagline}</div>
-        </div>
-      </div>
     </div>
   );
 }
 
-/* =========================================================
-   ENHANCED SOLUTION COMPONENT
-========================================================= */
-
-function EnhancedSolution({ data, platformColor, platformIcon: PlatformIcon }: any) {
-  if (!data || !data.cards) return null;
+function EnhancedSolution({ data, platformColor }: any) {
+  if (!data) return null;
   return (
     <div className="enhanced-solution">
-      <style>{`
-        .enhanced-solution { animation: fadeContent 0.25s ease; }
-
-        .solution-title {
-          font-size: 22px;
-          color: var(--text-main);
-          margin: 0 0 16px 0;
-          padding-bottom: 12px;
-          border-bottom: 2px solid var(--border-main);
-          position: relative;
-          font-weight: 700;
-        }
-        .solution-title::after {
-          content: "";
-          position: absolute;
-          bottom: -2px;
-          left: 0;
-          width: 48px;
-          height: 2px;
-          background-color: #1a73e8;
-        }
-
-        .solution-desc { font-size: 15px; color: var(--text-secondary); margin: 0 0 24px 0; line-height: 1.6; }
-        
-        .s-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
-        .s-card { padding: 16px 20px; border-radius: 12px; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; border: 1px solid transparent; }
-        .s-icon-wrap { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 2px; flex-shrink: 0; }
-        .s-card h4 { margin: 0; font-size: 15px; color: var(--text-main); line-height: 1.3; font-weight: 600; }
-        .s-card p { margin: 0; font-size: 13px; color: var(--text-secondary); line-height: 1.4; }
-        
-        .s-callout { display: flex; align-items: center; gap: 16px; padding: 16px 20px; border-radius: 12px; margin-bottom: 24px; background: var(--bg-card); border: 1px solid var(--border-main); }
-        .sc-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .sc-cont { display: flex; flex-direction: column; justify-content: center; }
-        .sc-cont strong { color: var(--text-main); font-size: 15px; margin-bottom: 4px; }
-        .sc-cont p { margin: 0; color: var(--text-secondary); font-size: 14px; line-height: 1.5; }
-        
-        .s-trans { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; border-radius: 12px; background: var(--bg-card); border: 1px solid var(--border-main); }
-        .st-left { display: flex; align-items: center; gap: 16px; flex: 1; }
-        .st-plat-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .st-text { display: flex; flex-direction: column; gap: 4px; }
-        .st-head { display: flex; align-items: center; gap: 8px; font-size: 16px; color: var(--text-main); }
-        .st-text p { margin: 0; font-size: 13px; color: var(--text-secondary); line-height: 1.5; max-width: 90%; }
-        .st-right { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; flex-shrink: 0; margin-left: 20px;}
-        .st-tag { font-family: Georgia, serif; font-style: italic; font-size: 20px; white-space: nowrap; }
-        .st-send { transform: rotate(-15deg); margin-bottom: -4px; }
-        
-        @media (max-width: 850px) { .s-cards { grid-template-columns: 1fr; } .s-trans { flex-direction: column; align-items: flex-start; gap: 20px;} .st-right { align-items: flex-start; margin-left: 64px; } }
-      `}</style>
-
       <h2 className="solution-title">The Solution</h2>
-      
       <p className="solution-desc">{data.description}</p>
 
       <div className="s-cards">
-        {data.cards.map((card: any, index: number) => {
+        {data.cards?.map((card: any, index: number) => {
           const CardIcon = card.icon;
           return (
             <div key={index} className="s-card" style={{ backgroundColor: card.iconBg }}>
-              <div className="s-icon-wrap" style={{ backgroundColor: 'var(--bg-card)', color: card.iconColor, boxShadow: 'var(--shadow-sm)' }}>
+              <div className="s-icon-wrap" style={{ backgroundColor: 'var(--bg-card)', color: card.iconColor }}>
                 <CardIcon size={22} strokeWidth={2.5} />
               </div>
               <h4>{card.title}</h4>
@@ -2004,137 +1227,34 @@ function EnhancedSolution({ data, platformColor, platformIcon: PlatformIcon }: a
 
       <div className="s-callout">
         <div className="sc-icon" style={{ color: platformColor, backgroundColor: `${platformColor}15` }}>
-          <data.calloutIcon size={22} />
+          <Lightbulb size={22} />
         </div>
         <div className="sc-cont">
           <strong>How it helps</strong>
           <p>{data.callout}</p>
         </div>
       </div>
-
-      <div className="s-trans">
-        <div className="st-left">
-          <div className="st-plat-icon" style={{ color: platformColor, backgroundColor: `${platformColor}15` }}>
-            <PlatformIcon size={26} strokeWidth={2.5} />
-          </div>
-          <div className="st-text">
-            <div className="st-head">
-              <strong>From Problem</strong> <ArrowRight size={18} color="var(--text-muted)" /> <strong>Impact</strong>
-            </div>
-            <p>{data.transition}</p>
-          </div>
-        </div>
-        <div className="st-right" style={{ color: platformColor }}>
-          <Send size={24} className="st-send" />
-          <div className="st-tag">{data.tagline}</div>
-        </div>
-      </div>
     </div>
   );
 }
 
-/* =========================================================
-   DROPDOWN / ACCORDION KEY BENEFITS COMPONENT
-========================================================= */
-
 function Benefits({ benefits }: { benefits: BenefitItem[] }) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
-
-  const toggleItem = (idx: number) => {
-    setOpenIndex(openIndex === idx ? null : idx);
-  };
+  if (!benefits) return null;
 
   return (
     <div className="content-section">
-      <style>{`
-        .benefits-accordion-list {
-          background: var(--bg-card);
-          border: 1px solid var(--border-main);
-          border-radius: 12px;
-          overflow: hidden;
-        }
-        .benefit-accordion-item {
-          border-bottom: 1px solid var(--border-soft);
-          transition: background 0.2s;
-        }
-        .benefit-accordion-item:last-child {
-          border-bottom: none;
-        }
-        .benefit-header-row {
-          display: flex;
-          align-items: center;
-          gap: 16px;
-          padding: 16px 20px;
-          cursor: pointer;
-          user-select: none;
-        }
-        .benefit-header-row:hover {
-          background: var(--bg-hover);
-        }
-        .benefit-badge {
-          width: 34px;
-          height: 28px;
-          border-radius: 6px;
-          background: var(--badge-bg);
-          color: #2563eb;
-          font-size: 13px;
-          font-weight: 700;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-shrink: 0;
-        }
-        .benefit-title-text {
-          font-size: 15px;
-          font-weight: 600;
-          color: var(--text-main);
-          flex: 1;
-        }
-        .benefit-chevron {
-          color: var(--text-muted);
-          transition: transform 0.2s ease;
-        }
-        .benefit-chevron.open {
-          transform: rotate(180deg);
-          color: #2563eb;
-        }
-        .benefit-dropdown-content {
-          padding: 0 20px 16px 70px;
-          animation: fadeContent 0.2s ease;
-        }
-        .benefit-dropdown-content p {
-          margin: 0;
-          font-size: 14px;
-          color: var(--text-secondary);
-          line-height: 1.6;
-        }
-      `}</style>
-
-      <div className="section-heading">
-        <h3>Key Benefits</h3>
-      </div>
-
+      <div className="section-heading"><h3>Key Benefits</h3></div>
       <div className="benefits-accordion-list">
         {benefits.map((benefit, index) => {
           const isOpen = openIndex === index;
           return (
             <div key={benefit.title} className="benefit-accordion-item">
-              <div
-                className="benefit-header-row"
-                onClick={() => toggleItem(index)}
-              >
-                <div className="benefit-badge">
-                  {String(index + 1).padStart(2, '0')}
-                </div>
-                <div className="benefit-title-text">
-                  {benefit.title}
-                </div>
-                <ChevronDown
-                  size={18}
-                  className={`benefit-chevron ${isOpen ? 'open' : ''}`}
-                />
+              <div className="benefit-header-row" onClick={() => setOpenIndex(isOpen ? null : index)}>
+                <div className="benefit-badge">{String(index + 1).padStart(2, '0')}</div>
+                <div className="benefit-title-text">{benefit.title}</div>
+                <ChevronDown size={18} className={`benefit-chevron ${isOpen ? 'open' : ''}`} />
               </div>
-
               {isOpen && (
                 <div className="benefit-dropdown-content">
                   <p>{benefit.description}</p>
@@ -2148,242 +1268,62 @@ function Benefits({ benefits }: { benefits: BenefitItem[] }) {
   );
 }
 
-/* =========================================================
-   ENHANCED USAGE & ADOPTION COMPONENT
-========================================================= */
-
 function Usage({ content, platformColor }: { content: any; platformColor: string }) {
   const usageData = content.usage;
   if (!usageData) return null;
 
   return (
     <div className="content-section">
-      <style>{`
-        .usage-section { animation: fadeContent 0.25s ease; display: flex; flex-direction: column; gap: 24px; }
-        
-        .usage-desc-card {
-          background: var(--bg-card);
-          border: 1px solid var(--border-main);
-          border-radius: 12px;
-          padding: 16px 20px;
-          font-size: 14px;
-          color: var(--text-secondary);
-          line-height: 1.6;
-        }
-        .usage-desc-card p { margin: 0; }
-
-        .highlights-container {
-          display: flex;
-          flex-direction: column;
-          gap: 12px;
-        }
-        .highlights-title {
-          font-size: 15px;
-          font-weight: 700;
-          color: var(--text-main);
-          margin: 4px 0 0;
-        }
-        .highlights-grid {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 16px;
-        }
-        .highlight-card {
-          background: var(--bg-card);
-          border: 1px solid var(--border-main);
-          border-radius: 12px;
-          padding: 18px 20px;
-          display: flex;
-          flex-direction: column;
-          gap: 8px;
-        }
-        .highlight-top {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          gap: 8px;
-        }
-        .highlight-top h5 {
-          margin: 0;
-          font-size: 14.5px;
-          font-weight: 600;
-          color: var(--text-main);
-        }
-        .highlight-badge {
-          font-size: 11px;
-          font-weight: 600;
-          padding: 2px 8px;
-          border-radius: 999px;
-          background: var(--badge-bg);
-          color: var(--text-secondary);
-          white-space: nowrap;
-        }
-        .highlight-card p {
-          margin: 0;
-          font-size: 13px;
-          color: var(--text-secondary);
-          line-height: 1.55;
-        }
-
-        @media (max-width: 950px) {
-          .highlights-grid { grid-template-columns: 1fr; }
-        }
-      `}</style>
-
-      <div className="section-heading">
-        <h3>Usage & Adoption</h3>
-      </div>
-
-      <div className="usage-section">
-        <div className="usage-desc-card">
-          <p>{usageData.description}</p>
-        </div>
-
-        <div className="highlights-container">
-          <div className="highlights-title">Programmatic Adoption & Insights</div>
-          <div className="highlights-grid">
-            {usageData.highlights.map((h: any, idx: number) => (
-              <div key={idx} className="highlight-card">
-                <div className="highlight-top">
-                  <h5>{h.title}</h5>
-                  <span className="highlight-badge" style={{ color: platformColor, backgroundColor: `${platformColor}14` }}>
-                    {h.badge}
-                  </span>
-                </div>
-                <p>{h.description}</p>
+      <div className="section-heading"><h3>Usage & Adoption</h3></div>
+      <div className="usage-desc-card"><p>{usageData.description}</p></div>
+      <div className="highlights-container" style={{ marginTop: '20px' }}>
+        <div className="highlights-grid">
+          {usageData.highlights?.map((h: any, idx: number) => (
+            <div key={idx} className="highlight-card">
+              <div className="highlight-top">
+                <h5>{h.title}</h5>
+                <span className="highlight-badge" style={{ color: platformColor, backgroundColor: `${platformColor}14` }}>{h.badge}</span>
               </div>
-            ))}
-          </div>
+              <p>{h.description}</p>
+            </div>
+          ))}
         </div>
       </div>
     </div>
   );
 }
 
-/* =========================================================
-   ACCORDION IMPACT COMPONENT
-========================================================= */
-
 function Impact({ content, platformColor }: any) {
   const data = content.impact;
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
-
-  if (typeof data === 'string') return null;
-
-  const toggleItem = (idx: number) => {
-    setOpenIndex(openIndex === idx ? null : idx);
-  };
+  if (!data) return null;
 
   return (
     <div className="content-section">
-      <style>{`
-        .impact-header-text { margin-bottom: 24px; animation: fadeContent 0.25s ease; }
-        .impact-header-text h4 { font-size: 18px; color: var(--text-main); margin: 0 0 8px 0; font-weight: 700; }
-        .impact-header-text p { font-size: 15px; color: var(--text-secondary); line-height: 1.6; margin: 0; }
-        
-        .benefits-accordion-list {
-          background: var(--bg-card);
-          border: 1px solid var(--border-main);
-          border-radius: 12px;
-          overflow: hidden;
-          animation: fadeContent 0.25s ease;
-        }
-        .benefit-accordion-item {
-          border-bottom: 1px solid var(--border-soft);
-          transition: background 0.2s;
-        }
-        .benefit-accordion-item:last-child {
-          border-bottom: none;
-        }
-        .benefit-header-row {
-          display: flex;
-          align-items: center;
-          gap: 16px;
-          padding: 16px 20px;
-          cursor: pointer;
-          user-select: none;
-        }
-        .benefit-header-row:hover {
-          background: var(--bg-hover);
-        }
-        .benefit-badge {
-          width: 34px;
-          height: 34px;
-          border-radius: 8px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-shrink: 0;
-        }
-        .benefit-title-text {
-          font-size: 15px;
-          font-weight: 600;
-          color: var(--text-main);
-          flex: 1;
-        }
-        .benefit-chevron {
-          color: var(--text-muted);
-          transition: transform 0.2s ease;
-        }
-        .benefit-chevron.open {
-          transform: rotate(180deg);
-          color: ${platformColor};
-        }
-        .benefit-dropdown-content {
-          padding: 0 20px 16px 70px;
-        }
-        .benefit-dropdown-content p {
-          margin: 0;
-          font-size: 14px;
-          color: var(--text-secondary);
-          line-height: 1.6;
-        }
-      `}</style>
-
-      <div className="section-heading">
-        <h3>Impact</h3>
-      </div>
-
+      <div className="section-heading"><h3>Impact</h3></div>
       <div className="impact-header-text">
         <h4>{data.title}</h4>
         <p>{data.description}</p>
       </div>
-
       <div className="benefits-accordion-list">
-        {data.metrics.map((m: any, index: number) => {
-          const isOpen = openIndex === index;
-          return (
-            <div key={m.title} className="benefit-accordion-item">
-              <div className="benefit-header-row" onClick={() => toggleItem(index)}>
-                <div className="benefit-badge" style={{ color: platformColor, backgroundColor: `${platformColor}15` }}>
-                  <m.icon size={18} strokeWidth={2.5} />
-                </div>
-                <div className="benefit-title-text">{m.title}</div>
-                <ChevronDown size={18} className={`benefit-chevron ${isOpen ? 'open' : ''}`} />
+        {data.metrics?.map((m: any, index: number) => (
+          <div key={index} className="benefit-accordion-item">
+            <div className="benefit-header-row">
+              <div className="benefit-badge" style={{ color: platformColor, backgroundColor: `${platformColor}15` }}>
+                <m.icon size={18} strokeWidth={2.5} />
               </div>
-              {isOpen && (
-                <div className="benefit-dropdown-content">
-                  <p>{m.subtitle}</p>
-                </div>
-              )}
+              <div className="benefit-title-text">
+                <strong>{m.title}</strong> — <span style={{ color: 'var(--text-secondary)' }}>{m.subtitle}</span>
+              </div>
             </div>
-          );
-        })}
+          </div>
+        ))}
       </div>
     </div>
   );
 }
 
-/* =========================================================
-   GENERIC COMPONENTS
-========================================================= */
-
-function TextSection({ title, text }: { title: string; text: string }) {
-  return <div className="content-section"><div className="section-heading"><h3>{title}</h3></div><div className="text-panel"><p>{text}</p></div></div>;
-}
-
-function Access({ content }: { content: (typeof solutionContent)[SolutionId] }) {
-  const hasUrl = content.access.startsWith('http');
+function Access({ content }: { content: any }) {
+  const hasUrl = content.access?.startsWith('http');
   return (
     <div className="content-section">
       <div className="section-heading"><h3>Access Details</h3></div>
@@ -2391,34 +1331,40 @@ function Access({ content }: { content: (typeof solutionContent)[SolutionId] }) 
         <div className="access-row" style={{ justifyContent: 'space-between' }}>
           <div>
             <span>Application Access</span>
-            {/* Only display the raw text if it is NOT a valid URL */}
             {!hasUrl && <strong>{content.access}</strong>}
           </div>
           {hasUrl && <a href={content.access} target="_blank" rel="noreferrer" className="primary-button">Open Tool<ExternalLink size={16} /></a>}
-        </div>
-        <div className="poc-row">
-          <span>Points of Contact</span>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '12px' }}>
-            {content.poc.map((p: any, i: number) => (
-              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <UserIcon size={16} style={{ color: 'var(--text-muted)' }} />
-                <strong style={{ color: 'var(--text-main)', fontSize: '14px' }}>{p.name}</strong>
-                <span style={{ color: 'var(--text-secondary)', fontSize: '14px', margin: 0 }}>({p.ldap})</span>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
     </div>
   );
 }
 
-function Feedback({ content }: { content: (typeof solutionContent)[SolutionId] }) {
-  return <div className="content-section"><div className="section-heading"><h3>Feedback</h3></div><div className="feedback-panel"><MessageSquare size={33} /><div><h4>Share your feedback</h4><p>Use the approved Google Form to share suggestions and improvement feedback.</p><a href={content.feedback} target="_blank" rel="noreferrer" className="primary-button">Open Google Form<ExternalLink size={16} /></a></div></div></div>;
+function Feedback({ content }: { content: any }) {
+  return (
+    <div className="content-section">
+      <div className="section-heading"><h3>Feedback</h3></div>
+      <div className="feedback-panel">
+        <MessageSquare size={33} />
+        <div>
+          <h4>Share your feedback</h4>
+          <p>Use the Google Form to share suggestions and feedback for {content.shortName}.</p>
+          <a href={content.feedback} target="_blank" rel="noreferrer" className="primary-button">Open Form<ExternalLink size={16} /></a>
+        </div>
+      </div>
+    </div>
+  );
 }
 
-function Demo({ content }: { content: (typeof solutionContent)[SolutionId] }) {
-  return <div className="content-section"><div className="section-heading"><h3>Demo</h3></div><div className="demo-panel">{content.demo ? <video controls src={content.demo} /> : <><PlayCircle size={53} /><h4>{content.shortName} Demo</h4><p>Approved demo video can be embedded here.</p></>}</div></div>;
+function Demo({ content }: { content: any }) {
+  return (
+    <div className="content-section">
+      <div className="section-heading"><h3>Demo</h3></div>
+      <div className="demo-panel">
+        {content.demo ? <video controls src={content.demo} /> : <><PlayCircle size={53} /><h4>{content.shortName} Demo</h4><p>Approved video demo will be hosted here.</p></>}
+      </div>
+    </div>
+  );
 }
 
 export default App;
