@@ -52,7 +52,10 @@ import {
   GitBranch,
   Layers3,
   FilterX,
-  ArrowLeft
+  ArrowLeft,
+  Bell,
+  LayoutGrid,
+  Cloud
 } from 'lucide-react';
 
 import puzzleBg from './background.jpeg';
@@ -73,135 +76,18 @@ type BenefitItem = {
 };
 
 /* =========================================================
-   GLOBAL THEME STYLES (Light & Dark Mode)
-========================================================= */
-
-function GlobalThemeStyles() {
-  return (
-    <style>{`
-      :root {
-        --bg-main: #f8fafc;
-        --bg-card: #ffffff;
-        --bg-hover: #f1f5f9;
-        --bg-blue-card: #f4f8fd;
-        --bg-green-card: #f0fdf4;
-        --text-main: #0f172a;
-        --text-secondary: #475569;
-        --text-muted: #64748b;
-        --text-green: #166534;
-        --border-main: #e2e8f0;
-        --border-soft: #f1f5f9;
-        --shadow-sm: 0 4px 12px rgba(0,0,0,0.05);
-        --badge-bg: #eff6ff;
-        --pill-bg: #dcfce7;
-      }
-
-      .dark {
-        --bg-main: #0f172a;
-        --bg-card: #1e293b;
-        --bg-hover: #334155;
-        --bg-blue-card: #1e293b;
-        --bg-green-card: #1e293b;
-        --text-main: #f8fafc;
-        --text-secondary: #cbd5e1;
-        --text-muted: #94a3b8;
-        --text-green: #4ade80;
-        --border-main: #334155;
-        --border-soft: #1e293b;
-        --shadow-sm: 0 4px 12px rgba(0,0,0,0.5);
-        --badge-bg: #334155;
-        --pill-bg: #064e3b;
-      }
-
-      body {
-        background-color: transparent !important;
-        color: var(--text-main);
-        margin: 0 !important;
-      }
-
-      body::before {
-        content: "";
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 125vw; 
-        height: 125vh;
-        background: url(${bgImage}) center/cover no-repeat;
-        z-index: -999;
-        pointer-events: none;
-      }
-
-      body.dark::before {
-        display: none !important;
-      }
-      body.dark {
-        background-color: var(--bg-main) !important;
-      }
-
-      @keyframes themePulse {
-        0% { box-shadow: 0 0 0 0 rgba(66, 133, 244, 0.6); }
-        70% { box-shadow: 0 0 0 12px rgba(66, 133, 244, 0); }
-        100% { box-shadow: 0 0 0 0 rgba(66, 133, 244, 0); }
-      }
-
-      .dark .app, 
-      .dark .no-sidebar-app, 
-      .dark .main-page-content { 
-       background-color: transparent !important; 
-      }
-      
-      .dark .hub-card,
-      .dark .hub-hero-card {
-        background: var(--bg-card) !important;
-        border-color: var(--border-main) !important;
-      }
-      .dark .hub-hero-card h3, .dark .hub-card h4 { color: var(--text-main) !important; }
-      .dark .hub-hero-card p, .dark .hub-card p { color: var(--text-secondary) !important; }
-
-      .dark .wiki-home,
-      .dark .solution-page { background: var(--bg-card) !important; border-color: var(--border-main) !important; }
-      .dark .solution-header { border-bottom-color: var(--border-main) !important; }
-      .dark .solution-header h2 { color: var(--text-main) !important; }
-      .dark .solution-header p, .dark .header-sub { color: var(--text-secondary) !important; }
-      
-      .dark .solution-tabs { background: var(--bg-card) !important; border-right-color: var(--border-main) !important; }
-      .dark .solution-tabs button { color: var(--text-secondary) !important; }
-      .dark .solution-tabs button:hover { background: var(--bg-hover) !important; }
-      .dark .solution-tabs button.active { background: var(--bg-hover) !important; color: var(--text-main) !important; }
-      
-      .dark .section-heading h3 { color: var(--text-main) !important; }
-      .dark .text-panel, .dark .impact-panel, .dark .access-panel, .dark .feedback-panel, .dark .demo-panel { 
-        background-color: var(--bg-card) !important; 
-        border-color: var(--border-main) !important; 
-      }
-      .dark .text-panel p, .dark .impact-panel p, .dark .feedback-panel p, .dark .demo-panel p { color: var(--text-secondary) !important; }
-      .dark .access-row { border-bottom-color: var(--border-soft) !important; }
-      .dark .access-row span, .dark .poc-row span { color: var(--text-muted) !important; }
-      .dark .access-row strong { color: var(--text-main) !important; }
-      .dark .poc-row { background-color: var(--bg-hover) !important; }
-      .dark .poc-row p { color: var(--text-secondary) !important; }
-      .dark .feedback-panel h4, .dark .demo-panel h4 { color: var(--text-main) !important; }
-
-      .dark .p-card, .dark .s-card { background-color: var(--bg-card) !important; border-color: var(--border-main) !important; }
-      .dark .p-callout, .dark .s-callout { background-color: var(--bg-hover) !important; }
-      .dark .p-trans, .dark .s-trans { background-color: var(--bg-hover) !important; border-color: var(--border-main) !important; }
-    `}</style>
-  );
-}
-
-/* =========================================================
    SOLUTIONS DATA
 ========================================================= */
 
 const solutions = [
-  { id: 'core' as NavigationId, name: 'C.O.R.E.', subtitle: 'Talent Acquisition & Readiness', icon: Target, color: '#1a73e8' },
-  { id: 'elevate' as NavigationId, name: 'Elevate360', subtitle: 'Operational Governance', icon: BarChart3, color: '#34a853' },
-  { id: 'sme' as NavigationId, name: 'Digital SME', subtitle: 'Automating Case Execution', icon: Bot, color: '#9333ea' },
-  { id: 'accelerate' as NavigationId, name: 'Project Accelerate', subtitle: 'Risk Intelligence & Control', icon: Zap, color: '#ea580c' },
-  { id: 'crado' as NavigationId, name: 'CRADO', subtitle: 'Automated Billing Deduction', icon: FileText, color: '#0ea5e9' },
-  { id: 'arc' as NavigationId, name: 'ARC', subtitle: 'Intelligent Frontline Routing', icon: GitBranch, color: '#e11d48' },
-  { id: 'aura' as NavigationId, name: 'AURA', subtitle: 'End-to-End Support Enablement', icon: Layers3, color: '#4f46e5' },
-  { id: 'star' as NavigationId, name: 'STAR', subtitle: 'Intelligent Re-contact Deflection', icon: FilterX, color: '#059669' },
+  { id: 'core' as NavigationId, name: 'C.O.R.E.', subtitle: 'Talent Acquisition & Readiness', icon: Target, color: '#4285F4' },
+  { id: 'elevate' as NavigationId, name: 'Elevate360', subtitle: 'Operational Governance', icon: BarChart3, color: '#34A853' },
+  { id: 'sme' as NavigationId, name: 'Digital SME', subtitle: 'Automating Case Execution', icon: Bot, color: '#9333EA' },
+  { id: 'accelerate' as NavigationId, name: 'Project Accelerate', subtitle: 'Risk Intelligence & Control', icon: Zap, color: '#FBBC04' },
+  { id: 'crado' as NavigationId, name: 'CRADO', subtitle: 'Automated Billing Deduction', icon: FileText, color: '#0EA5E9' },
+  { id: 'arc' as NavigationId, name: 'ARC', subtitle: 'Intelligent Frontline Routing', icon: GitBranch, color: '#F43F5E' },
+  { id: 'aura' as NavigationId, name: 'AURA', subtitle: 'End-to-End Support Enablement', icon: Layers3, color: '#6366F1' },
+  { id: 'star' as NavigationId, name: 'STAR', subtitle: 'Intelligent Re-contact Deflection', icon: FilterX, color: '#10B981' },
 ];
 
 const FEEDBACK_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSf0zu4Q-0kTjP03BLKMIPfQLePmL0P3xyAaaWr5COiuTGKqlA/viewform?usp=publish-editor';
@@ -278,6 +164,7 @@ const solutionContent: Record<SolutionId, any> = {
     feedback: FEEDBACK_URL,
     demo: coreVideo,
   },
+
   elevate: {
     shortName: 'Elevate360',
     name: 'Elevate360',
@@ -343,6 +230,7 @@ const solutionContent: Record<SolutionId, any> = {
     feedback: FEEDBACK_URL,
     demo: '',
   },
+
   sme: {
     shortName: 'Digital SME',
     name: 'Digital SME',
@@ -403,6 +291,7 @@ const solutionContent: Record<SolutionId, any> = {
     feedback: FEEDBACK_URL,
     demo: '',
   },
+
   accelerate: {
     shortName: 'Project Accelerate',
     name: 'Project Accelerate',
@@ -463,6 +352,7 @@ const solutionContent: Record<SolutionId, any> = {
     feedback: FEEDBACK_URL,
     demo: '',
   },
+
   crado: {
     shortName: 'CRADO',
     name: 'CRADO (Calculation of Revenue Adjustment and Drafting Orchestrator)',
@@ -523,6 +413,7 @@ const solutionContent: Record<SolutionId, any> = {
     feedback: FEEDBACK_URL,
     demo: '',
   },
+
   arc: {
     shortName: 'ARC',
     name: 'ARC (Automated Routing & Closure)',
@@ -582,6 +473,7 @@ const solutionContent: Record<SolutionId, any> = {
     feedback: FEEDBACK_URL,
     demo: '',
   },
+
   aura: {
     shortName: 'AURA',
     name: 'AURA (Automated Unified Response Assistant)',
@@ -641,6 +533,7 @@ const solutionContent: Record<SolutionId, any> = {
     feedback: FEEDBACK_URL,
     demo: '',
   },
+
   star: {
     shortName: 'STAR',
     name: 'STAR (Smart Triage And Resolution)',
@@ -844,7 +737,7 @@ const CodeGeneratedPuzzleArtwork = () => (
 );
 
 /* =========================================================
-   EXACT REPLICA: ASYMMETRIC DASHBOARD
+   EXACT REPLICA: ASYMMETRIC DASHBOARD (DARK GLASSMORPHISM)
 ========================================================= */
 
 function AsymmetricDashboard({ onSelect }: { onSelect: (id: NavigationId) => void }) {
@@ -858,10 +751,10 @@ function AsymmetricDashboard({ onSelect }: { onSelect: (id: NavigationId) => voi
             <path d="M 0,0 L 200,0 L 200,200 C 130,200 60,130 0,60 Z" fill="#dbeafe" />
           </svg>
         </div>
-        {/* Bottom-left green curve wave */}
+        {/* Bottom-left yellow/green curve wave */}
         <div className="hub-hero-blob-green">
           <svg viewBox="0 0 200 200" width="100%" height="100%" preserveAspectRatio="none">
-            <path d="M 0,200 L 0,0 C 0,80 80,200 200,200 Z" fill="#d1fae5" />
+            <path d="M 0,200 L 0,0 C 0,80 80,200 200,200 Z" fill="#fef08a" />
           </svg>
         </div>
         {/* Bottom-right subtle curve */}
@@ -890,32 +783,27 @@ function AsymmetricDashboard({ onSelect }: { onSelect: (id: NavigationId) => voi
             title="Explore Innovation Wiki"
             aria-label="Explore Innovation Wiki"
           >
-            <ArrowRight size={22} color="white" strokeWidth={2.8} />
+            <ArrowRight size={24} color="white" strokeWidth={3} />
           </button>
         </div>
       </div>
 
       {/* 2. Right Grid Container (All 8 Application Cards Unified in Size) */}
       <div className="hub-grid-right">
-        {solutions.map((s, index) => {
+        {solutions.map((s) => {
           return (
             <div key={s.id} className="hub-card" onClick={() => onSelect(s.id)}>
-              {/* Top Right Convex Curve Decoration matching image styling */}
-              <div className="hub-card-corner-accent" style={{ color: s.color }}>
-                <svg viewBox="0 0 100 100" width="100%" height="100%" preserveAspectRatio="none">
-                  <path d="M 0 0 H 100 V 100 C 100 44.77 55.23 0 0 0 Z" fill="currentColor" />
-                </svg>
-              </div>
-              
-              <div className="hub-card-content">
-                <div className="hub-card-icon-wrap" style={{ color: s.color, backgroundColor: `${s.color}15` }}>
-                  <s.icon size={36} strokeWidth={2.3} />
+              <div className="hub-card-top">
+                <div className="hub-card-icon-wrap" style={{ color: '#ffffff', backgroundColor: s.color, boxShadow: `0 0 15px ${s.color}60` }}>
+                  <s.icon size={22} strokeWidth={2.5} />
                 </div>
+                <div className="hub-card-arrow">
+                  <ArrowRight size={16} strokeWidth={3} color="#ffffff" />
+                </div>
+              </div>
+              <div className="hub-card-bottom">
                 <h4>{s.name}</h4>
                 <p>{s.subtitle}</p>
-              </div>
-              <div className="hub-card-arrow" style={{ backgroundColor: `${s.color}15`, color: s.color }}>
-                <ArrowRight size={16} strokeWidth={3} />
               </div>
             </div>
           );
@@ -1048,7 +936,7 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
   };
 
   return (
-     <div style={{ minHeight: '100vh', width: '100%', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px', fontFamily: 'system-ui, sans-serif', position: 'relative' }}>
+     <div style={{ minHeight: '100vh', width: '100%', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px', fontFamily: 'system-ui, sans-serif', position: 'relative', zIndex: 10 }}>
       {dragState.isDragging && dragState.id !== null && (
         <div style={{ position: 'fixed', left: 0, top: 0, width: '100px', height: '100px', transform: `translate(${dragState.x}px, ${dragState.y}px) scale(1.05)`, zIndex: 9999, pointerEvents: 'none', filter: 'drop-shadow(0 12px 24px rgba(0,0,0,0.25))' }}>
           {renderPuzzlePiece(dragState.id)}
@@ -1081,14 +969,14 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
               </div>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 16px', background: 'var(--bg-card)', border: '1px solid var(--border-main)', borderRadius: '8px', fontWeight: 'bold', fontSize: '18px', boxShadow: 'var(--shadow-sm)', color: '#dc2626' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 16px', background: 'var(--bg-card)', border: '1px solid var(--border-main)', borderRadius: '8px', fontWeight: 'bold', fontSize: '18px', boxShadow: 'var(--shadow-sm)', color: '#ef4444' }}>
                 <Clock size={20} />{formatTime(timeLeft)}
               </div>
-              <button onClick={handleRetry} style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid var(--border-main)', background: 'var(--bg-card)', color: 'var(--text-secondary)', fontWeight: 600, cursor: 'pointer', transition: 'background 0.2s', boxShadow: 'var(--shadow-sm)' }}>Retry</button>
+              <button onClick={handleRetry} style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid var(--border-main)', background: 'var(--bg-card)', color: 'var(--text-main)', fontWeight: 600, cursor: 'pointer', transition: 'background 0.2s', boxShadow: 'var(--shadow-sm)' }}>Retry</button>
             </div>
           </div>
           <div style={{ position: 'fixed', bottom: '40px', left: '40px', zIndex: 50 }}>
-            <button onClick={onSkip} style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid var(--border-main)', background: 'var(--bg-card)', color: 'var(--text-secondary)', fontWeight: 600, cursor: 'pointer', transition: 'background 0.2s', boxShadow: 'var(--shadow-sm)' }}>Skip Puzzle</button>
+            <button onClick={onSkip} style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid var(--border-main)', background: 'var(--bg-card)', color: 'var(--text-main)', fontWeight: 600, cursor: 'pointer', transition: 'background 0.2s', boxShadow: 'var(--shadow-sm)' }}>Skip Puzzle</button>
           </div>
         </>
       )}
@@ -1116,7 +1004,7 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
               display: 'grid', gridTemplateColumns: `repeat(${GRID_SIZE}, ${TILE_SIZE}px)`, gridTemplateRows: `repeat(${GRID_SIZE}, ${TILE_SIZE}px)`, 
               gap: '0px', padding: '12px', background: 'var(--bg-card)', borderRadius: '16px', 
               boxShadow: isFailed ? '0 0 30px rgba(220, 38, 38, 0.4)' : 'var(--shadow-sm)', 
-              border: `2px solid ${isFailed ? '#dc2626' : 'var(--border-main)'}`, transition: 'all 0.5s ease', position: 'relative'
+              border: `2px solid ${isFailed ? '#ef4444' : 'var(--border-main)'}`, transition: 'all 0.5s ease', position: 'relative'
             }}>
             {slots.map((pieceId, index) => (
               <div key={index} style={{ width: `${TILE_SIZE}px`, height: `${TILE_SIZE}px`, position: 'relative', border: pieceId === null ? '1px dashed var(--border-main)' : 'none', borderRadius: '6px' }}>
@@ -1129,7 +1017,7 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
         <div className="puzzle-pool" style={{ width: '500px', height: isSolved ? '400px' : '428px', boxSizing: 'border-box', overflowY: 'auto', overflowX: 'hidden', display: 'flex', flexDirection: 'column', padding: '24px', background: 'var(--bg-card)', borderRadius: '16px', border: '1px solid var(--border-main)' }}>
           {isSolved ? (
             <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', animation: 'fadeIn 0.5s ease' }}>
-              <div style={{ width: '60px', height: '60px', borderRadius: '50%', backgroundColor: '#dcfce7', color: '#166534', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '20px' }}>
+              <div style={{ width: '60px', height: '60px', borderRadius: '50%', backgroundColor: 'rgba(52, 168, 83, 0.2)', color: '#34A853', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '20px' }}>
                 <ShieldCheck size={32} />
               </div>
               <h3 style={{ margin: '0 0 20px', color: 'var(--text-main)', fontWeight: 'bold' }}>Verification Successful</h3>
@@ -1139,12 +1027,12 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
             </div>
           ) : isFailed ? (
             <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', animation: 'fadeIn 0.5s ease' }}>
-              <div style={{ width: '60px', height: '60px', borderRadius: '50%', backgroundColor: '#fee2e2', color: '#dc2626', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '20px' }}>
+              <div style={{ width: '60px', height: '60px', borderRadius: '50%', backgroundColor: 'rgba(239, 68, 68, 0.2)', color: '#ef4444', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '20px' }}>
                 <X size={32} />
               </div>
               <h3 style={{ margin: '0 0 12px', color: 'var(--text-main)' }}>Time's Up!</h3>
               <p style={{ margin: '0 0 20px', color: 'var(--text-secondary)', textAlign: 'center' }}>You ran out of time to complete the puzzle.</p>
-              <button onClick={handleRetry} style={{ padding: '14px 28px', borderRadius: '8px', border: 'none', background: '#dc2626', color: 'white', fontSize: '16px', fontWeight: 600, cursor: 'pointer', boxShadow: '0 4px 12px rgba(220, 38, 38, 0.3)' }}>Try Again</button>
+              <button onClick={handleRetry} style={{ padding: '14px 28px', borderRadius: '8px', border: 'none', background: '#ef4444', color: 'white', fontSize: '16px', fontWeight: 600, cursor: 'pointer', boxShadow: '0 4px 12px rgba(239, 68, 68, 0.3)' }}>Try Again</button>
             </div>
           ) : (
             <>
@@ -1171,7 +1059,7 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
 ========================================================= */
 
 function App() {
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const [theme, setTheme] = useState<'light' | 'dark'>('dark'); // Force dark glass theme default
   const [isPuzzleCompleted, setIsPuzzleCompleted] = useState(false);
   const [selectedSolution, setSelectedSolution] = useState<NavigationId>('dashboard');
   const [activeSection, setActiveSection] = useState<SectionId>('overview');
@@ -1198,13 +1086,13 @@ function App() {
         position: 'fixed', bottom: '30px', right: '40px', zIndex: 9999,
         width: '48px', height: '48px', borderRadius: '50%',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        background: 'var(--bg-card)', border: '2px solid #4285F4',
+        background: 'var(--bg-card)', border: '1px solid rgba(255,255,255,0.2)',
         boxShadow: 'var(--shadow-sm)', cursor: 'pointer', color: 'var(--text-main)',
         transition: 'all 0.3s ease',
-        animation: 'themePulse 2s infinite'
+        backdropFilter: 'blur(10px)'
       }}
     >
-      {theme === 'light' ? <Moon size={22} color="#4285F4" /> : <Sun size={22} color="#FBBC04" />}
+      {theme === 'light' ? <Moon size={22} color="#1a73e8" /> : <Sun size={22} color="#FBBC04" />}
     </button>
   );
 
@@ -1213,6 +1101,12 @@ function App() {
       <div className={`app no-sidebar-app ${theme}`}>
         <GlobalThemeStyles />
         <ThemeToggle />
+        {/* Abstract Background For Splash Screen */}
+        <div className="global-bg-waves" aria-hidden="true">
+          <div className="dark-blob blob-purple"></div>
+          <div className="dark-blob blob-yellow"></div>
+          <div className="dark-blob blob-cyan"></div>
+        </div>
         <PuzzleSplash onComplete={() => setIsPuzzleCompleted(true)} onSkip={() => setIsPuzzleCompleted(true)} />
       </div>
     );
@@ -1223,56 +1117,76 @@ function App() {
       <GlobalThemeStyles />
       <ThemeToggle />
       
-      {/* GLOBAL BACKGROUND WAVES AND GLOW */}
+      {/* GLOBAL DARK BACKGROUND WAVES AND GLOW (EXACT MATCH FOR IMAGE 25) */}
       <div className="global-bg-waves" aria-hidden="true">
-        <div className="global-pale-center-glow"></div>
+        <div className="dark-blob blob-purple"></div>
+        <div className="dark-blob blob-yellow"></div>
+        <div className="dark-blob blob-cyan"></div>
+        <div className="waveBackground">
+          <svg viewBox="0 0 1600 260" preserveAspectRatio="none" className="wave wave1">
+            <path d="M0,170 C250,60 380,250 650,150 C900,60 1080,230 1300,120 C1430,55 1520,90 1600,45 L1600,260 L0,260 Z" fill="url(#blueWave)" />
+            <defs>
+              <linearGradient id="blueWave" x1="0" x2="1">
+                <stop offset="0%" stopColor="#0066ff" />
+                <stop offset="45%" stopColor="#1547db" />
+                <stop offset="75%" stopColor="#5135ed" />
+                <stop offset="100%" stopColor="#0099ff" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
       </div>
 
       <main className="main no-sidebar-main" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
         
-        {/* HEADER: Matches the Exact Image Architecture */}
+        {/* HEADER: Matches the Exact Image Architecture (Source 25) */}
         <header className="image-replica-header">
           <div className="header-left">
-            <span className="gcp-brand">
-              <span className="gcp-blue">G</span>
-              <span className="gcp-red">C</span>
-              <span className="gcp-green">P</span>
-            </span>
-            <h1 className="header-title">Tech Transformation Solutions</h1>
+            <div className="header-logo-circle">
+              <svg width="40" height="40" viewBox="0 0 100 100" fill="none">
+                <circle cx="50" cy="50" r="44" stroke="#e2e8f0" strokeWidth="4" />
+                <path d="M 50 6 A 44 44 0 0 1 94 50" stroke="#EA4335" strokeWidth="6" strokeLinecap="round" />
+                <path d="M 94 50 A 44 44 0 0 1 50 94" stroke="#FBBC04" strokeWidth="6" strokeLinecap="round" />
+                <path d="M 50 94 A 44 44 0 0 1 6 50" stroke="#34A853" strokeWidth="6" strokeLinecap="round" />
+                <path d="M 6 50 A 44 44 0 0 1 50 6" stroke="#4285F4" strokeWidth="6" strokeLinecap="round" />
+                <path d="M 65 60 H 35 A 8 8 0 0 1 35 44 A 10 10 0 0 1 42 40 A 12 12 0 0 1 61 48 A 8 8 0 0 1 65 60 Z" fill="#4285F4" />
+                <path d="M 45 54 L 50 59 L 60 49" stroke="#ffffff" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
+            <div className="header-title-block">
+              <h1 className="header-title">
+                <span style={{color: '#4285F4'}}>G</span>
+                <span style={{color: '#EA4335'}}>C</span>
+                <span style={{color: '#34A853'}}>P</span> Tech Transformation Solutions
+              </h1>
+              <span className="header-subtitle">Your central hub for knowledge, collaboration and innovation.</span>
+            </div>
+          </div>
+
+          <div className="header-center-search">
+            <Search size={16} />
+            <input type="text" placeholder="Search wiki..." />
           </div>
 
           <div className="header-right">
-            <div className="google-dots-row">
-              <span className="dot dot-blue"></span>
-              <span className="dot dot-red"></span>
-              <span className="dot dot-yellow"></span>
-              <span className="dot dot-green"></span>
+            <div className="header-icons">
+              <button><Bell size={20} /></button>
+              <button><LayoutGrid size={20} /></button>
+              <button className="user-avatar"><UserIcon size={20} /></button>
             </div>
-
-            <div className="header-pillars">
-              <span>Stronger People</span>
-              <span className="pillar-sep">|</span>
+            
+            <div className="header-stacked-text">
+              <span>Stronger<br/>People</span>
               <span>Smarter Operations</span>
-              <span className="pillar-sep">|</span>
-              <span>Better Customer Experiences</span>
+              <span>Better Customer<br/>Experiences</span>
             </div>
-          </div>
-
-          {/* Decorative Google Quadrant Fan in Top-Right Corner */}
-          <div className="google-corner-fan" aria-hidden="true">
-            <svg viewBox="0 0 160 160" width="160" height="160" fill="none">
-              <path d="M 160,0 A 160,160 0 0,0 0,160 L 160,160 Z" fill="#FBBC04" />
-              <path d="M 160,0 A 120,120 0 0,0 40,160 L 160,160 Z" fill="#4285F4" />
-              <path d="M 160,0 A 80,80 0 0,0 80,160 L 160,160 Z" fill="#EA4335" />
-              <path d="M 160,0 A 40,40 0 0,0 120,160 L 160,160 Z" fill="#34A853" />
-            </svg>
           </div>
         </header>
 
         {/* BODY CONTAINER */}
         <div style={{ flex: 1, position: 'relative', zIndex: 2 }}>
           {selectedSolution === 'dashboard' ? (
-            /* First Page View: Only Cards Are Shown (No Scroll Topbar) */
+            /* First Page View: Dark Glass Grid */
             <AsymmetricDashboard onSelect={openSolution} />
           ) : (
             /* Selected View: Isolated Detail View with Back Button */
@@ -1284,15 +1198,16 @@ function App() {
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: '8px',
-                    padding: '8px 16px',
+                    padding: '10px 18px',
                     borderRadius: '8px',
-                    border: '1px solid var(--border-main)',
-                    background: 'var(--bg-card)',
-                    color: '#1a73e8',
+                    border: '1px solid rgba(255,255,255,0.2)',
+                    background: 'rgba(0, 0, 0, 0.4)',
+                    backdropFilter: 'blur(10px)',
+                    color: '#ffffff',
                     fontWeight: 600,
                     cursor: 'pointer',
                     fontSize: '14px',
-                    boxShadow: 'var(--shadow-sm)',
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
                     transition: 'background 0.2s'
                   }}
                 >
@@ -1316,33 +1231,30 @@ function App() {
           )}
         </div>
 
-        {/* FOOTER: Matches the Exact Image Architecture */}
+        {/* FOOTER: Matches Exact Image Architecture */}
         <footer className="image-replica-footer">
           <div className="footer-left">
-            {/* Google Cloud-style multicolor cloud icon */}
-            <svg width="26" height="26" viewBox="0 0 40 40" fill="none" style={{ flexShrink: 0 }}>
-              <path d="M 28 30 H 12 A 7 7 0 0 1 12 16 A 8 8 0 0 1 17 14 A 10 10 0 0 1 33 21 A 7 7 0 0 1 28 30 Z" fill="none" stroke="#EA4335" strokeWidth="3" />
-              <path d="M 12 30 H 28" stroke="#4285F4" strokeWidth="4" strokeLinecap="round" />
-              <path d="M 12 22 A 6 6 0 0 1 18 16" stroke="#FBBC04" strokeWidth="4" strokeLinecap="round" />
-              <path d="M 18 16 A 9 9 0 0 1 30 22" stroke="#34A853" strokeWidth="4" strokeLinecap="round" />
-            </svg>
-            <span className="footer-motto">Build &nbsp;·&nbsp; Transform &nbsp;·&nbsp; Scale</span>
+            <Cloud size={24} color="#ffffff" strokeWidth={2} />
+            <span className="footer-motto">Transform &nbsp;|&nbsp; Optimize &nbsp;|&nbsp; Scale Together</span>
           </div>
 
-          <div className="footer-center-bar-container">
-            <div className="footer-center-bar">
-              <span className="bar-seg bar-blue"></span>
-              <span className="bar-seg bar-red"></span>
-              <span className="bar-seg bar-yellow"></span>
-              <span className="bar-seg bar-green"></span>
+          <div className="footer-right">
+            <div className="footer-angled-text">
+              <span>Transform</span>
+              <span>Ideas into</span>
+              <span className="impact-text">Impact</span>
             </div>
-          </div>
-
-          {/* Light-blue 3x4 dot matrix */}
-          <div className="footer-right-matrix" aria-hidden="true">
-            <div className="matrix-dot"></div><div className="matrix-dot"></div><div className="matrix-dot"></div><div className="matrix-dot"></div>
-            <div className="matrix-dot"></div><div className="matrix-dot"></div><div className="matrix-dot"></div><div className="matrix-dot"></div>
-            <div className="matrix-dot"></div><div className="matrix-dot"></div><div className="matrix-dot"></div><div className="matrix-dot"></div>
+            <div className="footer-cloud-outline">
+              <svg viewBox="0 0 100 60" width="120" height="70" fill="none">
+                 <path d="M 80 45 H 20 A 15 15 0 0 1 20 15 A 16 16 0 0 1 35 12 A 20 20 0 0 1 70 25 A 15 15 0 0 1 80 45 Z" stroke="rgba(255,255,255,0.8)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
+            <div className="footer-four-dots">
+              <span className="dot dot-blue"></span>
+              <span className="dot dot-red"></span>
+              <span className="dot dot-yellow"></span>
+              <span className="dot dot-green"></span>
+            </div>
           </div>
         </footer>
       </main>
@@ -1414,7 +1326,7 @@ function SolutionPage({ solutionId, activeSection, setActiveSection }: SolutionP
         <div className="solution-header-left">
           <div className="breadcrumbs">Solutions &gt; {content.shortName}</div>
           <div className="solution-title-row">
-            <div className="solution-header-icon" style={{ color: platform.color, backgroundColor: `${platform.color}15` }}>
+            <div className="solution-header-icon" style={{ color: '#ffffff', backgroundColor: platform.color, boxShadow: `0 0 15px ${platform.color}60` }}>
               <Icon size={28} strokeWidth={2.5} />
             </div>
             <div>
@@ -1451,7 +1363,7 @@ function SolutionPage({ solutionId, activeSection, setActiveSection }: SolutionP
           {activeSection === 'overview' && <EnhancedOverview content={content} setActiveSection={setActiveSection} />}
           {activeSection === 'problem' && <EnhancedProblem data={content.problem} platformColor={platform.color} platformIcon={Icon} />}
           {activeSection === 'solution' && <EnhancedSolution data={content.solution} platformColor={platform.color} platformIcon={Icon} />}
-          {activeSection === 'benefits' && <Benefits benefits={content.benefits as BenefitItem[]} />}
+          {activeSection === 'benefits' && <Benefits benefits={content.benefits as BenefitItem[]} platformColor={platform.color} />}
           {activeSection === 'usage' && <Usage content={content} platformColor={platform.color} />}
           {activeSection === 'impact' && <Impact content={content} platformColor={platform.color} />}
           {activeSection === 'access' && <Access content={content} />}
@@ -1613,7 +1525,7 @@ function EnhancedSolution({ data, platformColor }: any) {
   );
 }
 
-function Benefits({ benefits }: { benefits: BenefitItem[] }) {
+function Benefits({ benefits, platformColor }: { benefits: BenefitItem[], platformColor: string }) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   if (!benefits) return null;
 
@@ -1626,7 +1538,7 @@ function Benefits({ benefits }: { benefits: BenefitItem[] }) {
           return (
             <div key={benefit.title} className="benefit-accordion-item">
               <div className="benefit-header-row" onClick={() => setOpenIndex(isOpen ? null : index)}>
-                <div className="benefit-badge">{String(index + 1).padStart(2, '0')}</div>
+                <div className="benefit-badge" style={{ backgroundColor: `${platformColor}20`, color: platformColor }}>{String(index + 1).padStart(2, '0')}</div>
                 <div className="benefit-title-text">{benefit.title}</div>
                 <ChevronDown size={18} className={`benefit-chevron ${isOpen ? 'open' : ''}`} />
               </div>
