@@ -190,7 +190,7 @@ function GlobalThemeStyles() {
 }
 
 /* =========================================================
-   TOP PLATFORM NAVIGATION & CONTENT DATA
+   SOLUTIONS DATA
 ========================================================= */
 
 const solutions = [
@@ -851,7 +851,7 @@ const CodeGeneratedPuzzleArtwork = () => (
 );
 
 /* =========================================================
-   ASYMMETRIC DASHBOARD COMPONENT (EXACT IMAGE REPLICA)
+   EXACT REPLICA: ASYMMETRIC DASHBOARD
 ========================================================= */
 
 function AsymmetricDashboard({ onSelect }: { onSelect: (id: NavigationId) => void }) {
@@ -859,16 +859,25 @@ function AsymmetricDashboard({ onSelect }: { onSelect: (id: NavigationId) => voi
     <div className="dashboard-hub-container">
       {/* 1. Large Left Card: Innovation Wiki */}
       <div className="hub-hero-card">
-        <div className="hub-hero-blob-1"></div>
-        <div className="hub-hero-blob-2"></div>
+        {/* Abstract pale-blue top curve */}
+        <div className="hub-hero-blob-blue"></div>
+        {/* Bottom-left green curve wave */}
+        <div className="hub-hero-blob-green"></div>
+        {/* Bottom-right subtle curve */}
+        <div className="hub-hero-blob-soft"></div>
         
         <div className="hub-hero-content">
-          <div className="hub-hero-icon">
-            <svg viewBox="0 0 100 100" width="100%" height="100%" fill="none" strokeWidth="13" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M 50 25 L 20 50" stroke="#4285F4" />
-              <path d="M 50 25 L 80 50" stroke="#EA4335" />
-              <path d="M 30 45 L 30 80 L 45 80" stroke="#FBBC04" />
-              <path d="M 70 45 L 70 80 L 55 80" stroke="#34A853" />
+          <div className="hub-hero-icon-container">
+            {/* Pixel-Matched Google Multi-Color House Icon */}
+            <svg viewBox="0 0 120 120" width="100%" height="100%" fill="none">
+              {/* Left Blue Roof */}
+              <path d="M60 26 L22 58" stroke="#4285F4" strokeWidth="15" strokeLinecap="round" strokeLinejoin="round" />
+              {/* Right Red Roof */}
+              <path d="M60 26 L98 58" stroke="#EA4335" strokeWidth="15" strokeLinecap="round" strokeLinejoin="round" />
+              {/* Left Yellow Wall */}
+              <path d="M34 56 V88 A6 6 0 0 0 40 94 H50 A4 4 0 0 0 54 90 V70 A6 6 0 0 1 60 64" stroke="#FBBC04" strokeWidth="13" strokeLinecap="round" strokeLinejoin="round" />
+              {/* Right Green Wall & Arch Connection */}
+              <path d="M60 64 A6 6 0 0 1 66 70 V90 A4 4 0 0 0 70 94 H80 A6 6 0 0 0 86 88 V56" stroke="#34A853" strokeWidth="13" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
           <h3>Innovation Wiki</h3>
@@ -878,29 +887,37 @@ function AsymmetricDashboard({ onSelect }: { onSelect: (id: NavigationId) => voi
             className="hub-hero-arrow" 
             onClick={() => onSelect('home')} 
             title="Explore Innovation Wiki"
+            aria-label="Explore Innovation Wiki"
           >
             <ArrowRight size={22} color="white" strokeWidth={2.8} />
           </button>
         </div>
       </div>
 
-      {/* 2. Right Grid Container (All 8 items mapped identically) */}
+      {/* 2. Right Grid Container (All 8 Application Cards Unified in Size) */}
       <div className="hub-grid-right">
-        {solutions.map((s) => (
-          <div key={s.id} className="hub-card" onClick={() => onSelect(s.id)}>
-            <div className="hub-card-blob" style={{ backgroundColor: s.color }}></div>
-            <div className="hub-card-content">
-              <div className="hub-card-icon-wrap" style={{ color: s.color, backgroundColor: `${s.color}15` }}>
-                <s.icon size={36} strokeWidth={2.4} />
+        {solutions.map((s, index) => {
+          // Project Accelerate has top-left corner accent in sample image, others have top-right
+          const isTopLeftAccent = s.id === 'accelerate';
+          return (
+            <div key={s.id} className="hub-card" onClick={() => onSelect(s.id)}>
+              <div 
+                className={`hub-card-corner-accent ${isTopLeftAccent ? 'accent-top-left' : 'accent-top-right'}`}
+                style={{ backgroundColor: s.color }}
+              ></div>
+              <div className="hub-card-content">
+                <div className="hub-card-icon-wrap" style={{ color: s.color, backgroundColor: `${s.color}15` }}>
+                  <s.icon size={36} strokeWidth={2.3} />
+                </div>
+                <h4>{s.name}</h4>
+                <p>{s.subtitle}</p>
               </div>
-              <h4>{s.name}</h4>
-              <p>{s.subtitle}</p>
+              <div className="hub-card-arrow" style={{ backgroundColor: `${s.color}15`, color: s.color }}>
+                <ArrowRight size={16} strokeWidth={3} />
+              </div>
             </div>
-            <div className="hub-card-arrow" style={{ backgroundColor: `${s.color}18`, color: s.color }}>
-              <ArrowRight size={17} strokeWidth={3} />
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
@@ -1084,7 +1101,7 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
       <div style={{ display: 'flex', gap: '40px', alignItems: 'flex-start', flexWrap: 'wrap', justifyContent: 'center' }}>
         
         {isSolved ? (
-          /* Exact matching layout for Image 3 when solved */
+          /* Exact solved state matching Screenshot 3 */
           <div style={{ 
             width: '400px', height: '400px', borderRadius: '12px', overflow: 'hidden', 
             border: '2px solid #34a853', boxShadow: '0 0 30px rgba(52, 168, 83, 0.4)',
@@ -1211,25 +1228,25 @@ function App() {
             <span className="gcp-brand">
               <span className="gcp-blue">G</span>
               <span className="gcp-red">C</span>
-              <span className="gcp-yellow">P</span>
+              <span className="gcp-green">P</span>
             </span>
             <h1 className="header-title">Tech Transformation Solutions</h1>
           </div>
 
           <div className="header-right">
+            <div className="google-dots-row">
+              <span className="dot dot-blue"></span>
+              <span className="dot dot-red"></span>
+              <span className="dot dot-yellow"></span>
+              <span className="dot dot-green"></span>
+            </div>
+
             <div className="header-pillars">
               <span>Stronger People</span>
               <span className="pillar-sep">|</span>
               <span>Smarter Operations</span>
               <span className="pillar-sep">|</span>
               <span>Better Customer Experiences</span>
-            </div>
-
-            <div className="google-dots-row">
-              <span className="dot dot-blue"></span>
-              <span className="dot dot-red"></span>
-              <span className="dot dot-yellow"></span>
-              <span className="dot dot-green"></span>
             </div>
           </div>
 
@@ -1293,27 +1310,31 @@ function App() {
         {/* FOOTER: Matches the Exact Image Architecture */}
         <footer className="image-replica-footer">
           <div className="footer-left">
-            <svg width="24" height="24" viewBox="0 0 40 40" fill="none" style={{ flexShrink: 0 }}>
-              <path d="M19.5 32H10A8 8 0 0 1 10 16a8.5 8.5 0 0 1 2.2.3A12 12 0 0 1 34 22a8 8 0 0 1-6 10h-8.5" stroke="#EA4335" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M10 32h18" stroke="#4285F4" strokeWidth="4" strokeLinecap="round"/>
-              <path d="M10 24a8 8 0 0 1 8-8" stroke="#FBBC04" strokeWidth="4" strokeLinecap="round"/>
-              <path d="M18 16a12 12 0 0 1 12 6" stroke="#34A853" strokeWidth="4" strokeLinecap="round"/>
+            {/* Google Cloud-style multicolor cloud icon */}
+            <svg width="26" height="26" viewBox="0 0 40 40" fill="none" style={{ flexShrink: 0 }}>
+              <path d="M 28 30 H 12 A 7 7 0 0 1 12 16 A 8 8 0 0 1 17 14 A 10 10 0 0 1 33 21 A 7 7 0 0 1 28 30 Z" fill="none" stroke="#EA4335" strokeWidth="3" />
+              <path d="M 12 30 H 28" stroke="#4285F4" strokeWidth="4" strokeLinecap="round" />
+              <path d="M 12 22 A 6 6 0 0 1 18 16" stroke="#FBBC04" strokeWidth="4" strokeLinecap="round" />
+              <path d="M 18 16 A 9 9 0 0 1 30 22" stroke="#34A853" strokeWidth="4" strokeLinecap="round" />
             </svg>
             <span className="footer-motto">Build &nbsp;·&nbsp; Transform &nbsp;·&nbsp; Scale</span>
           </div>
 
-          <div className="footer-center-bar">
-            <span className="bar-seg bar-blue"></span>
-            <span className="bar-seg bar-red"></span>
-            <span className="bar-seg bar-yellow"></span>
-            <span className="bar-seg bar-green"></span>
+          <div className="footer-center-bar-container">
+            <div className="footer-center-bar">
+              <span className="bar-seg bar-blue"></span>
+              <span className="bar-seg bar-red"></span>
+              <span className="bar-seg bar-yellow"></span>
+              <span className="bar-seg bar-green"></span>
+            </div>
           </div>
 
+          {/* Light-blue 3x4 dot matrix */}
           <div className="footer-right-matrix" aria-hidden="true">
-            <div className="matrix-dot"></div><div className="matrix-dot"></div><div className="matrix-dot"></div><div className="matrix-dot"></div>
-            <div className="matrix-dot"></div><div className="matrix-dot"></div><div className="matrix-dot"></div><div className="matrix-dot"></div>
-            <div className="matrix-dot"></div><div className="matrix-dot"></div><div className="matrix-dot"></div><div className="matrix-dot"></div>
-            <div className="matrix-dot"></div><div className="matrix-dot"></div><div className="matrix-dot"></div><div className="matrix-dot"></div>
+            <div className="matrix-dot"></div><div className="matrix-dot"></div><div className="matrix-dot"></div>
+            <div className="matrix-dot"></div><div className="matrix-dot"></div><div className="matrix-dot"></div>
+            <div className="matrix-dot"></div><div className="matrix-dot"></div><div className="matrix-dot"></div>
+            <div className="matrix-dot"></div><div className="matrix-dot"></div><div className="matrix-dot"></div>
           </div>
         </footer>
       </main>
