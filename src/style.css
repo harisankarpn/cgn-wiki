@@ -55,7 +55,7 @@ button {
 ========================================================= */
 .image-replica-header {
   position: relative;
-  min-height: 90px;
+  min-height: 85px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -81,7 +81,7 @@ button {
 
 .gcp-blue { color: #4285f4; }
 .gcp-red { color: #ea4335; }
-.gcp-yellow { color: #34a853; }
+.gcp-green { color: #34a853; }
 
 .header-title {
   margin: 0;
@@ -95,22 +95,9 @@ button {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 12px;
-  padding-right: 120px; /* Offset for quadrant fan */
+  gap: 8px;
+  padding-right: 130px; /* Offset for quadrant fan */
   z-index: 2;
-}
-
-.header-pillars {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 13px;
-  color: #5a6b82;
-  font-weight: 500;
-}
-
-.pillar-sep {
-  color: #cbd5e1;
 }
 
 .google-dots-row {
@@ -130,13 +117,26 @@ button {
 .dot-yellow { background-color: #fbbc04; }
 .dot-green { background-color: #34a853; }
 
+.header-pillars {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: #5a6b82;
+  font-weight: 500;
+}
+
+.pillar-sep {
+  color: #cbd5e1;
+}
+
 /* Corner Fan SVG */
 .google-corner-fan {
   position: absolute;
   top: 0;
   right: 0;
-  width: 140px;
-  height: 140px;
+  width: 145px;
+  height: 145px;
   pointer-events: none;
   z-index: 1;
 }
@@ -151,14 +151,15 @@ button {
   padding: 24px 50px 30px;
   width: 100%;
   box-sizing: border-box;
+  align-items: stretch;
 }
 
 /* Left Hero Card */
 .hub-hero-card {
   position: relative;
-  background: linear-gradient(180deg, #e8f0fe 0%, #ffffff 100%);
-  border-radius: 20px;
-  border: 1px solid #dce8fa;
+  background: linear-gradient(180deg, #edf5fe 0%, #ffffff 40%, #ffffff 80%, #f0fdf4 100%);
+  border-radius: 28px;
+  border: 1px solid rgba(210, 227, 252, 0.7);
   padding: 40px 24px;
   display: flex;
   flex-direction: column;
@@ -166,34 +167,50 @@ button {
   justify-content: center;
   text-align: center;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(26, 115, 232, 0.08);
+  box-shadow: 0 10px 30px rgba(66, 133, 244, 0.08);
   height: 100%;
   min-height: 480px;
   box-sizing: border-box;
 }
 
-.hub-hero-blob-1 {
+/* Hero Decorative Blobs */
+.hub-hero-blob-blue {
   position: absolute;
-  top: -40px;
-  right: -40px;
+  top: -45px;
+  right: -45px;
   width: 220px;
   height: 220px;
-  background: #cce0fc;
-  border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-  opacity: 0.7;
+  background: #dbeafe;
+  border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+  opacity: 0.65;
   z-index: 0;
+  pointer-events: none;
 }
 
-.hub-hero-blob-2 {
+.hub-hero-blob-green {
   position: absolute;
   bottom: -40px;
   left: -40px;
-  width: 220px;
-  height: 220px;
-  background: #ceead6;
+  width: 210px;
+  height: 210px;
+  background: #a7f3d0;
   border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
-  opacity: 0.7;
+  opacity: 0.65;
   z-index: 0;
+  pointer-events: none;
+}
+
+.hub-hero-blob-soft {
+  position: absolute;
+  bottom: -20px;
+  right: -20px;
+  width: 130px;
+  height: 130px;
+  background: #e0f2fe;
+  border-radius: 50%;
+  opacity: 0.4;
+  z-index: 0;
+  pointer-events: none;
 }
 
 .hub-hero-content {
@@ -204,9 +221,9 @@ button {
   align-items: center;
 }
 
-.hub-hero-icon {
-  width: 110px;
-  height: 110px;
+.hub-hero-icon-container {
+  width: 120px;
+  height: 120px;
   margin-bottom: 24px;
 }
 
@@ -225,8 +242,8 @@ button {
 }
 
 .hub-hero-arrow {
-  width: 52px;
-  height: 52px;
+  width: 54px;
+  height: 54px;
   border-radius: 50%;
   background: #1a73e8;
   display: flex;
@@ -244,27 +261,27 @@ button {
   transform: scale(1.08);
 }
 
-/* Right Grid Area */
+/* Right Grid Area: Exact Sizing for all application cards */
 .hub-grid-right {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  height: 100%;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  width: 100%;
 }
 
 .hub-card {
   position: relative;
   background: #ffffff;
-  border-radius: 18px;
-  border: 1px solid #e2e8f0;
-  padding: 30px 18px 36px;
+  border-radius: 24px;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  padding: 34px 20px 38px;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   cursor: pointer;
   overflow: hidden;
-  box-shadow: 0 4px 18px rgba(20, 49, 92, 0.04);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03), 0 1px 3px rgba(0, 0, 0, 0.02);
   transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
 }
 
@@ -274,15 +291,25 @@ button {
   box-shadow: 0 12px 28px rgba(20, 49, 92, 0.09);
 }
 
-.hub-card-blob {
+/* Card Corner Accents */
+.hub-card-corner-accent {
   position: absolute;
-  top: -25px;
-  right: -25px;
-  width: 90px;
-  height: 90px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
-  opacity: 0.09;
+  opacity: 0.12;
   z-index: 0;
+  pointer-events: none;
+}
+
+.accent-top-right {
+  top: -24px;
+  right: -24px;
+}
+
+.accent-top-left {
+  top: -24px;
+  left: -24px;
 }
 
 .hub-card-content {
@@ -295,24 +322,24 @@ button {
 }
 
 .hub-card-icon-wrap {
-  width: 60px;
-  height: 60px;
-  border-radius: 16px;
+  width: 62px;
+  height: 62px;
+  border-radius: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 18px;
+  margin-bottom: 20px;
 }
 
 .hub-card h4 {
-  font-size: 17px;
+  font-size: 17.5px;
   color: #0c1d3d;
   margin: 0 0 8px;
   font-weight: 700;
 }
 
 .hub-card p {
-  font-size: 12.5px;
+  font-size: 13px;
   color: #64748b;
   margin: 0;
   line-height: 1.4;
@@ -320,15 +347,20 @@ button {
 
 .hub-card-arrow {
   position: absolute;
-  bottom: 14px;
-  right: 14px;
-  width: 30px;
-  height: 30px;
+  bottom: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1;
+  transition: transform 0.2s ease;
+}
+
+.hub-card:hover .hub-card-arrow {
+  transform: translateX(2px);
 }
 
 /* =========================================================
@@ -348,7 +380,7 @@ button {
 .footer-left {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
 }
 
 .footer-motto {
@@ -357,9 +389,16 @@ button {
   font-weight: 500;
 }
 
+.footer-center-bar-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
 .footer-center-bar {
   display: flex;
-  width: 240px;
+  width: 260px;
   height: 4px;
   border-radius: 999px;
   overflow: hidden;
@@ -373,8 +412,8 @@ button {
 
 .footer-right-matrix {
   display: grid;
-  grid-template-columns: repeat(4, 6px);
-  gap: 6px;
+  grid-template-columns: repeat(3, 6px);
+  gap: 7px;
 }
 
 .matrix-dot {
@@ -749,9 +788,9 @@ button {
 /* =========================================================
    RESPONSIVENESS
 ========================================================= */
-@media (max-width: 1200px) {
+@media (max-width: 1250px) {
   .dashboard-hub-container { grid-template-columns: 1fr; }
-  .hub-grid-right { grid-template-columns: repeat(3, 1fr); }
+  .hub-grid-right { grid-template-columns: repeat(2, 1fr); }
   .hub-card { min-width: 220px; }
   .image-replica-header { padding: 16px 20px; }
   .header-right { padding-right: 0; }
@@ -760,14 +799,13 @@ button {
 
 @media (max-width: 850px) {
   .image-replica-header { flex-direction: column; align-items: flex-start; gap: 12px; }
-  .hub-grid-right { grid-template-columns: repeat(2, 1fr); }
+  .hub-grid-right { grid-template-columns: 1fr; }
   .solution-layout { grid-template-columns: 1fr; }
   .overview-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 650px) {
-  .hub-grid-right { grid-template-columns: 1fr; }
   .dashboard-hub-container { padding: 24px 16px; }
   .image-replica-footer { flex-direction: column; align-items: flex-start; gap: 12px; padding: 16px; }
-  .footer-center-bar, .footer-right-matrix { display: none; }
+  .footer-center-bar-container, .footer-right-matrix { display: none; }
 }
