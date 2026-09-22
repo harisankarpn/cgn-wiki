@@ -56,6 +56,7 @@ import {
 } from 'lucide-react';
 
 import puzzleBg from './background.jpeg';
+import bgImage from './background.jpeg';
 import coreVideo from './C.O.R.E.mp4';
 
 /* =========================================================
