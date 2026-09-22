@@ -56,7 +56,6 @@ import {
 } from 'lucide-react';
 
 import puzzleBg from './background.jpeg';
-import bgImage from './background.jpeg';
 import coreVideo from './C.O.R.E.mp4';
 
 /* =========================================================
@@ -73,123 +72,6 @@ type BenefitItem = {
 };
 
 /* =========================================================
-   GLOBAL THEME STYLES (Light & Dark Mode)
-========================================================= */
-
-function GlobalThemeStyles() {
-  return (
-    <style>{`
-      :root {
-        --bg-main: #f8fafc;
-        --bg-card: #ffffff;
-        --bg-hover: #f1f5f9;
-        --bg-blue-card: #f4f8fd;
-        --bg-green-card: #f0fdf4;
-        --text-main: #0f172a;
-        --text-secondary: #475569;
-        --text-muted: #64748b;
-        --text-green: #166534;
-        --border-main: #e2e8f0;
-        --border-soft: #f1f5f9;
-        --shadow-sm: 0 4px 12px rgba(0,0,0,0.05);
-        --badge-bg: #eff6ff;
-        --pill-bg: #dcfce7;
-      }
-
-      .dark {
-        --bg-main: #0f172a;
-        --bg-card: #1e293b;
-        --bg-hover: #334155;
-        --bg-blue-card: #1e293b;
-        --bg-green-card: #1e293b;
-        --text-main: #f8fafc;
-        --text-secondary: #cbd5e1;
-        --text-muted: #94a3b8;
-        --text-green: #4ade80;
-        --border-main: #334155;
-        --border-soft: #1e293b;
-        --shadow-sm: 0 4px 12px rgba(0,0,0,0.5);
-        --badge-bg: #334155;
-        --pill-bg: #064e3b;
-      }
-
-      body {
-        background-color: transparent !important;
-        color: var(--text-main);
-        margin: 0 !important;
-      }
-
-      body::before {
-        content: "";
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 125vw; 
-        height: 125vh;
-        background: url(${bgImage}) center/cover no-repeat;
-        z-index: -999;
-        pointer-events: none;
-      }
-
-      body.dark::before {
-        display: none !important;
-      }
-      body.dark {
-        background-color: var(--bg-main) !important;
-      }
-
-      @keyframes themePulse {
-        0% { box-shadow: 0 0 0 0 rgba(66, 133, 244, 0.6); }
-        70% { box-shadow: 0 0 0 12px rgba(66, 133, 244, 0); }
-        100% { box-shadow: 0 0 0 0 rgba(66, 133, 244, 0); }
-      }
-
-      .dark .app, 
-      .dark .no-sidebar-app, 
-      .dark .main-page-content { 
-       background-color: transparent !important; 
-      }
-      
-      .dark .hub-card,
-      .dark .hub-hero-card {
-        background: var(--bg-card) !important;
-        border-color: var(--border-main) !important;
-      }
-      .dark .hub-hero-card h3, .dark .hub-card h4 { color: var(--text-main) !important; }
-      .dark .hub-hero-card p, .dark .hub-card p { color: var(--text-secondary) !important; }
-
-      .dark .wiki-home,
-      .dark .solution-page { background: var(--bg-card) !important; border-color: var(--border-main) !important; }
-      .dark .solution-header { border-bottom-color: var(--border-main) !important; }
-      .dark .solution-header h2 { color: var(--text-main) !important; }
-      .dark .solution-header p, .dark .header-sub { color: var(--text-secondary) !important; }
-      
-      .dark .solution-tabs { background: var(--bg-card) !important; border-right-color: var(--border-main) !important; }
-      .dark .solution-tabs button { color: var(--text-secondary) !important; }
-      .dark .solution-tabs button:hover { background: var(--bg-hover) !important; }
-      .dark .solution-tabs button.active { background: var(--bg-hover) !important; color: var(--text-main) !important; }
-      
-      .dark .section-heading h3 { color: var(--text-main) !important; }
-      .dark .text-panel, .dark .impact-panel, .dark .access-panel, .dark .feedback-panel, .dark .demo-panel { 
-        background-color: var(--bg-card) !important; 
-        border-color: var(--border-main) !important; 
-      }
-      .dark .text-panel p, .dark .impact-panel p, .dark .feedback-panel p, .dark .demo-panel p { color: var(--text-secondary) !important; }
-      .dark .access-row { border-bottom-color: var(--border-soft) !important; }
-      .dark .access-row span, .dark .poc-row span { color: var(--text-muted) !important; }
-      .dark .access-row strong { color: var(--text-main) !important; }
-      .dark .poc-row { background-color: var(--bg-hover) !important; }
-      .dark .poc-row p { color: var(--text-secondary) !important; }
-      .dark .feedback-panel h4, .dark .demo-panel h4 { color: var(--text-main) !important; }
-
-      .dark .p-card, .dark .s-card { background-color: var(--bg-card) !important; border-color: var(--border-main) !important; }
-      .dark .p-callout, .dark .s-callout { background-color: var(--bg-hover) !important; }
-      .dark .p-trans, .dark .s-trans { background-color: var(--bg-hover) !important; border-color: var(--border-main) !important; }
-    `}</style>
-  );
-}
-
-/* =========================================================
    SOLUTIONS DATA
 ========================================================= */
 
@@ -198,7 +80,7 @@ const solutions = [
   { id: 'elevate' as NavigationId, name: 'Elevate360', subtitle: 'Operational Governance', icon: BarChart3, color: '#34a853' },
   { id: 'sme' as NavigationId, name: 'Digital SME', subtitle: 'Automating Case Execution', icon: Bot, color: '#9333ea' },
   { id: 'accelerate' as NavigationId, name: 'Project Accelerate', subtitle: 'Risk Intelligence & Control', icon: Zap, color: '#ea580c' },
-  { id: 'crado' as NavigationId, name: 'CRADO', subtitle: 'Automated Billing Deduction', icon: FileText, color: '#0284c7' },
+  { id: 'crado' as NavigationId, name: 'CRADO', subtitle: 'Automated Billing Deduction', icon: FileText, color: '#0ea5e9' },
   { id: 'arc' as NavigationId, name: 'ARC', subtitle: 'Intelligent Frontline Routing', icon: GitBranch, color: '#e11d48' },
   { id: 'aura' as NavigationId, name: 'AURA', subtitle: 'End-to-End Support Enablement', icon: Layers3, color: '#4f46e5' },
   { id: 'star' as NavigationId, name: 'STAR', subtitle: 'Intelligent Re-contact Deflection', icon: FilterX, color: '#059669' },
@@ -278,7 +160,6 @@ const solutionContent: Record<SolutionId, any> = {
     feedback: FEEDBACK_URL,
     demo: coreVideo,
   },
-
   elevate: {
     shortName: 'Elevate360',
     name: 'Elevate360',
@@ -344,7 +225,6 @@ const solutionContent: Record<SolutionId, any> = {
     feedback: FEEDBACK_URL,
     demo: '',
   },
-
   sme: {
     shortName: 'Digital SME',
     name: 'Digital SME',
@@ -405,7 +285,6 @@ const solutionContent: Record<SolutionId, any> = {
     feedback: FEEDBACK_URL,
     demo: '',
   },
-
   accelerate: {
     shortName: 'Project Accelerate',
     name: 'Project Accelerate',
@@ -466,7 +345,6 @@ const solutionContent: Record<SolutionId, any> = {
     feedback: FEEDBACK_URL,
     demo: '',
   },
-
   crado: {
     shortName: 'CRADO',
     name: 'CRADO (Calculation of Revenue Adjustment and Drafting Orchestrator)',
@@ -527,7 +405,6 @@ const solutionContent: Record<SolutionId, any> = {
     feedback: FEEDBACK_URL,
     demo: '',
   },
-
   arc: {
     shortName: 'ARC',
     name: 'ARC (Automated Routing & Closure)',
@@ -587,7 +464,6 @@ const solutionContent: Record<SolutionId, any> = {
     feedback: FEEDBACK_URL,
     demo: '',
   },
-
   aura: {
     shortName: 'AURA',
     name: 'AURA (Automated Unified Response Assistant)',
@@ -647,7 +523,6 @@ const solutionContent: Record<SolutionId, any> = {
     feedback: FEEDBACK_URL,
     demo: '',
   },
-
   star: {
     shortName: 'STAR',
     name: 'STAR (Smart Triage And Resolution)',
@@ -860,24 +735,32 @@ function AsymmetricDashboard({ onSelect }: { onSelect: (id: NavigationId) => voi
       {/* 1. Large Left Card: Innovation Wiki */}
       <div className="hub-hero-card">
         {/* Abstract pale-blue top curve */}
-        <div className="hub-hero-blob-blue"></div>
+        <div className="hub-hero-blob-blue">
+          <svg viewBox="0 0 200 200" width="100%" height="100%" preserveAspectRatio="none">
+            <path d="M 0,0 L 200,0 L 200,200 C 130,200 60,130 0,60 Z" fill="#dbeafe" />
+          </svg>
+        </div>
         {/* Bottom-left green curve wave */}
-        <div className="hub-hero-blob-green"></div>
+        <div className="hub-hero-blob-green">
+          <svg viewBox="0 0 200 200" width="100%" height="100%" preserveAspectRatio="none">
+            <path d="M 0,200 L 0,0 C 0,80 80,200 200,200 Z" fill="#d1fae5" />
+          </svg>
+        </div>
         {/* Bottom-right subtle curve */}
-        <div className="hub-hero-blob-soft"></div>
+        <div className="hub-hero-blob-soft">
+          <svg viewBox="0 0 200 200" width="100%" height="100%" preserveAspectRatio="none">
+            <path d="M 200,200 L 200,0 C 120,0 0,120 0,200 Z" fill="#e0f2fe" />
+          </svg>
+        </div>
         
         <div className="hub-hero-content">
           <div className="hub-hero-icon-container">
             {/* Pixel-Matched Google Multi-Color House Icon */}
             <svg viewBox="0 0 120 120" width="100%" height="100%" fill="none">
-              {/* Left Blue Roof */}
-              <path d="M60 26 L22 58" stroke="#4285F4" strokeWidth="15" strokeLinecap="round" strokeLinejoin="round" />
-              {/* Right Red Roof */}
-              <path d="M60 26 L98 58" stroke="#EA4335" strokeWidth="15" strokeLinecap="round" strokeLinejoin="round" />
-              {/* Left Yellow Wall */}
-              <path d="M34 56 V88 A6 6 0 0 0 40 94 H50 A4 4 0 0 0 54 90 V70 A6 6 0 0 1 60 64" stroke="#FBBC04" strokeWidth="13" strokeLinecap="round" strokeLinejoin="round" />
-              {/* Right Green Wall & Arch Connection */}
-              <path d="M60 64 A6 6 0 0 1 66 70 V90 A4 4 0 0 0 70 94 H80 A6 6 0 0 0 86 88 V56" stroke="#34A853" strokeWidth="13" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M 60 26 L 18 60" stroke="#4285F4" strokeWidth="16" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M 60 26 L 102 60" stroke="#EA4335" strokeWidth="16" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M 32 60 V 96 A 4 4 0 0 0 36 100 H 48 A 4 4 0 0 0 52 96 V 76 A 8 8 0 0 1 68 76" stroke="#FBBC04" strokeWidth="16" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M 68 76 V 96 A 4 4 0 0 0 72 100 H 84 A 4 4 0 0 0 88 96 V 60" stroke="#34A853" strokeWidth="16" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </div>
           <h3>Innovation Wiki</h3>
@@ -897,14 +780,15 @@ function AsymmetricDashboard({ onSelect }: { onSelect: (id: NavigationId) => voi
       {/* 2. Right Grid Container (All 8 Application Cards Unified in Size) */}
       <div className="hub-grid-right">
         {solutions.map((s, index) => {
-          // Project Accelerate has top-left corner accent in sample image, others have top-right
-          const isTopLeftAccent = s.id === 'accelerate';
           return (
             <div key={s.id} className="hub-card" onClick={() => onSelect(s.id)}>
-              <div 
-                className={`hub-card-corner-accent ${isTopLeftAccent ? 'accent-top-left' : 'accent-top-right'}`}
-                style={{ backgroundColor: s.color }}
-              ></div>
+              {/* Top Right Convex Curve Decoration matching image styling */}
+              <div className="hub-card-corner-accent" style={{ color: s.color }}>
+                <svg viewBox="0 0 100 100" width="100%" height="100%" preserveAspectRatio="none">
+                  <path d="M 0 0 H 100 V 100 C 100 44.77 55.23 0 0 0 Z" fill="currentColor" />
+                </svg>
+              </div>
+              
               <div className="hub-card-content">
                 <div className="hub-card-icon-wrap" style={{ color: s.color, backgroundColor: `${s.color}15` }}>
                   <s.icon size={36} strokeWidth={2.3} />
@@ -1220,6 +1104,12 @@ function App() {
     <div className={`app no-sidebar-app ${theme}`}>
       <GlobalThemeStyles />
       <ThemeToggle />
+      
+      {/* GLOBAL BACKGROUND WAVES AND GLOW */}
+      <div className="global-bg-waves" aria-hidden="true">
+        <div className="global-pale-center-glow"></div>
+      </div>
+
       <main className="main no-sidebar-main" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
         
         {/* HEADER: Matches the Exact Image Architecture */}
@@ -1262,14 +1152,14 @@ function App() {
         </header>
 
         {/* BODY CONTAINER */}
-        <div style={{ flex: 1, position: 'relative' }}>
+        <div style={{ flex: 1, position: 'relative', zIndex: 2 }}>
           {selectedSolution === 'dashboard' ? (
             /* First Page View: Only Cards Are Shown (No Scroll Topbar) */
             <AsymmetricDashboard onSelect={openSolution} />
           ) : (
-            /* Selected View: Isolated Detail View with Back Button (No Scroll Topbar) */
-            <div className="page-content main-page-content" style={{ padding: '24px 40px' }}>
-              <div style={{ marginBottom: '20px' }}>
+            /* Selected View: Isolated Detail View with Back Button */
+            <div className="page-content main-page-content" style={{ padding: '24px 50px' }}>
+              <div style={{ marginBottom: '24px' }}>
                 <button 
                   onClick={backToDashboard}
                   style={{
@@ -1284,7 +1174,8 @@ function App() {
                     fontWeight: 600,
                     cursor: 'pointer',
                     fontSize: '14px',
-                    boxShadow: 'var(--shadow-sm)'
+                    boxShadow: 'var(--shadow-sm)',
+                    transition: 'background 0.2s'
                   }}
                 >
                   <ArrowLeft size={16} />
@@ -1331,10 +1222,9 @@ function App() {
 
           {/* Light-blue 3x4 dot matrix */}
           <div className="footer-right-matrix" aria-hidden="true">
-            <div className="matrix-dot"></div><div className="matrix-dot"></div><div className="matrix-dot"></div>
-            <div className="matrix-dot"></div><div className="matrix-dot"></div><div className="matrix-dot"></div>
-            <div className="matrix-dot"></div><div className="matrix-dot"></div><div className="matrix-dot"></div>
-            <div className="matrix-dot"></div><div className="matrix-dot"></div><div className="matrix-dot"></div>
+            <div className="matrix-dot"></div><div className="matrix-dot"></div><div className="matrix-dot"></div><div className="matrix-dot"></div>
+            <div className="matrix-dot"></div><div className="matrix-dot"></div><div className="matrix-dot"></div><div className="matrix-dot"></div>
+            <div className="matrix-dot"></div><div className="matrix-dot"></div><div className="matrix-dot"></div><div className="matrix-dot"></div>
           </div>
         </footer>
       </main>
