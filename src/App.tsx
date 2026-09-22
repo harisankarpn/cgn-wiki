@@ -1247,30 +1247,56 @@ function App() {
 
           </div>
         </section>
-        <section className="platform-card-row five-platforms">
-          {solutions.map((platform) => {
+       <section className="platform-card-row five-platforms">
+          {/* LEFT COLUMN: Innovation Wiki (Index 0) */}
+          {solutions.slice(0, 1).map((platform) => {
             const Icon = platform.icon;
             const isSelected = selectedSolution === platform.id;
             return (
               <button
                 type="button"
                 key={platform.id}
-                className={`platform-card ${isSelected ? 'selected-glow' : ''}`}
+                className={`platform-card hero-card ${isSelected ? 'selected-glow' : ''}`}
                 onClick={() => openSolution(platform.id)}
               >
-                <div className="platform-icon" style={{ color: platform.color, backgroundColor: `${platform.color}10` }}>
-                  <Icon size={44} strokeWidth={2.2} />
+                <div className="platform-icon" style={{ color: platform.color, backgroundColor: `${platform.color}10`, width: '80px', height: '80px' }}>
+                  <Icon size={64} strokeWidth={2.2} />
                 </div>
                 <div className="platform-copy">
-                  <h3>{platform.name}</h3>
+                  <h3 style={{ fontSize: '24px' }}>{platform.name}</h3>
                   <p>{platform.subtitle}</p>
                 </div>
-                <ChevronRight size={22} className="platform-arrow" />
+                {/* Arrow removed for the hero card to match your target image */}
               </button>
             );
           })}
-        </section>
 
+          {/* RIGHT COLUMN: Remaining Solutions Grid */}
+          <div className="right-grid-container">
+            {solutions.slice(1).map((platform) => {
+              const Icon = platform.icon;
+              const isSelected = selectedSolution === platform.id;
+              return (
+                <button
+                  type="button"
+                  key={platform.id}
+                  className={`platform-card ${isSelected ? 'selected-glow' : ''}`}
+                  onClick={() => openSolution(platform.id)}
+                >
+                  <div className="platform-icon" style={{ color: platform.color, backgroundColor: `${platform.color}10` }}>
+                    <Icon size={44} strokeWidth={2.2} />
+                  </div>
+                  <div className="platform-copy">
+                    <h3>{platform.name}</h3>
+                    <p>{platform.subtitle}</p>
+                  </div>
+                  <ChevronRight size={22} className="platform-arrow" style={{ alignSelf: 'flex-end', marginTop: 'auto' }} />
+                </button>
+              );
+            })}
+          </div>
+        </section>
+    
         <div className="page-content main-page-content">
           {selectedSolution === 'home' ? (
             <InnovationWikiHome />
