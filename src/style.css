@@ -390,52 +390,47 @@ button {
   font-size: 12px;
 }
 
-/* FIVE TOP NAVIGATION CARDS */
+/* =========================================================
+   TOP PLATFORM CARDS - ASYMMETRIC GRID
+========================================================= */
 .platform-card-row {
-  display: flex;             
-  flex-wrap: nowrap;         
-  overflow-x: auto;          
-  gap: 12px;
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 24px;
   padding: 14px 38px 24px;   
   background: transparent;
   border-bottom: 1px solid #edf1f6;
-  scroll-behavior: smooth;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-/* Google-Colored Horizontal Scrollbar */
-.platform-card-row::-webkit-scrollbar {
-  height: 4px; /* Thin line */
-}
-.platform-card-row::-webkit-scrollbar-track {
-  background: transparent; 
-}
-.platform-card-row::-webkit-scrollbar-thumb {
-  background: linear-gradient(90deg, #34a853, #fbbc05, #ea4335, #4285f4);
-  border-radius: 10px;
+.platform-card-row.five-platforms .right-grid-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
 }
 
-/* .platform-card-row.five-platforms {
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-}  */
-
- .platform-card-row.five-platforms {}
-
- .platform-card {
+.platform-card {
   position: relative;
-  flex: 0 0 auto;            /* Prevent cards from squishing */
-  width: 280px;              /* Fixed width to force scrolling */
-  min-height: 104px;
   display: flex;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
+  text-align: center;
   gap: 14px;
-  padding: 15px 16px;
+  padding: 24px 16px;
   border: 1px solid #d9e5f2;
   border-radius: 11px;
   background: linear-gradient(145deg, #ffffff, #fbfdff);
   color: #0c1d3d;
-  text-align: left;
   box-shadow: 0 4px 14px rgba(24, 55, 95, 0.05);
   transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+}
+
+.platform-card.hero-card {
+  height: 100%;
+  justify-content: center;
+  background: linear-gradient(180deg, #e8f0fe 0%, #ffffff 100%);
 }
 
 .platform-card:hover {
@@ -1039,8 +1034,11 @@ button {
 
 /* RESPONSIVE */
 @media (max-width: 1250px) {
-  .platform-card-row.five-platforms {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+  .platform-card-row {
+    grid-template-columns: 1fr;
+  }
+  .platform-card-row.five-platforms .right-grid-container {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .premium-hero {
     grid-template-columns: 1fr;
@@ -1054,8 +1052,8 @@ button {
 }
 
 @media (max-width: 900px) {
-  .platform-card-row.five-platforms {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .platform-card-row.five-platforms .right-grid-container {
+    grid-template-columns: 1fr;
   }
   .profile-text,
   .google-wordmark {
@@ -1117,8 +1115,7 @@ button {
   .outcome-divider {
     display: none;
   }
-  .platform-card-row.five-platforms {
-    grid-template-columns: 1fr;
+  .platform-card-row {
     padding-left: 13px;
     padding-right: 13px;
   }
