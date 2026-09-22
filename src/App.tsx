@@ -735,6 +735,122 @@ const wikiTableRows = [
 ];
 
 /* =========================================================
+   NEW GCP LOGO COMPONENT (Coded SVG)
+========================================================= */
+
+const NewGCPLogo = ({ size = 200 }: { size?: number }) => (
+  <svg width={size} height={size} viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0 }}>
+    <defs>
+      <linearGradient id="ring-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stopColor="#34A853" />
+        <stop offset="33%" stopColor="#4285F4" />
+        <stop offset="66%" stopColor="#EA4335" />
+        <stop offset="100%" stopColor="#FBBC04" />
+      </linearGradient>
+      <filter id="glow-blue" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="15" result="blur" />
+        <feComposite in="SourceGraphic" in2="blur" operator="over" />
+      </filter>
+      <filter id="glow-red" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="15" result="blur" />
+        <feComposite in="SourceGraphic" in2="blur" operator="over" />
+      </filter>
+      <filter id="glow-yellow" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="15" result="blur" />
+        <feComposite in="SourceGraphic" in2="blur" operator="over" />
+      </filter>
+      <filter id="glow-green" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="15" result="blur" />
+        <feComposite in="SourceGraphic" in2="blur" operator="over" />
+      </filter>
+      <filter id="cloud-shadow" x="-20%" y="-20%" width="140%" height="140%">
+        <feDropShadow dx="0" dy="8" stdDeviation="12" floodOpacity="0.15" />
+      </filter>
+    </defs>
+    <circle cx="200" cy="200" r="160" stroke="var(--border-main, #e2e8f0)" strokeWidth="1" fill="none" />
+    <circle cx="200" cy="200" r="115" stroke="var(--border-soft, #f1f5f9)" strokeWidth="8" fill="none" />
+    <circle cx="200" cy="200" r="140" stroke="url(#ring-grad)" strokeWidth="4" fill="none" />
+    <circle cx="101" cy="101" r="4" fill="#34A853" />
+    <circle cx="299" cy="101" r="4" fill="#EA4335" />
+    <circle cx="299" cy="299" r="4" fill="#FBBC04" />
+    <circle cx="101" cy="299" r="4" fill="#4285F4" />
+    <g transform="translate(0, 25)" filter="url(#cloud-shadow)">
+      <path d="M 150 230 L 250 230 A 30 30 0 0 0 250 170 A 50 50 0 0 0 150 170 A 30 30 0 0 0 150 230 Z" fill="var(--bg-main, #ffffff)" />
+      <g fill="none" strokeWidth="24" strokeLinecap="butt">
+        <path d="M 150 230 L 200 230" stroke="#34A853" /> 
+        <path d="M 200 230 L 250 230 A 30 30 0 0 0 250 170" stroke="#4285F4" /> 
+        <path d="M 250 170 A 50 50 0 0 0 150 170" stroke="#EA4335" /> 
+        <path d="M 150 170 A 30 30 0 0 0 150 230" stroke="#FBBC04" /> 
+      </g>
+    </g>
+    <circle cx="200" cy="60" r="32" fill="#4285F4" filter="url(#glow-blue)" opacity="0.8" />
+    <circle cx="200" cy="60" r="32" fill="#4285F4" stroke="var(--bg-main, #ffffff)" strokeWidth="6" />
+    <g transform="translate(184, 44)" stroke="#ffffff" strokeWidth="2.5" fill="none">
+      <circle cx="16" cy="16" r="12" />
+      <ellipse cx="16" cy="16" rx="6" ry="12" />
+      <path d="M4 16h24 M16 4v24" />
+    </g>
+    <circle cx="340" cy="200" r="32" fill="#EA4335" filter="url(#glow-red)" opacity="0.8" />
+    <circle cx="340" cy="200" r="32" fill="#EA4335" stroke="var(--bg-main, #ffffff)" strokeWidth="6" />
+    <g transform="translate(324, 184)" stroke="#ffffff" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="16" cy="16" r="5" />
+      <path d="M16 8V5 M16 27v-3 M8 16H5 M27 16h-3 M10.3 10.3l-2.1-2.1 M27.8 27.8l-2.1-2.1 M10.3 21.7l-2.1 2.1 M27.8 4.2l-2.1 2.1" />
+    </g>
+    <circle cx="200" cy="340" r="32" fill="#FBBC04" filter="url(#glow-yellow)" opacity="0.8" />
+    <circle cx="200" cy="340" r="32" fill="#FBBC04" stroke="var(--bg-main, #ffffff)" strokeWidth="6" />
+    <g transform="translate(184, 324)" stroke="#ffffff" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M16 14a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" fill="#ffffff" />
+      <path d="M23 24a8 8 0 0 0-14 0" fill="#ffffff"/>
+      <circle cx="8" cy="12" r="3" fill="#ffffff" stroke="none" />
+      <path d="M4 22a6 6 0 0 1 6-6" />
+      <circle cx="24" cy="12" r="3" fill="#ffffff" stroke="none" />
+      <path d="M28 22a6 6 0 0 0-6-6" />
+    </g>
+    <circle cx="60" cy="200" r="32" fill="#34A853" filter="url(#glow-green)" opacity="0.8" />
+    <circle cx="60" cy="200" r="32" fill="#34A853" stroke="var(--bg-main, #ffffff)" strokeWidth="6" />
+    <g transform="translate(44, 184)" stroke="#ffffff" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="4" y="8" width="24" height="12" rx="2" />
+      <path d="M2 24h28" />
+    </g>
+  </svg>
+);
+
+/* =========================================================
+   PURE CODE-GENERATED PUZZLE ARTWORK 
+========================================================= */
+
+const CodeGeneratedPuzzleArtwork = () => (
+ <div style={{ width: '400px', height: '400px', background: `url(${puzzleBg}) center/cover no-repeat`, position: 'relative', boxSizing: 'border-box', overflow: 'hidden', borderRadius: '12px' }}>
+    <div style={{ position: 'absolute', top: 0, left: 0, width: '200px', height: '200px', background: 'radial-gradient(circle at top left, rgba(66, 133, 244, 0.15), transparent 70%)' }}></div>
+    <div style={{ position: 'absolute', bottom: 0, right: 0, width: '200px', height: '200px', background: 'radial-gradient(circle at bottom right, rgba(251, 188, 4, 0.15), transparent 70%)' }}></div>
+    <div style={{ position: 'absolute', bottom: 0, left: 0, width: '200px', height: '200px', background: 'radial-gradient(circle at bottom left, rgba(52, 168, 83, 0.15), transparent 70%)' }}></div>
+    <div style={{ position: 'absolute', top: '24px', left: '24px', textAlign: 'left' }}>
+      <div style={{ fontSize: '26px', fontFamily: 'Georgia, serif', fontStyle: 'italic', color: '#1a73e8', lineHeight: '1.1', fontWeight: 'bold' }}>One<br/>Cloud</div>
+      <div style={{ fontSize: '13px', color: 'var(--text-main)', marginTop: '6px', fontWeight: 600 }}>Many<br/>Possibilities</div>
+      <div style={{ width: '40px', height: '4px', background: 'linear-gradient(90deg, #4285F4, #34A853)', marginTop: '6px', borderRadius: '2px' }}></div>
+    </div>
+    <div style={{ position: 'absolute', top: '24px', right: '24px', textAlign: 'right' }}>
+      <div style={{ fontSize: '26px', fontFamily: 'Georgia, serif', fontStyle: 'italic', color: '#1a73e8', lineHeight: '1.1', fontWeight: 'bold' }}>Ideas<br/>to Impact</div>
+      <div style={{ width: '60px', height: '4px', background: 'linear-gradient(90deg, #EA4335, #FBBC04, #34A853)', marginTop: '6px', float: 'right', borderRadius: '2px' }}></div>
+    </div>
+    <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -60%)' }}>
+       <NewGCPLogo size={200} />
+    </div>
+    <div style={{ position: 'absolute', bottom: '65px', left: '0', width: '100%', textAlign: 'center' }}>
+      <h2 style={{ margin: 0, color: 'var(--text-main)', fontSize: '32px', fontWeight: 800, letterSpacing: '-0.5px' }}>GCP Tech</h2>
+      <h2 style={{ margin: 0, color: '#1a73e8', fontSize: '24px', fontWeight: 700, letterSpacing: '-0.5px' }}>Transformation Solutions</h2>
+      <p style={{ margin: '4px 0 0', color: 'var(--text-secondary)', fontSize: '14px', fontWeight: 500 }}>One Cloud &nbsp;&bull;&nbsp; Many Possibilities</p>
+    </div>
+    <div style={{ position: 'absolute', bottom: '16px', display: 'flex', justifyContent: 'space-around', width: '100%', padding: '0 24px', boxSizing: 'border-box' }}>
+       <div style={{ textAlign: 'center', color: '#4285F4', display: 'flex', flexDirection: 'column', alignItems: 'center' }}><Users size={24}/><div style={{ fontSize: '12px', fontWeight: 700, marginTop: '4px', color: 'var(--text-main)' }}>People</div></div>
+       <div style={{ textAlign: 'center', color: '#34A853', display: 'flex', flexDirection: 'column', alignItems: 'center' }}><Lightbulb size={24}/><div style={{ fontSize: '12px', fontWeight: 700, marginTop: '4px', color: 'var(--text-main)' }}>Innovation</div></div>
+       <div style={{ textAlign: 'center', color: '#EA4335', display: 'flex', flexDirection: 'column', alignItems: 'center' }}><BarChart3 size={24}/><div style={{ fontSize: '12px', fontWeight: 700, marginTop: '4px', color: 'var(--text-main)' }}>Impact</div></div>
+       <div style={{ textAlign: 'center', color: '#FBBC04', display: 'flex', flexDirection: 'column', alignItems: 'center' }}><TrendingUp size={24}/><div style={{ fontSize: '12px', fontWeight: 700, marginTop: '4px', color: 'var(--text-main)' }}>Growth</div></div>
+    </div>
+  </div>
+);
+
+/* =========================================================
    ASYMMETRIC DASHBOARD COMPONENT (EXACT IMAGE REPLICA)
 ========================================================= */
 
@@ -768,44 +884,263 @@ function AsymmetricDashboard({ onSelect }: { onSelect: (id: NavigationId) => voi
         </div>
       </div>
 
-      {/* 2. Right Grid Container (Row 1 + Row 2) */}
+      {/* 2. Right Grid Container (All 8 items mapped identically) */}
       <div className="hub-grid-right">
-        {/* ROW 1: CORE, Elevate360, Digital SME */}
-        <div className="hub-grid-row">
-          {solutions.slice(0, 3).map((s) => (
-            <div key={s.id} className="hub-card" onClick={() => onSelect(s.id)}>
-              <div className="hub-card-blob" style={{ backgroundColor: s.color }}></div>
-              <div className="hub-card-content">
-                <div className="hub-card-icon-wrap" style={{ color: s.color, backgroundColor: `${s.color}15` }}>
-                  <s.icon size={38} strokeWidth={2.4} />
-                </div>
-                <h4>{s.name}</h4>
-                <p>{s.subtitle}</p>
+        {solutions.map((s) => (
+          <div key={s.id} className="hub-card" onClick={() => onSelect(s.id)}>
+            <div className="hub-card-blob" style={{ backgroundColor: s.color }}></div>
+            <div className="hub-card-content">
+              <div className="hub-card-icon-wrap" style={{ color: s.color, backgroundColor: `${s.color}15` }}>
+                <s.icon size={36} strokeWidth={2.4} />
               </div>
-              <div className="hub-card-arrow" style={{ backgroundColor: `${s.color}18`, color: s.color }}>
-                <ArrowRight size={17} strokeWidth={3} />
-              </div>
+              <h4>{s.name}</h4>
+              <p>{s.subtitle}</p>
             </div>
-          ))}
-        </div>
+            <div className="hub-card-arrow" style={{ backgroundColor: `${s.color}18`, color: s.color }}>
+              <ArrowRight size={17} strokeWidth={3} />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
-        {/* ROW 2: Accelerate, CRADO, ARC, AURA, STAR */}
-        <div className="hub-grid-row">
-          {solutions.slice(3).map((s) => (
-            <div key={s.id} className="hub-card" onClick={() => onSelect(s.id)}>
-              <div className="hub-card-blob" style={{ backgroundColor: s.color }}></div>
-              <div className="hub-card-content">
-                <div className="hub-card-icon-wrap" style={{ color: s.color, backgroundColor: `${s.color}15` }}>
-                  <s.icon size={36} strokeWidth={2.4} />
-                </div>
-                <h4>{s.name}</h4>
-                <p>{s.subtitle}</p>
-              </div>
-              <div className="hub-card-arrow" style={{ backgroundColor: `${s.color}18`, color: s.color }}>
-                <ArrowRight size={17} strokeWidth={3} />
+/* =========================================================
+   SPLASH PUZZLE COMPONENT
+========================================================= */
+
+const GRID_SIZE = 4;
+const TOTAL_PIECES = GRID_SIZE * GRID_SIZE;
+const TILE_SIZE = 100; 
+const INITIAL_PIECES = Array.from({ length: TOTAL_PIECES }, (_, i) => i);
+
+function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: () => void }) {
+  const [poolPieces, setPoolPieces] = useState<number[]>(() => 
+    [...INITIAL_PIECES].sort(() => Math.random() - 0.5)
+  );
+  const [slots, setSlots] = useState<(number | null)[]>(Array(TOTAL_PIECES).fill(null));
+  const [dragState, setDragState] = useState<{
+    id: number | null;
+    source: 'pool' | 'grid' | null;
+    isDragging: boolean;
+    x: number;
+    y: number;
+  }>({ id: null, source: null, isDragging: false, x: 0, y: 0 });
+
+  const [isSolved, setIsSolved] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(120); 
+  const [isFailed, setIsFailed] = useState(false);
+
+  useEffect(() => {
+    if (isSolved || isFailed) return;
+    if (timeLeft <= 0) { setIsFailed(true); return; }
+    if (timeLeft <= 10 && timeLeft > 0) {
+      try {
+        const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
+        const ctx = new AudioContext();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(800, ctx.currentTime);
+        gain.gain.setValueAtTime(0.05, ctx.currentTime);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.1);
+      } catch (e) { console.error('Audio play failed', e); }
+    }
+    const timerId = setInterval(() => { setTimeLeft(prev => prev - 1); }, 1000);
+    return () => clearInterval(timerId);
+  }, [timeLeft, isSolved, isFailed]);
+
+  useEffect(() => {
+    const isComplete = slots.every((piece, index) => piece === index);
+    if (isComplete && !slots.includes(null)) { setIsSolved(true); }
+  }, [slots]);
+
+  const handleRetry = () => {
+    setPoolPieces([...INITIAL_PIECES].sort(() => Math.random() - 0.5));
+    setSlots(Array(TOTAL_PIECES).fill(null));
+    setIsSolved(false); setIsFailed(false); setTimeLeft(120);
+    setDragState({ id: null, source: null, isDragging: false, x: 0, y: 0 });
+  };
+
+  const handlePointerDown = (e: React.PointerEvent, pieceId: number, source: 'pool' | 'grid') => {
+    if (isFailed || isSolved) return;
+    const zoom = parseFloat(window.getComputedStyle(document.body).zoom || '1');
+    setDragState({ id: pieceId, source, isDragging: true, x: (e.clientX / zoom) - (TILE_SIZE / 2), y: (e.clientY / zoom) - (TILE_SIZE / 2) });
+    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+    if (source === 'pool') { setPoolPieces(prev => prev.filter(p => p !== pieceId)); } 
+    else { setSlots(prev => { const newSlots = [...prev]; const slotIndex = newSlots.indexOf(pieceId); if (slotIndex !== -1) newSlots[slotIndex] = null; return newSlots; }); }
+  };
+
+  useEffect(() => {
+    if (!dragState.isDragging) return;
+    const handlePointerMove = (e: PointerEvent) => {
+      const zoom = parseFloat(window.getComputedStyle(document.body).zoom || '1');
+      setDragState(prev => ({ ...prev, x: (e.clientX / zoom) - (TILE_SIZE / 2), y: (e.clientY / zoom) - (TILE_SIZE / 2) }));
+    };
+    const handlePointerUp = (e: PointerEvent) => {
+      const gridEl = document.getElementById('puzzle-grid');
+      const zoom = parseFloat(window.getComputedStyle(document.body).zoom || '1');
+      if (gridEl && dragState.id !== null) {
+        const gridRect = gridEl.getBoundingClientRect();
+        const gridLeft = gridRect.left / zoom;
+        const gridTop = gridRect.top / zoom;
+        const slotRow = Math.floor(dragState.id / GRID_SIZE);
+        const slotCol = dragState.id % GRID_SIZE;
+        const targetX = gridLeft + 12 + (slotCol * TILE_SIZE);
+        const targetY = gridTop + 12 + (slotRow * TILE_SIZE);
+        const pointerX = e.clientX / zoom;
+        const pointerY = e.clientY / zoom;
+        const slotCenterX = targetX + (TILE_SIZE / 2);
+        const slotCenterY = targetY + (TILE_SIZE / 2);
+
+        if (Math.abs(pointerX - slotCenterX) < 60 && Math.abs(pointerY - slotCenterY) < 60) {
+          setSlots(prev => { const newSlots = [...prev]; newSlots[dragState.id!] = dragState.id; return newSlots; });
+        } else {
+          setPoolPieces(prev => [...prev, dragState.id!]);
+        }
+      }
+      setDragState({ id: null, source: null, isDragging: false, x: 0, y: 0 });
+    };
+    window.addEventListener('pointermove', handlePointerMove);
+    window.addEventListener('pointerup', handlePointerUp);
+    return () => { window.removeEventListener('pointermove', handlePointerMove); window.removeEventListener('pointerup', handlePointerUp); };
+  }, [dragState.isDragging, dragState.id]);
+
+  const renderPuzzlePiece = (pieceId: number) => {
+    const row = Math.floor(pieceId / GRID_SIZE);
+    const col = pieceId % GRID_SIZE;
+    return (
+      <div style={{ width: '150px', height: '150px', position: 'absolute', top: '-25px', left: '-25px', overflow: 'visible', pointerEvents: 'none', clipPath: `url(#jigsaw-${pieceId})` }}>
+        <div style={{ position: 'absolute', top: `${25 - (row * TILE_SIZE)}px`, left: `${25 - (col * TILE_SIZE)}px`, width: '400px', height: '400px' }}>
+          <CodeGeneratedPuzzleArtwork />
+        </div>
+      </div>
+    );
+  };
+
+  const formatTime = (seconds: number) => {
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    return `${m}:${s.toString().padStart(2, '0')}`;
+  };
+
+  return (
+     <div style={{ minHeight: '100vh', width: '100%', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px', fontFamily: 'system-ui, sans-serif', position: 'relative' }}>
+      {dragState.isDragging && dragState.id !== null && (
+        <div style={{ position: 'fixed', left: 0, top: 0, width: '100px', height: '100px', transform: `translate(${dragState.x}px, ${dragState.y}px) scale(1.05)`, zIndex: 9999, pointerEvents: 'none', filter: 'drop-shadow(0 12px 24px rgba(0,0,0,0.25))' }}>
+          {renderPuzzlePiece(dragState.id)}
+        </div>
+      )}
+
+      <svg width="0" height="0" style={{ position: 'absolute', pointerEvents: 'none' }}>
+        <defs>
+          {INITIAL_PIECES.map(id => {
+            const r = Math.floor(id / 4); const c = id % 4; const even = (r + c) % 2 === 0;
+            const top = r === 0 ? 0 : (even ? 1 : -1); const right = c === 3 ? 0 : (even ? 1 : -1);
+            const bottom = r === 3 ? 0 : (even ? 1 : -1); const left = c === 0 ? 0 : (even ? 1 : -1);
+            const path = `M 25,25 
+              ${top === 0 ? 'L 125,25' : top === 1 ? 'L 60,25 C 60,0 90,0 90,25 L 125,25' : 'L 60,25 C 60,50 90,50 90,25 L 125,25'}
+              ${right === 0 ? 'L 125,125' : right === 1 ? 'L 125,60 C 150,60 150,90 125,90 L 125,125' : 'L 125,60 C 100,60 100,90 125,90 L 125,125'}
+              ${bottom === 0 ? 'L 25,125' : bottom === 1 ? 'L 90,125 C 90,150 60,150 60,125 L 25,125' : 'L 90,125 C 90,100 60,100 60,125 L 25,125'}
+              ${left === 0 ? 'L 25,25' : left === 1 ? 'L 25,90 C 0,90 0,60 25,60 L 25,25' : 'L 25,90 C 50,90 50,60 25,60 L 25,25'} Z`;
+            return ( <clipPath id={`jigsaw-${id}`} key={id} clipPathUnits="userSpaceOnUse"><path d={path} /></clipPath> );
+          })}
+        </defs>
+      </svg>
+
+      {!isSolved && (
+        <>
+          <div style={{ position: 'absolute', top: '30px', right: '40px', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '16px', zIndex: 10 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '6px' }}>
+              <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Target Design</span>
+              <div style={{ width: '80px', height: '80px', borderRadius: '8px', border: '1px solid var(--border-main)', overflow: 'hidden', boxShadow: 'var(--shadow-sm)', backgroundColor: 'var(--bg-card)', position: 'relative' }}>
+                <div style={{ transform: 'scale(0.2)', transformOrigin: 'top left', width: '400px', height: '400px' }}><CodeGeneratedPuzzleArtwork /></div>
               </div>
             </div>
-          ))}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 16px', background: 'var(--bg-card)', border: '1px solid var(--border-main)', borderRadius: '8px', fontWeight: 'bold', fontSize: '18px', boxShadow: 'var(--shadow-sm)', color: '#dc2626' }}>
+                <Clock size={20} />{formatTime(timeLeft)}
+              </div>
+              <button onClick={handleRetry} style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid var(--border-main)', background: 'var(--bg-card)', color: 'var(--text-secondary)', fontWeight: 600, cursor: 'pointer', transition: 'background 0.2s', boxShadow: 'var(--shadow-sm)' }}>Retry</button>
+            </div>
+          </div>
+          <div style={{ position: 'fixed', bottom: '40px', left: '40px', zIndex: 50 }}>
+            <button onClick={onSkip} style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid var(--border-main)', background: 'var(--bg-card)', color: 'var(--text-secondary)', fontWeight: 600, cursor: 'pointer', transition: 'background 0.2s', boxShadow: 'var(--shadow-sm)' }}>Skip Puzzle</button>
+          </div>
+        </>
+      )}
+
+      <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+        <h1 style={{ color: 'var(--text-main)', margin: '0 0 12px', fontSize: '32px', fontWeight: 'bold' }}>Innovation Wiki Access</h1>
+        <p style={{ color: 'var(--text-secondary)', margin: 0, fontSize: '16px' }}>
+          {isSolved ? 'Assembly complete. System unlocked.' : isFailed ? 'Time expired. Please try again.' : 'Drag the matching pieces into the grid to build the artwork and unlock the platform.'}
+        </p>
+      </div>
+
+      <div style={{ display: 'flex', gap: '40px', alignItems: 'flex-start', flexWrap: 'wrap', justifyContent: 'center' }}>
+        
+        {isSolved ? (
+          /* Exact matching layout for Image 3 when solved */
+          <div style={{ 
+            width: '400px', height: '400px', borderRadius: '12px', overflow: 'hidden', 
+            border: '2px solid #34a853', boxShadow: '0 0 30px rgba(52, 168, 83, 0.4)',
+            animation: 'fadeIn 0.5s ease'
+          }}>
+            <CodeGeneratedPuzzleArtwork />
+          </div>
+        ) : (
+          <div id="puzzle-grid" style={{ 
+              display: 'grid', gridTemplateColumns: `repeat(${GRID_SIZE}, ${TILE_SIZE}px)`, gridTemplateRows: `repeat(${GRID_SIZE}, ${TILE_SIZE}px)`, 
+              gap: '0px', padding: '12px', background: 'var(--bg-card)', borderRadius: '16px', 
+              boxShadow: isFailed ? '0 0 30px rgba(220, 38, 38, 0.4)' : 'var(--shadow-sm)', 
+              border: `2px solid ${isFailed ? '#dc2626' : 'var(--border-main)'}`, transition: 'all 0.5s ease', position: 'relative'
+            }}>
+            {slots.map((pieceId, index) => (
+              <div key={index} style={{ width: `${TILE_SIZE}px`, height: `${TILE_SIZE}px`, position: 'relative', border: pieceId === null ? '1px dashed var(--border-main)' : 'none', borderRadius: '6px' }}>
+                {pieceId !== null && ( <div onPointerDown={(e) => handlePointerDown(e, pieceId, 'grid')} style={{ width: '100%', height: '100%', cursor: 'grab', zIndex: 2 }}>{renderPuzzlePiece(pieceId)}</div> )}
+              </div>
+            ))}
+          </div>
+        )}
+
+        <div className="puzzle-pool" style={{ width: '500px', height: isSolved ? '400px' : '428px', boxSizing: 'border-box', overflowY: 'auto', overflowX: 'hidden', display: 'flex', flexDirection: 'column', padding: '24px', background: 'var(--bg-card)', borderRadius: '16px', border: '1px solid var(--border-main)' }}>
+          {isSolved ? (
+            <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', animation: 'fadeIn 0.5s ease' }}>
+              <div style={{ width: '60px', height: '60px', borderRadius: '50%', backgroundColor: '#dcfce7', color: '#166534', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '20px' }}>
+                <ShieldCheck size={32} />
+              </div>
+              <h3 style={{ margin: '0 0 20px', color: 'var(--text-main)', fontWeight: 'bold' }}>Verification Successful</h3>
+              <button onClick={onComplete} style={{ padding: '14px 32px', borderRadius: '8px', border: 'none', background: '#1a73e8', color: 'white', fontSize: '15px', fontWeight: 600, cursor: 'pointer', boxShadow: '0 4px 12px rgba(26, 115, 232, 0.3)' }}>
+                Enter Innovation Wiki
+              </button>
+            </div>
+          ) : isFailed ? (
+            <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', animation: 'fadeIn 0.5s ease' }}>
+              <div style={{ width: '60px', height: '60px', borderRadius: '50%', backgroundColor: '#fee2e2', color: '#dc2626', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '20px' }}>
+                <X size={32} />
+              </div>
+              <h3 style={{ margin: '0 0 12px', color: 'var(--text-main)' }}>Time's Up!</h3>
+              <p style={{ margin: '0 0 20px', color: 'var(--text-secondary)', textAlign: 'center' }}>You ran out of time to complete the puzzle.</p>
+              <button onClick={handleRetry} style={{ padding: '14px 28px', borderRadius: '8px', border: 'none', background: '#dc2626', color: 'white', fontSize: '16px', fontWeight: 600, cursor: 'pointer', boxShadow: '0 4px 12px rgba(220, 38, 38, 0.3)' }}>Try Again</button>
+            </div>
+          ) : (
+            <>
+              <h3 style={{ margin: '0 0 24px', fontSize: '18px', color: 'var(--text-main)', textAlign: 'center' }}>Drag Pieces to the Board</h3>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '30px 20px', justifyItems: 'center', paddingBottom: '20px' }}>
+                {poolPieces.map(pieceId => (
+                  <div key={pieceId} style={{ width: '100px', height: '100px', position: 'relative' }}>
+                    <div onPointerDown={(e) => handlePointerDown(e, pieceId, 'pool')} style={{ width: '100%', height: '100%', cursor: 'grab', zIndex: 1, touchAction: 'none' }}>
+                      {renderPuzzlePiece(pieceId)}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>
@@ -818,6 +1153,7 @@ function AsymmetricDashboard({ onSelect }: { onSelect: (id: NavigationId) => voi
 
 function App() {
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const [isPuzzleCompleted, setIsPuzzleCompleted] = useState(false);
   const [selectedSolution, setSelectedSolution] = useState<NavigationId>('dashboard');
   const [activeSection, setActiveSection] = useState<SectionId>('overview');
 
@@ -852,6 +1188,16 @@ function App() {
       {theme === 'light' ? <Moon size={22} color="#4285F4" /> : <Sun size={22} color="#FBBC04" />}
     </button>
   );
+
+  if (!isPuzzleCompleted) {
+    return (
+      <div className={`app no-sidebar-app ${theme}`}>
+        <GlobalThemeStyles />
+        <ThemeToggle />
+        <PuzzleSplash onComplete={() => setIsPuzzleCompleted(true)} onSkip={() => setIsPuzzleCompleted(true)} />
+      </div>
+    );
+  }
 
   return (
     <div className={`app no-sidebar-app ${theme}`}>
@@ -901,10 +1247,10 @@ function App() {
         {/* BODY CONTAINER */}
         <div style={{ flex: 1, position: 'relative' }}>
           {selectedSolution === 'dashboard' ? (
-            /* First Page View: Only Cards Are Shown */
+            /* First Page View: Only Cards Are Shown (No Scroll Topbar) */
             <AsymmetricDashboard onSelect={openSolution} />
           ) : (
-            /* Selected View: Isolated Detail View with Back Button */
+            /* Selected View: Isolated Detail View with Back Button (No Scroll Topbar) */
             <div className="page-content main-page-content" style={{ padding: '24px 40px' }}>
               <div style={{ marginBottom: '20px' }}>
                 <button 
