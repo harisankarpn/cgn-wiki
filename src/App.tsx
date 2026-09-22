@@ -61,7 +61,7 @@ import coreVideo from './C.O.R.E.mp4';
 ========================================================= */
 
 type SolutionId = 'core' | 'elevate' | 'sme' | 'accelerate' | 'crado';
-type NavigationId = 'home' | SolutionId;
+type NavigationId = 'dashboard' | 'home' | SolutionId;
 type SectionId = 'overview' | 'problem' | 'solution' | 'benefits' | 'usage' | 'impact' | 'access' | 'feedback' | 'demo';
 
 type BenefitItem = {
@@ -128,7 +128,6 @@ function GlobalThemeStyles() {
         pointer-events: none;
       }
 
-      /* Completely hide the light wave image in dark mode and apply solid dark background */
       body.dark::before {
         display: none !important;
       }
@@ -158,9 +157,24 @@ function GlobalThemeStyles() {
        background-color: var(--bg-card) !important; 
        border-bottom: 1px solid var(--border-main) !important;
       }
+      
+      /* Dashboard Specific Dark Mode */
+      .dark .hub-card {
+        background: var(--bg-card) !important;
+        border-color: var(--border-main) !important;
+      }
+      .dark .hub-hero-card {
+        background: #1e293b !important;
+        border-color: var(--border-main) !important;
+      }
+      .dark .hub-hero-card h3, .dark .hub-card h4 { color: var(--text-main) !important; }
+      .dark .hub-hero-card p, .dark .hub-card p { color: var(--text-secondary) !important; }
+      .dark .hub-hero-blob-1 { background: #334155 !important; }
+      .dark .hub-hero-blob-2 { background: #0f172a !important; }
+
       .dark .puzzle-piece,
       .dark .puzzle-slot-empty {
-      background-color: transparent !important;
+        background-color: transparent !important;
       }
 
       .dark .platform-card { background: var(--bg-card) !important; border-color: var(--border-main) !important; color: var(--text-main) !important; box-shadow: var(--shadow-sm) !important; }
@@ -214,7 +228,6 @@ function GlobalThemeStyles() {
       .dark .p-callout, .dark .s-callout { background-color: var(--bg-hover) !important; }
       .dark .p-trans, .dark .s-trans { background-color: var(--bg-hover) !important; border-color: var(--border-main) !important; }
 
-      /* Pool Scrollbar Customization */
       .puzzle-pool::-webkit-scrollbar {
         width: 8px;
       }
@@ -323,32 +336,26 @@ const NewGCPLogo = ({ size = 200 }: { size?: number }) => (
 
 const CodeGeneratedPuzzleArtwork = () => (
  <div style={{ width: '400px', height: '400px', background: `url(${puzzleBg}) center/cover no-repeat`, position: 'relative', boxSizing: 'border-box', overflow: 'hidden' }}>
-    
     <div style={{ position: 'absolute', top: 0, left: 0, width: '200px', height: '200px', background: 'radial-gradient(circle at top left, rgba(66, 133, 244, 0.15), transparent 70%)' }}></div>
     <div style={{ position: 'absolute', bottom: 0, right: 0, width: '200px', height: '200px', background: 'radial-gradient(circle at bottom right, rgba(251, 188, 4, 0.15), transparent 70%)' }}></div>
     <div style={{ position: 'absolute', bottom: 0, left: 0, width: '200px', height: '200px', background: 'radial-gradient(circle at bottom left, rgba(52, 168, 83, 0.15), transparent 70%)' }}></div>
-    
     <div style={{ position: 'absolute', top: '24px', left: '24px', textAlign: 'left' }}>
       <div style={{ fontSize: '26px', fontFamily: 'Georgia, serif', fontStyle: 'italic', color: '#1a73e8', lineHeight: '1.1', fontWeight: 'bold' }}>One<br/>Cloud</div>
       <div style={{ fontSize: '13px', color: 'var(--text-main)', marginTop: '6px', fontWeight: 600 }}>Many<br/>Possibilities</div>
       <div style={{ width: '40px', height: '4px', background: 'linear-gradient(90deg, #4285F4, #34A853)', marginTop: '6px', borderRadius: '2px' }}></div>
     </div>
-    
     <div style={{ position: 'absolute', top: '24px', right: '24px', textAlign: 'right' }}>
       <div style={{ fontSize: '26px', fontFamily: 'Georgia, serif', fontStyle: 'italic', color: '#1a73e8', lineHeight: '1.1', fontWeight: 'bold' }}>Ideas<br/>to Impact</div>
       <div style={{ width: '60px', height: '4px', background: 'linear-gradient(90deg, #EA4335, #FBBC04, #34A853)', marginTop: '6px', float: 'right', borderRadius: '2px' }}></div>
     </div>
-    
     <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -60%)' }}>
        <NewGCPLogo size={200} />
     </div>
-
     <div style={{ position: 'absolute', bottom: '65px', left: '0', width: '100%', textAlign: 'center' }}>
       <h2 style={{ margin: 0, color: 'var(--text-main)', fontSize: '32px', fontWeight: 800, letterSpacing: '-0.5px' }}>GCP Tech</h2>
       <h2 style={{ margin: 0, color: '#1a73e8', fontSize: '24px', fontWeight: 700, letterSpacing: '-0.5px' }}>Transformation Solutions</h2>
       <p style={{ margin: '4px 0 0', color: 'var(--text-secondary)', fontSize: '14px', fontWeight: 500 }}>One Cloud &nbsp;&bull;&nbsp; Many Possibilities</p>
     </div>
-
     <div style={{ position: 'absolute', bottom: '16px', display: 'flex', justifyContent: 'space-around', width: '100%', padding: '0 24px', boxSizing: 'border-box' }}>
        <div style={{ textAlign: 'center', color: '#4285F4', display: 'flex', flexDirection: 'column', alignItems: 'center' }}><Users size={24}/><div style={{ fontSize: '12px', fontWeight: 700, marginTop: '4px', color: 'var(--text-main)' }}>People</div></div>
        <div style={{ textAlign: 'center', color: '#34A853', display: 'flex', flexDirection: 'column', alignItems: 'center' }}><Lightbulb size={24}/><div style={{ fontSize: '12px', fontWeight: 700, marginTop: '4px', color: 'var(--text-main)' }}>Innovation</div></div>
@@ -367,8 +374,8 @@ const solutions = [
   { id: 'core' as NavigationId, name: 'C.O.R.E.', subtitle: 'Talent Acquisition & Readiness', icon: Target, color: '#1967d2' },
   { id: 'elevate' as NavigationId, name: 'Elevate360', subtitle: 'Operational Governance', icon: BarChart3, color: '#16a34a' },
   { id: 'sme' as NavigationId, name: 'Digital SME', subtitle: 'Real-Time Case Execution', icon: Bot, color: '#7c3aed' },
-  { id: 'accelerate' as NavigationId, name: 'Project Accelerate', subtitle: 'Customer Experience & Risk Control', icon: Zap, color: '#f59e0b' },
-  { id: 'crado' as NavigationId, name: 'CRADO', subtitle: 'Automated Billing Orchestrator', icon: FileText, color: '#0ea5e9' },
+  { id: 'accelerate' as NavigationId, name: 'Project Accelerate', subtitle: 'Risk Intelligence & Control', icon: Zap, color: '#f59e0b' },
+  { id: 'crado' as NavigationId, name: 'CRADO', subtitle: 'Automated Billing Deduction', icon: FileText, color: '#0ea5e9' },
 ];
 
 const FEEDBACK_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSf0zu4Q-0kTjP03BLKMIPfQLePmL0P3xyAaaWr5COiuTGKqlA/viewform?usp=publish-editor';
@@ -670,7 +677,6 @@ const solutionContent = {
     feedback: FEEDBACK_URL,
     demo: '',
   },
-  // Add this crado block right after the closing brace of accelerate: { ... },
 
   crado: {
     shortName: 'CRADO',
@@ -769,6 +775,78 @@ const wikiTableRows = [
   { id: 'access', icon: KeyRound, color: '#06b6d4', section: 'Access & Support', covers: 'Application links, POC details and how to get help.', details: 'Access links, tool owner/POC and support information' },
   { id: 'feedback-demo', icon: PlayCircle, color: '#1a73e8', section: 'Feedback & Demo', covers: 'Share your feedback and watch a short demo.', details: 'Link to feedback form and embedded video demo' },
 ];
+
+/* =========================================================
+   DASHBOARD HUB (NEW ASYMMETRIC GRID VIEW)
+========================================================= */
+
+function DashboardHub({ onSelect }: { onSelect: (id: NavigationId) => void }) {
+  return (
+    <div className="dashboard-hub-container">
+      {/* 1. Large Left Hero Card: Innovation Wiki */}
+      <button className="hub-hero-card" onClick={() => onSelect('home')}>
+        <div className="hub-hero-blob-1"></div>
+        <div className="hub-hero-blob-2"></div>
+        
+        <div className="hub-hero-content">
+          <div className="hub-hero-icon">
+            {/* Custom Google Multi-color House SVG */}
+            <svg viewBox="0 0 100 100" width="100%" height="100%" fill="none" strokeWidth="14" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M 50 25 L 20 50" stroke="#4285F4" />
+              <path d="M 50 25 L 80 50" stroke="#EA4335" />
+              <path d="M 30 45 L 30 80 L 45 80" stroke="#FBBC04" />
+              <path d="M 70 45 L 70 80 L 55 80" stroke="#34A853" />
+            </svg>
+          </div>
+          <h3>Innovation Wiki</h3>
+          <p>Your central hub for<br/>knowledge, collaboration<br/>and innovation.</p>
+          <div className="hub-hero-arrow">
+            <ArrowRight size={24} color="white" />
+          </div>
+        </div>
+      </button>
+
+      {/* 2. Right Grid (Top Row & Bottom Row) */}
+      <div className="hub-grid-right">
+        <div className="hub-grid-row top-row">
+          {solutions.slice(1, 4).map(s => (
+            <div key={s.id} className="hub-card" onClick={() => onSelect(s.id)}>
+              <div className="hub-card-blob" style={{ backgroundColor: s.color }}></div>
+              <div className="hub-card-content">
+                <div className="hub-card-icon-wrap" style={{ color: s.color, backgroundColor: `${s.color}15` }}>
+                  <s.icon size={40} strokeWidth={2.5} />
+                </div>
+                <h4>{s.name}</h4>
+                <p>{s.subtitle}</p>
+              </div>
+              <div className="hub-card-arrow" style={{ backgroundColor: `${s.color}15`, color: s.color }}>
+                <ArrowRight size={18} strokeWidth={3} />
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="hub-grid-row bottom-row">
+          {solutions.slice(4).map(s => (
+            <div key={s.id} className="hub-card" onClick={() => onSelect(s.id)}>
+              <div className="hub-card-blob" style={{ backgroundColor: s.color }}></div>
+              <div className="hub-card-content">
+                <div className="hub-card-icon-wrap" style={{ color: s.color, backgroundColor: `${s.color}15` }}>
+                  <s.icon size={40} strokeWidth={2.5} />
+                </div>
+                <h4>{s.name}</h4>
+                <p>{s.subtitle}</p>
+              </div>
+              <div className="hub-card-arrow" style={{ backgroundColor: `${s.color}15`, color: s.color }}>
+                <ArrowRight size={18} strokeWidth={3} />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 
 /* =========================================================
    SPLASH PUZZLE COMPONENT
@@ -968,17 +1046,12 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
         </div>
       )}
 
-      {/* FIXED MATHEMATICAL JIGSAW SVG PATHS */}
       <svg width="0" height="0" style={{ position: 'absolute', pointerEvents: 'none' }}>
         <defs>
           {INITIAL_PIECES.map(id => {
             const r = Math.floor(id / 4);
             const c = id % 4;
-            
-            // Corrected Mathematical Interlocking Formula:
-            // Adjacent edges now perfectly oppose each other via parity check.
             const even = (r + c) % 2 === 0;
-            
             const top = r === 0 ? 0 : (even ? 1 : -1);
             const right = c === 3 ? 0 : (even ? 1 : -1);
             const bottom = r === 3 ? 0 : (even ? 1 : -1);
@@ -1000,7 +1073,6 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
       </svg>
 
       <div style={{ position: 'absolute', top: '30px', right: '40px', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '16px', zIndex: 10 }}>
-        
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '6px' }}>
           <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
             Target Design
@@ -1165,7 +1237,9 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
 function App() {
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [isPuzzleCompleted, setIsPuzzleCompleted] = useState(false);
-  const [selectedSolution, setSelectedSolution] = useState<NavigationId>('home');
+  
+  // Set initial selectedSolution to 'dashboard' so it shows the asymmetric grid first
+  const [selectedSolution, setSelectedSolution] = useState<NavigationId>('dashboard');
   const [activeSection, setActiveSection] = useState<SectionId>('overview');
 
   useEffect(() => {
@@ -1215,7 +1289,6 @@ function App() {
         <section className="hero top-hero premium-hero" style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', position: 'relative' }}>
           <div className="hero-copy" style={{ width: '100%', maxWidth: '100%', display: 'flex', alignItems: 'center', gap: '20px' }}>
             
-            {/* Added backgroundColor: '#ffffff' to the wrapper to enforce a perfect circle in dark mode */}
             <div style={{ width: '75px', height: '75px', borderRadius: '50%', overflow: 'hidden', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffffff' }}>
               <img 
                 src={gcpGif} 
@@ -1228,7 +1301,6 @@ function App() {
                 }} 
               />
             </div>
-            
             
             <div>
               <h1 className="premium-title" style={{ fontSize: '2.2rem', margin: 0, lineHeight: 1.2 }}>
@@ -1247,63 +1319,47 @@ function App() {
 
           </div>
         </section>
-       <section className="platform-card-row five-platforms">
-          {/* LEFT COLUMN: Innovation Wiki (Index 0) */}
-          {solutions.slice(0, 1).map((platform) => {
-            const Icon = platform.icon;
-            const isSelected = selectedSolution === platform.id;
-            return (
-              <button
-                type="button"
-                key={platform.id}
-                className={`platform-card hero-card ${isSelected ? 'selected-glow' : ''}`}
-                onClick={() => openSolution(platform.id)}
-              >
-                <div className="platform-icon" style={{ color: platform.color, backgroundColor: `${platform.color}10`, width: '80px', height: '80px' }}>
-                  <Icon size={64} strokeWidth={2.2} />
-                </div>
-                <div className="platform-copy">
-                  <h3 style={{ fontSize: '24px' }}>{platform.name}</h3>
-                  <p>{platform.subtitle}</p>
-                </div>
-                {/* Arrow removed for the hero card to match your target image */}
-              </button>
-            );
-          })}
 
-          {/* RIGHT COLUMN: Remaining Solutions Grid */}
-          <div className="right-grid-container">
-            {solutions.slice(1).map((platform) => {
-              const Icon = platform.icon;
-              const isSelected = selectedSolution === platform.id;
-              return (
-                <button
-                  type="button"
-                  key={platform.id}
-                  className={`platform-card ${isSelected ? 'selected-glow' : ''}`}
-                  onClick={() => openSolution(platform.id)}
-                >
-                  <div className="platform-icon" style={{ color: platform.color, backgroundColor: `${platform.color}10` }}>
-                    <Icon size={44} strokeWidth={2.2} />
-                  </div>
-                  <div className="platform-copy">
-                    <h3>{platform.name}</h3>
-                    <p>{platform.subtitle}</p>
-                  </div>
-                  <ChevronRight size={22} className="platform-arrow" style={{ alignSelf: 'flex-end', marginTop: 'auto' }} />
-                </button>
-              );
-            })}
-          </div>
-        </section>
-    
-        <div className="page-content main-page-content">
-          {selectedSolution === 'home' ? (
-            <InnovationWikiHome />
-          ) : (
-            <SolutionPage solutionId={selectedSolution} activeSection={activeSection} setActiveSection={setActiveSection} />
-          )}
-        </div>
+        {selectedSolution === 'dashboard' ? (
+          // Render Asymmetric Dashboard View exactly matching Image_2
+          <DashboardHub onSelect={openSolution} />
+        ) : (
+          // Render Restored Horizontal View + Content Pages
+          <>
+            <section className="platform-card-row">
+              {solutions.map((platform) => {
+                const Icon = platform.icon;
+                const isSelected = selectedSolution === platform.id;
+                return (
+                  <button
+                    type="button"
+                    key={platform.id}
+                    className={`platform-card ${isSelected ? 'selected-glow' : ''}`}
+                    onClick={() => openSolution(platform.id)}
+                  >
+                    <div className="platform-icon" style={{ color: platform.color, backgroundColor: `${platform.color}10` }}>
+                      <Icon size={44} strokeWidth={2.2} />
+                    </div>
+                    <div className="platform-copy">
+                      <h3>{platform.name}</h3>
+                      <p>{platform.subtitle}</p>
+                    </div>
+                    <ChevronRight size={22} className="platform-arrow" />
+                  </button>
+                );
+              })}
+            </section>
+        
+            <div className="page-content main-page-content">
+              {selectedSolution === 'home' ? (
+                // Table View (Screenshot 1) opens when they click the Innovation Wiki "Explore" button
+                <InnovationWikiHome />
+              ) : (
+                <SolutionPage solutionId={selectedSolution as SolutionId} activeSection={activeSection} setActiveSection={setActiveSection} />
+              )}
+            </div>
+          </>
+        )}
 
         <footer className="footer upgraded-footer" style={{ marginTop: 'auto' }}>
           <div className="footer-left">
