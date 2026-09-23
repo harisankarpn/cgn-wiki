@@ -57,10 +57,6 @@ import {
   Search
 } from 'lucide-react';
 
-import puzzleBg from './background.jpeg';
-import bgImage from './background.jpeg';
-import coreVideo from './C.O.R.E.mp4';
-
 /* =========================================================
    TYPES
 ========================================================= */
@@ -73,6 +69,69 @@ type BenefitItem = {
   title: string;
   description: string;
 };
+
+/* =========================================================
+   GLOBAL THEME STYLES (SAFE CSS INJECTION - NO LOCAL IMAGES)
+========================================================= */
+
+function GlobalThemeStyles() {
+  return (
+    <style>{`
+      :root {
+        --bg-main: #050b14;
+        --bg-card: rgba(15, 23, 42, 0.6);
+        --text-main: #ffffff;
+        --text-secondary: #94a3b8;
+        --border-main: rgba(255, 255, 255, 0.15);
+        --border-soft: rgba(255, 255, 255, 0.05);
+        --shadow-sm: 0 8px 32px rgba(0, 0, 0, 0.3);
+      }
+
+      body {
+        background-color: var(--bg-main) !important;
+        color: var(--text-main);
+        margin: 0 !important;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      }
+
+      .app, .no-sidebar-app, .main-page-content { 
+        background-color: transparent !important; 
+      }
+      
+      .wiki-home, .solution-page { 
+        background: rgba(10, 15, 35, 0.75) !important; 
+        border: 1px solid var(--border-main) !important; 
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+      }
+      .solution-header { border-bottom-color: var(--border-main) !important; }
+      .solution-header h2 { color: var(--text-main) !important; }
+      .solution-header p, .header-sub { color: var(--text-secondary) !important; }
+      
+      .solution-tabs { background: rgba(0,0,0,0.2) !important; border-right-color: var(--border-main) !important; }
+      .solution-tabs button { color: var(--text-secondary) !important; transition: all 0.2s; }
+      .solution-tabs button:hover { background: rgba(255,255,255,0.05) !important; color: #fff !important;}
+      .solution-tabs button.active { background: rgba(56, 189, 248, 0.15) !important; color: var(--text-main) !important; border-left: 3px solid #38bdf8; }
+      
+      .section-heading h3 { color: var(--text-main) !important; }
+      .text-panel, .impact-panel, .access-panel, .feedback-panel, .demo-panel, .usage-desc-card { 
+        background-color: rgba(255,255,255,0.03) !important; 
+        border: 1px solid var(--border-main) !important; 
+        border-radius: 12px;
+        padding: 24px;
+      }
+      .text-panel p, .impact-panel p, .feedback-panel p, .demo-panel p, .usage-desc-card p { color: #cbd5e1 !important; margin: 0; line-height: 1.6; font-size: 14px; }
+      .access-row { border-bottom: 1px solid var(--border-soft) !important; padding: 12px 0; }
+      .access-row span, .poc-row span { color: var(--text-muted) !important; font-size: 13px; }
+      .access-row strong { color: var(--text-main) !important; font-size: 15px; display: block; margin-top: 4px; }
+      
+      .feedback-panel h4, .demo-panel h4 { color: var(--text-main) !important; margin: 0 0 8px; font-size: 16px; }
+
+      .p-card, .s-card { background-color: rgba(255,255,255,0.05) !important; border: 1px solid var(--border-main) !important; border-radius: 12px; padding: 20px; }
+      .p-callout, .s-callout { background-color: rgba(0,0,0,0.3) !important; border: 1px solid var(--border-main) !important; border-radius: 12px; padding: 20px;}
+    `}</style>
+  );
+}
 
 /* =========================================================
    SOLUTIONS DATA
@@ -161,7 +220,7 @@ const solutionContent: Record<SolutionId, any> = {
     access: 'https://stack-cognizant.web.app/login',
     poc: defaultPOCs,
     feedback: FEEDBACK_URL,
-    demo: coreVideo,
+    demo: '',
   },
   elevate: {
     shortName: 'Elevate360',
@@ -609,22 +668,22 @@ const wikiTableRows = [
 ];
 
 /* =========================================================
-   DASHBOARD HUB: DARK GLASS EXACT REPLICA
+   DASHBOARD HUB: EXACT MATCH FOR IMAGE (1)_6.jpg
 ========================================================= */
 
 function AsymmetricDashboard({ onSelect }: { onSelect: (id: NavigationId) => void }) {
   return (
     <div className="dashboard-hub-container">
-      {/* 1. Large Left Card: Innovation Wiki */}
+      {/* 1. Large Left Card: Bright Frosted Glass Innovation Wiki */}
       <div className="hub-hero-card">
-        {/* Bright Frosted Glass Shapes */}
+        {/* Soft glowing shapes behind the frosted glass to mimic the image exactly */}
         <div className="hero-bg-shape-1"></div>
         <div className="hero-bg-shape-2"></div>
         <div className="hero-bg-shape-3"></div>
         
         <div className="hub-hero-content">
           <div className="hub-hero-icon-container">
-            {/* Pixel-Matched Google Multi-Color House Icon */}
+            {/* Exact SVG Google House Icon with accurate styling */}
             <svg viewBox="0 0 100 100" width="100%" height="100%">
                <path d="M 50 20 L 15 50" stroke="#4285F4" strokeWidth="14" strokeLinecap="round" strokeLinejoin="round"/>
                <path d="M 50 20 L 85 50" stroke="#EA4335" strokeWidth="14" strokeLinecap="round" strokeLinejoin="round"/>
@@ -645,13 +704,13 @@ function AsymmetricDashboard({ onSelect }: { onSelect: (id: NavigationId) => voi
         </div>
       </div>
 
-      {/* 2. Right Grid Container (3-Column Layout exactly matching Image 35) */}
+      {/* 2. Right Grid Container (3-Column Horizontal Layout matching Image (1)_6.jpg) */}
       <div className="hub-grid-right">
         {solutions.map((s) => {
           return (
             <div key={s.id} className="hub-card" onClick={() => onSelect(s.id)}>
-              {/* Soft colored glow corner accent matching reference exactly */}
-              <div className="hub-card-glow" style={{ background: `radial-gradient(circle at top left, ${s.color}50 0%, transparent 60%)` }}></div>
+              {/* Exact soft colored glow corner accent matching reference */}
+              <div className="hub-card-glow" style={{ background: `radial-gradient(circle at top left, ${s.color}60 0%, transparent 70%)` }}></div>
               
               <div className="hub-card-top">
                 <div className="hub-card-icon-wrap" style={{ color: '#ffffff', backgroundColor: s.color, boxShadow: `0 0 16px ${s.color}` }}>
@@ -670,7 +729,7 @@ function AsymmetricDashboard({ onSelect }: { onSelect: (id: NavigationId) => voi
           );
         })}
 
-        {/* 9th Slot: "Transform Ideas into Impact" Graphic (Exact match for Image 35 layout) */}
+        {/* 9th Slot: "Transform Ideas into Impact" Graphic (Exact match for grid layout) */}
         <div className="hub-grid-promo">
           <div className="promo-text">
             <span>Transform</span>
@@ -685,11 +744,199 @@ function AsymmetricDashboard({ onSelect }: { onSelect: (id: NavigationId) => voi
 }
 
 /* =========================================================
+   SPLASH PUZZLE COMPONENT
+========================================================= */
+
+const GRID_SIZE = 4;
+const TOTAL_PIECES = GRID_SIZE * GRID_SIZE;
+const TILE_SIZE = 100; 
+const INITIAL_PIECES = Array.from({ length: TOTAL_PIECES }, (_, i) => i);
+
+function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: () => void }) {
+  const [poolPieces, setPoolPieces] = useState<number[]>(() => 
+    [...INITIAL_PIECES].sort(() => Math.random() - 0.5)
+  );
+  const [slots, setSlots] = useState<(number | null)[]>(Array(TOTAL_PIECES).fill(null));
+  const [dragState, setDragState] = useState<{ id: number | null; source: 'pool' | 'grid' | null; isDragging: boolean; x: number; y: number; }>({ id: null, source: null, isDragging: false, x: 0, y: 0 });
+  const [isSolved, setIsSolved] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(120); 
+  const [isFailed, setIsFailed] = useState(false);
+
+  useEffect(() => {
+    if (isSolved || isFailed) return;
+    if (timeLeft <= 0) { setIsFailed(true); return; }
+    const timerId = setInterval(() => { setTimeLeft(prev => prev - 1); }, 1000);
+    return () => clearInterval(timerId);
+  }, [timeLeft, isSolved, isFailed]);
+
+  useEffect(() => {
+    const isComplete = slots.every((piece, index) => piece === index);
+    if (isComplete && !slots.includes(null)) { setIsSolved(true); }
+  }, [slots]);
+
+  const handleRetry = () => {
+    setPoolPieces([...INITIAL_PIECES].sort(() => Math.random() - 0.5));
+    setSlots(Array(TOTAL_PIECES).fill(null));
+    setIsSolved(false); setIsFailed(false); setTimeLeft(120);
+    setDragState({ id: null, source: null, isDragging: false, x: 0, y: 0 });
+  };
+
+  const handlePointerDown = (e: React.PointerEvent, pieceId: number, source: 'pool' | 'grid') => {
+    if (isFailed || isSolved) return;
+    const zoom = parseFloat(window.getComputedStyle(document.body).zoom || '1');
+    setDragState({ id: pieceId, source, isDragging: true, x: (e.clientX / zoom) - (TILE_SIZE / 2), y: (e.clientY / zoom) - (TILE_SIZE / 2) });
+    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+    if (source === 'pool') { setPoolPieces(prev => prev.filter(p => p !== pieceId)); } 
+    else { setSlots(prev => { const newSlots = [...prev]; const slotIndex = newSlots.indexOf(pieceId); if (slotIndex !== -1) newSlots[slotIndex] = null; return newSlots; }); }
+  };
+
+  useEffect(() => {
+    if (!dragState.isDragging) return;
+    const handlePointerMove = (e: PointerEvent) => {
+      const zoom = parseFloat(window.getComputedStyle(document.body).zoom || '1');
+      setDragState(prev => ({ ...prev, x: (e.clientX / zoom) - (TILE_SIZE / 2), y: (e.clientY / zoom) - (TILE_SIZE / 2) }));
+    };
+    const handlePointerUp = (e: PointerEvent) => {
+      const gridEl = document.getElementById('puzzle-grid');
+      const zoom = parseFloat(window.getComputedStyle(document.body).zoom || '1');
+      if (gridEl && dragState.id !== null) {
+        const gridRect = gridEl.getBoundingClientRect();
+        const gridLeft = gridRect.left / zoom;
+        const gridTop = gridRect.top / zoom;
+        const slotRow = Math.floor(dragState.id / GRID_SIZE);
+        const slotCol = dragState.id % GRID_SIZE;
+        const targetX = gridLeft + 12 + (slotCol * TILE_SIZE);
+        const targetY = gridTop + 12 + (slotRow * TILE_SIZE);
+        const pointerX = e.clientX / zoom;
+        const pointerY = e.clientY / zoom;
+        const slotCenterX = targetX + (TILE_SIZE / 2);
+        const slotCenterY = targetY + (TILE_SIZE / 2);
+
+        if (Math.abs(pointerX - slotCenterX) < 60 && Math.abs(pointerY - slotCenterY) < 60) {
+          setSlots(prev => { const newSlots = [...prev]; newSlots[dragState.id!] = dragState.id; return newSlots; });
+        } else {
+          setPoolPieces(prev => [...prev, dragState.id!]);
+        }
+      }
+      setDragState({ id: null, source: null, isDragging: false, x: 0, y: 0 });
+    };
+    window.addEventListener('pointermove', handlePointerMove);
+    window.addEventListener('pointerup', handlePointerUp);
+    return () => { window.removeEventListener('pointermove', handlePointerMove); window.removeEventListener('pointerup', handlePointerUp); };
+  }, [dragState.isDragging, dragState.id]);
+
+  const renderPuzzlePiece = (pieceId: number) => {
+    const row = Math.floor(pieceId / GRID_SIZE);
+    const col = pieceId % GRID_SIZE;
+    return (
+      <div style={{ width: '150px', height: '150px', position: 'absolute', top: '-25px', left: '-25px', overflow: 'visible', pointerEvents: 'none', clipPath: `url(#jigsaw-${pieceId})` }}>
+        <div style={{ position: 'absolute', top: `${25 - (row * TILE_SIZE)}px`, left: `${25 - (col * TILE_SIZE)}px`, width: '400px', height: '400px', backgroundColor: '#1e293b' }}>
+          <div style={{ width: '100%', height: '100%', border: '1px solid rgba(255,255,255,0.2)', boxSizing: 'border-box' }}></div>
+        </div>
+      </div>
+    );
+  };
+
+  const formatTime = (seconds: number) => {
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    return `${m}:${s.toString().padStart(2, '0')}`;
+  };
+
+  return (
+     <div style={{ minHeight: '100vh', width: '100%', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px', fontFamily: 'system-ui, sans-serif', position: 'relative', zIndex: 10 }}>
+      {dragState.isDragging && dragState.id !== null && (
+        <div style={{ position: 'fixed', left: 0, top: 0, width: '100px', height: '100px', transform: `translate(${dragState.x}px, ${dragState.y}px) scale(1.05)`, zIndex: 9999, pointerEvents: 'none', filter: 'drop-shadow(0 12px 24px rgba(0,0,0,0.5))' }}>
+          {renderPuzzlePiece(dragState.id)}
+        </div>
+      )}
+
+      <svg width="0" height="0" style={{ position: 'absolute', pointerEvents: 'none' }}>
+        <defs>
+          {INITIAL_PIECES.map(id => {
+            const r = Math.floor(id / 4); const c = id % 4; const even = (r + c) % 2 === 0;
+            const top = r === 0 ? 0 : (even ? 1 : -1); const right = c === 3 ? 0 : (even ? 1 : -1);
+            const bottom = r === 3 ? 0 : (even ? 1 : -1); const left = c === 0 ? 0 : (even ? 1 : -1);
+            const path = `M 25,25 
+              ${top === 0 ? 'L 125,25' : top === 1 ? 'L 60,25 C 60,0 90,0 90,25 L 125,25' : 'L 60,25 C 60,50 90,50 90,25 L 125,25'}
+              ${right === 0 ? 'L 125,125' : right === 1 ? 'L 125,60 C 150,60 150,90 125,90 L 125,125' : 'L 125,60 C 100,60 100,90 125,90 L 125,125'}
+              ${bottom === 0 ? 'L 25,125' : bottom === 1 ? 'L 90,125 C 90,150 60,150 60,125 L 25,125' : 'L 90,125 C 90,100 60,100 60,125 L 25,125'}
+              ${left === 0 ? 'L 25,25' : left === 1 ? 'L 25,90 C 0,90 0,60 25,60 L 25,25' : 'L 25,90 C 50,90 50,60 25,60 L 25,25'} Z`;
+            return ( <clipPath id={`jigsaw-${id}`} key={id} clipPathUnits="userSpaceOnUse"><path d={path} /></clipPath> );
+          })}
+        </defs>
+      </svg>
+
+      {!isSolved && (
+        <div style={{ position: 'absolute', top: '30px', right: '40px', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '16px', zIndex: 10 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 16px', background: 'rgba(15, 23, 42, 0.8)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '8px', fontWeight: 'bold', fontSize: '18px', color: '#ef4444' }}>
+              <Clock size={20} />{formatTime(timeLeft)}
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+        <h1 style={{ color: '#ffffff', margin: '0 0 12px', fontSize: '32px', fontWeight: 'bold' }}>Innovation Wiki Access</h1>
+        <p style={{ color: '#94a3b8', margin: 0, fontSize: '16px' }}>Drag the matching pieces into the grid to unlock.</p>
+      </div>
+
+      <div style={{ display: 'flex', gap: '40px', alignItems: 'flex-start', flexWrap: 'wrap', justifyContent: 'center' }}>
+        <div id="puzzle-grid" style={{ 
+            display: 'grid', gridTemplateColumns: `repeat(${GRID_SIZE}, ${TILE_SIZE}px)`, gridTemplateRows: `repeat(${GRID_SIZE}, ${TILE_SIZE}px)`, 
+            gap: '0px', padding: '12px', background: 'rgba(15, 23, 42, 0.8)', borderRadius: '16px', 
+            border: `2px solid ${isFailed ? '#ef4444' : 'rgba(255,255,255,0.2)'}`, position: 'relative'
+          }}>
+          {slots.map((pieceId, index) => (
+            <div key={index} style={{ width: `${TILE_SIZE}px`, height: `${TILE_SIZE}px`, position: 'relative', border: pieceId === null ? '1px dashed rgba(255,255,255,0.2)' : 'none', borderRadius: '6px' }}>
+              {pieceId !== null && ( <div onPointerDown={(e) => handlePointerDown(e, pieceId, 'grid')} style={{ width: '100%', height: '100%', cursor: 'grab', zIndex: 2 }}>{renderPuzzlePiece(pieceId)}</div> )}
+            </div>
+          ))}
+        </div>
+
+        <div className="puzzle-pool" style={{ width: '500px', height: '428px', boxSizing: 'border-box', overflowY: 'auto', overflowX: 'hidden', display: 'flex', flexDirection: 'column', padding: '24px', background: 'rgba(15, 23, 42, 0.8)', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.2)' }}>
+          {isSolved ? (
+            <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{ width: '60px', height: '60px', borderRadius: '50%', backgroundColor: 'rgba(52, 168, 83, 0.2)', color: '#34A853', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '20px' }}>
+                <ShieldCheck size={32} />
+              </div>
+              <h3 style={{ margin: '0 0 20px', color: '#ffffff', fontWeight: 'bold' }}>Verification Successful</h3>
+              <button onClick={onComplete} style={{ padding: '14px 32px', borderRadius: '8px', border: 'none', background: '#1a73e8', color: 'white', fontSize: '15px', fontWeight: 600, cursor: 'pointer', boxShadow: '0 4px 12px rgba(26, 115, 232, 0.3)' }}>
+                Enter Innovation Wiki
+              </button>
+            </div>
+          ) : isFailed ? (
+            <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+              <h3 style={{ margin: '0 0 12px', color: '#ffffff' }}>Time's Up!</h3>
+              <button onClick={handleRetry} style={{ padding: '14px 28px', borderRadius: '8px', border: 'none', background: '#ef4444', color: 'white', fontSize: '16px', fontWeight: 600, cursor: 'pointer' }}>Try Again</button>
+            </div>
+          ) : (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '30px 20px', justifyItems: 'center' }}>
+              {poolPieces.map(pieceId => (
+                <div key={pieceId} style={{ width: '100px', height: '100px', position: 'relative' }}>
+                  <div onPointerDown={(e) => handlePointerDown(e, pieceId, 'pool')} style={{ width: '100%', height: '100%', cursor: 'grab', zIndex: 1, touchAction: 'none' }}>
+                    {renderPuzzlePiece(pieceId)}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+      <div style={{ position: 'fixed', bottom: '40px', left: '40px', zIndex: 50 }}>
+        <button onClick={onSkip} style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.2)', background: 'rgba(15, 23, 42, 0.8)', color: '#ffffff', fontWeight: 600, cursor: 'pointer' }}>Skip Puzzle</button>
+      </div>
+    </div>
+  );
+}
+
+/* =========================================================
    MAIN APP CONTROLLER
 ========================================================= */
 
 function App() {
-  const [theme] = useState<'dark'>('dark'); // Force dark glass theme
+  const [theme] = useState<'dark'>('dark'); 
   const [selectedSolution, setSelectedSolution] = useState<NavigationId>('dashboard');
   const [activeSection, setActiveSection] = useState<SectionId>('overview');
 
