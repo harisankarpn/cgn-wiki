@@ -347,17 +347,24 @@ button {
 }
 
 /* Right Grid Area: 3-column compact horizontal layout */
-.hub-grid-right {
+/* .hub-grid-right {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 16px;
   width: 100%;
+} */
+.hub-grid-right {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  width: 100%;
 }
-
 .hub-card {
   position: relative;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.02) 100%);
+  /* Replace the faint white gradient with a vivid blue glassmorphism gradient */
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.35) 0%, rgba(37, 99, 235, 0.05) 100%);
   border-radius: 20px;
+  /* Keep remaining border and box-shadow properties intact */
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-top: 1px solid rgba(255, 255, 255, 0.3);
   border-left: 1px solid rgba(255, 255, 255, 0.2);
@@ -721,14 +728,23 @@ button {
   .hub-hero-card { min-height: auto; }
 }
 
+/* @media (max-width: 1150px) {
+  .dashboard-hub-container { grid-template-columns: 1fr; }
+  .image-replica-header { padding: 16px 20px; }
+  .header-right { padding-right: 0; gap: 16px; }
+} */
+
 @media (max-width: 1150px) {
   .dashboard-hub-container { grid-template-columns: 1fr; }
   .image-replica-header { padding: 16px 20px; }
   .header-right { padding-right: 0; gap: 16px; }
+  /* Add this line to scale down to 2 columns on tablets */
+  .hub-grid-right { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 850px) {
   .image-replica-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .hub-grid-right { grid-template-columns: 1fr; }
   .header-center-search { width: 100%; }
   .solution-layout { grid-template-columns: 1fr; }
   .overview-grid { grid-template-columns: 1fr; }
