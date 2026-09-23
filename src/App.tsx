@@ -11,7 +11,6 @@ import {
   BarChart3,
   Bot,
   Zap,
-  Search,
   FileText,
   Lightbulb,
   Star,
@@ -33,7 +32,6 @@ import {
   Eye,
   Network,
   Clock,
-  UserPlus,
   ShieldAlert,
   Unlink,
   ArrowRight,
@@ -55,12 +53,9 @@ import {
   ArrowLeft,
   Bell,
   LayoutGrid,
-  Cloud
+  Cloud,
+  Search
 } from 'lucide-react';
-
-import puzzleBg from './background.jpeg';
-import bgImage from './background.jpeg';
-import coreVideo from './C.O.R.E.mp4';
 
 /* =========================================================
    TYPES
@@ -76,76 +71,64 @@ type BenefitItem = {
 };
 
 /* =========================================================
-   GLOBAL THEME STYLES (Required to prevent crashes)
+   GLOBAL THEME STYLES (PURE CSS & SVG INJECTION)
 ========================================================= */
 
 function GlobalThemeStyles() {
   return (
     <style>{`
       :root {
-        --bg-main: #f4f8ff; /* Light blue/white background as requested */
-        --bg-card: #ffffff;
-        --bg-hover: #f1f5f9;
-        --text-main: #0c1d3d;
-        --text-secondary: #405476;
-        --text-muted: #64748b;
-        --border-main: #dce8fa;
-        --border-soft: #eaf0f6;
-        --shadow-sm: 0 4px 14px rgba(24, 55, 95, 0.05);
-      }
-
-      .dark {
-        --bg-main: #0f172a;
-        --bg-card: #1e293b;
-        --bg-hover: #334155;
-        --text-main: #f8fafc;
-        --text-secondary: #cbd5e1;
-        --text-muted: #94a3b8;
-        --border-main: #334155;
-        --border-soft: #1e293b;
-        --shadow-sm: 0 4px 12px rgba(0,0,0,0.5);
+        --bg-main: #050b14;
+        --bg-card: rgba(15, 23, 42, 0.6);
+        --text-main: #ffffff;
+        --text-secondary: #94a3b8;
+        --border-main: rgba(255, 255, 255, 0.15);
+        --border-soft: rgba(255, 255, 255, 0.05);
+        --shadow-sm: 0 8px 32px rgba(0, 0, 0, 0.3);
       }
 
       body {
         background-color: var(--bg-main) !important;
         color: var(--text-main);
         margin: 0 !important;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
       }
 
       .app, .no-sidebar-app, .main-page-content { 
         background-color: transparent !important; 
       }
       
-      .dark .hub-card, .dark .hub-hero-card {
-        background: var(--bg-card) !important;
-        border-color: var(--border-main) !important;
+      .wiki-home, .solution-page { 
+        background: rgba(10, 15, 35, 0.7) !important; 
+        border: 1px solid var(--border-main) !important; 
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
       }
-      .dark .hub-hero-card h3, .dark .hub-card h4 { color: var(--text-main) !important; }
-      .dark .hub-hero-card p, .dark .hub-card p { color: var(--text-secondary) !important; }
-
-      .dark .wiki-home, .dark .solution-page { background: var(--bg-card) !important; border-color: var(--border-main) !important; }
-      .dark .solution-header { border-bottom-color: var(--border-main) !important; }
-      .dark .solution-header h2 { color: var(--text-main) !important; }
-      .dark .solution-header p, .dark .header-sub { color: var(--text-secondary) !important; }
-      .dark .solution-tabs { background: var(--bg-card) !important; border-right-color: var(--border-main) !important; }
-      .dark .solution-tabs button { color: var(--text-secondary) !important; }
-      .dark .solution-tabs button:hover { background: var(--bg-hover) !important; }
-      .dark .solution-tabs button.active { background: var(--bg-hover) !important; color: var(--text-main) !important; }
-      .dark .section-heading h3 { color: var(--text-main) !important; }
-      .dark .text-panel, .dark .impact-panel, .dark .access-panel, .dark .feedback-panel, .dark .demo-panel { 
-        background-color: var(--bg-card) !important; 
+      .solution-header { border-bottom-color: var(--border-main) !important; }
+      .solution-header h2 { color: var(--text-main) !important; }
+      .solution-header p, .header-sub { color: var(--text-secondary) !important; }
+      
+      .solution-tabs { background: rgba(0,0,0,0.2) !important; border-right-color: var(--border-main) !important; }
+      .solution-tabs button { color: var(--text-secondary) !important; }
+      .solution-tabs button:hover { background: rgba(255,255,255,0.05) !important; color: #fff !important;}
+      .solution-tabs button.active { background: rgba(56, 189, 248, 0.15) !important; color: var(--text-main) !important; }
+      
+      .section-heading h3 { color: var(--text-main) !important; }
+      .text-panel, .impact-panel, .access-panel, .feedback-panel, .demo-panel { 
+        background-color: rgba(255,255,255,0.03) !important; 
         border-color: var(--border-main) !important; 
       }
-      .dark .text-panel p, .dark .impact-panel p, .dark .feedback-panel p, .dark .demo-panel p { color: var(--text-secondary) !important; }
-      .dark .access-row { border-bottom-color: var(--border-soft) !important; }
-      .dark .access-row span, .dark .poc-row span { color: var(--text-muted) !important; }
-      .dark .access-row strong { color: var(--text-main) !important; }
-      .dark .poc-row { background-color: var(--bg-hover) !important; }
-      .dark .poc-row p { color: var(--text-secondary) !important; }
-      .dark .feedback-panel h4, .dark .demo-panel h4 { color: var(--text-main) !important; }
-      .dark .p-card, .dark .s-card { background-color: var(--bg-card) !important; border-color: var(--border-main) !important; }
-      .dark .p-callout, .dark .s-callout { background-color: var(--bg-hover) !important; }
-      .dark .p-trans, .dark .s-trans { background-color: var(--bg-hover) !important; border-color: var(--border-main) !important; }
+      .text-panel p, .impact-panel p, .feedback-panel p, .demo-panel p { color: #cbd5e1 !important; }
+      .access-row { border-bottom-color: var(--border-soft) !important; }
+      .access-row span, .poc-row span { color: var(--text-muted) !important; }
+      .access-row strong { color: var(--text-main) !important; }
+      .poc-row { background-color: rgba(0,0,0,0.2) !important; }
+      .poc-row p { color: #cbd5e1 !important; }
+      .feedback-panel h4, .demo-panel h4 { color: var(--text-main) !important; }
+
+      .p-card, .s-card { background-color: rgba(255,255,255,0.05) !important; border-color: var(--border-main) !important; }
+      .p-callout, .s-callout { background-color: rgba(0,0,0,0.3) !important; border-color: var(--border-main) !important;}
+      .p-trans, .s-trans { background-color: rgba(255,255,255,0.02) !important; border-color: var(--border-main) !important; }
     `}</style>
   );
 }
@@ -155,14 +138,14 @@ function GlobalThemeStyles() {
 ========================================================= */
 
 const solutions = [
-  { id: 'core' as NavigationId, name: 'C.O.R.E.', subtitle: 'Talent Acquisition & Readiness', icon: Target, color: '#4285F4' },
-  { id: 'elevate' as NavigationId, name: 'Elevate360', subtitle: 'Operational Governance', icon: BarChart3, color: '#34A853' },
-  { id: 'sme' as NavigationId, name: 'Digital SME', subtitle: 'Automating Case Execution', icon: Bot, color: '#9333EA' },
-  { id: 'accelerate' as NavigationId, name: 'Project Accelerate', subtitle: 'Risk Intelligence & Control', icon: Zap, color: '#FBBC04' },
-  { id: 'crado' as NavigationId, name: 'CRADO', subtitle: 'Automated Billing Deduction', icon: FileText, color: '#0EA5E9' },
-  { id: 'arc' as NavigationId, name: 'ARC', subtitle: 'Intelligent Frontline Routing', icon: GitBranch, color: '#F43F5E' },
-  { id: 'aura' as NavigationId, name: 'AURA', subtitle: 'End-to-End Support Enablement', icon: Layers3, color: '#6366F1' },
-  { id: 'star' as NavigationId, name: 'STAR', subtitle: 'Intelligent Re-contact Deflection', icon: FilterX, color: '#10B981' },
+  { id: 'core' as NavigationId, name: 'C.O.R.E.', subtitle: 'Talent Acquisition & Readiness', icon: Target, color: '#38bdf8' },
+  { id: 'elevate' as NavigationId, name: 'Elevate360', subtitle: 'Operational Governance', icon: BarChart3, color: '#4ade80' },
+  { id: 'sme' as NavigationId, name: 'Digital SME', subtitle: 'Automating Case Execution', icon: Bot, color: '#c084fc' },
+  { id: 'accelerate' as NavigationId, name: 'Project Accelerate', subtitle: 'Risk Intelligence & Control', icon: Zap, color: '#fb923c' },
+  { id: 'crado' as NavigationId, name: 'CRADO', subtitle: 'Automated Billing Deduction', icon: FileText, color: '#38bdf8' },
+  { id: 'arc' as NavigationId, name: 'ARC', subtitle: 'Intelligent Frontline Routing', icon: GitBranch, color: '#fb7185' },
+  { id: 'aura' as NavigationId, name: 'AURA', subtitle: 'End-to-End Support Enablement', icon: Layers3, color: '#818cf8' },
+  { id: 'star' as NavigationId, name: 'STAR', subtitle: 'Intelligent Re-contact Detection', icon: Star, color: '#4ade80' },
 ];
 
 const FEEDBACK_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSf0zu4Q-0kTjP03BLKMIPfQLePmL0P3xyAaaWr5COiuTGKqlA/viewform?usp=publish-editor';
@@ -237,7 +220,7 @@ const solutionContent: Record<SolutionId, any> = {
     access: 'https://stack-cognizant.web.app/login',
     poc: defaultPOCs,
     feedback: FEEDBACK_URL,
-    demo: coreVideo,
+    demo: '',
   },
   elevate: {
     shortName: 'Elevate360',
@@ -679,167 +662,27 @@ const sections = [
   { id: 'demo' as SectionId, label: 'Demo', icon: PlayCircle },
 ];
 
-const wikiTableRows = [
-  { id: 'overview', icon: FileText, color: '#1a73e8', section: 'Overview', covers: 'Purpose, vision and scope of the solution.', details: 'Introduction and key objectives' },
-  { id: 'problem-solution', icon: Target, color: '#ea4335', section: 'Problem & Solution', covers: 'Key challenges, approach and how the solution addresses them.', details: 'Current state, business challenges and solution details' },
-  { id: 'benefits-impact', icon: BarChart3, color: '#16a34a', section: 'Benefits & Impact', covers: 'Value delivered for people, operations and customers.', details: 'Business benefits and key impact metrics' },
-  { id: 'usage', icon: Users, color: '#7c3aed', section: 'Usage & Adoption', covers: 'Explore adoption metrics and usage insights.', details: 'Usage trends and adoption details' },
-  { id: 'access', icon: KeyRound, color: '#06b6d4', section: 'Access & Support', covers: 'Application links, POC details and how to get help.', details: 'Access links, tool owner/POC and support information' },
-  { id: 'feedback-demo', icon: PlayCircle, color: '#1a73e8', section: 'Feedback & Demo', covers: 'Share your feedback and watch a short demo.', details: 'Link to feedback form and embedded video demo' },
-];
-
 /* =========================================================
-   NEW GCP LOGO COMPONENT (Coded SVG)
+   DASHBOARD HUB: DARK GLASS EXACT REPLICA
 ========================================================= */
 
-const NewGCPLogo = ({ size = 200 }: { size?: number }) => (
-  <svg width={size} height={size} viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0 }}>
-    <defs>
-      <linearGradient id="ring-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stopColor="#34A853" />
-        <stop offset="33%" stopColor="#4285F4" />
-        <stop offset="66%" stopColor="#EA4335" />
-        <stop offset="100%" stopColor="#FBBC04" />
-      </linearGradient>
-      <filter id="glow-blue" x="-50%" y="-50%" width="200%" height="200%">
-        <feGaussianBlur stdDeviation="15" result="blur" />
-        <feComposite in="SourceGraphic" in2="blur" operator="over" />
-      </filter>
-      <filter id="glow-red" x="-50%" y="-50%" width="200%" height="200%">
-        <feGaussianBlur stdDeviation="15" result="blur" />
-        <feComposite in="SourceGraphic" in2="blur" operator="over" />
-      </filter>
-      <filter id="glow-yellow" x="-50%" y="-50%" width="200%" height="200%">
-        <feGaussianBlur stdDeviation="15" result="blur" />
-        <feComposite in="SourceGraphic" in2="blur" operator="over" />
-      </filter>
-      <filter id="glow-green" x="-50%" y="-50%" width="200%" height="200%">
-        <feGaussianBlur stdDeviation="15" result="blur" />
-        <feComposite in="SourceGraphic" in2="blur" operator="over" />
-      </filter>
-      <filter id="cloud-shadow" x="-20%" y="-20%" width="140%" height="140%">
-        <feDropShadow dx="0" dy="8" stdDeviation="12" floodOpacity="0.15" />
-      </filter>
-    </defs>
-    <circle cx="200" cy="200" r="160" stroke="var(--border-main, #e2e8f0)" strokeWidth="1" fill="none" />
-    <circle cx="200" cy="200" r="115" stroke="var(--border-soft, #f1f5f9)" strokeWidth="8" fill="none" />
-    <circle cx="200" cy="200" r="140" stroke="url(#ring-grad)" strokeWidth="4" fill="none" />
-    <circle cx="101" cy="101" r="4" fill="#34A853" />
-    <circle cx="299" cy="101" r="4" fill="#EA4335" />
-    <circle cx="299" cy="299" r="4" fill="#FBBC04" />
-    <circle cx="101" cy="299" r="4" fill="#4285F4" />
-    <g transform="translate(0, 25)" filter="url(#cloud-shadow)">
-      <path d="M 150 230 L 250 230 A 30 30 0 0 0 250 170 A 50 50 0 0 0 150 170 A 30 30 0 0 0 150 230 Z" fill="var(--bg-main, #ffffff)" />
-      <g fill="none" strokeWidth="24" strokeLinecap="butt">
-        <path d="M 150 230 L 200 230" stroke="#34A853" /> 
-        <path d="M 200 230 L 250 230 A 30 30 0 0 0 250 170" stroke="#4285F4" /> 
-        <path d="M 250 170 A 50 50 0 0 0 150 170" stroke="#EA4335" /> 
-        <path d="M 150 170 A 30 30 0 0 0 150 230" stroke="#FBBC04" /> 
-      </g>
-    </g>
-    <circle cx="200" cy="60" r="32" fill="#4285F4" filter="url(#glow-blue)" opacity="0.8" />
-    <circle cx="200" cy="60" r="32" fill="#4285F4" stroke="var(--bg-main, #ffffff)" strokeWidth="6" />
-    <g transform="translate(184, 44)" stroke="#ffffff" strokeWidth="2.5" fill="none">
-      <circle cx="16" cy="16" r="12" />
-      <ellipse cx="16" cy="16" rx="6" ry="12" />
-      <path d="M4 16h24 M16 4v24" />
-    </g>
-    <circle cx="340" cy="200" r="32" fill="#EA4335" filter="url(#glow-red)" opacity="0.8" />
-    <circle cx="340" cy="200" r="32" fill="#EA4335" stroke="var(--bg-main, #ffffff)" strokeWidth="6" />
-    <g transform="translate(324, 184)" stroke="#ffffff" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="16" cy="16" r="5" />
-      <path d="M16 8V5 M16 27v-3 M8 16H5 M27 16h-3 M10.3 10.3l-2.1-2.1 M27.8 27.8l-2.1-2.1 M10.3 21.7l-2.1 2.1 M27.8 4.2l-2.1 2.1" />
-    </g>
-    <circle cx="200" cy="340" r="32" fill="#FBBC04" filter="url(#glow-yellow)" opacity="0.8" />
-    <circle cx="200" cy="340" r="32" fill="#FBBC04" stroke="var(--bg-main, #ffffff)" strokeWidth="6" />
-    <g transform="translate(184, 324)" stroke="#ffffff" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M16 14a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" fill="#ffffff" />
-      <path d="M23 24a8 8 0 0 0-14 0" fill="#ffffff"/>
-      <circle cx="8" cy="12" r="3" fill="#ffffff" stroke="none" />
-      <path d="M4 22a6 6 0 0 1 6-6" />
-      <circle cx="24" cy="12" r="3" fill="#ffffff" stroke="none" />
-      <path d="M28 22a6 6 0 0 0-6-6" />
-    </g>
-    <circle cx="60" cy="200" r="32" fill="#34A853" filter="url(#glow-green)" opacity="0.8" />
-    <circle cx="60" cy="200" r="32" fill="#34A853" stroke="var(--bg-main, #ffffff)" strokeWidth="6" />
-    <g transform="translate(44, 184)" stroke="#ffffff" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="4" y="8" width="24" height="12" rx="2" />
-      <path d="M2 24h28" />
-    </g>
-  </svg>
-);
-
-/* =========================================================
-   PURE CODE-GENERATED PUZZLE ARTWORK 
-========================================================= */
-
-const CodeGeneratedPuzzleArtwork = () => (
- <div style={{ width: '400px', height: '400px', background: `url(${puzzleBg}) center/cover no-repeat`, position: 'relative', boxSizing: 'border-box', overflow: 'hidden', borderRadius: '12px' }}>
-    <div style={{ position: 'absolute', top: 0, left: 0, width: '200px', height: '200px', background: 'radial-gradient(circle at top left, rgba(66, 133, 244, 0.15), transparent 70%)' }}></div>
-    <div style={{ position: 'absolute', bottom: 0, right: 0, width: '200px', height: '200px', background: 'radial-gradient(circle at bottom right, rgba(251, 188, 4, 0.15), transparent 70%)' }}></div>
-    <div style={{ position: 'absolute', bottom: 0, left: 0, width: '200px', height: '200px', background: 'radial-gradient(circle at bottom left, rgba(52, 168, 83, 0.15), transparent 70%)' }}></div>
-    <div style={{ position: 'absolute', top: '24px', left: '24px', textAlign: 'left' }}>
-      <div style={{ fontSize: '26px', fontFamily: 'Georgia, serif', fontStyle: 'italic', color: '#1a73e8', lineHeight: '1.1', fontWeight: 'bold' }}>One<br/>Cloud</div>
-      <div style={{ fontSize: '13px', color: 'var(--text-main)', marginTop: '6px', fontWeight: 600 }}>Many<br/>Possibilities</div>
-      <div style={{ width: '40px', height: '4px', background: 'linear-gradient(90deg, #4285F4, #34A853)', marginTop: '6px', borderRadius: '2px' }}></div>
-    </div>
-    <div style={{ position: 'absolute', top: '24px', right: '24px', textAlign: 'right' }}>
-      <div style={{ fontSize: '26px', fontFamily: 'Georgia, serif', fontStyle: 'italic', color: '#1a73e8', lineHeight: '1.1', fontWeight: 'bold' }}>Ideas<br/>to Impact</div>
-      <div style={{ width: '60px', height: '4px', background: 'linear-gradient(90deg, #EA4335, #FBBC04, #34A853)', marginTop: '6px', float: 'right', borderRadius: '2px' }}></div>
-    </div>
-    <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -60%)' }}>
-       <NewGCPLogo size={200} />
-    </div>
-    <div style={{ position: 'absolute', bottom: '65px', left: '0', width: '100%', textAlign: 'center' }}>
-      <h2 style={{ margin: 0, color: 'var(--text-main)', fontSize: '32px', fontWeight: 800, letterSpacing: '-0.5px' }}>GCP Tech</h2>
-      <h2 style={{ margin: 0, color: '#1a73e8', fontSize: '24px', fontWeight: 700, letterSpacing: '-0.5px' }}>Transformation Solutions</h2>
-      <p style={{ margin: '4px 0 0', color: 'var(--text-secondary)', fontSize: '14px', fontWeight: 500 }}>One Cloud &nbsp;&bull;&nbsp; Many Possibilities</p>
-    </div>
-    <div style={{ position: 'absolute', bottom: '16px', display: 'flex', justifyContent: 'space-around', width: '100%', padding: '0 24px', boxSizing: 'border-box' }}>
-       <div style={{ textAlign: 'center', color: '#4285F4', display: 'flex', flexDirection: 'column', alignItems: 'center' }}><Users size={24}/><div style={{ fontSize: '12px', fontWeight: 700, marginTop: '4px', color: 'var(--text-main)' }}>People</div></div>
-       <div style={{ textAlign: 'center', color: '#34A853', display: 'flex', flexDirection: 'column', alignItems: 'center' }}><Lightbulb size={24}/><div style={{ fontSize: '12px', fontWeight: 700, marginTop: '4px', color: 'var(--text-main)' }}>Innovation</div></div>
-       <div style={{ textAlign: 'center', color: '#EA4335', display: 'flex', flexDirection: 'column', alignItems: 'center' }}><BarChart3 size={24}/><div style={{ fontSize: '12px', fontWeight: 700, marginTop: '4px', color: 'var(--text-main)' }}>Impact</div></div>
-       <div style={{ textAlign: 'center', color: '#FBBC04', display: 'flex', flexDirection: 'column', alignItems: 'center' }}><TrendingUp size={24}/><div style={{ fontSize: '12px', fontWeight: 700, marginTop: '4px', color: 'var(--text-main)' }}>Growth</div></div>
-    </div>
-  </div>
-);
-
-/* =========================================================
-   LIGHT THEME EXACT REPLICA: ASYMMETRIC DASHBOARD
-========================================================= */
-
-function LightAsymmetricDashboard({ onSelect }: { onSelect: (id: NavigationId) => void }) {
+function AsymmetricDashboard({ onSelect }: { onSelect: (id: NavigationId) => void }) {
   return (
     <div className="dashboard-hub-container">
       {/* 1. Large Left Card: Innovation Wiki */}
       <div className="hub-hero-card">
-        {/* Abstract pale-blue top curve */}
-        <div className="hub-hero-blob-blue">
-          <svg viewBox="0 0 200 200" width="100%" height="100%" preserveAspectRatio="none">
-            <path d="M 0,0 L 200,0 L 200,200 C 130,200 60,130 0,60 Z" fill="#dbeafe" />
-          </svg>
-        </div>
-        {/* Bottom-left green curve wave */}
-        <div className="hub-hero-blob-green">
-          <svg viewBox="0 0 200 200" width="100%" height="100%" preserveAspectRatio="none">
-            <path d="M 0,200 L 0,0 C 0,80 80,200 200,200 Z" fill="#d1fae5" />
-          </svg>
-        </div>
-        {/* Bottom-right subtle curve */}
-        <div className="hub-hero-blob-soft">
-          <svg viewBox="0 0 200 200" width="100%" height="100%" preserveAspectRatio="none">
-            <path d="M 200,200 L 200,0 C 120,0 0,120 0,200 Z" fill="#e0f2fe" />
-          </svg>
-        </div>
+        {/* Abstract shapes matching the image exactly */}
+        <div className="hero-bg-shape-1"></div>
+        <div className="hero-bg-shape-2"></div>
         
         <div className="hub-hero-content">
           <div className="hub-hero-icon-container">
             {/* Pixel-Matched Google Multi-Color House Icon */}
-            <svg viewBox="0 0 120 120" width="100%" height="100%" fill="none">
-              <path d="M 60 26 L 18 60" stroke="#4285F4" strokeWidth="16" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M 60 26 L 102 60" stroke="#EA4335" strokeWidth="16" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M 32 60 V 96 A 4 4 0 0 0 36 100 H 48 A 4 4 0 0 0 52 96 V 76 A 8 8 0 0 1 68 76" stroke="#FBBC04" strokeWidth="16" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M 68 76 V 96 A 4 4 0 0 0 72 100 H 84 A 4 4 0 0 0 88 96 V 60" stroke="#34A853" strokeWidth="16" strokeLinecap="round" strokeLinejoin="round"/>
+            <svg viewBox="0 0 100 100" width="100%" height="100%">
+               <path d="M 50 20 L 15 50" stroke="#4285F4" strokeWidth="14" strokeLinecap="round" strokeLinejoin="round"/>
+               <path d="M 50 20 L 85 50" stroke="#EA4335" strokeWidth="14" strokeLinecap="round" strokeLinejoin="round"/>
+               <path d="M 25 50 V 85 A 5 5 0 0 0 30 90 H 40 A 5 5 0 0 0 45 85 V 65 A 5 5 0 0 1 55 65" stroke="#FBBC04" strokeWidth="14" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+               <path d="M 55 65 V 85 A 5 5 0 0 0 60 90 H 70 A 5 5 0 0 0 75 85 V 50" stroke="#34A853" strokeWidth="14" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
             </svg>
           </div>
           <h3>Innovation Wiki</h3>
@@ -849,40 +692,46 @@ function LightAsymmetricDashboard({ onSelect }: { onSelect: (id: NavigationId) =
             className="hub-hero-arrow" 
             onClick={() => onSelect('home')} 
             title="Explore Innovation Wiki"
-            aria-label="Explore Innovation Wiki"
           >
-            <ArrowRight size={22} color="white" strokeWidth={2.8} />
+            <ArrowRight size={24} color="white" strokeWidth={3} />
           </button>
         </div>
       </div>
 
-      {/* 2. Right Grid Container (All 8 Application Cards Unified in Size) */}
+      {/* 2. Right Grid Container (3-Column Layout exactly matching Image 33) */}
       <div className="hub-grid-right">
-        {solutions.map((s, index) => {
-          // Top Left accent for Project Accelerate, Top Right for others based on typical layout rules
-          const isTopLeftAccent = s.id === 'accelerate';
+        {solutions.map((s) => {
           return (
             <div key={s.id} className="hub-card" onClick={() => onSelect(s.id)}>
-              {/* Colored Corner Decoration matching light image styling */}
-              <div className={`hub-card-corner-accent ${isTopLeftAccent ? 'accent-top-left' : 'accent-top-right'}`} style={{ color: s.color }}>
-                <svg viewBox="0 0 100 100" width="100%" height="100%" preserveAspectRatio="none">
-                  <path d="M 0 0 H 100 V 100 C 100 44.77 55.23 0 0 0 Z" fill="currentColor" />
-                </svg>
+              {/* Soft colored glow corner accent */}
+              <div className="hub-card-glow" style={{ background: `radial-gradient(circle at top left, ${s.color}60 0%, transparent 70%)` }}></div>
+              
+              <div className="hub-card-top">
+                <div className="hub-card-icon-wrap" style={{ color: '#ffffff', backgroundColor: s.color, boxShadow: `0 0 16px ${s.color}` }}>
+                  <s.icon size={22} strokeWidth={2.5} />
+                </div>
+                <div className="hub-card-arrow">
+                  <ArrowRight size={16} strokeWidth={3} color="#ffffff" />
+                </div>
               </div>
               
-              <div className="hub-card-content">
-                <div className="hub-card-icon-wrap" style={{ color: s.color, backgroundColor: `${s.color}15` }}>
-                  <s.icon size={36} strokeWidth={2.3} />
-                </div>
+              <div className="hub-card-bottom">
                 <h4>{s.name}</h4>
                 <p>{s.subtitle}</p>
-              </div>
-              <div className="hub-card-arrow" style={{ backgroundColor: `${s.color}15`, color: s.color }}>
-                <ArrowRight size={16} strokeWidth={3} />
               </div>
             </div>
           );
         })}
+
+        {/* 9th Slot: "Transform Ideas into Impact" Graphic (Exact match for Image 33 layout) */}
+        <div className="hub-grid-promo">
+          <div className="promo-text">
+            <span>Transform</span>
+            <span>Ideas into</span>
+            <span className="promo-highlight">Impact</span>
+          </div>
+          <Cloud size={60} color="rgba(255,255,255,0.7)" strokeWidth={1.5} className="promo-icon" />
+        </div>
       </div>
     </div>
   );
@@ -902,14 +751,7 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
     [...INITIAL_PIECES].sort(() => Math.random() - 0.5)
   );
   const [slots, setSlots] = useState<(number | null)[]>(Array(TOTAL_PIECES).fill(null));
-  const [dragState, setDragState] = useState<{
-    id: number | null;
-    source: 'pool' | 'grid' | null;
-    isDragging: boolean;
-    x: number;
-    y: number;
-  }>({ id: null, source: null, isDragging: false, x: 0, y: 0 });
-
+  const [dragState, setDragState] = useState<{ id: number | null; source: 'pool' | 'grid' | null; isDragging: boolean; x: number; y: number; }>({ id: null, source: null, isDragging: false, x: 0, y: 0 });
   const [isSolved, setIsSolved] = useState(false);
   const [timeLeft, setTimeLeft] = useState(120); 
   const [isFailed, setIsFailed] = useState(false);
@@ -917,21 +759,6 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
   useEffect(() => {
     if (isSolved || isFailed) return;
     if (timeLeft <= 0) { setIsFailed(true); return; }
-    if (timeLeft <= 10 && timeLeft > 0) {
-      try {
-        const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
-        const ctx = new AudioContext();
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(800, ctx.currentTime);
-        gain.gain.setValueAtTime(0.05, ctx.currentTime);
-        osc.start();
-        osc.stop(ctx.currentTime + 0.1);
-      } catch (e) { console.error('Audio play failed', e); }
-    }
     const timerId = setInterval(() => { setTimeLeft(prev => prev - 1); }, 1000);
     return () => clearInterval(timerId);
   }, [timeLeft, isSolved, isFailed]);
@@ -997,8 +824,8 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
     const col = pieceId % GRID_SIZE;
     return (
       <div style={{ width: '150px', height: '150px', position: 'absolute', top: '-25px', left: '-25px', overflow: 'visible', pointerEvents: 'none', clipPath: `url(#jigsaw-${pieceId})` }}>
-        <div style={{ position: 'absolute', top: `${25 - (row * TILE_SIZE)}px`, left: `${25 - (col * TILE_SIZE)}px`, width: '400px', height: '400px' }}>
-          <CodeGeneratedPuzzleArtwork />
+        <div style={{ position: 'absolute', top: `${25 - (row * TILE_SIZE)}px`, left: `${25 - (col * TILE_SIZE)}px`, width: '400px', height: '400px', backgroundColor: '#1e293b' }}>
+          <div style={{ width: '100%', height: '100%', border: '1px solid rgba(255,255,255,0.2)', boxSizing: 'border-box' }}></div>
         </div>
       </div>
     );
@@ -1013,7 +840,7 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
   return (
      <div style={{ minHeight: '100vh', width: '100%', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px', fontFamily: 'system-ui, sans-serif', position: 'relative', zIndex: 10 }}>
       {dragState.isDragging && dragState.id !== null && (
-        <div style={{ position: 'fixed', left: 0, top: 0, width: '100px', height: '100px', transform: `translate(${dragState.x}px, ${dragState.y}px) scale(1.05)`, zIndex: 9999, pointerEvents: 'none', filter: 'drop-shadow(0 12px 24px rgba(0,0,0,0.25))' }}>
+        <div style={{ position: 'fixed', left: 0, top: 0, width: '100px', height: '100px', transform: `translate(${dragState.x}px, ${dragState.y}px) scale(1.05)`, zIndex: 9999, pointerEvents: 'none', filter: 'drop-shadow(0 12px 24px rgba(0,0,0,0.5))' }}>
           {renderPuzzlePiece(dragState.id)}
         </div>
       )}
@@ -1035,94 +862,64 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
       </svg>
 
       {!isSolved && (
-        <>
-          <div style={{ position: 'absolute', top: '30px', right: '40px', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '16px', zIndex: 10 }}>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '6px' }}>
-              <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Target Design</span>
-              <div style={{ width: '80px', height: '80px', borderRadius: '8px', border: '1px solid var(--border-main)', overflow: 'hidden', boxShadow: 'var(--shadow-sm)', backgroundColor: 'var(--bg-card)', position: 'relative' }}>
-                <div style={{ transform: 'scale(0.2)', transformOrigin: 'top left', width: '400px', height: '400px' }}><CodeGeneratedPuzzleArtwork /></div>
-              </div>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 16px', background: 'var(--bg-card)', border: '1px solid var(--border-main)', borderRadius: '8px', fontWeight: 'bold', fontSize: '18px', boxShadow: 'var(--shadow-sm)', color: '#ef4444' }}>
-                <Clock size={20} />{formatTime(timeLeft)}
-              </div>
-              <button onClick={handleRetry} style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid var(--border-main)', background: 'var(--bg-card)', color: 'var(--text-main)', fontWeight: 600, cursor: 'pointer', transition: 'background 0.2s', boxShadow: 'var(--shadow-sm)' }}>Retry</button>
+        <div style={{ position: 'absolute', top: '30px', right: '40px', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '16px', zIndex: 10 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 16px', background: 'rgba(15, 23, 42, 0.8)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '8px', fontWeight: 'bold', fontSize: '18px', color: '#ef4444' }}>
+              <Clock size={20} />{formatTime(timeLeft)}
             </div>
           </div>
-          <div style={{ position: 'fixed', bottom: '40px', left: '40px', zIndex: 50 }}>
-            <button onClick={onSkip} style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid var(--border-main)', background: 'var(--bg-card)', color: 'var(--text-main)', fontWeight: 600, cursor: 'pointer', transition: 'background 0.2s', boxShadow: 'var(--shadow-sm)' }}>Skip Puzzle</button>
-          </div>
-        </>
+        </div>
       )}
 
       <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-        <h1 style={{ color: 'var(--text-main)', margin: '0 0 12px', fontSize: '32px', fontWeight: 'bold' }}>Innovation Wiki Access</h1>
-        <p style={{ color: 'var(--text-secondary)', margin: 0, fontSize: '16px' }}>
-          {isSolved ? 'Assembly complete. System unlocked.' : isFailed ? 'Time expired. Please try again.' : 'Drag the matching pieces into the grid to build the artwork and unlock the platform.'}
-        </p>
+        <h1 style={{ color: '#ffffff', margin: '0 0 12px', fontSize: '32px', fontWeight: 'bold' }}>Innovation Wiki Access</h1>
+        <p style={{ color: '#94a3b8', margin: 0, fontSize: '16px' }}>Drag the matching pieces into the grid to unlock.</p>
       </div>
 
       <div style={{ display: 'flex', gap: '40px', alignItems: 'flex-start', flexWrap: 'wrap', justifyContent: 'center' }}>
-        
-        {isSolved ? (
-          <div style={{ 
-            width: '400px', height: '400px', borderRadius: '12px', overflow: 'hidden', 
-            border: '2px solid #34a853', boxShadow: '0 0 30px rgba(52, 168, 83, 0.4)',
-            animation: 'fadeIn 0.5s ease'
+        <div id="puzzle-grid" style={{ 
+            display: 'grid', gridTemplateColumns: `repeat(${GRID_SIZE}, ${TILE_SIZE}px)`, gridTemplateRows: `repeat(${GRID_SIZE}, ${TILE_SIZE}px)`, 
+            gap: '0px', padding: '12px', background: 'rgba(15, 23, 42, 0.8)', borderRadius: '16px', 
+            border: `2px solid ${isFailed ? '#ef4444' : 'rgba(255,255,255,0.2)'}`, position: 'relative'
           }}>
-            <CodeGeneratedPuzzleArtwork />
-          </div>
-        ) : (
-          <div id="puzzle-grid" style={{ 
-              display: 'grid', gridTemplateColumns: `repeat(${GRID_SIZE}, ${TILE_SIZE}px)`, gridTemplateRows: `repeat(${GRID_SIZE}, ${TILE_SIZE}px)`, 
-              gap: '0px', padding: '12px', background: 'var(--bg-card)', borderRadius: '16px', 
-              boxShadow: isFailed ? '0 0 30px rgba(220, 38, 38, 0.4)' : 'var(--shadow-sm)', 
-              border: `2px solid ${isFailed ? '#ef4444' : 'var(--border-main)'}`, transition: 'all 0.5s ease', position: 'relative'
-            }}>
-            {slots.map((pieceId, index) => (
-              <div key={index} style={{ width: `${TILE_SIZE}px`, height: `${TILE_SIZE}px`, position: 'relative', border: pieceId === null ? '1px dashed var(--border-main)' : 'none', borderRadius: '6px' }}>
-                {pieceId !== null && ( <div onPointerDown={(e) => handlePointerDown(e, pieceId, 'grid')} style={{ width: '100%', height: '100%', cursor: 'grab', zIndex: 2 }}>{renderPuzzlePiece(pieceId)}</div> )}
-              </div>
-            ))}
-          </div>
-        )}
+          {slots.map((pieceId, index) => (
+            <div key={index} style={{ width: `${TILE_SIZE}px`, height: `${TILE_SIZE}px`, position: 'relative', border: pieceId === null ? '1px dashed rgba(255,255,255,0.2)' : 'none', borderRadius: '6px' }}>
+              {pieceId !== null && ( <div onPointerDown={(e) => handlePointerDown(e, pieceId, 'grid')} style={{ width: '100%', height: '100%', cursor: 'grab', zIndex: 2 }}>{renderPuzzlePiece(pieceId)}</div> )}
+            </div>
+          ))}
+        </div>
 
-        <div className="puzzle-pool" style={{ width: '500px', height: isSolved ? '400px' : '428px', boxSizing: 'border-box', overflowY: 'auto', overflowX: 'hidden', display: 'flex', flexDirection: 'column', padding: '24px', background: 'var(--bg-card)', borderRadius: '16px', border: '1px solid var(--border-main)' }}>
+        <div className="puzzle-pool" style={{ width: '500px', height: '428px', boxSizing: 'border-box', overflowY: 'auto', overflowX: 'hidden', display: 'flex', flexDirection: 'column', padding: '24px', background: 'rgba(15, 23, 42, 0.8)', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.2)' }}>
           {isSolved ? (
-            <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', animation: 'fadeIn 0.5s ease' }}>
+            <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
               <div style={{ width: '60px', height: '60px', borderRadius: '50%', backgroundColor: 'rgba(52, 168, 83, 0.2)', color: '#34A853', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '20px' }}>
                 <ShieldCheck size={32} />
               </div>
-              <h3 style={{ margin: '0 0 20px', color: 'var(--text-main)', fontWeight: 'bold' }}>Verification Successful</h3>
+              <h3 style={{ margin: '0 0 20px', color: '#ffffff', fontWeight: 'bold' }}>Verification Successful</h3>
               <button onClick={onComplete} style={{ padding: '14px 32px', borderRadius: '8px', border: 'none', background: '#1a73e8', color: 'white', fontSize: '15px', fontWeight: 600, cursor: 'pointer', boxShadow: '0 4px 12px rgba(26, 115, 232, 0.3)' }}>
                 Enter Innovation Wiki
               </button>
             </div>
           ) : isFailed ? (
-            <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', animation: 'fadeIn 0.5s ease' }}>
-              <div style={{ width: '60px', height: '60px', borderRadius: '50%', backgroundColor: 'rgba(239, 68, 68, 0.2)', color: '#ef4444', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '20px' }}>
-                <X size={32} />
-              </div>
-              <h3 style={{ margin: '0 0 12px', color: 'var(--text-main)' }}>Time's Up!</h3>
-              <p style={{ margin: '0 0 20px', color: 'var(--text-secondary)', textAlign: 'center' }}>You ran out of time to complete the puzzle.</p>
-              <button onClick={handleRetry} style={{ padding: '14px 28px', borderRadius: '8px', border: 'none', background: '#ef4444', color: 'white', fontSize: '16px', fontWeight: 600, cursor: 'pointer', boxShadow: '0 4px 12px rgba(239, 68, 68, 0.3)' }}>Try Again</button>
+            <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+              <h3 style={{ margin: '0 0 12px', color: '#ffffff' }}>Time's Up!</h3>
+              <button onClick={handleRetry} style={{ padding: '14px 28px', borderRadius: '8px', border: 'none', background: '#ef4444', color: 'white', fontSize: '16px', fontWeight: 600, cursor: 'pointer' }}>Try Again</button>
             </div>
           ) : (
-            <>
-              <h3 style={{ margin: '0 0 24px', fontSize: '18px', color: 'var(--text-main)', textAlign: 'center' }}>Drag Pieces to the Board</h3>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '30px 20px', justifyItems: 'center', paddingBottom: '20px' }}>
-                {poolPieces.map(pieceId => (
-                  <div key={pieceId} style={{ width: '100px', height: '100px', position: 'relative' }}>
-                    <div onPointerDown={(e) => handlePointerDown(e, pieceId, 'pool')} style={{ width: '100%', height: '100%', cursor: 'grab', zIndex: 1, touchAction: 'none' }}>
-                      {renderPuzzlePiece(pieceId)}
-                    </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '30px 20px', justifyItems: 'center' }}>
+              {poolPieces.map(pieceId => (
+                <div key={pieceId} style={{ width: '100px', height: '100px', position: 'relative' }}>
+                  <div onPointerDown={(e) => handlePointerDown(e, pieceId, 'pool')} style={{ width: '100%', height: '100%', cursor: 'grab', zIndex: 1, touchAction: 'none' }}>
+                    {renderPuzzlePiece(pieceId)}
                   </div>
-                ))}
-              </div>
-            </>
+                </div>
+              ))}
+            </div>
           )}
         </div>
+      </div>
+      <div style={{ position: 'fixed', bottom: '40px', left: '40px', zIndex: 50 }}>
+        <button onClick={onSkip} style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.2)', background: 'rgba(15, 23, 42, 0.8)', color: '#ffffff', fontWeight: 600, cursor: 'pointer' }}>Skip Puzzle</button>
       </div>
     </div>
   );
@@ -1133,14 +930,12 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
 ========================================================= */
 
 function App() {
-  const [theme, setTheme] = useState<'light' | 'dark'>('light'); 
+  const [theme] = useState<'dark'>('dark'); // Force dark glass theme
   const [isPuzzleCompleted, setIsPuzzleCompleted] = useState(false);
   const [selectedSolution, setSelectedSolution] = useState<NavigationId>('dashboard');
   const [activeSection, setActiveSection] = useState<SectionId>('overview');
 
-  useEffect(() => {
-    document.body.className = theme;
-  }, [theme]);
+  useEffect(() => { document.body.className = theme; }, [theme]);
 
   const openSolution = (id: NavigationId) => {
     setSelectedSolution(id);
@@ -1151,30 +946,15 @@ function App() {
     setSelectedSolution('dashboard');
   };
 
-  const ThemeToggle = () => (
-    <button 
-      onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
-      title="Switch Theme"
-      aria-label="Switch Theme"
-      style={{
-        position: 'fixed', bottom: '30px', right: '40px', zIndex: 9999,
-        width: '48px', height: '48px', borderRadius: '50%',
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        background: 'var(--bg-card)', border: '1px solid rgba(255,255,255,0.2)',
-        boxShadow: 'var(--shadow-sm)', cursor: 'pointer', color: 'var(--text-main)',
-        transition: 'all 0.3s ease',
-        backdropFilter: 'blur(10px)'
-      }}
-    >
-      {theme === 'light' ? <Moon size={22} color="#1a73e8" /> : <Sun size={22} color="#FBBC04" />}
-    </button>
-  );
-
   if (!isPuzzleCompleted) {
     return (
       <div className={`app no-sidebar-app ${theme}`}>
         <GlobalThemeStyles />
-        <ThemeToggle />
+        <div className="global-bg-waves" aria-hidden="true">
+          <div className="blob-purple"></div>
+          <div className="blob-cyan"></div>
+          <div className="blob-blue"></div>
+        </div>
         <PuzzleSplash onComplete={() => setIsPuzzleCompleted(true)} onSkip={() => setIsPuzzleCompleted(true)} />
       </div>
     );
@@ -1183,79 +963,78 @@ function App() {
   return (
     <div className={`app no-sidebar-app ${theme}`}>
       <GlobalThemeStyles />
-      <ThemeToggle />
       
-      {/* GLOBAL LIGHT BACKGROUND WAVES AND GLOW */}
+      {/* GLOBAL DARK BACKGROUND WAVES AND GLOW (EXACT MATCH FOR IMAGE 33) */}
       <div className="global-bg-waves" aria-hidden="true">
-        <div className="global-pale-center-glow"></div>
+        <div className="blob-purple"></div>
+        <div className="blob-cyan"></div>
+        <div className="blob-blue"></div>
+        <div className="waveBackground">
+          <svg viewBox="0 0 1440 320" preserveAspectRatio="none" className="wave1">
+            <path fill="rgba(37, 99, 235, 0.15)" d="M0,256L48,229.3C96,203,192,149,288,154.7C384,160,480,224,576,218.7C672,213,768,139,864,128C960,117,1056,171,1152,197.3C1248,224,1344,224,1392,224L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+            <path fill="rgba(14, 165, 233, 0.2)" d="M0,128L60,149.3C120,171,240,213,360,208C480,203,600,149,720,138.7C840,128,960,160,1080,186.7C1200,213,1320,235,1380,245.3L1440,256L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path>
+          </svg>
+        </div>
       </div>
 
       <main className="main no-sidebar-main" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
         
-        {/* HEADER: Light Theme Replica */}
+        {/* HEADER: Reference Image Match */}
         <header className="image-replica-header">
           <div className="header-left">
-            <span className="gcp-brand">
-              <span className="gcp-blue">G</span>
-              <span className="gcp-red">C</span>
-              <span className="gcp-green">P</span>
-            </span>
-            <h1 className="header-title">Tech Transformation Solutions</h1>
+            <div className="header-logo-circle">
+              <svg width="40" height="40" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="42" stroke="rgba(255,255,255,0.2)" strokeWidth="6" fill="none" />
+                <path d="M 50 8 A 42 42 0 0 1 92 50" stroke="#EA4335" strokeWidth="8" strokeLinecap="round" fill="none" />
+                <path d="M 92 50 A 42 42 0 0 1 50 92" stroke="#FBBC04" strokeWidth="8" strokeLinecap="round" fill="none" />
+                <path d="M 50 92 A 42 42 0 0 1 8 50" stroke="#34A853" strokeWidth="8" strokeLinecap="round" fill="none" />
+                <path d="M 8 50 A 42 42 0 0 1 50 8" stroke="#4285F4" strokeWidth="8" strokeLinecap="round" fill="none" />
+                <path d="M 65 60 H 35 A 8 8 0 0 1 35 44 A 10 10 0 0 1 42 40 A 12 12 0 0 1 61 48 A 8 8 0 0 1 65 60 Z" fill="#4285F4" />
+              </svg>
+            </div>
+            <div className="header-title-block">
+              <h1 className="header-title">
+                <span style={{color: '#4285F4'}}>G</span>
+                <span style={{color: '#EA4335'}}>C</span>
+                <span style={{color: '#34A853'}}>P</span> Tech Transformation Solutions
+              </h1>
+              <span className="header-subtitle">Your central hub for knowledge, collaboration and innovation.</span>
+            </div>
+          </div>
+
+          <div className="header-center-search">
+            <Search size={15} color="#94a3b8" />
+            <input type="text" placeholder="Search wiki..." />
           </div>
 
           <div className="header-right">
-            <div className="google-dots-row">
-              <span className="dot dot-blue"></span>
-              <span className="dot dot-red"></span>
-              <span className="dot dot-yellow"></span>
-              <span className="dot dot-green"></span>
+            <div className="header-icons">
+              <button title="Notifications"><Bell size={18} /></button>
+              <button title="Apps"><LayoutGrid size={18} /></button>
+              <button className="user-avatar" title="Profile"><UserIcon size={18} /></button>
             </div>
-
-            <div className="header-pillars">
+            
+            <div className="header-stacked-text">
               <span>Stronger People</span>
-              <span className="pillar-sep">|</span>
               <span>Smarter Operations</span>
-              <span className="pillar-sep">|</span>
               <span>Better Customer Experiences</span>
             </div>
-          </div>
-
-          {/* Decorative Google Quadrant Fan in Top-Right Corner */}
-          <div className="google-corner-fan" aria-hidden="true">
-            <svg viewBox="0 0 160 160" width="160" height="160" fill="none">
-              <path d="M 160,0 A 160,160 0 0,0 0,160 L 160,160 Z" fill="#FBBC04" />
-              <path d="M 160,0 A 120,120 0 0,0 40,160 L 160,160 Z" fill="#4285F4" />
-              <path d="M 160,0 A 80,80 0 0,0 80,160 L 160,160 Z" fill="#EA4335" />
-              <path d="M 160,0 A 40,40 0 0,0 120,160 L 160,160 Z" fill="#34A853" />
-            </svg>
           </div>
         </header>
 
         {/* BODY CONTAINER */}
         <div style={{ flex: 1, position: 'relative', zIndex: 2 }}>
           {selectedSolution === 'dashboard' ? (
-            /* First Page View: Only Cards Are Shown (No Scroll Topbar) */
-            <LightAsymmetricDashboard onSelect={openSolution} />
+            <AsymmetricDashboard onSelect={openSolution} />
           ) : (
-            /* Selected View: Isolated Detail View with Back Button */
             <div className="page-content main-page-content" style={{ padding: '24px 50px' }}>
-              <div style={{ marginBottom: '24px' }}>
+              <div style={{ marginBottom: '20px' }}>
                 <button 
                   onClick={backToDashboard}
                   style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    padding: '8px 16px',
-                    borderRadius: '8px',
-                    border: '1px solid var(--border-main)',
-                    background: 'var(--bg-card)',
-                    color: '#1a73e8',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                    fontSize: '14px',
-                    boxShadow: 'var(--shadow-sm)',
-                    transition: 'background 0.2s'
+                    display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '8px 16px',
+                    borderRadius: '8px', border: '1px solid rgba(255,255,255,0.2)', background: 'rgba(0, 0, 0, 0.4)',
+                    backdropFilter: 'blur(10px)', color: '#ffffff', fontWeight: 600, cursor: 'pointer', fontSize: '13px'
                   }}
                 >
                   <ArrowLeft size={16} />
@@ -1264,45 +1043,28 @@ function App() {
               </div>
 
               {selectedSolution === 'home' ? (
-                /* Only Table View Displays on Explore */
                 <InnovationWikiHome />
               ) : (
-                /* Only Selected Solution Appears */
-                <SolutionPage 
-                  solutionId={selectedSolution as SolutionId} 
-                  activeSection={activeSection} 
-                  setActiveSection={setActiveSection} 
-                />
+                <SolutionPage solutionId={selectedSolution as SolutionId} activeSection={activeSection} setActiveSection={setActiveSection} />
               )}
             </div>
           )}
         </div>
 
-        {/* FOOTER: Light Theme Replica */}
+        {/* FOOTER */}
         <footer className="image-replica-footer">
           <div className="footer-left">
-            <svg width="26" height="26" viewBox="0 0 40 40" fill="none" style={{ flexShrink: 0 }}>
-              <path d="M 28 30 H 12 A 7 7 0 0 1 12 16 A 8 8 0 0 1 17 14 A 10 10 0 0 1 33 21 A 7 7 0 0 1 28 30 Z" fill="none" stroke="#EA4335" strokeWidth="3" />
-              <path d="M 12 30 H 28" stroke="#4285F4" strokeWidth="4" strokeLinecap="round" />
-              <path d="M 12 22 A 6 6 0 0 1 18 16" stroke="#FBBC04" strokeWidth="4" strokeLinecap="round" />
-              <path d="M 18 16 A 9 9 0 0 1 30 22" stroke="#34A853" strokeWidth="4" strokeLinecap="round" />
-            </svg>
-            <span className="footer-motto">Build &nbsp;·&nbsp; Transform &nbsp;·&nbsp; Scale</span>
+            <Cloud size={20} color="#ffffff" strokeWidth={2} />
+            <span className="footer-motto">Transform &nbsp;|&nbsp; Optimize &nbsp;|&nbsp; Scale Together</span>
           </div>
 
-          <div className="footer-center-bar-container">
-            <div className="footer-center-bar">
-              <span className="bar-seg bar-blue"></span>
-              <span className="bar-seg bar-red"></span>
-              <span className="bar-seg bar-yellow"></span>
-              <span className="bar-seg bar-green"></span>
+          <div className="footer-right">
+            <div className="footer-four-dots">
+              <span className="dot dot-blue"></span>
+              <span className="dot dot-red"></span>
+              <span className="dot dot-yellow"></span>
+              <span className="dot dot-green"></span>
             </div>
-          </div>
-
-          <div className="footer-right-matrix" aria-hidden="true">
-            <div className="matrix-dot"></div><div className="matrix-dot"></div><div className="matrix-dot"></div><div className="matrix-dot"></div>
-            <div className="matrix-dot"></div><div className="matrix-dot"></div><div className="matrix-dot"></div><div className="matrix-dot"></div>
-            <div className="matrix-dot"></div><div className="matrix-dot"></div><div className="matrix-dot"></div><div className="matrix-dot"></div>
           </div>
         </footer>
       </main>
@@ -1311,12 +1073,12 @@ function App() {
 }
 
 /* =========================================================
-   INNOVATION WIKI HOME (TABLE VIEW ONLY)
+   INNOVATION WIKI HOME (TABLE VIEW)
 ========================================================= */
 
 function InnovationWikiHome() {
   return (
-    <section className="wiki-home clean-wiki-home">
+    <section className="clean-wiki-home">
       <div className="wiki-home-heading">
         <h2>What you’ll find here</h2>
         <p>Explore the key aspects we cover for each solution. Select an item above or browse sections below.</p>
@@ -1333,7 +1095,7 @@ function InnovationWikiHome() {
                 <tr key={row.id}>
                   <td>
                     <div className="table-section-cell">
-                      <div className="table-icon" style={{ color: row.color, backgroundColor: `${row.color}12` }}><Icon size={22} /></div>
+                      <div className="table-icon" style={{ color: row.color, backgroundColor: `${row.color}15` }}><Icon size={20} /></div>
                       <strong>{row.section}</strong>
                     </div>
                   </td>
@@ -1355,12 +1117,6 @@ function InnovationWikiHome() {
    SOLUTION DETAIL PAGE
 ========================================================= */
 
-type SolutionPageProps = {
-  solutionId: SolutionId;
-  activeSection: SectionId;
-  setActiveSection: Dispatch<SetStateAction<SectionId>>;
-};
-
 function SolutionPage({ solutionId, activeSection, setActiveSection }: SolutionPageProps) {
   const content = solutionContent[solutionId];
   const platform = solutions.find((item) => item.id === solutionId);
@@ -1375,7 +1131,7 @@ function SolutionPage({ solutionId, activeSection, setActiveSection }: SolutionP
           <div className="breadcrumbs">Solutions &gt; {content.shortName}</div>
           <div className="solution-title-row">
             <div className="solution-header-icon" style={{ color: '#ffffff', backgroundColor: platform.color, boxShadow: `0 0 15px ${platform.color}60` }}>
-              <Icon size={28} strokeWidth={2.5} />
+              <Icon size={26} strokeWidth={2.5} />
             </div>
             <div>
               <h2>{content.name}</h2>
@@ -1400,7 +1156,7 @@ function SolutionPage({ solutionId, activeSection, setActiveSection }: SolutionP
                 className={activeSection === section.id ? 'active' : ''}
                 onClick={() => setActiveSection(section.id)}
               >
-                <SectionIcon size={18} />
+                <SectionIcon size={16} />
                 <span>{section.label}</span>
               </button>
             );
@@ -1435,7 +1191,7 @@ function EnhancedOverview({ content, setActiveSection }: any) {
         <div className="overview-main">
           <h2 className="overview-title">Overview</h2>
           <div className="overview-card card-white">
-            <div className="card-icon-badge"><FileText size={22} strokeWidth={2.5} /></div>
+            <div className="card-icon-badge"><FileText size={20} strokeWidth={2.5} /></div>
             <div className="card-content-wrap">
               <h4>Overview</h4>
               <p>{content.overview}</p>
@@ -1443,7 +1199,7 @@ function EnhancedOverview({ content, setActiveSection }: any) {
           </div>
 
           <div className="overview-card card-blue">
-            <div className="card-icon-badge"><ShieldCheck size={22} strokeWidth={2.5} /></div>
+            <div className="card-icon-badge"><ShieldCheck size={20} strokeWidth={2.5} /></div>
             <div className="card-content-wrap">
               <h4>Key Objectives</h4>
               <ul>
@@ -1455,7 +1211,7 @@ function EnhancedOverview({ content, setActiveSection }: any) {
           </div>
 
           <div className="overview-card card-green">
-            <div className="card-icon-badge"><UserIcon size={22} strokeWidth={2.5} /></div>
+            <div className="card-icon-badge"><UserIcon size={20} strokeWidth={2.5} /></div>
             <div className="card-content-wrap">
               <h4>Who is it for?</h4>
               <p>{content.audience}</p>
@@ -1480,19 +1236,19 @@ function EnhancedOverview({ content, setActiveSection }: any) {
 
             <div className="sidebar-section">
               <div className="side-header">
-                <LinkIcon size={18} strokeWidth={2.5} color="#2563eb" />
+                <LinkIcon size={16} strokeWidth={2.5} color="#38bdf8" />
                 <h4>Quick Links</h4>
               </div>
               <div className="quick-links">
                 <button className="ql-btn" onClick={() => setActiveSection('access')}>
-                  <FileText size={18} color="#2563eb" />
+                  <FileText size={16} color="#38bdf8" />
                   <span>Go to Access Details</span>
-                  <ChevronRight size={16} className="arrow" />
+                  <ChevronRight size={14} className="arrow" />
                 </button>
                 <button className="ql-btn" onClick={() => setActiveSection('benefits')}>
-                  <Star size={18} color="#16a34a" />
+                  <Star size={16} color="#22c55e" />
                   <span>View Key Benefits</span>
-                  <ChevronRight size={16} className="arrow" />
+                  <ChevronRight size={14} className="arrow" />
                 </button>
               </div>
             </div>
@@ -1509,7 +1265,6 @@ function EnhancedProblem({ data, platformColor, platformIcon: PlatformIcon }: an
     <div className="enhanced-problem">
       <h2 className="problem-title">The Problem</h2>
       <p className="problem-desc">{data.description}</p>
-
       <div className="p-cards">
         {data.cards?.map((card: any, index: number) => {
           const CardIcon = card.icon;
@@ -1524,16 +1279,6 @@ function EnhancedProblem({ data, platformColor, platformIcon: PlatformIcon }: an
           );
         })}
       </div>
-
-      <div className="p-callout">
-        <div className="c-icon" style={{ color: platformColor, backgroundColor: `${platformColor}15` }}>
-          <Megaphone size={22} />
-        </div>
-        <div className="c-cont">
-          <strong>Why this matters</strong>
-          <p>{data.callout}</p>
-        </div>
-      </div>
     </div>
   );
 }
@@ -1544,13 +1289,12 @@ function EnhancedSolution({ data, platformColor }: any) {
     <div className="enhanced-solution">
       <h2 className="solution-title">The Solution</h2>
       <p className="solution-desc">{data.description}</p>
-
       <div className="s-cards">
         {data.cards?.map((card: any, index: number) => {
           const CardIcon = card.icon;
           return (
             <div key={index} className="s-card" style={{ backgroundColor: card.iconBg }}>
-              <div className="s-icon-wrap" style={{ backgroundColor: 'var(--bg-card)', color: card.iconColor }}>
+              <div className="s-icon-wrap" style={{ backgroundColor: 'rgba(255,255,255,0.08)', color: card.iconColor }}>
                 <CardIcon size={22} strokeWidth={2.5} />
               </div>
               <h4>{card.title}</h4>
@@ -1559,16 +1303,6 @@ function EnhancedSolution({ data, platformColor }: any) {
           );
         })}
       </div>
-
-      <div className="s-callout">
-        <div className="sc-icon" style={{ color: platformColor, backgroundColor: `${platformColor}15` }}>
-          <Lightbulb size={22} />
-        </div>
-        <div className="sc-cont">
-          <strong>How it helps</strong>
-          <p>{data.callout}</p>
-        </div>
-      </div>
     </div>
   );
 }
@@ -1576,7 +1310,6 @@ function EnhancedSolution({ data, platformColor }: any) {
 function Benefits({ benefits, platformColor }: { benefits: BenefitItem[], platformColor: string }) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   if (!benefits) return null;
-
   return (
     <div className="content-section">
       <div className="section-heading"><h3>Key Benefits</h3></div>
@@ -1586,9 +1319,9 @@ function Benefits({ benefits, platformColor }: { benefits: BenefitItem[], platfo
           return (
             <div key={benefit.title} className="benefit-accordion-item">
               <div className="benefit-header-row" onClick={() => setOpenIndex(isOpen ? null : index)}>
-                <div className="benefit-badge" style={{ backgroundColor: `${platformColor}20`, color: platformColor }}>{String(index + 1).padStart(2, '0')}</div>
+                <div className="benefit-badge" style={{ backgroundColor: `${platformColor}25`, color: platformColor }}>{String(index + 1).padStart(2, '0')}</div>
                 <div className="benefit-title-text">{benefit.title}</div>
-                <ChevronDown size={18} className={`benefit-chevron ${isOpen ? 'open' : ''}`} />
+                <ChevronDown size={16} className={`benefit-chevron ${isOpen ? 'open' : ''}`} />
               </div>
               {isOpen && (
                 <div className="benefit-dropdown-content">
@@ -1606,7 +1339,6 @@ function Benefits({ benefits, platformColor }: { benefits: BenefitItem[], platfo
 function Usage({ content, platformColor }: { content: any; platformColor: string }) {
   const usageData = content.usage;
   if (!usageData) return null;
-
   return (
     <div className="content-section">
       <div className="section-heading"><h3>Usage & Adoption</h3></div>
@@ -1631,7 +1363,6 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
 function Impact({ content, platformColor }: any) {
   const data = content.impact;
   if (!data) return null;
-
   return (
     <div className="content-section">
       <div className="section-heading"><h3>Impact</h3></div>
@@ -1643,11 +1374,11 @@ function Impact({ content, platformColor }: any) {
         {data.metrics?.map((m: any, index: number) => (
           <div key={index} className="benefit-accordion-item">
             <div className="benefit-header-row">
-              <div className="benefit-badge" style={{ color: platformColor, backgroundColor: `${platformColor}15` }}>
-                <m.icon size={18} strokeWidth={2.5} />
+              <div className="benefit-badge" style={{ color: platformColor, backgroundColor: `${platformColor}20` }}>
+                <m.icon size={16} strokeWidth={2.5} />
               </div>
               <div className="benefit-title-text">
-                <strong>{m.title}</strong> — <span style={{ color: 'var(--text-secondary)' }}>{m.subtitle}</span>
+                <strong>{m.title}</strong> — <span style={{ color: '#94a3b8' }}>{m.subtitle}</span>
               </div>
             </div>
           </div>
@@ -1668,7 +1399,7 @@ function Access({ content }: { content: any }) {
             <span>Application Access</span>
             {!hasUrl && <strong>{content.access}</strong>}
           </div>
-          {hasUrl && <a href={content.access} target="_blank" rel="noreferrer" className="primary-button">Open Tool<ExternalLink size={16} /></a>}
+          {hasUrl && <a href={content.access} target="_blank" rel="noreferrer" className="primary-button">Open Tool<ExternalLink size={14} /></a>}
         </div>
       </div>
     </div>
@@ -1684,7 +1415,7 @@ function Feedback({ content }: { content: any }) {
         <div>
           <h4>Share your feedback</h4>
           <p>Use the Google Form to share suggestions and feedback for {content.shortName}.</p>
-          <a href={content.feedback} target="_blank" rel="noreferrer" className="primary-button">Open Form<ExternalLink size={16} /></a>
+          <a href={content.feedback} target="_blank" rel="noreferrer" className="primary-button">Open Form<ExternalLink size={14} /></a>
         </div>
       </div>
     </div>
