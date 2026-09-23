@@ -76,102 +76,61 @@ type BenefitItem = {
 };
 
 /* =========================================================
-   GLOBAL THEME STYLES (Light & Dark Mode)
+   GLOBAL THEME STYLES (Required to prevent crashes)
 ========================================================= */
 
 function GlobalThemeStyles() {
   return (
     <style>{`
       :root {
-        --bg-main: #f8fafc;
+        --bg-main: #f4f8ff; /* Light blue/white background as requested */
         --bg-card: #ffffff;
         --bg-hover: #f1f5f9;
-        --bg-blue-card: #f4f8fd;
-        --bg-green-card: #f0fdf4;
-        --text-main: #0f172a;
-        --text-secondary: #475569;
+        --text-main: #0c1d3d;
+        --text-secondary: #405476;
         --text-muted: #64748b;
-        --text-green: #166534;
-        --border-main: #e2e8f0;
-        --border-soft: #f1f5f9;
-        --shadow-sm: 0 4px 12px rgba(0,0,0,0.05);
-        --badge-bg: #eff6ff;
-        --pill-bg: #dcfce7;
+        --border-main: #dce8fa;
+        --border-soft: #eaf0f6;
+        --shadow-sm: 0 4px 14px rgba(24, 55, 95, 0.05);
       }
 
       .dark {
         --bg-main: #0f172a;
         --bg-card: #1e293b;
         --bg-hover: #334155;
-        --bg-blue-card: #1e293b;
-        --bg-green-card: #1e293b;
         --text-main: #f8fafc;
         --text-secondary: #cbd5e1;
         --text-muted: #94a3b8;
-        --text-green: #4ade80;
         --border-main: #334155;
         --border-soft: #1e293b;
         --shadow-sm: 0 4px 12px rgba(0,0,0,0.5);
-        --badge-bg: #334155;
-        --pill-bg: #064e3b;
       }
 
       body {
-        background-color: transparent !important;
+        background-color: var(--bg-main) !important;
         color: var(--text-main);
         margin: 0 !important;
       }
 
-      body::before {
-        content: "";
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 125vw; 
-        height: 125vh;
-        background: url(${bgImage}) center/cover no-repeat;
-        z-index: -999;
-        pointer-events: none;
-      }
-
-      body.dark::before {
-        display: none !important;
-      }
-      body.dark {
-        background-color: var(--bg-main) !important;
-      }
-
-      @keyframes themePulse {
-        0% { box-shadow: 0 0 0 0 rgba(66, 133, 244, 0.6); }
-        70% { box-shadow: 0 0 0 12px rgba(66, 133, 244, 0); }
-        100% { box-shadow: 0 0 0 0 rgba(66, 133, 244, 0); }
-      }
-
-      .dark .app, 
-      .dark .no-sidebar-app, 
-      .dark .main-page-content { 
-       background-color: transparent !important; 
+      .app, .no-sidebar-app, .main-page-content { 
+        background-color: transparent !important; 
       }
       
-      .dark .hub-card,
-      .dark .hub-hero-card {
+      .dark .hub-card, .dark .hub-hero-card {
         background: var(--bg-card) !important;
         border-color: var(--border-main) !important;
       }
       .dark .hub-hero-card h3, .dark .hub-card h4 { color: var(--text-main) !important; }
       .dark .hub-hero-card p, .dark .hub-card p { color: var(--text-secondary) !important; }
 
-      .dark .wiki-home,
-      .dark .solution-page { background: var(--bg-card) !important; border-color: var(--border-main) !important; }
+      .dark .wiki-home, .dark .solution-page { background: var(--bg-card) !important; border-color: var(--border-main) !important; }
       .dark .solution-header { border-bottom-color: var(--border-main) !important; }
       .dark .solution-header h2 { color: var(--text-main) !important; }
       .dark .solution-header p, .dark .header-sub { color: var(--text-secondary) !important; }
-      
       .dark .solution-tabs { background: var(--bg-card) !important; border-right-color: var(--border-main) !important; }
       .dark .solution-tabs button { color: var(--text-secondary) !important; }
       .dark .solution-tabs button:hover { background: var(--bg-hover) !important; }
       .dark .solution-tabs button.active { background: var(--bg-hover) !important; color: var(--text-main) !important; }
-      
       .dark .section-heading h3 { color: var(--text-main) !important; }
       .dark .text-panel, .dark .impact-panel, .dark .access-panel, .dark .feedback-panel, .dark .demo-panel { 
         background-color: var(--bg-card) !important; 
@@ -184,7 +143,6 @@ function GlobalThemeStyles() {
       .dark .poc-row { background-color: var(--bg-hover) !important; }
       .dark .poc-row p { color: var(--text-secondary) !important; }
       .dark .feedback-panel h4, .dark .demo-panel h4 { color: var(--text-main) !important; }
-
       .dark .p-card, .dark .s-card { background-color: var(--bg-card) !important; border-color: var(--border-main) !important; }
       .dark .p-callout, .dark .s-callout { background-color: var(--bg-hover) !important; }
       .dark .p-trans, .dark .s-trans { background-color: var(--bg-hover) !important; border-color: var(--border-main) !important; }
@@ -281,7 +239,6 @@ const solutionContent: Record<SolutionId, any> = {
     feedback: FEEDBACK_URL,
     demo: coreVideo,
   },
-
   elevate: {
     shortName: 'Elevate360',
     name: 'Elevate360',
@@ -347,7 +304,6 @@ const solutionContent: Record<SolutionId, any> = {
     feedback: FEEDBACK_URL,
     demo: '',
   },
-
   sme: {
     shortName: 'Digital SME',
     name: 'Digital SME',
@@ -408,7 +364,6 @@ const solutionContent: Record<SolutionId, any> = {
     feedback: FEEDBACK_URL,
     demo: '',
   },
-
   accelerate: {
     shortName: 'Project Accelerate',
     name: 'Project Accelerate',
@@ -469,7 +424,6 @@ const solutionContent: Record<SolutionId, any> = {
     feedback: FEEDBACK_URL,
     demo: '',
   },
-
   crado: {
     shortName: 'CRADO',
     name: 'CRADO (Calculation of Revenue Adjustment and Drafting Orchestrator)',
@@ -530,7 +484,6 @@ const solutionContent: Record<SolutionId, any> = {
     feedback: FEEDBACK_URL,
     demo: '',
   },
-
   arc: {
     shortName: 'ARC',
     name: 'ARC (Automated Routing & Closure)',
@@ -590,7 +543,6 @@ const solutionContent: Record<SolutionId, any> = {
     feedback: FEEDBACK_URL,
     demo: '',
   },
-
   aura: {
     shortName: 'AURA',
     name: 'AURA (Automated Unified Response Assistant)',
@@ -650,7 +602,6 @@ const solutionContent: Record<SolutionId, any> = {
     feedback: FEEDBACK_URL,
     demo: '',
   },
-
   star: {
     shortName: 'STAR',
     name: 'STAR (Smart Triage And Resolution)',
@@ -854,10 +805,10 @@ const CodeGeneratedPuzzleArtwork = () => (
 );
 
 /* =========================================================
-   EXACT REPLICA: ASYMMETRIC DASHBOARD (DARK GLASSMORPHISM)
+   LIGHT THEME EXACT REPLICA: ASYMMETRIC DASHBOARD
 ========================================================= */
 
-function AsymmetricDashboard({ onSelect }: { onSelect: (id: NavigationId) => void }) {
+function LightAsymmetricDashboard({ onSelect }: { onSelect: (id: NavigationId) => void }) {
   return (
     <div className="dashboard-hub-container">
       {/* 1. Large Left Card: Innovation Wiki */}
@@ -868,10 +819,10 @@ function AsymmetricDashboard({ onSelect }: { onSelect: (id: NavigationId) => voi
             <path d="M 0,0 L 200,0 L 200,200 C 130,200 60,130 0,60 Z" fill="#dbeafe" />
           </svg>
         </div>
-        {/* Bottom-left yellow/green curve wave */}
+        {/* Bottom-left green curve wave */}
         <div className="hub-hero-blob-green">
           <svg viewBox="0 0 200 200" width="100%" height="100%" preserveAspectRatio="none">
-            <path d="M 0,200 L 0,0 C 0,80 80,200 200,200 Z" fill="#fef08a" />
+            <path d="M 0,200 L 0,0 C 0,80 80,200 200,200 Z" fill="#d1fae5" />
           </svg>
         </div>
         {/* Bottom-right subtle curve */}
@@ -900,27 +851,34 @@ function AsymmetricDashboard({ onSelect }: { onSelect: (id: NavigationId) => voi
             title="Explore Innovation Wiki"
             aria-label="Explore Innovation Wiki"
           >
-            <ArrowRight size={24} color="white" strokeWidth={3} />
+            <ArrowRight size={22} color="white" strokeWidth={2.8} />
           </button>
         </div>
       </div>
 
       {/* 2. Right Grid Container (All 8 Application Cards Unified in Size) */}
       <div className="hub-grid-right">
-        {solutions.map((s) => {
+        {solutions.map((s, index) => {
+          // Top Left accent for Project Accelerate, Top Right for others based on typical layout rules
+          const isTopLeftAccent = s.id === 'accelerate';
           return (
             <div key={s.id} className="hub-card" onClick={() => onSelect(s.id)}>
-              <div className="hub-card-top">
-                <div className="hub-card-icon-wrap" style={{ color: '#ffffff', backgroundColor: s.color, boxShadow: `0 0 15px ${s.color}60` }}>
-                  <s.icon size={22} strokeWidth={2.5} />
-                </div>
-                <div className="hub-card-arrow">
-                  <ArrowRight size={16} strokeWidth={3} color="#ffffff" />
-                </div>
+              {/* Colored Corner Decoration matching light image styling */}
+              <div className={`hub-card-corner-accent ${isTopLeftAccent ? 'accent-top-left' : 'accent-top-right'}`} style={{ color: s.color }}>
+                <svg viewBox="0 0 100 100" width="100%" height="100%" preserveAspectRatio="none">
+                  <path d="M 0 0 H 100 V 100 C 100 44.77 55.23 0 0 0 Z" fill="currentColor" />
+                </svg>
               </div>
-              <div className="hub-card-bottom">
+              
+              <div className="hub-card-content">
+                <div className="hub-card-icon-wrap" style={{ color: s.color, backgroundColor: `${s.color}15` }}>
+                  <s.icon size={36} strokeWidth={2.3} />
+                </div>
                 <h4>{s.name}</h4>
                 <p>{s.subtitle}</p>
+              </div>
+              <div className="hub-card-arrow" style={{ backgroundColor: `${s.color}15`, color: s.color }}>
+                <ArrowRight size={16} strokeWidth={3} />
               </div>
             </div>
           );
@@ -1108,7 +1066,6 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
       <div style={{ display: 'flex', gap: '40px', alignItems: 'flex-start', flexWrap: 'wrap', justifyContent: 'center' }}>
         
         {isSolved ? (
-          /* Exact solved state matching Screenshot 3 */
           <div style={{ 
             width: '400px', height: '400px', borderRadius: '12px', overflow: 'hidden', 
             border: '2px solid #34a853', boxShadow: '0 0 30px rgba(52, 168, 83, 0.4)',
@@ -1176,7 +1133,7 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
 ========================================================= */
 
 function App() {
-  const [theme, setTheme] = useState<'light' | 'dark'>('dark'); // Force dark glass theme default
+  const [theme, setTheme] = useState<'light' | 'dark'>('light'); 
   const [isPuzzleCompleted, setIsPuzzleCompleted] = useState(false);
   const [selectedSolution, setSelectedSolution] = useState<NavigationId>('dashboard');
   const [activeSection, setActiveSection] = useState<SectionId>('overview');
@@ -1218,12 +1175,6 @@ function App() {
       <div className={`app no-sidebar-app ${theme}`}>
         <GlobalThemeStyles />
         <ThemeToggle />
-        {/* Abstract Background For Splash Screen */}
-        <div className="global-bg-waves" aria-hidden="true">
-          <div className="dark-blob blob-purple"></div>
-          <div className="dark-blob blob-yellow"></div>
-          <div className="dark-blob blob-cyan"></div>
-        </div>
         <PuzzleSplash onComplete={() => setIsPuzzleCompleted(true)} onSkip={() => setIsPuzzleCompleted(true)} />
       </div>
     );
@@ -1234,77 +1185,57 @@ function App() {
       <GlobalThemeStyles />
       <ThemeToggle />
       
-      {/* GLOBAL DARK BACKGROUND WAVES AND GLOW (EXACT MATCH FOR IMAGE 25) */}
+      {/* GLOBAL LIGHT BACKGROUND WAVES AND GLOW */}
       <div className="global-bg-waves" aria-hidden="true">
-        <div className="dark-blob blob-purple"></div>
-        <div className="dark-blob blob-yellow"></div>
-        <div className="dark-blob blob-cyan"></div>
-        <div className="waveBackground">
-          <svg viewBox="0 0 1600 260" preserveAspectRatio="none" className="wave wave1">
-            <path d="M0,170 C250,60 380,250 650,150 C900,60 1080,230 1300,120 C1430,55 1520,90 1600,45 L1600,260 L0,260 Z" fill="url(#blueWave)" />
-            <defs>
-              <linearGradient id="blueWave" x1="0" x2="1">
-                <stop offset="0%" stopColor="#0066ff" />
-                <stop offset="45%" stopColor="#1547db" />
-                <stop offset="75%" stopColor="#5135ed" />
-                <stop offset="100%" stopColor="#0099ff" />
-              </linearGradient>
-            </defs>
-          </svg>
-        </div>
+        <div className="global-pale-center-glow"></div>
       </div>
 
       <main className="main no-sidebar-main" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
         
-        {/* HEADER: Matches the Exact Image Architecture (Source 25) */}
+        {/* HEADER: Light Theme Replica */}
         <header className="image-replica-header">
           <div className="header-left">
-            <div className="header-logo-circle">
-              <svg width="40" height="40" viewBox="0 0 100 100" fill="none">
-                <circle cx="50" cy="50" r="44" stroke="#e2e8f0" strokeWidth="4" />
-                <path d="M 50 6 A 44 44 0 0 1 94 50" stroke="#EA4335" strokeWidth="6" strokeLinecap="round" />
-                <path d="M 94 50 A 44 44 0 0 1 50 94" stroke="#FBBC04" strokeWidth="6" strokeLinecap="round" />
-                <path d="M 50 94 A 44 44 0 0 1 6 50" stroke="#34A853" strokeWidth="6" strokeLinecap="round" />
-                <path d="M 6 50 A 44 44 0 0 1 50 6" stroke="#4285F4" strokeWidth="6" strokeLinecap="round" />
-                <path d="M 65 60 H 35 A 8 8 0 0 1 35 44 A 10 10 0 0 1 42 40 A 12 12 0 0 1 61 48 A 8 8 0 0 1 65 60 Z" fill="#4285F4" />
-                <path d="M 45 54 L 50 59 L 60 49" stroke="#ffffff" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </div>
-            <div className="header-title-block">
-              <h1 className="header-title">
-                <span style={{color: '#4285F4'}}>G</span>
-                <span style={{color: '#EA4335'}}>C</span>
-                <span style={{color: '#34A853'}}>P</span> Tech Transformation Solutions
-              </h1>
-              <span className="header-subtitle">Your central hub for knowledge, collaboration and innovation.</span>
-            </div>
-          </div>
-
-          <div className="header-center-search">
-            <Search size={16} />
-            <input type="text" placeholder="Search wiki..." />
+            <span className="gcp-brand">
+              <span className="gcp-blue">G</span>
+              <span className="gcp-red">C</span>
+              <span className="gcp-green">P</span>
+            </span>
+            <h1 className="header-title">Tech Transformation Solutions</h1>
           </div>
 
           <div className="header-right">
-            <div className="header-icons">
-              <button><Bell size={20} /></button>
-              <button><LayoutGrid size={20} /></button>
-              <button className="user-avatar"><UserIcon size={20} /></button>
+            <div className="google-dots-row">
+              <span className="dot dot-blue"></span>
+              <span className="dot dot-red"></span>
+              <span className="dot dot-yellow"></span>
+              <span className="dot dot-green"></span>
             </div>
-            
-            <div className="header-stacked-text">
-              <span>Stronger<br/>People</span>
+
+            <div className="header-pillars">
+              <span>Stronger People</span>
+              <span className="pillar-sep">|</span>
               <span>Smarter Operations</span>
-              <span>Better Customer<br/>Experiences</span>
+              <span className="pillar-sep">|</span>
+              <span>Better Customer Experiences</span>
             </div>
+          </div>
+
+          {/* Decorative Google Quadrant Fan in Top-Right Corner */}
+          <div className="google-corner-fan" aria-hidden="true">
+            <svg viewBox="0 0 160 160" width="160" height="160" fill="none">
+              <path d="M 160,0 A 160,160 0 0,0 0,160 L 160,160 Z" fill="#FBBC04" />
+              <path d="M 160,0 A 120,120 0 0,0 40,160 L 160,160 Z" fill="#4285F4" />
+              <path d="M 160,0 A 80,80 0 0,0 80,160 L 160,160 Z" fill="#EA4335" />
+              <path d="M 160,0 A 40,40 0 0,0 120,160 L 160,160 Z" fill="#34A853" />
+            </svg>
           </div>
         </header>
 
         {/* BODY CONTAINER */}
         <div style={{ flex: 1, position: 'relative', zIndex: 2 }}>
           {selectedSolution === 'dashboard' ? (
-            /* First Page View: Dark Glass Grid */
-            <AsymmetricDashboard onSelect={openSolution} />
+            /* First Page View: Only Cards Are Shown (No Scroll Topbar) */
+            <LightAsymmetricDashboard onSelect={openSolution} />
           ) : (
             /* Selected View: Isolated Detail View with Back Button */
             <div className="page-content main-page-content" style={{ padding: '24px 50px' }}>
@@ -1315,16 +1246,15 @@ function App() {
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: '8px',
-                    padding: '10px 18px',
+                    padding: '8px 16px',
                     borderRadius: '8px',
-                    border: '1px solid rgba(255,255,255,0.2)',
-                    background: 'rgba(0, 0, 0, 0.4)',
-                    backdropFilter: 'blur(10px)',
-                    color: '#ffffff',
+                    border: '1px solid var(--border-main)',
+                    background: 'var(--bg-card)',
+                    color: '#1a73e8',
                     fontWeight: 600,
                     cursor: 'pointer',
                     fontSize: '14px',
-                    boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+                    boxShadow: 'var(--shadow-sm)',
                     transition: 'background 0.2s'
                   }}
                 >
@@ -1348,30 +1278,31 @@ function App() {
           )}
         </div>
 
-        {/* FOOTER: Matches Exact Image Architecture */}
+        {/* FOOTER: Light Theme Replica */}
         <footer className="image-replica-footer">
           <div className="footer-left">
-            <Cloud size={24} color="#ffffff" strokeWidth={2} />
-            <span className="footer-motto">Transform &nbsp;|&nbsp; Optimize &nbsp;|&nbsp; Scale Together</span>
+            <svg width="26" height="26" viewBox="0 0 40 40" fill="none" style={{ flexShrink: 0 }}>
+              <path d="M 28 30 H 12 A 7 7 0 0 1 12 16 A 8 8 0 0 1 17 14 A 10 10 0 0 1 33 21 A 7 7 0 0 1 28 30 Z" fill="none" stroke="#EA4335" strokeWidth="3" />
+              <path d="M 12 30 H 28" stroke="#4285F4" strokeWidth="4" strokeLinecap="round" />
+              <path d="M 12 22 A 6 6 0 0 1 18 16" stroke="#FBBC04" strokeWidth="4" strokeLinecap="round" />
+              <path d="M 18 16 A 9 9 0 0 1 30 22" stroke="#34A853" strokeWidth="4" strokeLinecap="round" />
+            </svg>
+            <span className="footer-motto">Build &nbsp;·&nbsp; Transform &nbsp;·&nbsp; Scale</span>
           </div>
 
-          <div className="footer-right">
-            <div className="footer-angled-text">
-              <span>Transform</span>
-              <span>Ideas into</span>
-              <span className="impact-text">Impact</span>
+          <div className="footer-center-bar-container">
+            <div className="footer-center-bar">
+              <span className="bar-seg bar-blue"></span>
+              <span className="bar-seg bar-red"></span>
+              <span className="bar-seg bar-yellow"></span>
+              <span className="bar-seg bar-green"></span>
             </div>
-            <div className="footer-cloud-outline">
-              <svg viewBox="0 0 100 60" width="120" height="70" fill="none">
-                 <path d="M 80 45 H 20 A 15 15 0 0 1 20 15 A 16 16 0 0 1 35 12 A 20 20 0 0 1 70 25 A 15 15 0 0 1 80 45 Z" stroke="rgba(255,255,255,0.8)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </div>
-            <div className="footer-four-dots">
-              <span className="dot dot-blue"></span>
-              <span className="dot dot-red"></span>
-              <span className="dot dot-yellow"></span>
-              <span className="dot dot-green"></span>
-            </div>
+          </div>
+
+          <div className="footer-right-matrix" aria-hidden="true">
+            <div className="matrix-dot"></div><div className="matrix-dot"></div><div className="matrix-dot"></div><div className="matrix-dot"></div>
+            <div className="matrix-dot"></div><div className="matrix-dot"></div><div className="matrix-dot"></div><div className="matrix-dot"></div>
+            <div className="matrix-dot"></div><div className="matrix-dot"></div><div className="matrix-dot"></div><div className="matrix-dot"></div>
           </div>
         </footer>
       </main>
