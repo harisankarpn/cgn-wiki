@@ -50,33 +50,77 @@ button {
   overflow: hidden;
 }
 
+/* Animated Neon Blobs */
 .blob-purple {
   position: absolute;
-  top: -10%; left: -5%; width: 40vw; height: 40vw;
-  background: radial-gradient(circle, rgba(99, 102, 241, 0.4) 0%, transparent 60%);
-  filter: blur(60px);
+  top: -10%; left: -5%; width: 45vw; height: 45vw;
+  background: radial-gradient(circle, rgba(138,43,226,0.3) 0%, transparent 60%);
+  filter: blur(80px);
+}
+
+.blob-yellow {
+  position: absolute;
+  top: 20%; left: -10%; width: 40vw; height: 40vw;
+  background: radial-gradient(circle, rgba(251,188,4,0.15) 0%, transparent 70%);
+  filter: blur(80px);
 }
 
 .blob-cyan {
   position: absolute;
-  top: 20%; right: -10%; width: 50vw; height: 50vw;
-  background: radial-gradient(circle, rgba(14, 165, 233, 0.3) 0%, transparent 60%);
-  filter: blur(80px);
+  bottom: -20%; right: -10%; width: 60vw; height: 60vw;
+  background: radial-gradient(circle, rgba(0,210,255,0.25) 0%, transparent 70%);
+  filter: blur(100px);
 }
 
 .blob-blue {
   position: absolute;
-  bottom: -20%; right: 10%; width: 60vw; height: 60vw;
-  background: radial-gradient(circle, rgba(37, 99, 235, 0.4) 0%, transparent 60%);
+  top: -10%; right: 10%; width: 50vw; height: 50vw;
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.25) 0%, transparent 60%);
   filter: blur(80px);
 }
 
+/* SVG Dot Grid Backgrounds */
+.bg-dots {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  background-image: radial-gradient(rgba(255,255,255,0.15) 2px, transparent 2px);
+  background-size: 20px 20px;
+  opacity: 0.6;
+}
+
+.top-left-dots {
+  top: 50px;
+  left: 50px;
+  mask-image: radial-gradient(circle, white 0%, transparent 70%);
+  -webkit-mask-image: radial-gradient(circle, white 0%, transparent 70%);
+}
+
+.bottom-right-dots {
+  bottom: 50px;
+  right: 150px;
+  mask-image: radial-gradient(circle, white 0%, transparent 70%);
+  -webkit-mask-image: radial-gradient(circle, white 0%, transparent 70%);
+}
+
+/* Subtle Sparkles */
+.sparkle {
+  position: absolute;
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 32px;
+  font-weight: 300;
+  user-select: none;
+}
+.sp-1 { top: 15%; right: 5%; }
+.sp-2 { top: 35%; right: 12%; }
+
+/* The SVG Wave at the Bottom */
 .waveBackground {
   position: absolute;
   bottom: -5px;
   left: 0;
   width: 100%;
-  opacity: 0.85;
+  opacity: 0.95;
 }
 
 .wave1 {
@@ -86,7 +130,7 @@ button {
 }
 
 /* =========================================================
-   HEADER: EXACT MATCH FOR DARK THEME (Image 33)
+   HEADER: EXACT MATCH FOR IMAGE (1)_6.jpg
 ========================================================= */
 .image-replica-header {
   position: relative;
@@ -138,7 +182,7 @@ button {
   display: flex;
   align-items: center;
   gap: 10px;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 999px;
   padding: 8px 18px;
@@ -201,11 +245,11 @@ button {
 }
 
 /* =========================================================
-   DASHBOARD HUB: ASYMMETRIC GRID (MATCHING IMAGE 33)
+   DASHBOARD HUB: ASYMMETRIC GRID (MATCHING CARD PROPORTIONS)
 ========================================================= */
 .dashboard-hub-container {
   display: grid;
-  grid-template-columns: 320px 1fr;
+  grid-template-columns: 280px 1fr;
   gap: 24px;
   padding: 24px 50px 32px;
   width: 100%;
@@ -216,31 +260,35 @@ button {
 /* Left Hero Card */
 .hub-hero-card {
   position: relative;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.4));
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(220, 240, 255, 0.85) 100%);
   border-radius: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  padding: 40px 30px;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  padding: 36px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
   overflow: hidden;
-  box-shadow: 0 15px 35px rgba(0, 150, 255, 0.2), inset 0 0 20px rgba(255,255,255,0.5);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 0 35px rgba(66, 133, 244, 0.35);
   height: 100%;
-  min-height: 480px;
+  min-height: 440px;
   box-sizing: border-box;
 }
 
 .hero-bg-shape-1 {
   position: absolute; top: -30%; left: -30%; width: 80%; height: 80%;
-  background: #4285F4; filter: blur(50px); opacity: 0.3; pointer-events: none;
+  background: #38bdf8; filter: blur(40px); opacity: 0.3; pointer-events: none;
 }
+
 .hero-bg-shape-2 {
   position: absolute; bottom: -20%; right: -20%; width: 70%; height: 70%;
-  background: #34A853; filter: blur(40px); opacity: 0.3; pointer-events: none;
+  background: #4ade80; filter: blur(40px); opacity: 0.3; pointer-events: none;
+}
+
+.hero-bg-shape-3 {
+  position: absolute; bottom: 10%; left: -20%; width: 60%; height: 60%;
+  background: #fef08a; filter: blur(40px); opacity: 0.4; pointer-events: none;
 }
 
 .hub-hero-content {
@@ -252,30 +300,28 @@ button {
 }
 
 .hub-hero-icon-container {
-  width: 100px;
-  height: 100px;
-  margin-bottom: 24px;
-  filter: drop-shadow(0 10px 15px rgba(0,0,0,0.15));
+  width: 90px;
+  height: 90px;
+  margin-bottom: 20px;
 }
 
 .hub-hero-card h3 {
-  font-size: 26px;
+  font-size: 22px;
   color: #0c1d3d;
   margin: 0 0 10px;
   font-weight: 800;
 }
 
 .hub-hero-card p {
-  font-size: 14px;
-  color: #1e293b;
-  margin: 0 0 32px;
+  font-size: 13px;
+  color: #405476;
+  margin: 0 0 24px;
   line-height: 1.5;
-  font-weight: 500;
 }
 
 .hub-hero-arrow {
-  width: 52px;
-  height: 52px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   background: #1a73e8;
   display: flex;
@@ -297,50 +343,61 @@ button {
 .hub-grid-right {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  gap: 16px;
   width: 100%;
 }
 
 .hub-card {
   position: relative;
-  background: rgba(255, 255, 255, 0.05);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.02) 100%);
   border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-top: 1px solid rgba(255, 255, 255, 0.3);
-  border-left: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-top: 1px solid rgba(255, 255, 255, 0.4);
+  border-left: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 18px 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   text-align: left;
   cursor: pointer;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), inset 0 1px 2px rgba(255,255,255,0.1);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  min-height: 140px;
+  box-shadow: 0 10px 40px rgba(0, 50, 150, 0.35), inset 0 1px 0 rgba(255,255,255,0.2);
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+  min-height: 120px;
   box-sizing: border-box;
 }
 
 .hub-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(56, 189, 248, 0.2);
-  border-color: rgba(255,255,255,0.4);
+  transform: translateY(-3px);
+  box-shadow: 0 0 20px rgba(0, 150, 255, 0.25), 0 12px 30px rgba(0, 20, 80, 0.35);
+  border-color: rgba(255,255,255,0.5);
+}
+
+.hub-card-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 150px;
+  height: 150px;
+  opacity: 0.8;
+  z-index: 0;
+  pointer-events: none;
 }
 
 .hub-card-top {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 20px;
+  margin-bottom: 12px;
   position: relative;
   z-index: 1;
 }
 
 .hub-card-icon-wrap {
-  width: 44px;
-  height: 44px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -348,14 +405,13 @@ button {
 }
 
 .hub-card-arrow {
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.12);
   display: flex;
   align-items: center;
   justify-content: center;
-  backdrop-filter: blur(5px);
   transition: background 0.2s;
 }
 
@@ -371,18 +427,17 @@ button {
 }
 
 .hub-card-bottom h4 {
-  font-size: 17px;
+  font-size: 16px;
   color: #ffffff;
-  margin: 0 0 6px;
+  margin: 0 0 3px;
   font-weight: 700;
-  letter-spacing: 0.3px;
 }
 
 .hub-card-bottom p {
-  font-size: 12.5px;
+  font-size: 12px;
   color: #94a3b8;
   margin: 0;
-  line-height: 1.4;
+  line-height: 1.35;
 }
 
 /* Slot 9: Transform Text & Cloud Promo */
@@ -417,7 +472,6 @@ button {
   opacity: 0.5;
 }
 
-
 /* =========================================================
    FOOTER
 ========================================================= */
@@ -437,7 +491,7 @@ button {
 .footer-left {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
 .footer-motto {
@@ -456,17 +510,6 @@ button {
   display: flex;
   gap: 6px;
 }
-
-.dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-}
-
-.dot-blue { background-color: #4285f4; }
-.dot-red { background-color: #ea4335; }
-.dot-yellow { background-color: #fbbc04; }
-.dot-green { background-color: #34a853; }
 
 /* =========================================================
    DETAIL & TABLE VIEWS (DARK GLASS)
@@ -664,6 +707,7 @@ button {
 @media (max-width: 1150px) {
   .dashboard-hub-container { grid-template-columns: 1fr; }
   .hub-grid-right { grid-template-columns: repeat(2, 1fr); }
+  .hub-card { min-width: 200px; }
   .image-replica-header { padding: 16px 20px; }
   .header-right { padding-right: 0; gap: 16px; }
 }
@@ -679,6 +723,7 @@ button {
 }
 
 @media (max-width: 650px) {
+  .hub-grid-right { grid-template-columns: 1fr; }
   .dashboard-hub-container { padding: 24px 16px; }
   .image-replica-footer { flex-direction: column; align-items: flex-start; gap: 12px; padding: 24px 16px; }
 }
