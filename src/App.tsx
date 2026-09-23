@@ -76,6 +76,123 @@ type BenefitItem = {
 };
 
 /* =========================================================
+   GLOBAL THEME STYLES (Light & Dark Mode)
+========================================================= */
+
+function GlobalThemeStyles() {
+  return (
+    <style>{`
+      :root {
+        --bg-main: #f8fafc;
+        --bg-card: #ffffff;
+        --bg-hover: #f1f5f9;
+        --bg-blue-card: #f4f8fd;
+        --bg-green-card: #f0fdf4;
+        --text-main: #0f172a;
+        --text-secondary: #475569;
+        --text-muted: #64748b;
+        --text-green: #166534;
+        --border-main: #e2e8f0;
+        --border-soft: #f1f5f9;
+        --shadow-sm: 0 4px 12px rgba(0,0,0,0.05);
+        --badge-bg: #eff6ff;
+        --pill-bg: #dcfce7;
+      }
+
+      .dark {
+        --bg-main: #0f172a;
+        --bg-card: #1e293b;
+        --bg-hover: #334155;
+        --bg-blue-card: #1e293b;
+        --bg-green-card: #1e293b;
+        --text-main: #f8fafc;
+        --text-secondary: #cbd5e1;
+        --text-muted: #94a3b8;
+        --text-green: #4ade80;
+        --border-main: #334155;
+        --border-soft: #1e293b;
+        --shadow-sm: 0 4px 12px rgba(0,0,0,0.5);
+        --badge-bg: #334155;
+        --pill-bg: #064e3b;
+      }
+
+      body {
+        background-color: transparent !important;
+        color: var(--text-main);
+        margin: 0 !important;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 125vw; 
+        height: 125vh;
+        background: url(${bgImage}) center/cover no-repeat;
+        z-index: -999;
+        pointer-events: none;
+      }
+
+      body.dark::before {
+        display: none !important;
+      }
+      body.dark {
+        background-color: var(--bg-main) !important;
+      }
+
+      @keyframes themePulse {
+        0% { box-shadow: 0 0 0 0 rgba(66, 133, 244, 0.6); }
+        70% { box-shadow: 0 0 0 12px rgba(66, 133, 244, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(66, 133, 244, 0); }
+      }
+
+      .dark .app, 
+      .dark .no-sidebar-app, 
+      .dark .main-page-content { 
+       background-color: transparent !important; 
+      }
+      
+      .dark .hub-card,
+      .dark .hub-hero-card {
+        background: var(--bg-card) !important;
+        border-color: var(--border-main) !important;
+      }
+      .dark .hub-hero-card h3, .dark .hub-card h4 { color: var(--text-main) !important; }
+      .dark .hub-hero-card p, .dark .hub-card p { color: var(--text-secondary) !important; }
+
+      .dark .wiki-home,
+      .dark .solution-page { background: var(--bg-card) !important; border-color: var(--border-main) !important; }
+      .dark .solution-header { border-bottom-color: var(--border-main) !important; }
+      .dark .solution-header h2 { color: var(--text-main) !important; }
+      .dark .solution-header p, .dark .header-sub { color: var(--text-secondary) !important; }
+      
+      .dark .solution-tabs { background: var(--bg-card) !important; border-right-color: var(--border-main) !important; }
+      .dark .solution-tabs button { color: var(--text-secondary) !important; }
+      .dark .solution-tabs button:hover { background: var(--bg-hover) !important; }
+      .dark .solution-tabs button.active { background: var(--bg-hover) !important; color: var(--text-main) !important; }
+      
+      .dark .section-heading h3 { color: var(--text-main) !important; }
+      .dark .text-panel, .dark .impact-panel, .dark .access-panel, .dark .feedback-panel, .dark .demo-panel { 
+        background-color: var(--bg-card) !important; 
+        border-color: var(--border-main) !important; 
+      }
+      .dark .text-panel p, .dark .impact-panel p, .dark .feedback-panel p, .dark .demo-panel p { color: var(--text-secondary) !important; }
+      .dark .access-row { border-bottom-color: var(--border-soft) !important; }
+      .dark .access-row span, .dark .poc-row span { color: var(--text-muted) !important; }
+      .dark .access-row strong { color: var(--text-main) !important; }
+      .dark .poc-row { background-color: var(--bg-hover) !important; }
+      .dark .poc-row p { color: var(--text-secondary) !important; }
+      .dark .feedback-panel h4, .dark .demo-panel h4 { color: var(--text-main) !important; }
+
+      .dark .p-card, .dark .s-card { background-color: var(--bg-card) !important; border-color: var(--border-main) !important; }
+      .dark .p-callout, .dark .s-callout { background-color: var(--bg-hover) !important; }
+      .dark .p-trans, .dark .s-trans { background-color: var(--bg-hover) !important; border-color: var(--border-main) !important; }
+    `}</style>
+  );
+}
+
+/* =========================================================
    SOLUTIONS DATA
 ========================================================= */
 
