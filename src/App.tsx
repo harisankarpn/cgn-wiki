@@ -57,6 +57,9 @@ import {
   Search
 } from 'lucide-react';
 
+import puzzleBg from './background.jpeg';
+import coreVideo from './C.O.R.E.mp4';
+
 /* =========================================================
    TYPES
 ========================================================= */
@@ -71,7 +74,7 @@ type BenefitItem = {
 };
 
 /* =========================================================
-   GLOBAL THEME STYLES (SAFE CSS INJECTION - NO LOCAL IMAGES)
+   GLOBAL THEME STYLES (SAFE CSS INJECTION)
 ========================================================= */
 
 function GlobalThemeStyles() {
@@ -142,10 +145,10 @@ const solutions = [
   { id: 'elevate' as NavigationId, name: 'Elevate360', subtitle: 'Operational Governance', icon: BarChart3, color: '#4ade80' },
   { id: 'sme' as NavigationId, name: 'Digital SME', subtitle: 'Automating Case Execution', icon: Bot, color: '#c084fc' },
   { id: 'accelerate' as NavigationId, name: 'Project Accelerate', subtitle: 'Risk Intelligence & Control', icon: Zap, color: '#fb923c' },
-  { id: 'crado' as NavigationId, name: 'CRADO', subtitle: 'Automated Billing Deduction', icon: FileText, color: '#38bdf8' },
+  { id: 'crado' as NavigationId, name: 'CRADO', subtitle: 'Automated Billing Deduction', icon: FileText, color: '#60a5fa' },
   { id: 'arc' as NavigationId, name: 'ARC', subtitle: 'Intelligent Frontline Routing', icon: GitBranch, color: '#fb7185' },
   { id: 'aura' as NavigationId, name: 'AURA', subtitle: 'End-to-End Support Enablement', icon: Layers3, color: '#818cf8' },
-  { id: 'star' as NavigationId, name: 'STAR', subtitle: 'Intelligent Re-contact Detection', icon: Star, color: '#4ade80' },
+  { id: 'star' as NavigationId, name: 'STAR', subtitle: 'Intelligent Re-contact Detection', icon: Star, color: '#34d399' },
 ];
 
 const FEEDBACK_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSf0zu4Q-0kTjP03BLKMIPfQLePmL0P3xyAaaWr5COiuTGKqlA/viewform?usp=publish-editor';
@@ -220,7 +223,7 @@ const solutionContent: Record<SolutionId, any> = {
     access: 'https://stack-cognizant.web.app/login',
     poc: defaultPOCs,
     feedback: FEEDBACK_URL,
-    demo: '',
+    demo: coreVideo,
   },
   elevate: {
     shortName: 'Elevate360',
@@ -668,7 +671,7 @@ const wikiTableRows = [
 ];
 
 /* =========================================================
-   DASHBOARD HUB: EXACT MATCH FOR IMAGE (1)_6.jpg
+   DASHBOARD HUB: EXACT MATCH FOR IMAGE 40 (DARK THEME)
 ========================================================= */
 
 function AsymmetricDashboard({ onSelect }: { onSelect: (id: NavigationId) => void }) {
@@ -704,7 +707,7 @@ function AsymmetricDashboard({ onSelect }: { onSelect: (id: NavigationId) => voi
         </div>
       </div>
 
-      {/* 2. Right Grid Container (3-Column Horizontal Layout matching Image (1)_6.jpg) */}
+      {/* 2. Right Grid Container (3-Column Horizontal Layout matching Image 40) */}
       <div className="hub-grid-right">
         {solutions.map((s) => {
           return (
@@ -744,203 +747,12 @@ function AsymmetricDashboard({ onSelect }: { onSelect: (id: NavigationId) => voi
 }
 
 /* =========================================================
-   SPLASH PUZZLE COMPONENT
-========================================================= */
-
-const GRID_SIZE = 4;
-const TOTAL_PIECES = GRID_SIZE * GRID_SIZE;
-const TILE_SIZE = 100; 
-const INITIAL_PIECES = Array.from({ length: TOTAL_PIECES }, (_, i) => i);
-
-function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: () => void }) {
-  const [poolPieces, setPoolPieces] = useState<number[]>(() => 
-    [...INITIAL_PIECES].sort(() => Math.random() - 0.5)
-  );
-  const [slots, setSlots] = useState<(number | null)[]>(Array(TOTAL_PIECES).fill(null));
-  const [dragState, setDragState] = useState<{ id: number | null; source: 'pool' | 'grid' | null; isDragging: boolean; x: number; y: number; }>({ id: null, source: null, isDragging: false, x: 0, y: 0 });
-  const [isSolved, setIsSolved] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(120); 
-  const [isFailed, setIsFailed] = useState(false);
-
-  useEffect(() => {
-    if (isSolved || isFailed) return;
-    if (timeLeft <= 0) { setIsFailed(true); return; }
-    const timerId = setInterval(() => { setTimeLeft(prev => prev - 1); }, 1000);
-    return () => clearInterval(timerId);
-  }, [timeLeft, isSolved, isFailed]);
-
-  useEffect(() => {
-    const isComplete = slots.every((piece, index) => piece === index);
-    if (isComplete && !slots.includes(null)) { setIsSolved(true); }
-  }, [slots]);
-
-  const handleRetry = () => {
-    setPoolPieces([...INITIAL_PIECES].sort(() => Math.random() - 0.5));
-    setSlots(Array(TOTAL_PIECES).fill(null));
-    setIsSolved(false); setIsFailed(false); setTimeLeft(120);
-    setDragState({ id: null, source: null, isDragging: false, x: 0, y: 0 });
-  };
-
-  const handlePointerDown = (e: React.PointerEvent, pieceId: number, source: 'pool' | 'grid') => {
-    if (isFailed || isSolved) return;
-    const zoom = parseFloat(window.getComputedStyle(document.body).zoom || '1');
-    setDragState({ id: pieceId, source, isDragging: true, x: (e.clientX / zoom) - (TILE_SIZE / 2), y: (e.clientY / zoom) - (TILE_SIZE / 2) });
-    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
-    if (source === 'pool') { setPoolPieces(prev => prev.filter(p => p !== pieceId)); } 
-    else { setSlots(prev => { const newSlots = [...prev]; const slotIndex = newSlots.indexOf(pieceId); if (slotIndex !== -1) newSlots[slotIndex] = null; return newSlots; }); }
-  };
-
-  useEffect(() => {
-    if (!dragState.isDragging) return;
-    const handlePointerMove = (e: PointerEvent) => {
-      const zoom = parseFloat(window.getComputedStyle(document.body).zoom || '1');
-      setDragState(prev => ({ ...prev, x: (e.clientX / zoom) - (TILE_SIZE / 2), y: (e.clientY / zoom) - (TILE_SIZE / 2) }));
-    };
-    const handlePointerUp = (e: PointerEvent) => {
-      const gridEl = document.getElementById('puzzle-grid');
-      const zoom = parseFloat(window.getComputedStyle(document.body).zoom || '1');
-      if (gridEl && dragState.id !== null) {
-        const gridRect = gridEl.getBoundingClientRect();
-        const gridLeft = gridRect.left / zoom;
-        const gridTop = gridRect.top / zoom;
-        const slotRow = Math.floor(dragState.id / GRID_SIZE);
-        const slotCol = dragState.id % GRID_SIZE;
-        const targetX = gridLeft + 12 + (slotCol * TILE_SIZE);
-        const targetY = gridTop + 12 + (slotRow * TILE_SIZE);
-        const pointerX = e.clientX / zoom;
-        const pointerY = e.clientY / zoom;
-        const slotCenterX = targetX + (TILE_SIZE / 2);
-        const slotCenterY = targetY + (TILE_SIZE / 2);
-
-        if (Math.abs(pointerX - slotCenterX) < 60 && Math.abs(pointerY - slotCenterY) < 60) {
-          setSlots(prev => { const newSlots = [...prev]; newSlots[dragState.id!] = dragState.id; return newSlots; });
-        } else {
-          setPoolPieces(prev => [...prev, dragState.id!]);
-        }
-      }
-      setDragState({ id: null, source: null, isDragging: false, x: 0, y: 0 });
-    };
-    window.addEventListener('pointermove', handlePointerMove);
-    window.addEventListener('pointerup', handlePointerUp);
-    return () => { window.removeEventListener('pointermove', handlePointerMove); window.removeEventListener('pointerup', handlePointerUp); };
-  }, [dragState.isDragging, dragState.id]);
-
-  const renderPuzzlePiece = (pieceId: number) => {
-    const row = Math.floor(pieceId / GRID_SIZE);
-    const col = pieceId % GRID_SIZE;
-    return (
-      <div style={{ width: '150px', height: '150px', position: 'absolute', top: '-25px', left: '-25px', overflow: 'visible', pointerEvents: 'none', clipPath: `url(#jigsaw-${pieceId})` }}>
-        <div style={{ position: 'absolute', top: `${25 - (row * TILE_SIZE)}px`, left: `${25 - (col * TILE_SIZE)}px`, width: '400px', height: '400px', backgroundColor: '#1e293b' }}>
-          <div style={{ width: '100%', height: '100%', border: '1px solid rgba(255,255,255,0.2)', boxSizing: 'border-box' }}></div>
-        </div>
-      </div>
-    );
-  };
-
-  const formatTime = (seconds: number) => {
-    const m = Math.floor(seconds / 60);
-    const s = seconds % 60;
-    return `${m}:${s.toString().padStart(2, '0')}`;
-  };
-
-  return (
-     <div style={{ minHeight: '100vh', width: '100%', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px', fontFamily: 'system-ui, sans-serif', position: 'relative', zIndex: 10 }}>
-      {dragState.isDragging && dragState.id !== null && (
-        <div style={{ position: 'fixed', left: 0, top: 0, width: '100px', height: '100px', transform: `translate(${dragState.x}px, ${dragState.y}px) scale(1.05)`, zIndex: 9999, pointerEvents: 'none', filter: 'drop-shadow(0 12px 24px rgba(0,0,0,0.5))' }}>
-          {renderPuzzlePiece(dragState.id)}
-        </div>
-      )}
-
-      <svg width="0" height="0" style={{ position: 'absolute', pointerEvents: 'none' }}>
-        <defs>
-          {INITIAL_PIECES.map(id => {
-            const r = Math.floor(id / 4); const c = id % 4; const even = (r + c) % 2 === 0;
-            const top = r === 0 ? 0 : (even ? 1 : -1); const right = c === 3 ? 0 : (even ? 1 : -1);
-            const bottom = r === 3 ? 0 : (even ? 1 : -1); const left = c === 0 ? 0 : (even ? 1 : -1);
-            const path = `M 25,25 
-              ${top === 0 ? 'L 125,25' : top === 1 ? 'L 60,25 C 60,0 90,0 90,25 L 125,25' : 'L 60,25 C 60,50 90,50 90,25 L 125,25'}
-              ${right === 0 ? 'L 125,125' : right === 1 ? 'L 125,60 C 150,60 150,90 125,90 L 125,125' : 'L 125,60 C 100,60 100,90 125,90 L 125,125'}
-              ${bottom === 0 ? 'L 25,125' : bottom === 1 ? 'L 90,125 C 90,150 60,150 60,125 L 25,125' : 'L 90,125 C 90,100 60,100 60,125 L 25,125'}
-              ${left === 0 ? 'L 25,25' : left === 1 ? 'L 25,90 C 0,90 0,60 25,60 L 25,25' : 'L 25,90 C 50,90 50,60 25,60 L 25,25'} Z`;
-            return ( <clipPath id={`jigsaw-${id}`} key={id} clipPathUnits="userSpaceOnUse"><path d={path} /></clipPath> );
-          })}
-        </defs>
-      </svg>
-
-      {!isSolved && (
-        <div style={{ position: 'absolute', top: '30px', right: '40px', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '16px', zIndex: 10 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 16px', background: 'rgba(15, 23, 42, 0.8)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '8px', fontWeight: 'bold', fontSize: '18px', color: '#ef4444' }}>
-              <Clock size={20} />{formatTime(timeLeft)}
-            </div>
-          </div>
-        </div>
-      )}
-
-      <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-        <h1 style={{ color: '#ffffff', margin: '0 0 12px', fontSize: '32px', fontWeight: 'bold' }}>Innovation Wiki Access</h1>
-        <p style={{ color: '#94a3b8', margin: 0, fontSize: '16px' }}>Drag the matching pieces into the grid to unlock.</p>
-      </div>
-
-      <div style={{ display: 'flex', gap: '40px', alignItems: 'flex-start', flexWrap: 'wrap', justifyContent: 'center' }}>
-        <div id="puzzle-grid" style={{ 
-            display: 'grid', gridTemplateColumns: `repeat(${GRID_SIZE}, ${TILE_SIZE}px)`, gridTemplateRows: `repeat(${GRID_SIZE}, ${TILE_SIZE}px)`, 
-            gap: '0px', padding: '12px', background: 'rgba(15, 23, 42, 0.8)', borderRadius: '16px', 
-            border: `2px solid ${isFailed ? '#ef4444' : 'rgba(255,255,255,0.2)'}`, position: 'relative'
-          }}>
-          {slots.map((pieceId, index) => (
-            <div key={index} style={{ width: `${TILE_SIZE}px`, height: `${TILE_SIZE}px`, position: 'relative', border: pieceId === null ? '1px dashed rgba(255,255,255,0.2)' : 'none', borderRadius: '6px' }}>
-              {pieceId !== null && ( <div onPointerDown={(e) => handlePointerDown(e, pieceId, 'grid')} style={{ width: '100%', height: '100%', cursor: 'grab', zIndex: 2 }}>{renderPuzzlePiece(pieceId)}</div> )}
-            </div>
-          ))}
-        </div>
-
-        <div className="puzzle-pool" style={{ width: '500px', height: '428px', boxSizing: 'border-box', overflowY: 'auto', overflowX: 'hidden', display: 'flex', flexDirection: 'column', padding: '24px', background: 'rgba(15, 23, 42, 0.8)', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.2)' }}>
-          {isSolved ? (
-            <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-              <div style={{ width: '60px', height: '60px', borderRadius: '50%', backgroundColor: 'rgba(52, 168, 83, 0.2)', color: '#34A853', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '20px' }}>
-                <ShieldCheck size={32} />
-              </div>
-              <h3 style={{ margin: '0 0 20px', color: '#ffffff', fontWeight: 'bold' }}>Verification Successful</h3>
-              <button onClick={onComplete} style={{ padding: '14px 32px', borderRadius: '8px', border: 'none', background: '#1a73e8', color: 'white', fontSize: '15px', fontWeight: 600, cursor: 'pointer', boxShadow: '0 4px 12px rgba(26, 115, 232, 0.3)' }}>
-                Enter Innovation Wiki
-              </button>
-            </div>
-          ) : isFailed ? (
-            <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-              <h3 style={{ margin: '0 0 12px', color: '#ffffff' }}>Time's Up!</h3>
-              <button onClick={handleRetry} style={{ padding: '14px 28px', borderRadius: '8px', border: 'none', background: '#ef4444', color: 'white', fontSize: '16px', fontWeight: 600, cursor: 'pointer' }}>Try Again</button>
-            </div>
-          ) : (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '30px 20px', justifyItems: 'center' }}>
-              {poolPieces.map(pieceId => (
-                <div key={pieceId} style={{ width: '100px', height: '100px', position: 'relative' }}>
-                  <div onPointerDown={(e) => handlePointerDown(e, pieceId, 'pool')} style={{ width: '100%', height: '100%', cursor: 'grab', zIndex: 1, touchAction: 'none' }}>
-                    {renderPuzzlePiece(pieceId)}
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
-      <div style={{ position: 'fixed', bottom: '40px', left: '40px', zIndex: 50 }}>
-        <button onClick={onSkip} style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.2)', background: 'rgba(15, 23, 42, 0.8)', color: '#ffffff', fontWeight: 600, cursor: 'pointer' }}>Skip Puzzle</button>
-      </div>
-    </div>
-  );
-}
-
-/* =========================================================
    MAIN APP CONTROLLER
 ========================================================= */
 
 function App() {
-  const [theme] = useState<'dark'>('dark'); 
   const [selectedSolution, setSelectedSolution] = useState<NavigationId>('dashboard');
   const [activeSection, setActiveSection] = useState<SectionId>('overview');
-
-  useEffect(() => { document.body.className = theme; }, [theme]);
 
   const openSolution = (id: NavigationId) => {
     setSelectedSolution(id);
@@ -952,10 +764,10 @@ function App() {
   };
 
   return (
-    <div className={`app no-sidebar-app ${theme}`}>
+    <div className="app no-sidebar-app dark">
       <GlobalThemeStyles />
       
-      {/* GLOBAL DARK BACKGROUND WAVES AND GLOW (EXACT MATCH FOR IMAGE 35) */}
+      {/* GLOBAL DARK BACKGROUND WAVES AND GLOW (EXACT MATCH FOR IMAGE 40) */}
       <div className="global-bg-waves" aria-hidden="true">
         <div className="blob-purple"></div>
         <div className="blob-cyan"></div>
@@ -979,7 +791,7 @@ function App() {
 
       <main className="main no-sidebar-main" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
         
-        {/* HEADER: Reference Image Match (Source 35) */}
+        {/* HEADER: Reference Image Match (Source 40) */}
         <header className="image-replica-header">
           <div className="header-left">
             <div className="header-logo-circle">
