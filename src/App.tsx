@@ -1198,15 +1198,24 @@ function App() {
 
     const fetchVisitorCount = async () => {
       try {
-        // Updated to a modern, active public counter API
+        // Free APIs are volatile. If this one also fails, you will need to host a simple counter on your Google Cloud backend.
         const response = await fetch('https://api.counterapi.dev/v1/gcp-tech-wiki/visitor-count/up');
+        
+        // Explicitly throw an error if the API is down (like the 410 error)
+        if (!response.ok) {
+            throw new Error(`API returned status: ${response.status}`);
+        }
+
         const data = await response.json();
         
-        // counterapi.dev returns the number in a 'count' property
-        setVisitorCount(data.count); 
+        if (data && data.count !== undefined) {
+            setVisitorCount(data.count);
+        } else {
+            throw new Error('Count not found in response');
+        }
+
       } catch (error) {
         console.error('Failed to fetch visitor count', error);
-        // Display a fallback string so the UI doesn't silently disappear
         setVisitorCount('Offline'); 
       }
     };
@@ -1307,7 +1316,7 @@ function App() {
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '2px' }}>
                   <Users size={18} color="#1a73e8" />
                   <strong style={{ fontSize: '18px', color: 'var(--text-main)' }}>
-                    {visitorCount.toLocaleString()}
+                    {typeof visitorCount === 'number' ? visitorCount.toLocaleString() : visitorCount}
                   </strong>
                 </div>
               </div>
