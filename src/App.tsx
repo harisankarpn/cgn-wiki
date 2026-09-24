@@ -1167,7 +1167,7 @@ function App() {
   const [isPuzzleCompleted, setIsPuzzleCompleted] = useState(false);
   const [selectedSolution, setSelectedSolution] = useState<NavigationId>('home');
   const [activeSection, setActiveSection] = useState<SectionId>('overview');
-  const [visitorCount, setVisitorCount] = useState<number | null>(null);
+  const [visitorCount, setVisitorCount] = useState<number | string>('...');
 
   useEffect(() => {
     if (!isPuzzleCompleted) return;
@@ -1194,19 +1194,20 @@ function App() {
 
   // ---> LIVE VISITOR COUNT FETCH <---
   useEffect(() => {
-    if (!isPuzzleCompleted) return; // Only increment after the puzzle is solved
+    if (!isPuzzleCompleted) return; 
 
     const fetchVisitorCount = async () => {
       try {
-        // This free API automatically starts at 0. 
-        // The "/hit" endpoint increments the counter by 1 and returns the new total.
-        const response = await fetch('https://api.countapi.xyz/hit/gcp-tech-wiki-v1/visitor-count');
+        // Updated to a modern, active public counter API
+        const response = await fetch('https://api.counterapi.dev/v1/gcp-tech-wiki/visitor-count/up');
         const data = await response.json();
         
-        // CountAPI returns the total in a 'value' property
-        setVisitorCount(data.value);
+        // counterapi.dev returns the number in a 'count' property
+        setVisitorCount(data.count); 
       } catch (error) {
         console.error('Failed to fetch visitor count', error);
+        // Display a fallback string so the UI doesn't silently disappear
+        setVisitorCount('Offline'); 
       }
     };
 
