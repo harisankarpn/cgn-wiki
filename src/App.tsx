@@ -795,7 +795,7 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
   }>({ id: null, source: null, isDragging: false, x: 0, y: 0 });
 
   const [isSolved, setIsSolved] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(120); 
+  const [timeLeft, setTimeLeft] = useState(180); 
   const [isFailed, setIsFailed] = useState(false);
 
   useEffect(() => {
@@ -843,7 +843,7 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
     setSlots(Array(TOTAL_PIECES).fill(null));
     setIsSolved(false);
     setIsFailed(false);
-    setTimeLeft(120);
+    setTimeLeft(180);
     setDragState({ id: null, source: null, isDragging: false, x: 0, y: 0 });
   };
 
@@ -1167,6 +1167,47 @@ function App() {
   const [isPuzzleCompleted, setIsPuzzleCompleted] = useState(false);
   const [selectedSolution, setSelectedSolution] = useState<NavigationId>('home');
   const [activeSection, setActiveSection] = useState<SectionId>('overview');
+  const [visitorCount, setVisitorCount] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (!isPuzzleCompleted) return;
+
+    let timeoutId: NodeJS.Timeout;
+
+    const resetTimer = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        setIsPuzzleCompleted(false);
+      }, 240000); // 4 minutes
+    };
+
+    const events = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart'];
+    events.forEach(event => document.addEventListener(event, resetTimer));
+    
+    resetTimer();
+
+    return () => {
+      clearTimeout(timeoutId);
+      events.forEach(event => document.removeEventListener(event, resetTimer));
+    };
+  }, [isPuzzleCompleted]);
+
+  useEffect(() => {
+    if (!isPuzzleCompleted) return; // Only fetch after puzzle is solved
+
+    // Placeholder: Replace with your actual API endpoint or DB call
+    const fetchVisitorCount = async () => {
+      try {
+        const response = await fetch('YOUR_API_ENDPOINT_HERE');
+        const data = await response.json();
+        setVisitorCount(data.count);
+      } catch (error) {
+        console.error('Failed to fetch visitor count', error);
+      }
+    };
+
+    fetchVisitorCount();
+  }, [isPuzzleCompleted]);
 
   useEffect(() => {
     document.body.className = theme;
@@ -1213,37 +1254,59 @@ function App() {
       <main className="main no-sidebar-main" style={{ minHeight: '100vh' }}>
         
         <section className="hero top-hero premium-hero" style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', position: 'relative' }}>
-          <div className="hero-copy" style={{ width: '100%', maxWidth: '100%', display: 'flex', alignItems: 'center', gap: '20px' }}>
+          {/* Modify this div to use justify-content: space-between */}
+          <div className="hero-copy" style={{ width: '100%', maxWidth: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '20px' }}>
             
-            {/* Added backgroundColor: '#ffffff' to the wrapper to enforce a perfect circle in dark mode */}
-            <div style={{ width: '75px', height: '75px', borderRadius: '50%', overflow: 'hidden', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffffff' }}>
-              <img 
-                src={gcpGif} 
-                alt="GCP Animation" 
-                style={{ 
-                  width: '90%',   
-                  height: '90%',  
-                  objectFit: 'cover', 
-                  transform: 'translateY(-1%)' 
-                }} 
-              />
-            </div>
-            
-            
-            <div>
-              <h1 className="premium-title" style={{ fontSize: '2.2rem', margin: 0, lineHeight: 1.2 }}>
-                <span>GCP Tech</span>
-                <span className="title-highlight"> Transformation </span>
-                <span>Solutions</span>
-              </h1>
-              <div className="outcome-row" style={{ marginTop: '8px' }}>
-                <div className="outcome-item"><Users size={16} /><span>Smarter People</span></div>
-                <div className="outcome-divider"></div>
-                <div className="outcome-item"><BarChart3 size={16} /><span>Stronger Operations</span></div>
-                <div className="outcome-divider"></div>
-                <div className="outcome-item"><Star size={16} /><span>Better Customer Experiences</span></div>
+            {/* Left Side: Existing Logo and Title Group */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+              <div style={{ width: '75px', height: '75px', borderRadius: '50%', overflow: 'hidden', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffffff' }}>
+                <img 
+                  src={gcpGif} 
+                  alt="GCP Animation" 
+                  style={{ 
+                    width: '90%',   
+                    height: '90%',  
+                    objectFit: 'cover', 
+                    transform: 'translateY(-1%)' 
+                  }} 
+                />
+              </div>
+              
+              <div>
+                <h1 className="premium-title" style={{ fontSize: '2.2rem', margin: 0, lineHeight: 1.2 }}>
+                  <span>GCP Tech</span>
+                  <span className="title-highlight"> Transformation </span>
+                  <span>Solutions</span>
+                </h1>
+                <div className="outcome-row" style={{ marginTop: '8px' }}>
+                  <div className="outcome-item"><Users size={16} /><span>Smarter People</span></div>
+                  <div className="outcome-divider"></div>
+                  <div className="outcome-item"><BarChart3 size={16} /><span>Stronger Operations</span></div>
+                  <div className="outcome-divider"></div>
+                  <div className="outcome-item"><Star size={16} /><span>Better Customer Experiences</span></div>
+                </div>
               </div>
             </div>
+
+            {/* ---> NEW: Right Side Visitor Count <--- */}
+            {visitorCount !== null && (
+              <div style={{ 
+                display: 'flex', flexDirection: 'column', alignItems: 'flex-end', 
+                background: 'var(--bg-card)', padding: '8px 16px', 
+                borderRadius: '8px', border: '1px solid var(--border-main)',
+                boxShadow: 'var(--shadow-sm)'
+              }}>
+                <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                  Total Visitors
+                </span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '2px' }}>
+                  <Users size={18} color="#1a73e8" />
+                  <strong style={{ fontSize: '18px', color: 'var(--text-main)' }}>
+                    {visitorCount.toLocaleString()}
+                  </strong>
+                </div>
+              </div>
+            )}
 
           </div>
         </section>
