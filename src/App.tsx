@@ -1192,15 +1192,19 @@ function App() {
     };
   }, [isPuzzleCompleted]);
 
+  // ---> LIVE VISITOR COUNT FETCH <---
   useEffect(() => {
-    if (!isPuzzleCompleted) return; // Only fetch after puzzle is solved
+    if (!isPuzzleCompleted) return; // Only increment after the puzzle is solved
 
-    // Placeholder: Replace with your actual API endpoint or DB call
     const fetchVisitorCount = async () => {
       try {
-        const response = await fetch('YOUR_API_ENDPOINT_HERE');
+        // This free API automatically starts at 0. 
+        // The "/hit" endpoint increments the counter by 1 and returns the new total.
+        const response = await fetch('https://api.countapi.xyz/hit/gcp-tech-wiki-v1/visitor-count');
         const data = await response.json();
-        setVisitorCount(data.count);
+        
+        // CountAPI returns the total in a 'value' property
+        setVisitorCount(data.value);
       } catch (error) {
         console.error('Failed to fetch visitor count', error);
       }
