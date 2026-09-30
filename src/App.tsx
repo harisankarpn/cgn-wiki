@@ -1200,7 +1200,7 @@ function App() {
       try {
 
         // 1. Point to your internal go/ link
-        const response = await fetch('https://go/cgn-wiki/?page=gcp-tech-wiki');
+        const response = await fetch('http://go/cgn-wiki/?page=gcp-tech-wiki');
         
         if (!response.ok) {
             throw new Error(`API returned status: ${response.status}`);
@@ -1208,16 +1208,15 @@ function App() {
 
         const data = await response.json();
         
-        // 2. Change data.count to data.views to match your custom API's JSON response
+        // 2. Ensure this matches the exact JSON key your backend returns (e.g., data.views or data.count)
         if (data && data.views !== undefined) {
             setVisitorCount(data.views);
         } else {
             throw new Error('Count not found in response');
         }
-
       } catch (error) {
         console.error('Failed to fetch visitor count', error);
-        setVisitorCount('Offline'); 
+        setVisitorCount(null); 
       }
     };
 
