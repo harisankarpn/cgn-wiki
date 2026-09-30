@@ -1218,7 +1218,7 @@ function App() {
       } catch (error) {
         console.error('Failed to fetch visitor count', error);
         // Gracefully hides the UI counter if the public API fails
-        setVisitorCount(null); 
+        setVisitorCount('Offline'); 
       }
     };
 
