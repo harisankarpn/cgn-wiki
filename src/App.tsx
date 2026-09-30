@@ -1167,7 +1167,7 @@ function App() {
   const [isPuzzleCompleted, setIsPuzzleCompleted] = useState(false);
   const [selectedSolution, setSelectedSolution] = useState<NavigationId>('home');
   const [activeSection, setActiveSection] = useState<SectionId>('overview');
-  const [visitorCount, setVisitorCount] = useState<number | string>('...');
+  const [visitorCount, setVisitorCount] = useState<number | string | null>('...');
 
   useEffect(() => {
     if (!isPuzzleCompleted) return;
@@ -1192,15 +1192,15 @@ function App() {
     };
   }, [isPuzzleCompleted]);
   
-  // ---> LIVE VISITOR COUNT FETCH <---
+// ---> LIVE VISITOR COUNT FETCH <---
   useEffect(() => {
     if (!isPuzzleCompleted) return; 
 
     const fetchVisitorCount = async () => {
       try {
-
-        // 1. Point to your internal go/ link
-        const response = await fetch('http://go/cgn-wiki/?page=gcp-tech-wiki');
+        // Calls a free public counter API. 
+        // /up automatically increments the count and returns the new total.
+        const response = await fetch('https://api.counterapi.dev/v1/gcp-tech-wiki/visitors/up');
         
         if (!response.ok) {
             throw new Error(`API returned status: ${response.status}`);
@@ -1208,14 +1208,16 @@ function App() {
 
         const data = await response.json();
         
-        // 2. Ensure this matches the exact JSON key your backend returns (e.g., data.views or data.count)
-        if (data && data.views !== undefined) {
-            setVisitorCount(data.views);
+        // CounterAPI returns the integer in `data.count`
+        if (data && typeof data.count === 'number') {
+            setVisitorCount(data.count);
         } else {
             throw new Error('Count not found in response');
         }
+
       } catch (error) {
         console.error('Failed to fetch visitor count', error);
+        // Gracefully hides the UI counter if the public API fails
         setVisitorCount(null); 
       }
     };
