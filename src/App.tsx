@@ -1198,9 +1198,9 @@ function App() {
 
     const fetchVisitorCount = async () => {
       try {
-        // 1. Point to your new Cloudflare Worker (or Cloud Run) URL
 
-        const response = await fetch('https://YOUR_WORKER_URL.workers.dev/?page=gcp-tech-wiki');
+        // 1. Point to your internal go/ link
+        const response = await fetch('http://go/cgn-wiki/?page=gcp-tech-wiki');
         
         if (!response.ok) {
             throw new Error(`API returned status: ${response.status}`);
