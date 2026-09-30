@@ -1200,7 +1200,7 @@ function App() {
       try {
 
         // 1. Point to your internal go/ link
-        const response = await fetch('http://go/cgn-wiki/?page=gcp-tech-wiki');
+        const response = await fetch('https://go/cgn-wiki/?page=gcp-tech-wiki');
         
         if (!response.ok) {
             throw new Error(`API returned status: ${response.status}`);
