@@ -1196,33 +1196,26 @@ function App() {
   useEffect(() => {
     if (!isPuzzleCompleted) return; 
 
-    const fetchVisitorCount = async () => {
+    const trackVisitor = () => {
       try {
-        // Calls a free public counter API. 
-        // /up automatically increments the count and returns the new total.
-        const response = await fetch('https://api.counterapi.dev/v1/gcp-tech-wiki/visitors/up');
+        // 1. Get current count from browser storage, default to 0 if it doesn't exist
+        const currentCount = parseInt(localStorage.getItem('gcp-wiki-visits') || '0', 10);
         
-        if (!response.ok) {
-            throw new Error(`API returned status: ${response.status}`);
-        }
-
-        const data = await response.json();
+        // 2. Increment the count by 1
+        const newCount = currentCount + 1;
         
-        // CounterAPI returns the integer in `data.count`
-        if (data && typeof data.count === 'number') {
-            setVisitorCount(data.count);
-        } else {
-            throw new Error('Count not found in response');
-        }
-
+        // 3. Save the new count back to storage
+        localStorage.setItem('gcp-wiki-visits', newCount.toString());
+        
+        // 4. Update the UI state to display the number
+        setVisitorCount(newCount);
       } catch (error) {
-        console.error('Failed to fetch visitor count', error);
-        // Gracefully hides the UI counter if the public API fails
-        setVisitorCount('Offline'); 
+        console.error('Failed to update visitor count', error);
+        setVisitorCount('Offline');
       }
     };
 
-    fetchVisitorCount();
+    trackVisitor();
   }, [isPuzzleCompleted]);
 
   useEffect(() => {
