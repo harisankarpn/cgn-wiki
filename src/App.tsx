@@ -1198,17 +1198,21 @@ function App() {
 
     const trackVisitor = () => {
       try {
-        // 1. Get current count from browser storage, default to 0 if it doesn't exist
-        const currentCount = parseInt(localStorage.getItem('gcp-wiki-visits') || '0', 10);
+        // 1. Get the aggregate count from local storage
+        let currentCount = parseInt(localStorage.getItem('gcp-wiki-visits') || '0', 10);
         
-        // 2. Increment the count by 1
-        const newCount = currentCount + 1;
+        // 2. Check if this specific user session has already been counted
+        const hasBeenCounted = sessionStorage.getItem('session-counted');
         
-        // 3. Save the new count back to storage
-        localStorage.setItem('gcp-wiki-visits', newCount.toString());
+        // 3. Only increment if they haven't been counted in this session
+        if (!hasBeenCounted) {
+          currentCount += 1;
+          localStorage.setItem('gcp-wiki-visits', currentCount.toString());
+          sessionStorage.setItem('session-counted', 'true'); // Mark as counted
+        }
         
-        // 4. Update the UI state to display the number
-        setVisitorCount(newCount);
+        // 4. Update the UI state
+        setVisitorCount(currentCount);
       } catch (error) {
         console.error('Failed to update visitor count', error);
         setVisitorCount('Offline');
