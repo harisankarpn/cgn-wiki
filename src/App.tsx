@@ -1191,25 +1191,26 @@ function App() {
       events.forEach(event => document.removeEventListener(event, resetTimer));
     };
   }, [isPuzzleCompleted]);
-
+  
   // ---> LIVE VISITOR COUNT FETCH <---
   useEffect(() => {
     if (!isPuzzleCompleted) return; 
 
     const fetchVisitorCount = async () => {
       try {
-        // Free APIs are volatile. If this one also fails, you will need to host a simple counter on your Google Cloud backend.
-        const response = await fetch('https://api.counterapi.dev/v1/gcp-tech-wiki/visitor-count/up');
+        // 1. Point to your new Cloudflare Worker (or Cloud Run) URL
+
+        const response = await fetch('https://YOUR_WORKER_URL.workers.dev/?page=gcp-tech-wiki');
         
-        // Explicitly throw an error if the API is down (like the 410 error)
         if (!response.ok) {
             throw new Error(`API returned status: ${response.status}`);
         }
 
         const data = await response.json();
         
-        if (data && data.count !== undefined) {
-            setVisitorCount(data.count);
+        // 2. Change data.count to data.views to match your custom API's JSON response
+        if (data && data.views !== undefined) {
+            setVisitorCount(data.views);
         } else {
             throw new Error('Count not found in response');
         }
