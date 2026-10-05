@@ -2152,11 +2152,46 @@ function Benefits({ benefits }: { benefits: BenefitItem[] }) {
 }
 
 /* =========================================================
-   ENHANCED USAGE & ADOPTION COMPONENT
+   ENHANCED USAGE & ADOPTION COMPONENT (WITH LIVE C.O.R.E. DATA)
 ========================================================= */
 
 function Usage({ content, platformColor }: { content: any; platformColor: string }) {
   const usageData = content.usage;
+  const isCore = content.shortName === 'C.O.R.E.';
+
+  const [liveStats, setLiveStats] = useState<{
+    activeUsers: { total: number; newUsers: number; tenuredUsers: number };
+    adoptionRate: string;
+    monthlyGrowth: string;
+    sitewise: Array<{ site: string; total: number; completed: number; rate: string }>;
+  } | null>(null);
+  const [loading, setLoading] = useState<boolean>(isCore);
+
+  useEffect(() => {
+    if (!isCore) return;
+
+    let isMounted = true;
+    const fetchCoreMetrics = async () => {
+      try {
+        // NOTE: If your backend is on a different domain, replace this with the absolute URL (e.g., 'https://your-api.com/api/metrics/usage-stats')
+        const res = await fetch('/api/metrics/usage-stats');
+        if (res.ok) {
+          const data = await res.json();
+          if (isMounted) setLiveStats(data);
+        }
+      } catch (err) {
+        console.error('Failed to load C.O.R.E. live metrics:', err);
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    };
+
+    fetchCoreMetrics();
+    return () => {
+      isMounted = false;
+    };
+  }, [isCore]);
+
   if (!usageData) return null;
 
   return (
@@ -2174,6 +2209,53 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
           line-height: 1.6;
         }
         .usage-desc-card p { margin: 0; }
+
+        .live-metrics-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 16px;
+        }
+        .metric-stat-card {
+          background: var(--bg-card);
+          border: 1px solid var(--border-main);
+          border-radius: 12px;
+          padding: 18px 20px;
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+        }
+        .metric-stat-label {
+          font-size: 12px;
+          font-weight: 700;
+          color: var(--text-muted);
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
+        .metric-stat-value {
+          font-size: 26px;
+          font-weight: 800;
+          color: var(--text-main);
+          line-height: 1.1;
+        }
+        .metric-stat-sub {
+          font-size: 12px;
+          color: var(--text-secondary);
+        }
+        .site-pills-wrap {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 6px;
+          margin-top: 4px;
+        }
+        .site-pill {
+          font-size: 11px;
+          font-weight: 600;
+          padding: 2px 8px;
+          border-radius: 6px;
+          background: var(--bg-hover);
+          color: var(--text-main);
+          border: 1px solid var(--border-main);
+        }
 
         .highlights-container {
           display: flex;
@@ -2229,6 +2311,7 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
         }
 
         @media (max-width: 950px) {
+          .live-metrics-grid { grid-template-columns: repeat(2, 1fr); }
           .highlights-grid { grid-template-columns: 1fr; }
         }
       `}</style>
@@ -2241,6 +2324,55 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
         <div className="usage-desc-card">
           <p>{usageData.description}</p>
         </div>
+
+        {/* ---> LIVE METRICS TILES (FOR C.O.R.E. ONLY) <--- */}
+        {isCore && (
+          <div className="live-metrics-grid">
+            <div className="metric-stat-card">
+              <span className="metric-stat-label">Active Users</span>
+              <div className="metric-stat-value" style={{ color: platformColor }}>
+                {loading ? '...' : (liveStats?.activeUsers.total ?? 0).toLocaleString()}
+              </div>
+              <span className="metric-stat-sub">
+                {loading ? 'Calculating...' : `New: ${liveStats?.activeUsers.newUsers} | Tenured: ${liveStats?.activeUsers.tenuredUsers}`}
+              </span>
+            </div>
+
+            <div className="metric-stat-card">
+              <span className="metric-stat-label">Adoption Rate</span>
+              <div className="metric-stat-value">
+                {loading ? '...' : (liveStats?.adoptionRate ?? '0.0%')}
+              </div>
+              <span className="metric-stat-sub">Completed assessments</span>
+            </div>
+
+            <div className="metric-stat-card">
+              <span className="metric-stat-label">Monthly Growth</span>
+              <div className="metric-stat-value" style={{ color: '#16a34a' }}>
+                {loading ? '...' : (liveStats?.monthlyGrowth ?? '+0.0%')}
+              </div>
+              <span className="metric-stat-sub">Last 30 days vs prior</span>
+            </div>
+
+            <div className="metric-stat-card">
+              <span className="metric-stat-label">Sitewise Adoption</span>
+              {loading ? (
+                <span className="metric-stat-sub">Loading sites...</span>
+              ) : (
+                <div className="site-pills-wrap">
+                  {(liveStats?.sitewise || []).slice(0, 4).map((s) => (
+                    <span key={s.site} className="site-pill" title={`${s.completed}/${s.total} completed`}>
+                      {s.site}: <strong>{s.rate}</strong>
+                    </span>
+                  ))}
+                  {(!liveStats?.sitewise || liveStats.sitewise.length === 0) && (
+                    <span className="metric-stat-sub">No site records</span>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
 
         <div className="highlights-container">
           <div className="highlights-title">Programmatic Adoption & Insights</div>
