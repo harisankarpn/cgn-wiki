@@ -2173,14 +2173,18 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
     let isMounted = true;
     const fetchCoreMetrics = async () => {
       try {
-        // NOTE: If your backend is on a different domain, replace this with the absolute URL (e.g., 'https://your-api.com/api/metrics/usage-stats')
-        const res = await fetch('/api/metrics/usage-stats');
+        // Pointing directly to your active Cloud Run backend
+        const CORE_BACKEND_URL = 'https://terminal-swap-216117029862.us-central1.run.app'; 
+        
+        const res = await fetch(`${CORE_BACKEND_URL}/api/metrics/usage-stats`);
         if (res.ok) {
           const data = await res.json();
           if (isMounted) setLiveStats(data);
+        } else {
+          console.error("Failed to fetch metrics, Status:", res.status);
         }
       } catch (err) {
-        console.error('Failed to load C.O.R.E. live metrics:', err);
+        console.error('Network error loading C.O.R.E. live metrics:', err);
       } finally {
         if (isMounted) setLoading(false);
       }
