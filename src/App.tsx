@@ -1196,25 +1196,34 @@ function App() {
   useEffect(() => {
     if (!isPuzzleCompleted) return; 
 
-    const trackVisitor = () => {
+    const trackVisitor = async () => {
       try {
-        // 1. Get the aggregate count from local storage
-        let currentCount = parseInt(localStorage.getItem('gcp-wiki-visits') || '0', 10);
+        // 1. Check if this specific device has already incremented the global count
+        const hasBeenCounted = localStorage.getItem('global-session-counted');
+        let response;
         
-        // 2. Check if this specific user session has already been counted
-        const hasBeenCounted = sessionStorage.getItem('session-counted');
-        
-        // 3. Only increment if they haven't been counted in this session
         if (!hasBeenCounted) {
-          currentCount += 1;
-          localStorage.setItem('gcp-wiki-visits', currentCount.toString());
-          sessionStorage.setItem('session-counted', 'true'); // Mark as counted
+          // 2a. First time visitor: Hit the API to increment the global count by 1
+          response = await fetch('https://countapi.mileshilliard.com/api/v1/hit/gcp-wiki-total-visits');
+          
+          if (response.ok) {
+            localStorage.setItem('global-session-counted', 'true'); // Mark device as counted
+          }
+        } else {
+          // 2b. Returning visitor: Just fetch the current global count without incrementing
+          response = await fetch('https://countapi.mileshilliard.com/api/v1/get/gcp-wiki-total-visits');
         }
-        
-        // 4. Update the UI state
-        setVisitorCount(currentCount);
+
+        // 3. Update the UI state with the exact live count from the server
+        if (response && response.ok) {
+          const data = await response.json();
+          // The API returns the count inside the 'value' property
+          setVisitorCount(parseInt(data.value, 10));
+        } else {
+          setVisitorCount('Offline');
+        }
       } catch (error) {
-        console.error('Failed to update visitor count', error);
+        console.error('Failed to fetch live visitor count', error);
         setVisitorCount('Offline');
       }
     };
