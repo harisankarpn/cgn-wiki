@@ -2167,7 +2167,7 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
   } | null>(null);
   const [loading, setLoading] = useState<boolean>(isCore);
 
-  useEffect(() => {
+ useEffect(() => {
     if (!isCore) return;
 
     let isMounted = true;
@@ -2175,8 +2175,7 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
       try {
         // Pointing directly to your active Cloud Run backend
         const CORE_BACKEND_URL = 'https://terminal-swap-dev-216117029862.us-central1.run.app'; 
-        
-        const res = await fetch(`${CORE_BACKEND_URL}/api/metrics/usage-stats`);
+        const res = await fetch('http://localhost:8080/api/metrics/usage-stats');
         if (res.ok) {
           const data = await res.json();
           if (isMounted) setLiveStats(data);
