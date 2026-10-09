@@ -2344,18 +2344,11 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
                 </div>
                 <span className="metric-stat-label" style={{ color: '#1e3a8a', marginBottom: 0 }}>Active Users</span>
               </div>
-              
-              {/* Calculate the total dynamically from the 3 SQL returns */}
               <div className="metric-stat-value" style={{ color: '#2563eb' }}>
-                {loading ? '...' : (
-                  (liveStats?.activeUsers?.newUsers || 0) + 
-                  (liveStats?.activeUsers?.tenuredUsers || 0) + 
-                  (liveStats?.activeUsers?.othersUsers || 0)
-                ).toLocaleString()}
+                {loading ? '...' : (liveStats?.activeUsers.total ?? 0).toLocaleString()}
               </div>
-
               <span className="metric-stat-sub" style={{ color: '#64748b' }}>
-                {loading ? 'Calculating...' : `New: ${liveStats?.activeUsers?.newUsers || 0} | Tenured: ${liveStats?.activeUsers?.tenuredUsers || 0} | Others: ${liveStats?.activeUsers?.othersUsers || 0}`}
+                {loading ? 'Calculating...' : `New: ${liveStats?.activeUsers.newUsers || 0} | Tenured: ${liveStats?.activeUsers.tenuredUsers || 0} | Others: ${liveStats?.activeUsers.othersUsers || 0}`}
               </span>
             </div>
 
