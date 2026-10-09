@@ -2160,11 +2160,12 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
   const isCore = content.shortName === 'C.O.R.E.';
 
   const [liveStats, setLiveStats] = useState<{
-    activeUsers: { total: number; newUsers: number; tenuredUsers: number };
+    activeUsers: { total: number; newUsers: number; tenuredUsers: number; othersUsers: number }; // Added othersUsers
     adoptionRate: string;
     monthlyGrowth: string;
     sitewise: Array<{ site: string; total: number; completed: number; rate: string }>;
   } | null>(null);
+  
   const [loading, setLoading] = useState<boolean>(isCore);
 
  useEffect(() => {
@@ -2225,26 +2226,26 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
           background: var(--bg-card);
           border: 1px solid var(--border-main);
           border-radius: 12px;
-          padding: 18px 20px;
+          padding: 12px 16px; /* Reduced from 18px 20px */
           display: flex;
           flex-direction: column;
-          gap: 6px;
+          gap: 4px; /* Reduced from 6px */
         }
         .metric-stat-label {
-          font-size: 12px;
+          font-size: 11px; /* Reduced from 12px */
           font-weight: 700;
           color: var(--text-muted);
           text-transform: uppercase;
           letter-spacing: 0.5px;
         }
         .metric-stat-value {
-          font-size: 26px;
+          font-size: 22px; /* Reduced from 26px */
           font-weight: 800;
           color: var(--text-main);
           line-height: 1.1;
         }
         .metric-stat-sub {
-          font-size: 12px;
+          font-size: 11px; /* Reduced from 12px to fit 3 items */
           color: var(--text-secondary);
         }
         .site-pills-wrap {
@@ -2334,11 +2335,12 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
         {/* ---> LIVE METRICS TILES (FOR C.O.R.E. ONLY) <--- */}
         {isCore && (
           <div className="live-metrics-grid">
+
             {/* Active Users - Blue Card */}
             <div className="metric-stat-card" style={{ backgroundColor: '#f0f7ff', borderColor: '#e0effe' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-                <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: '#3b82f6', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Users size={16} />
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#3b82f6', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Users size={14} />
                 </div>
                 <span className="metric-stat-label" style={{ color: '#1e3a8a', marginBottom: 0 }}>Active Users</span>
               </div>
@@ -2346,7 +2348,7 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
                 {loading ? '...' : (liveStats?.activeUsers.total ?? 0).toLocaleString()}
               </div>
               <span className="metric-stat-sub" style={{ color: '#64748b' }}>
-                {loading ? 'Calculating...' : `New: ${liveStats?.activeUsers.newUsers} | Returning: ${liveStats?.activeUsers.tenuredUsers}`}
+                {loading ? 'Calculating...' : `New: ${liveStats?.activeUsers.newUsers || 0} | Tenured: ${liveStats?.activeUsers.tenuredUsers || 0} | Others: ${liveStats?.activeUsers.othersUsers || 0}`}
               </span>
             </div>
 
