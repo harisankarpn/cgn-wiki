@@ -2334,32 +2334,51 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
         {/* ---> LIVE METRICS TILES (FOR C.O.R.E. ONLY) <--- */}
         {isCore && (
           <div className="live-metrics-grid">
-            <div className="metric-stat-card">
-              <span className="metric-stat-label">Active Users</span>
-              <div className="metric-stat-value" style={{ color: platformColor }}>
+            {/* Active Users - Blue Card */}
+            <div className="metric-stat-card" style={{ backgroundColor: '#f0f7ff', borderColor: '#e0effe' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+                <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: '#3b82f6', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Users size={16} />
+                </div>
+                <span className="metric-stat-label" style={{ color: '#1e3a8a', marginBottom: 0 }}>Active Users</span>
+              </div>
+              <div className="metric-stat-value" style={{ color: '#2563eb' }}>
                 {loading ? '...' : (liveStats?.activeUsers.total ?? 0).toLocaleString()}
               </div>
-              <span className="metric-stat-sub">
-                {loading ? 'Calculating...' : `New: ${liveStats?.activeUsers.newUsers} | Tenured: ${liveStats?.activeUsers.tenuredUsers}`}
+              <span className="metric-stat-sub" style={{ color: '#64748b' }}>
+                {loading ? 'Calculating...' : `New: ${liveStats?.activeUsers.newUsers} | Returning: ${liveStats?.activeUsers.tenuredUsers}`}
               </span>
             </div>
 
-            <div className="metric-stat-card">
-              <span className="metric-stat-label">Adoption Rate</span>
-              <div className="metric-stat-value">
+            {/* Adoption Rate - Green Card */}
+            <div className="metric-stat-card" style={{ backgroundColor: '#f0fdf4', borderColor: '#dcfce7' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+                <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: '#22c55e', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <TrendingUp size={16} />
+                </div>
+                <span className="metric-stat-label" style={{ color: '#14532d', marginBottom: 0 }}>Adoption Rate</span>
+              </div>
+              <div className="metric-stat-value" style={{ color: '#16a34a' }}>
                 {loading ? '...' : (liveStats?.adoptionRate ?? '0.0%')}
               </div>
-              <span className="metric-stat-sub">Completed assessments</span>
+              <span className="metric-stat-sub" style={{ color: '#64748b' }}>Completed assessments</span>
             </div>
 
-            <div className="metric-stat-card">
-              <span className="metric-stat-label">Monthly Growth</span>
-              <div className="metric-stat-value" style={{ color: '#16a34a' }}>
+            {/* Monthly Growth - Yellow Card */}
+            <div className="metric-stat-card" style={{ backgroundColor: '#fffbeb', borderColor: '#fef3c7' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+                <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: '#f59e0b', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Target size={16} />
+                </div>
+                <span className="metric-stat-label" style={{ color: '#78350f', marginBottom: 0 }}>Monthly Growth</span>
+              </div>
+              <div className="metric-stat-value" style={{ color: '#d97706' }}>
                 {loading ? '...' : (liveStats?.monthlyGrowth ?? '+0.0%')}
               </div>
-              <span className="metric-stat-sub">Last 30 days vs prior</span>
+              <span className="metric-stat-sub" style={{ color: '#64748b' }}>vs. previous month</span>
             </div>
 
+            {/* Sitewise Adoption - Standard Card */}
             <div className="metric-stat-card">
               <span className="metric-stat-label">Sitewise Adoption</span>
               {loading ? (
