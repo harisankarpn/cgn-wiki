@@ -2152,52 +2152,51 @@ function Benefits({ benefits }: { benefits: BenefitItem[] }) {
 }
 
 /* =========================================================
-   ENHANCED USAGE & ADOPTION COMPONENT (WITH LIVE C.O.R.E. DATA)
+   ENHANCED USAGE & ADOPTION COMPONENT (C.O.R.E. & ELEVATE360)
 ========================================================= */
 
 function Usage({ content, platformColor }: { content: any; platformColor: string }) {
   const usageData = content.usage;
   const isCore = content.shortName === 'C.O.R.E.';
+  const isElevate = content.shortName === 'Elevate360';
 
-  const [liveStats, setLiveStats] = useState<{
-    activeUsers: { total: number; newUsers: number; tenuredUsers: number; othersUsers: number }; // Added othersUsers
-    adoptionRate: string;
-    monthlyGrowth: string;
-    sitewise: Array<{ site: string; total: number; completed: number; rate: string }>;
-  } | null>(null);
-  
-  const [loading, setLoading] = useState<boolean>(isCore);
+  const [liveStats, setLiveStats] = useState<any>(null);
+  const [elevateStats, setElevateStats] = useState<any>(null);
+  const [loading, setLoading] = useState<boolean>(isCore || isElevate);
 
- useEffect(() => {
-    if (!isCore) return;
-
+  useEffect(() => {
     let isMounted = true;
-    const fetchCoreMetrics = async () => {
+
+    const fetchMetrics = async () => {
       try {
-        // 1. Define the variable
-        const CORE_BACKEND_URL = 'https://terminal-swap-dev-216117029862.us-central1.run.app'; 
-        
-        // 2. Put the VARIABLE NAME inside the brackets, NOT the raw URL
-        const res = await fetch(`${CORE_BACKEND_URL}/api/metrics/usage-stats`);
-        
-        if (res.ok) {
-          const data = await res.json();
-          if (isMounted) setLiveStats(data);
-        } else {
-          console.error("Failed to fetch metrics, Status:", res.status);
+        if (isCore) {
+          const CORE_BACKEND_URL = 'https://terminal-swap-dev-216117029862.us-central1.run.app'; 
+          const res = await fetch(`${CORE_BACKEND_URL}/api/metrics/usage-stats`);
+          if (res.ok && isMounted) {
+            const data = await res.json();
+            setLiveStats(data);
+          }
+        } else if (isElevate) {
+          // Fetching Elevate360 live metrics
+          const ELEVATE_BACKEND_URL = 'https://e360-uat-dot-digital-sme.uc.r.appspot.com';
+          const res = await fetch(`${ELEVATE_BACKEND_URL}/api/metrics/usage-stats`);
+          if (res.ok && isMounted) {
+            const data = await res.json();
+            setElevateStats(data);
+          }
         }
       } catch (err) {
-        console.error('Network error loading C.O.R.E. live metrics:', err);
+        console.error('Failed to load live metrics:', err);
       } finally {
         if (isMounted) setLoading(false);
       }
     };
 
-    fetchCoreMetrics();
+    fetchMetrics();
     return () => {
       isMounted = false;
     };
-  }, [isCore]);
+  }, [isCore, isElevate]);
 
   if (!usageData) return null;
 
@@ -2226,42 +2225,27 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
           background: var(--bg-card);
           border: 1px solid var(--border-main);
           border-radius: 12px;
-          padding: 12px 16px; /* Reduced from 18px 20px */
+          padding: 12px 16px;
           display: flex;
           flex-direction: column;
-          gap: 4px; /* Reduced from 6px */
+          gap: 4px;
         }
         .metric-stat-label {
-          font-size: 11px; /* Reduced from 12px */
+          font-size: 11px;
           font-weight: 700;
           color: var(--text-muted);
           text-transform: uppercase;
           letter-spacing: 0.5px;
         }
         .metric-stat-value {
-          font-size: 22px; /* Reduced from 26px */
+          font-size: 22px;
           font-weight: 800;
           color: var(--text-main);
           line-height: 1.1;
         }
         .metric-stat-sub {
-          font-size: 11px; /* Reduced from 12px to fit 3 items */
-          color: var(--text-secondary);
-        }
-        .site-pills-wrap {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 6px;
-          margin-top: 4px;
-        }
-        .site-pill {
           font-size: 11px;
-          font-weight: 600;
-          padding: 2px 8px;
-          border-radius: 6px;
-          background: var(--bg-hover);
-          color: var(--text-main);
-          border: 1px solid var(--border-main);
+          color: var(--text-secondary);
         }
 
         .highlights-container {
@@ -2332,11 +2316,9 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
           <p>{usageData.description}</p>
         </div>
 
-        {/* ---> LIVE METRICS TILES (FOR C.O.R.E. ONLY) <--- */}
+        {/* ---> LIVE METRICS TILES: C.O.R.E. <--- */}
         {isCore && (
           <div className="live-metrics-grid">
-
-            {/* Active Users - Blue Card */}
             <div className="metric-stat-card" style={{ backgroundColor: '#f0f7ff', borderColor: '#e0effe' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
                 <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#3b82f6', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -2345,14 +2327,13 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
                 <span className="metric-stat-label" style={{ color: '#1e3a8a', marginBottom: 0 }}>Active Users</span>
               </div>
               <div className="metric-stat-value" style={{ color: '#2563eb' }}>
-                {loading ? '...' : (liveStats?.activeUsers.total ?? 0).toLocaleString()}
+                {loading ? '...' : (liveStats?.activeUsers?.total ?? 0).toLocaleString()}
               </div>
               <span className="metric-stat-sub" style={{ color: '#64748b' }}>
-                {loading ? 'Calculating...' : `New: ${liveStats?.activeUsers.newUsers || 0} | Tenured: ${liveStats?.activeUsers.tenuredUsers || 0} | Others: ${liveStats?.activeUsers.othersUsers || 0}`}
+                {loading ? 'Calculating...' : `New: ${liveStats?.activeUsers?.newUsers || 0} | Tenured: ${liveStats?.activeUsers?.tenuredUsers || 0}`}
               </span>
             </div>
 
-            {/* Adoption Rate - Green Card */}
             <div className="metric-stat-card" style={{ backgroundColor: '#f0fdf4', borderColor: '#dcfce7' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
                 <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: '#22c55e', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -2366,7 +2347,6 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
               <span className="metric-stat-sub" style={{ color: '#64748b' }}>Completed assessments</span>
             </div>
 
-            {/* Monthly Growth - Yellow Card */}
             <div className="metric-stat-card" style={{ backgroundColor: '#fffbeb', borderColor: '#fef3c7' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
                 <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: '#f59e0b', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -2380,7 +2360,6 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
               <span className="metric-stat-sub" style={{ color: '#64748b' }}>vs. previous month</span>
             </div>
 
-            {/* Newly Onboarded Users Card (Replacing Assessment Completion Rate) */}
             <div className="metric-stat-card" style={{ backgroundColor: '#f0fdf4', borderColor: '#dcfce7' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
                 <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#16a34a', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -2389,12 +2368,69 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
                 <span className="metric-stat-label" style={{ color: '#14532d', marginBottom: 0 }}>Newly Onboarded Users</span>
               </div>
               <div className="metric-stat-value" style={{ color: '#16a34a' }}>
-                {loading ? '...' : (liveStats?.activeUsers?.newUsers ?? 0).toLocaleString()}
-                <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)', marginLeft: '6px' }}>Total Registered</span>
+                {loading ? '...' : (liveStats?.completionStats?.totalCompleted ?? 0).toLocaleString()}
+                <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)', marginLeft: '6px' }}>Total Completed</span>
               </div>
               <span className="metric-stat-sub" style={{ color: '#64748b' }}>
-                {loading ? 'Calculating...' : `Tenured: ${liveStats?.activeUsers?.tenuredUsers || 0} | Others: ${liveStats?.activeUsers?.othersUsers || 0}`}
+                {loading ? 'Calculating...' : `New: ${liveStats?.completionStats?.newCompleted || 0} | Tenured: ${liveStats?.completionStats?.tenuredCompleted || 0}`}
               </span>
+            </div>
+          </div>
+        )}
+
+        {/* ---> LIVE METRICS TILES: ELEVATE360 <--- */}
+        {isElevate && (
+          <div className="live-metrics-grid">
+            <div className="metric-stat-card" style={{ backgroundColor: '#f0f7ff', borderColor: '#e0effe' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#3b82f6', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Users size={14} />
+                </div>
+                <span className="metric-stat-label" style={{ color: '#1e3a8a', marginBottom: 0 }}>Active Users (30 Days)</span>
+              </div>
+              <div className="metric-stat-value" style={{ color: '#2563eb' }}>
+                {loading ? '...' : (elevateStats?.activeUsers30d ?? '320+')}
+              </div>
+              <span className="metric-stat-sub" style={{ color: '#64748b' }}>Managers & Leaders</span>
+            </div>
+
+            <div className="metric-stat-card" style={{ backgroundColor: '#f0fdf4', borderColor: '#dcfce7' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+                <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: '#22c55e', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <BarChart3 size={16} />
+                </div>
+                <span className="metric-stat-label" style={{ color: '#14532d', marginBottom: 0 }}>Total Login Sessions</span>
+              </div>
+              <div className="metric-stat-value" style={{ color: '#16a34a' }}>
+                {loading ? '...' : (elevateStats?.totalLoginSessions ?? '1,420+')}
+              </div>
+              <span className="metric-stat-sub" style={{ color: '#64748b' }}>Monthly active cycles</span>
+            </div>
+
+            <div className="metric-stat-card" style={{ backgroundColor: '#fffbeb', borderColor: '#fef3c7' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+                <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: '#f59e0b', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <TrendingUp size={16} />
+                </div>
+                <span className="metric-stat-label" style={{ color: '#78350f', marginBottom: 0 }}>Adoption Trend</span>
+              </div>
+              <div className="metric-stat-value" style={{ color: '#d97706' }}>
+                {loading ? '...' : (elevateStats?.adoptionTrend ?? '+18% MoM')}
+              </div>
+              <span className="metric-stat-sub" style={{ color: '#64748b' }}>Weekly active engagement</span>
+            </div>
+
+            <div className="metric-stat-card" style={{ backgroundColor: '#faf5ff', borderColor: '#f3e8ff' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#9333ea', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <UserCheck size={14} />
+                </div>
+                <span className="metric-stat-label" style={{ color: '#581c87', marginBottom: 0 }}>Returning Users</span>
+              </div>
+              <div className="metric-stat-value" style={{ color: '#9333ea' }}>
+                {loading ? '...' : (elevateStats?.returningUserRate ?? '94.8%')}
+              </div>
+              <span className="metric-stat-sub" style={{ color: '#64748b' }}>Return after 1st visit</span>
             </div>
           </div>
         )}
