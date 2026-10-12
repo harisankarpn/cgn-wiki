@@ -2380,20 +2380,20 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
               <span className="metric-stat-sub" style={{ color: '#64748b' }}>vs. previous month</span>
             </div>
 
-            {/* Assessment Completion Rate Card (Replacing Sitewise Adoption) */}
+            {/* Newly Onboarded Users Card (Replacing Assessment Completion Rate) */}
             <div className="metric-stat-card" style={{ backgroundColor: '#f0fdf4', borderColor: '#dcfce7' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
                 <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#16a34a', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <UserCheck size={14} />
                 </div>
-                <span className="metric-stat-label" style={{ color: '#14532d', marginBottom: 0 }}>Assessment Completion Rate</span>
+                <span className="metric-stat-label" style={{ color: '#14532d', marginBottom: 0 }}>Newly Onboarded Users</span>
               </div>
               <div className="metric-stat-value" style={{ color: '#16a34a' }}>
-                {loading ? '...' : (liveStats?.completionStats?.totalCompleted ?? 0).toLocaleString()}
-                <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)', marginLeft: '6px' }}>Total Completed</span>
+                {loading ? '...' : (liveStats?.activeUsers?.newUsers ?? 0).toLocaleString()}
+                <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)', marginLeft: '6px' }}>Total Registered</span>
               </div>
               <span className="metric-stat-sub" style={{ color: '#64748b' }}>
-                {loading ? 'Calculating...' : `New: ${liveStats?.completionStats?.newCompleted || 0} | Tenured: ${liveStats?.completionStats?.tenuredCompleted || 0}`}
+                {loading ? 'Calculating...' : `Tenured: ${liveStats?.activeUsers?.tenuredUsers || 0} | Others: ${liveStats?.activeUsers?.othersUsers || 0}`}
               </span>
             </div>
           </div>
