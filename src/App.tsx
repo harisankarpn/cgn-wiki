@@ -2178,7 +2178,7 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
           }
         } else if (isElevate) {
           // Fetching Elevate360 live metrics
-          const ELEVATE_BACKEND_URL = 'https://e360-uat-dot-digital-sme.uc.r.appspot.com';
+          const ELEVATE_BACKEND_URL = 'https://user-session-metrics-803836599959.us-central1.run.app';
           const res = await fetch(`${ELEVATE_BACKEND_URL}/api/metrics/usage-stats`);
           if (res.ok && isMounted) {
             const data = await res.json();
