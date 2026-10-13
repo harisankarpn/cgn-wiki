@@ -2379,62 +2379,62 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
         )}
 
         {/* ---> LIVE METRICS TILES: ELEVATE360 <--- */}
-        {isElevate && (
-          <div className="live-metrics-grid">
-            <div className="metric-stat-card" style={{ backgroundColor: '#f0f7ff', borderColor: '#e0effe' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#3b82f6', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Users size={14} />
-                </div>
-                <span className="metric-stat-label" style={{ color: '#1e3a8a', marginBottom: 0 }}>Active Users (30 Days)</span>
-              </div>
-              <div className="metric-stat-value" style={{ color: '#2563eb' }}>
-                {loading ? '...' : (elevateStats?.activeUsers30d ?? '320+')}
-              </div>
-              <span className="metric-stat-sub" style={{ color: '#64748b' }}>Managers & Leaders</span>
-            </div>
+        {/* ---> LIVE METRICS TILES: ELEVATE360 (API-Driven, No Hardcoded Fallbacks) <--- */}
+{isElevate && (
+  <div className="live-metrics-grid">
+    <div className="metric-stat-card" style={{ backgroundColor: '#f0f7ff', borderColor: '#e0effe' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+        <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#3b82f6', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <Users size={14} />
+        </div>
+        <span className="metric-stat-label" style={{ color: '#1e3a8a', marginBottom: 0 }}>Total Unique Users</span>
+      </div>
+      <div className="metric-stat-value" style={{ color: '#2563eb' }}>
+        {loading ? '...' : (elevateStats?.uniqueUsers ?? elevateStats?.activeUsers30d ?? elevateStats?.totalUniqueUsers ?? 0).toLocaleString()}
+      </div>
+      <span className="metric-stat-sub" style={{ color: '#64748b' }}>Active users (30d)</span>
+    </div>
 
-            <div className="metric-stat-card" style={{ backgroundColor: '#f0fdf4', borderColor: '#dcfce7' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-                <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: '#22c55e', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <BarChart3 size={16} />
-                </div>
-                <span className="metric-stat-label" style={{ color: '#14532d', marginBottom: 0 }}>Total Login Sessions</span>
-              </div>
-              <div className="metric-stat-value" style={{ color: '#16a34a' }}>
-                {loading ? '...' : (elevateStats?.totalLoginSessions ?? '1,420+')}
-              </div>
-              <span className="metric-stat-sub" style={{ color: '#64748b' }}>Monthly active cycles</span>
-            </div>
+    <div className="metric-stat-card" style={{ backgroundColor: '#f0fdf4', borderColor: '#dcfce7' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+        <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: '#22c55e', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <BarChart3 size={16} />
+        </div>
+        <span className="metric-stat-label" style={{ color: '#14532d', marginBottom: 0 }}>Total Login Sessions</span>
+      </div>
+      <div className="metric-stat-value" style={{ color: '#16a34a' }}>
+        {loading ? '...' : (elevateStats?.totalLoginSessions ?? elevateStats?.loginSessions ?? elevateStats?.sessions ?? 0).toLocaleString()}
+      </div>
+      <span className="metric-stat-sub" style={{ color: '#64748b' }}>Rolling activity (30d)</span>
+    </div>
 
-            <div className="metric-stat-card" style={{ backgroundColor: '#fffbeb', borderColor: '#fef3c7' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-                <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: '#f59e0b', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <TrendingUp size={16} />
-                </div>
-                <span className="metric-stat-label" style={{ color: '#78350f', marginBottom: 0 }}>Adoption Trend</span>
-              </div>
-              <div className="metric-stat-value" style={{ color: '#d97706' }}>
-                {loading ? '...' : (elevateStats?.adoptionTrend ?? '+18% MoM')}
-              </div>
-              <span className="metric-stat-sub" style={{ color: '#64748b' }}>Weekly active engagement</span>
-            </div>
+    <div className="metric-stat-card" style={{ backgroundColor: '#fffbeb', borderColor: '#fef3c7' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+        <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: '#f59e0b', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <TrendingUp size={16} />
+        </div>
+        <span className="metric-stat-label" style={{ color: '#78350f', marginBottom: 0 }}>Adoption Trend</span>
+      </div>
+      <div className="metric-stat-value" style={{ color: '#d97706' }}>
+        {loading ? '...' : (elevateStats?.adoptionTrend ?? elevateStats?.trend ?? '0%')}
+      </div>
+      <span className="metric-stat-sub" style={{ color: '#64748b' }}>Weekly active engagement</span>
+    </div>
 
-            <div className="metric-stat-card" style={{ backgroundColor: '#faf5ff', borderColor: '#f3e8ff' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#9333ea', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <UserCheck size={14} />
-                </div>
-                <span className="metric-stat-label" style={{ color: '#581c87', marginBottom: 0 }}>Returning Users</span>
-              </div>
-              <div className="metric-stat-value" style={{ color: '#9333ea' }}>
-                {loading ? '...' : (elevateStats?.returningUserRate ?? '94.8%')}
-              </div>
-              <span className="metric-stat-sub" style={{ color: '#64748b' }}>Return after 1st visit</span>
-            </div>
-          </div>
-        )}
-
+    <div className="metric-stat-card" style={{ backgroundColor: '#faf5ff', borderColor: '#f3e8ff' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+        <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#9333ea', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <UserCheck size={14} />
+        </div>
+        <span className="metric-stat-label" style={{ color: '#581c87', marginBottom: 0 }}>Returning Users</span>
+      </div>
+      <div className="metric-stat-value" style={{ color: '#9333ea' }}>
+        {loading ? '...' : (elevateStats?.returningUserRate ?? elevateStats?.returningRate ?? '0%')}
+      </div>
+      <span className="metric-stat-sub" style={{ color: '#64748b' }}>Return after 1st visit</span>
+    </div>
+  </div>
+)}
         <div className="highlights-container">
           <div className="highlights-title">Programmatic Adoption & Insights</div>
           <div className="highlights-grid">
