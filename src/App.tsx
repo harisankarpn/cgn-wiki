@@ -2149,6 +2149,7 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
   const usageData = content.usage;
   const isCore = content.shortName === 'C.O.R.E.';
   const isElevate = content.shortName === 'Elevate360';
+  const [activeCardDef, setActiveCardDef] = useState<string | null>(null);
 
   const [liveStats, setLiveStats] = useState<any>(null);
   const [elevateStats, setElevateStats] = useState<any>(null);
@@ -2307,9 +2308,14 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
         </div>
 
         {/* ---> LIVE METRICS TILES: C.O.R.E. <--- */}
+        {/* ---> REPLACE C.O.R.E. LIVE METRICS TILES <--- */}
         {isCore && (
           <div className="live-metrics-grid">
-            <div className="metric-stat-card" style={{ backgroundColor: '#f0f7ff', borderColor: '#e0effe' }}>
+            <div 
+              className="metric-stat-card" 
+              onClick={() => setActiveCardDef(activeCardDef === 'core-active' ? null : 'core-active')}
+              style={{ backgroundColor: '#f0f7ff', borderColor: '#e0effe', cursor: 'pointer', transition: 'all 0.2s' }}
+            >
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
                 <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#3b82f6', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <Users size={14} />
@@ -2320,11 +2326,17 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
                 {loading ? '...' : (liveStats?.activeUsers?.total ?? 0).toLocaleString()}
               </div>
               <span className="metric-stat-sub" style={{ color: '#64748b' }}>
-                {loading ? 'Calculating...' : `New: ${liveStats?.activeUsers?.newUsers || 0} | Tenured: ${liveStats?.activeUsers?.tenuredUsers || 0}`}
+                {activeCardDef === 'core-active' 
+                  ? 'Definition: Counts the total number of distinct users actively participating in platform assessments.' 
+                  : (loading ? 'Calculating...' : `New: ${liveStats?.activeUsers?.newUsers || 0} | Tenured: ${liveStats?.activeUsers?.tenuredUsers || 0}`)}
               </span>
             </div>
 
-            <div className="metric-stat-card" style={{ backgroundColor: '#f0fdf4', borderColor: '#dcfce7' }}>
+            <div 
+              className="metric-stat-card" 
+              onClick={() => setActiveCardDef(activeCardDef === 'core-adoption' ? null : 'core-adoption')}
+              style={{ backgroundColor: '#f0fdf4', borderColor: '#dcfce7', cursor: 'pointer', transition: 'all 0.2s' }}
+            >
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
                 <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: '#22c55e', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <TrendingUp size={16} />
@@ -2334,10 +2346,18 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
               <div className="metric-stat-value" style={{ color: '#16a34a' }}>
                 {loading ? '...' : (liveStats?.adoptionRate ?? '0.0%')}
               </div>
-              <span className="metric-stat-sub" style={{ color: '#64748b' }}>Completed assessments</span>
+              <span className="metric-stat-sub" style={{ color: '#64748b' }}>
+                {activeCardDef === 'core-adoption' 
+                  ? 'Definition: Measures the proportion of users who have successfully completed their required assessments.' 
+                  : 'Completed assessments'}
+              </span>
             </div>
 
-            <div className="metric-stat-card" style={{ backgroundColor: '#fffbeb', borderColor: '#fef3c7' }}>
+            <div 
+              className="metric-stat-card" 
+              onClick={() => setActiveCardDef(activeCardDef === 'core-growth' ? null : 'core-growth')}
+              style={{ backgroundColor: '#fffbeb', borderColor: '#fef3c7', cursor: 'pointer', transition: 'all 0.2s' }}
+            >
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
                 <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: '#f59e0b', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <Target size={16} />
@@ -2347,10 +2367,18 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
               <div className="metric-stat-value" style={{ color: '#d97706' }}>
                 {loading ? '...' : (liveStats?.monthlyGrowth ?? '+0.0%')}
               </div>
-              <span className="metric-stat-sub" style={{ color: '#64748b' }}>vs. previous month</span>
+              <span className="metric-stat-sub" style={{ color: '#64748b' }}>
+                {activeCardDef === 'core-growth' 
+                  ? 'Definition: Tracks the percentage change in active user engagement compared to the previous month.' 
+                  : 'vs. previous month'}
+              </span>
             </div>
 
-            <div className="metric-stat-card" style={{ backgroundColor: '#f0fdf4', borderColor: '#dcfce7' }}>
+            <div 
+              className="metric-stat-card" 
+              onClick={() => setActiveCardDef(activeCardDef === 'core-onboard' ? null : 'core-onboard')}
+              style={{ backgroundColor: '#f0fdf4', borderColor: '#dcfce7', cursor: 'pointer', transition: 'all 0.2s' }}
+            >
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
                 <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#16a34a', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <UserCheck size={14} />
@@ -2359,71 +2387,104 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
               </div>
               <div className="metric-stat-value" style={{ color: '#16a34a' }}>
                 {loading ? '...' : (liveStats?.completionStats?.totalCompleted ?? 0).toLocaleString()}
-                <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)', marginLeft: '6px' }}>Total Completed</span>
               </div>
               <span className="metric-stat-sub" style={{ color: '#64748b' }}>
-                {loading ? 'Calculating...' : `New: ${liveStats?.completionStats?.newCompleted || 0} | Tenured: ${liveStats?.completionStats?.tenuredCompleted || 0}`}
+                {activeCardDef === 'core-onboard' 
+                  ? 'Definition: Counts the total number of users who have finished their onboarding milestones.' 
+                  : (loading ? 'Calculating...' : `New: ${liveStats?.completionStats?.newCompleted || 0} | Tenured: ${liveStats?.completionStats?.tenuredCompleted || 0}`)}
               </span>
             </div>
           </div>
         )}
 
         {/* ---> LIVE METRICS TILES: ELEVATE360 <--- */}
-    {isElevate && (
-  <div className="live-metrics-grid">
-    <div className="metric-stat-card" style={{ backgroundColor: '#f0f7ff', borderColor: '#e0effe' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-        <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#3b82f6', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <Users size={14} />
-        </div>
-        <span className="metric-stat-label" style={{ color: '#1e3a8a', marginBottom: 0 }}>Total Unique Users</span>
-      </div>
-      <div className="metric-stat-value" style={{ color: '#2563eb' }}>
-        {loading ? '...' : (elevateStats?.summary?.total_unique_users ?? 0).toLocaleString()}
-      </div>
-      <span className="metric-stat-sub" style={{ color: '#64748b' }}>Active users (30d)</span>
-    </div>
+        {isCore && (
+          <div className="live-metrics-grid">
+            <div 
+              className="metric-stat-card" 
+              onClick={() => setActiveCardDef(activeCardDef === 'core-active' ? null : 'core-active')}
+              style={{ backgroundColor: '#f0f7ff', borderColor: '#e0effe', cursor: 'pointer', transition: 'all 0.2s' }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#3b82f6', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Users size={14} />
+                </div>
+                <span className="metric-stat-label" style={{ color: '#1e3a8a', marginBottom: 0 }}>Active Users</span>
+              </div>
+              <div className="metric-stat-value" style={{ color: '#2563eb' }}>
+                {loading ? '...' : (liveStats?.activeUsers?.total ?? 0).toLocaleString()}
+              </div>
+              <span className="metric-stat-sub" style={{ color: '#64748b' }}>
+                {activeCardDef === 'core-active' 
+                  ? 'Definition: Counts the total number of distinct users actively participating in platform assessments.' 
+                  : (loading ? 'Calculating...' : `New: ${liveStats?.activeUsers?.newUsers || 0} | Tenured: ${liveStats?.activeUsers?.tenuredUsers || 0}`)}
+              </span>
+            </div>
 
-    <div className="metric-stat-card" style={{ backgroundColor: '#f0fdf4', borderColor: '#dcfce7' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-        <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: '#22c55e', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <BarChart3 size={16} />
-        </div>
-        <span className="metric-stat-label" style={{ color: '#14532d', marginBottom: 0 }}>Total Login Sessions</span>
-      </div>
-      <div className="metric-stat-value" style={{ color: '#16a34a' }}>
-        {loading ? '...' : (elevateStats?.summary?.total_login_sessions ?? 0).toLocaleString()}
-      </div>
-      <span className="metric-stat-sub" style={{ color: '#64748b' }}>Rolling activity (30d)</span>
-    </div>
+            <div 
+              className="metric-stat-card" 
+              onClick={() => setActiveCardDef(activeCardDef === 'core-adoption' ? null : 'core-adoption')}
+              style={{ backgroundColor: '#f0fdf4', borderColor: '#dcfce7', cursor: 'pointer', transition: 'all 0.2s' }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+                <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: '#22c55e', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <TrendingUp size={16} />
+                </div>
+                <span className="metric-stat-label" style={{ color: '#14532d', marginBottom: 0 }}>Adoption Rate</span>
+              </div>
+              <div className="metric-stat-value" style={{ color: '#16a34a' }}>
+                {loading ? '...' : (liveStats?.adoptionRate ?? '0.0%')}
+              </div>
+              <span className="metric-stat-sub" style={{ color: '#64748b' }}>
+                {activeCardDef === 'core-adoption' 
+                  ? 'Definition: Measures the proportion of users who have successfully completed their required assessments.' 
+                  : 'Completed assessments'}
+              </span>
+            </div>
 
-    <div className="metric-stat-card" style={{ backgroundColor: '#fffbeb', borderColor: '#fef3c7' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-        <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: '#f59e0b', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <TrendingUp size={16} />
-        </div>
-        <span className="metric-stat-label" style={{ color: '#78350f', marginBottom: 0 }}>Adoption Trend</span>
-      </div>
-      <div className="metric-stat-value" style={{ color: '#d97706' }}>
-        {loading ? '...' : (elevateStats?.rolling_activity?.last_7_days?.sessions ?? 0).toLocaleString()}
-      </div>
-      <span className="metric-stat-sub" style={{ color: '#64748b' }}>Last 7 days sessions</span>
-    </div>
+            <div 
+              className="metric-stat-card" 
+              onClick={() => setActiveCardDef(activeCardDef === 'core-growth' ? null : 'core-growth')}
+              style={{ backgroundColor: '#fffbeb', borderColor: '#fef3c7', cursor: 'pointer', transition: 'all 0.2s' }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+                <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: '#f59e0b', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Target size={16} />
+                </div>
+                <span className="metric-stat-label" style={{ color: '#78350f', marginBottom: 0 }}>Monthly Growth</span>
+              </div>
+              <div className="metric-stat-value" style={{ color: '#d97706' }}>
+                {loading ? '...' : (liveStats?.monthlyGrowth ?? '+0.0%')}
+              </div>
+              <span className="metric-stat-sub" style={{ color: '#64748b' }}>
+                {activeCardDef === 'core-growth' 
+                  ? 'Definition: Tracks the percentage change in active user engagement compared to the previous month.' 
+                  : 'vs. previous month'}
+              </span>
+            </div>
 
-    <div className="metric-stat-card" style={{ backgroundColor: '#faf5ff', borderColor: '#f3e8ff' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-        <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#9333ea', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <UserCheck size={14} />
-        </div>
-        <span className="metric-stat-label" style={{ color: '#581c87', marginBottom: 0 }}>Returning Users</span>
-      </div>
-      <div className="metric-stat-value" style={{ color: '#9333ea' }}>
-        {loading ? '...' : (elevateStats?.rolling_activity?.last_30_days?.unique_users ?? 0).toLocaleString()}
-      </div>
-      <span className="metric-stat-sub" style={{ color: '#64748b' }}>Last 30 days unique users</span>
-    </div>
-  </div>
-)}
+            <div 
+              className="metric-stat-card" 
+              onClick={() => setActiveCardDef(activeCardDef === 'core-onboard' ? null : 'core-onboard')}
+              style={{ backgroundColor: '#f0fdf4', borderColor: '#dcfce7', cursor: 'pointer', transition: 'all 0.2s' }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#16a34a', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <UserCheck size={14} />
+                </div>
+                <span className="metric-stat-label" style={{ color: '#14532d', marginBottom: 0 }}>Newly Onboarded Users</span>
+              </div>
+              <div className="metric-stat-value" style={{ color: '#16a34a' }}>
+                {loading ? '...' : (liveStats?.completionStats?.totalCompleted ?? 0).toLocaleString()}
+              </div>
+              <span className="metric-stat-sub" style={{ color: '#64748b' }}>
+                {activeCardDef === 'core-onboard' 
+                  ? 'Definition: Counts the total number of users who have finished their onboarding milestones.' 
+                  : (loading ? 'Calculating...' : `New: ${liveStats?.completionStats?.newCompleted || 0} | Tenured: ${liveStats?.completionStats?.tenuredCompleted || 0}`)}
+              </span>
+            </div>
+          </div>
+        )}
         <div className="highlights-container">
           <div className="highlights-title">Programmatic Adoption & Insights</div>
           <div className="highlights-grid">
