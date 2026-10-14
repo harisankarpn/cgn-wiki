@@ -2304,8 +2304,6 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
         }
       `}</style>
 
-      {/* ---> REPLACE SECTION HEADING WITH RANGE PICKER <--- */}
-      // Locate the section heading inside the Usage component (around line 1475)
       {/* ---> UPDATE CONDITION TO INCLUDE ELEVATE <--- */}
       <div className="section-heading" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
         <h3>Usage & Adoption</h3>
