@@ -2189,7 +2189,7 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
     return () => {
       isMounted = false;
     };
-  }, [isCore, isElevate, selectedDate, endDate]);
+  }, [isCore, isElevate, startDate, endDate]);
 
   if (!usageData) return null;
 
