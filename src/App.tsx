@@ -2369,8 +2369,7 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
         )}
 
         {/* ---> LIVE METRICS TILES: ELEVATE360 <--- */}
-        {/* ---> LIVE METRICS TILES: ELEVATE360 (API-Driven, No Hardcoded Fallbacks) <--- */}
-{isElevate && (
+    {isElevate && (
   <div className="live-metrics-grid">
     <div className="metric-stat-card" style={{ backgroundColor: '#f0f7ff', borderColor: '#e0effe' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
@@ -2380,7 +2379,7 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
         <span className="metric-stat-label" style={{ color: '#1e3a8a', marginBottom: 0 }}>Total Unique Users</span>
       </div>
       <div className="metric-stat-value" style={{ color: '#2563eb' }}>
-        {loading ? '...' : (elevateStats?.uniqueUsers ?? elevateStats?.activeUsers30d ?? elevateStats?.totalUniqueUsers ?? 0).toLocaleString()}
+        {loading ? '...' : (elevateStats?.summary?.total_unique_users ?? 0).toLocaleString()}
       </div>
       <span className="metric-stat-sub" style={{ color: '#64748b' }}>Active users (30d)</span>
     </div>
@@ -2393,7 +2392,7 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
         <span className="metric-stat-label" style={{ color: '#14532d', marginBottom: 0 }}>Total Login Sessions</span>
       </div>
       <div className="metric-stat-value" style={{ color: '#16a34a' }}>
-        {loading ? '...' : (elevateStats?.totalLoginSessions ?? elevateStats?.loginSessions ?? elevateStats?.sessions ?? 0).toLocaleString()}
+        {loading ? '...' : (elevateStats?.summary?.total_login_sessions ?? 0).toLocaleString()}
       </div>
       <span className="metric-stat-sub" style={{ color: '#64748b' }}>Rolling activity (30d)</span>
     </div>
@@ -2406,9 +2405,9 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
         <span className="metric-stat-label" style={{ color: '#78350f', marginBottom: 0 }}>Adoption Trend</span>
       </div>
       <div className="metric-stat-value" style={{ color: '#d97706' }}>
-        {loading ? '...' : (elevateStats?.adoptionTrend ?? elevateStats?.trend ?? '0%')}
+        {loading ? '...' : (elevateStats?.rolling_activity?.last_7_days?.sessions ?? 0).toLocaleString()}
       </div>
-      <span className="metric-stat-sub" style={{ color: '#64748b' }}>Weekly active engagement</span>
+      <span className="metric-stat-sub" style={{ color: '#64748b' }}>Last 7 days sessions</span>
     </div>
 
     <div className="metric-stat-card" style={{ backgroundColor: '#faf5ff', borderColor: '#f3e8ff' }}>
@@ -2419,9 +2418,9 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
         <span className="metric-stat-label" style={{ color: '#581c87', marginBottom: 0 }}>Returning Users</span>
       </div>
       <div className="metric-stat-value" style={{ color: '#9333ea' }}>
-        {loading ? '...' : (elevateStats?.returningUserRate ?? elevateStats?.returningRate ?? '0%')}
+        {loading ? '...' : (elevateStats?.rolling_activity?.last_30_days?.unique_users ?? 0).toLocaleString()}
       </div>
-      <span className="metric-stat-sub" style={{ color: '#64748b' }}>Return after 1st visit</span>
+      <span className="metric-stat-sub" style={{ color: '#64748b' }}>Last 30 days unique users</span>
     </div>
   </div>
 )}
