@@ -2150,6 +2150,7 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
   const isCore = content.shortName === 'C.O.R.E.';
   const isElevate = content.shortName === 'Elevate360';
   const [activeCardDef, setActiveCardDef] = useState<string | null>(null);
+  const [selectedDate, setSelectedDate] = useState<string>('2026-10-14');
 
   const [liveStats, setLiveStats] = useState<any>(null);
   const [elevateStats, setElevateStats] = useState<any>(null);
@@ -2162,7 +2163,7 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
       try {
         if (isCore) {
           const CORE_BACKEND_URL = 'https://terminal-swap-dev-216117029862.us-central1.run.app'; 
-          const res = await fetch(`${CORE_BACKEND_URL}/api/metrics/usage-stats`);
+          const res = await fetch(`${CORE_BACKEND_URL}/api/metrics/usage-stats?date=${selectedDate}`);
           if (res.ok && isMounted) {
             const data = await res.json();
             setLiveStats(data);
@@ -2187,7 +2188,7 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
     return () => {
       isMounted = false;
     };
-  }, [isCore, isElevate]);
+  }, [isCore, isElevate, selectedDate]);
 
   if (!usageData) return null;
 
@@ -2298,8 +2299,28 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
         }
       `}</style>
 
-      <div className="section-heading">
+      <div className="section-heading" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h3>Usage & Adoption</h3>
+        {isCore && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)' }}>Filter Date:</span>
+            <input 
+              type="date" 
+              value={selectedDate}
+              onChange={(e) => setSelectedDate(e.target.value)}
+              style={{
+                padding: '6px 12px',
+                borderRadius: '8px',
+                border: '1px solid var(--border-main)',
+                backgroundColor: 'var(--bg-card)',
+                color: 'var(--text-main)',
+                fontSize: '13px',
+                cursor: 'pointer',
+                outline: 'none'
+              }}
+            />
+          </div>
+        )}
       </div>
 
       <div className="usage-section">
