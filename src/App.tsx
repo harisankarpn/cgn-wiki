@@ -2396,6 +2396,101 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
             </div>
           </div>
         )}
+     {/* ---> ELEVATE360 LIVE METRICS TILES <--- */}
+        {isElevate && (
+          <div className="live-metrics-grid">
+            <div 
+              className="metric-stat-card" 
+              onClick={() => setActiveCardDef(activeCardDef === 'elevate-users' ? null : 'elevate-users')}
+              style={{ backgroundColor: '#f0f7ff', borderColor: '#e0effe', cursor: 'pointer', transition: 'all 0.2s' }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#3b82f6', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Users size={14} />
+                </div>
+                <span className="metric-stat-label" style={{ color: '#1e3a8a', marginBottom: 0 }}>Total Unique Users</span>
+              </div>
+              <div className="metric-stat-value" style={{ color: '#2563eb' }}>
+                {loading ? '...' : (elevateStats?.summary?.total_unique_users ?? 0).toLocaleString()}
+              </div>
+              <span className="metric-stat-sub" style={{ color: '#64748b' }}>
+                {activeCardDef === 'elevate-users' 
+                  ? 'Definition: Total Unique Users counts the distinct individuals who have accessed the platform within the rolling 30-day window.' 
+                  : 'Active users (30d)'}
+              </span>
+            </div>
+
+            <div 
+              className="metric-stat-card" 
+              onClick={() => setActiveCardDef(activeCardDef === 'elevate-sessions' ? null : 'elevate-sessions')}
+              style={{ backgroundColor: '#f0fdf4', borderColor: '#dcfce7', cursor: 'pointer', transition: 'all 0.2s' }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+                <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: '#22c55e', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <BarChart3 size={16} />
+                </div>
+                <span className="metric-stat-label" style={{ color: '#14532d', marginBottom: 0 }}>Total Login Sessions</span>
+              </div>
+              <div className="metric-stat-value" style={{ color: '#16a34a' }}>
+                {loading ? '...' : (elevateStats?.summary?.total_login_sessions ?? 0).toLocaleString()}
+              </div>
+              <span className="metric-stat-sub" style={{ color: '#64748b' }}>
+                {activeCardDef === 'elevate-sessions' 
+                  ? 'Definition: Total Login Sessions measures the aggregate count of login sessions recorded across the platform.' 
+                  : 'Rolling activity (30d)'}
+              </span>
+            </div>
+
+            <div 
+              className="metric-stat-card" 
+              onClick={() => setActiveCardDef(activeCardDef === 'elevate-trend' ? null : 'elevate-trend')}
+              style={{ backgroundColor: '#fffbeb', borderColor: '#fef3c7', cursor: 'pointer', transition: 'all 0.2s' }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: '#f59e0b', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <TrendingUp size={16} />
+                  </div>
+                  <span className="metric-stat-label" style={{ color: '#78350f', marginBottom: 0 }}>Adoption Trend</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '2px', color: '#16a34a', fontSize: '11px', fontWeight: 700, backgroundColor: '#dcfce7', padding: '2px 6px', borderRadius: '4px' }}>
+                  <TrendingUp size={12} />
+                  <span>+8.4%</span>
+                </div>
+              </div>
+              <div className="metric-stat-value" style={{ color: '#d97706' }}>
+                {loading ? '...' : (elevateStats?.rolling_activity?.last_7_days?.sessions ?? 0).toLocaleString()}
+              </div>
+              <span className="metric-stat-sub" style={{ color: '#64748b' }}>
+                {activeCardDef === 'elevate-trend' 
+                  ? 'Definition: Adoption Trend measures recent platform engagement by tracking session counts over specific short-term intervals (such as the last 7 days).' 
+                  : 'Last 7 days sessions'}
+              </span>
+            </div>
+
+            <div 
+              className="metric-stat-card" 
+              onClick={() => setActiveCardDef(activeCardDef === 'elevate-returning' ? null : 'elevate-returning')}
+              style={{ backgroundColor: '#faf5ff', borderColor: '#f3e8ff', cursor: 'pointer', transition: 'all 0.2s' }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#9333ea', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <UserCheck size={14} />
+                </div>
+                <span className="metric-stat-label" style={{ color: '#581c87', marginBottom: 0 }}>Returning Users</span>
+              </div>
+              <div className="metric-stat-value" style={{ color: '#9333ea' }}>
+                {loading ? '...' : (elevateStats?.rolling_activity?.last_30_days?.unique_users ?? 0).toLocaleString()}
+              </div>
+              <span className="metric-stat-sub" style={{ color: '#64748b' }}>
+                {activeCardDef === 'elevate-returning' 
+                  ? 'Definition: Returning Users counts the distinct individuals who have been active on the platform within a recent rolling window (such as the last 30 days).' 
+                  : 'Last 30 days unique users'}
+              </span>
+            </div>
+          </div>
+        )}
+        
         <div className="highlights-container">
           <div className="highlights-title">Programmatic Adoption & Insights</div>
           <div className="highlights-grid">
@@ -2416,6 +2511,8 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
     </div>
   );
 }
+
+
 
 /* =========================================================
    ACCORDION IMPACT COMPONENT
