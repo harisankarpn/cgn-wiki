@@ -425,12 +425,7 @@ const solutionContent = {
     ],
     usage: {
       description: 'C.O.R.E. is actively embedded within talent acquisition pipelines and internal promotion tracks, standardizing candidate assessments across global engineering hubs.',
-      metrics: [
-        { label: 'Assessments Completed', value: '3,850+', change: '+24% this quarter' },
-        { label: 'Active Evaluators', value: '185+', change: 'Global coverage' },
-        { label: 'Adoption Rate', value: '92.4%', change: 'Across hiring loops' },
-        { label: 'Ramp-up Reduction', value: '-35%', change: 'Days to Day-1 readiness' }
-      ],
+
       highlights: [
         { title: 'Hiring Pipeline Integration', description: 'Over 92% of candidate evaluations for Tier-1 and Tier-2 technical support roles are now conducted through standardized C.O.R.E. sandboxes.', badge: 'High Adoption' },
         { title: 'Automated Skill Gap Remediation', description: 'Assessed candidates receive automated custom training paths targeted specifically to capability gaps identified during live simulation.', badge: 'Automated' },
@@ -498,12 +493,7 @@ const solutionContent = {
     ],
     usage: {
       description: 'Elevate360 delivers continuous operational performance telemetry, connecting front-line metrics with prescriptive AI-assisted coaching across global support organizations.',
-      metrics: [
-        { label: 'TSR Coverage', value: '94.8%', change: 'Across regional teams' },
-        { label: 'Active Leaders', value: '320+', change: '+18% MoM engagement' },
-        { label: 'Coaching Plans Executed', value: '1,420+', change: 'Monthly active cycles' },
-        { label: 'Reporting Hours Saved', value: '450 hrs', change: 'Per month automated' }
-      ],
+  
       highlights: [
         { title: 'Balanced Scorecard Governance', description: 'Comprehensive operational telemetry benchmarking Technical Support Representatives (TSRs) across productivity, quality, and SLA adherence.', badge: 'Full Visibility' },
         { title: 'Fast Root-Cause Attribution', description: 'Over 85% of performance anomalies identified by Elevate360 are diagnosed down to specific training or workflow bottlenecks within 24 hours.', badge: 'Operational AI' },
