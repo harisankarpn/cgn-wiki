@@ -2168,7 +2168,7 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
           }
         } else if (isElevate) {
           // Fetching Elevate360 live metrics
-          const ELEVATE_BACKEND_URL = 'https://user-session-metrics-803836599959.us-central1.run.app/user_session_metrics?start_date=2026-10-01&end_date=2026-10-14';
+          const ELEVATE_BACKEND_URL = 'https://user-session-metrics-803836599959.us-central1.run.app/user_session_metrics';
           const res = await fetch(`${ELEVATE_BACKEND_URL}/api/metrics/usage-stats`);
           if (res.ok && isMounted) {
             const data = await res.json();
