@@ -2170,9 +2170,13 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
             setLiveStats(data);
           }
         } else if (isElevate) {
-          // Fetching Elevate360 live metrics
           const ELEVATE_BACKEND_URL = 'https://user-session-metrics-803836599959.us-central1.run.app/user_session_metrics';
-          const res = await fetch(`${ELEVATE_BACKEND_URL}/api/metrics/usage-stats`);
+          let url = `${ELEVATE_BACKEND_URL}/api/metrics/usage-stats`;
+          if (startDate && endDate) {
+            url += `?startDate=${startDate}&endDate=${endDate}`;
+          }
+          
+          const res = await fetch(url);
           if (res.ok && isMounted) {
             const data = await res.json();
             setElevateStats(data);
@@ -2301,9 +2305,11 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
       `}</style>
 
       {/* ---> REPLACE SECTION HEADING WITH RANGE PICKER <--- */}
+      // Locate the section heading inside the Usage component (around line 1475)
+      {/* ---> UPDATE CONDITION TO INCLUDE ELEVATE <--- */}
       <div className="section-heading" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
         <h3>Usage & Adoption</h3>
-        {isCore && (
+        {(isCore || isElevate) && (
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', background: 'var(--bg-card)', padding: '6px 12px', borderRadius: '10px', border: '1px solid var(--border-main)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
               <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase' }}>From:</span>
@@ -2311,16 +2317,7 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
                 type="date" 
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                style={{
-                  padding: '4px 8px',
-                  borderRadius: '6px',
-                  border: '1px solid var(--border-main)',
-                  backgroundColor: 'var(--bg-main)',
-                  color: 'var(--text-main)',
-                  fontSize: '12px',
-                  cursor: 'pointer',
-                  outline: 'none'
-                }}
+                style={{ padding: '4px 8px', borderRadius: '6px', border: '1px solid var(--border-main)', backgroundColor: 'var(--bg-main)', color: 'var(--text-main)', fontSize: '12px', cursor: 'pointer', outline: 'none' }}
               />
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
@@ -2329,16 +2326,7 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
                 type="date" 
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
-                style={{
-                  padding: '4px 8px',
-                  borderRadius: '6px',
-                  border: '1px solid var(--border-main)',
-                  backgroundColor: 'var(--bg-main)',
-                  color: 'var(--text-main)',
-                  fontSize: '12px',
-                  cursor: 'pointer',
-                  outline: 'none'
-                }}
+                style={{ padding: '4px 8px', borderRadius: '6px', border: '1px solid var(--border-main)', backgroundColor: 'var(--bg-main)', color: 'var(--text-main)', fontSize: '12px', cursor: 'pointer', outline: 'none' }}
               />
             </div>
           </div>
