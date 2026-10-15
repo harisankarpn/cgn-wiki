@@ -2171,9 +2171,9 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
           }
         } else if (isElevate) {
           const ELEVATE_BACKEND_URL = 'https://user-session-metrics-803836599959.us-central1.run.app/user_session_metrics';
-          let url = `${ELEVATE_BACKEND_URL}/api/metrics/usage-stats`;
+          let url = ELEVATE_BACKEND_URL;
           if (startDate && endDate) {
-            url += `?startDate=${startDate}&endDate=${endDate}`;
+            url += `?start_date=${startDate}&end_date=${endDate}`;
           }
           
           const res = await fetch(url);
