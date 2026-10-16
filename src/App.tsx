@@ -2529,7 +2529,7 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
             </div>
           </div>
         )}
-
+        
         {/* ---> LIVE METRICS TILES: DIGITAL SME (Google Sheet Data) <--- */}
         {isSme && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
