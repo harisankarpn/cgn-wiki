@@ -2149,13 +2149,15 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
   const usageData = content.usage;
   const isCore = content.shortName === 'C.O.R.E.';
   const isElevate = content.shortName === 'Elevate360';
+  const isSme = content.shortName === 'Digital SME';
   const [activeCardDef, setActiveCardDef] = useState<string | null>(null);
   const [startDate, setStartDate] = useState<string>('2026-09-01');
   const [endDate, setEndDate] = useState<string>('2026-10-14');
 
   const [liveStats, setLiveStats] = useState<any>(null);
   const [elevateStats, setElevateStats] = useState<any>(null);
-  const [loading, setLoading] = useState<boolean>(isCore || isElevate);
+  const [smeSheetData, setSmeSheetData] = useState<any[]>([]); // <--- NEW
+  const [loading, setLoading] = useState<boolean>(isCore || isElevate || isSme);
 
   useEffect(() => {
     let isMounted = true;
@@ -2180,6 +2182,14 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
           if (res.ok && isMounted) {
             const data = await res.json();
             setElevateStats(data);
+        } else if (isSme) {
+          const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/1urRqC4Gwihg730s0J33pW4CcvCEN41qC5exbXgGTlPg/export?format=csv&gid=1775300966';
+          const res = await fetch(SHEET_CSV_URL);
+          if (res.ok && isMounted) {
+            const csvText = await res.text();
+            // Simple lightweight CSV parser
+            const rows = csvText.split('\n').map(r => r.split(','));
+            setSmeSheetData(rows);
           }
         }
       } catch (err) {
@@ -2516,6 +2526,57 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
                   ? 'Definition: Returning Users counts the distinct individuals who have been active on the platform within a recent rolling window (such as the last 30 days).' 
                   : 'Last 30 days unique users'}
               </span>
+            </div>
+          </div>
+        )}
+
+        {/* ---> LIVE METRICS TILES: DIGITAL SME (Google Sheet Data) <--- */}
+        {isSme && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-secondary)' }}>
+                Live Google Sheet Connected ({smeSheetData.length > 0 ? smeSheetData.length - 1 : 0} Rows Loaded)
+              </span>
+              <a 
+                href="https://docs.google.com/spreadsheets/d/1urRqC4Gwihg730s0J33pW4CcvCEN41qC5exbXgGTlPg/edit?resourcekey=0-QkrqD44Ier5tRhVnYS6HVQ&gid=1775300966#gid=1775300966" 
+                target="_blank" 
+                rel="noreferrer"
+                style={{ fontSize: '12px', color: '#1a73e8', textDecoration: 'none', fontWeight: 600 }}
+              >
+                Open Source Sheet ↗
+              </a>
+            </div>
+
+            {/* Optional preview table of the first few rows from your Google Sheet */}
+            <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border-main)', borderRadius: '12px', overflowX: 'auto', padding: '16px' }}>
+              {loading ? (
+                <p style={{ color: 'var(--text-muted)', textAlign: 'center', margin: '20px 0' }}>Loading live data from Google Sheet...</p>
+              ) : smeSheetData.length > 0 ? (
+                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '12.5px' }}>
+                  <thead>
+                    <tr style={{ borderBottom: '2px solid var(--border-main)' }}>
+                      {smeSheetData[0]?.map((header: string, i: number) => (
+                        <th key={i} style={{ textAlign: 'left', padding: '8px 12px', color: 'var(--text-main)', fontWeight: 700 }}>
+                          {header.trim()}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {smeSheetData.slice(1, 11).map((row: string[], rowIndex: number) => (
+                      <tr key={rowIndex} style={{ borderBottom: '1px solid var(--border-soft)' }}>
+                        {row.map((cell: string, cellIndex: number) => (
+                          <td key={cellIndex} style={{ padding: '8px 12px', color: 'var(--text-secondary)' }}>
+                            {cell?.trim()}
+                          </td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <p style={{ color: 'var(--text-muted)', textAlign: 'center', margin: '20px 0' }}>No data available or sheet is restricted.</p>
+              )}
             </div>
           </div>
         )}
