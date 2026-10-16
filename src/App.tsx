@@ -2182,17 +2182,18 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
           if (res.ok && isMounted) {
             const data = await res.json();
             setElevateStats(data);
+          }
         } else if (isSme) {
+          // ---> FETCH DIGITAL SME GOOGLE SHEET CSV <---
           const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/1urRqC4Gwihg730s0J33pW4CcvCEN41qC5exbXgGTlPg/export?format=csv&gid=1775300966';
           const res = await fetch(SHEET_CSV_URL);
           if (res.ok && isMounted) {
             const csvText = await res.text();
-            // Simple lightweight CSV parser
             const rows = csvText.split('\n').map(r => r.split(','));
             setSmeSheetData(rows);
           }
         }
-      } catch (err) {
+      } catch (err) { 
         console.error('Failed to load live metrics:', err);
       } finally {
         if (isMounted) setLoading(false);
@@ -2203,7 +2204,7 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
     return () => {
       isMounted = false;
     };
-  }, [isCore, isElevate, startDate, endDate]);
+  }, [isCore, isElevate, isSme, startDate, endDate]);
 
   if (!usageData) return null;
 
