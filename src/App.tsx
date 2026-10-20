@@ -2184,16 +2184,23 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
             setElevateStats(data);
           }
         } else if (isSme) {
-          const targetUrl = 'https://docs.google.com/spreadsheets/d/1urRqC4Gwihg730s0J33pW4CcvCEN41qC5exbXgGTlPg/export?format=csv&gid=1775300966';
-          const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`;
-          
-          const res = await fetch(proxyUrl);
-          if (res.ok && isMounted) {
-            const csvText = await res.text();
-            const rows = csvText.split('\n').map(r => r.split(','));
-            setSmeSheetData(rows);
-          }
+      const targetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRhG0u5FnUi5wy5Og6v-RvtPgaTcvwW3wIiCKgCz3kgo4eY-6ULqlDxhD4YStOPEnVGO9cUIoCDbcVu/pub?output=csv';
+      const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`;
+      
+      const res = await fetch(proxyUrl);
+      if (res.ok && isMounted) {
+        const csvText = await res.text();
+      
+        if (csvText.trim().startsWith('<!DOCTYPE html>') || csvText.includes('<html')) {
+          console.error('Sheet fetch returned HTML. Please verify "Publish to the web" settings.');
+          setSmeSheetData([]);
+          return;
         }
+
+        const rows = csvText.split('\n').map(r => r.split(','));
+        setSmeSheetData(rows);
+      }
+    }
       } catch (err) { 
         console.error('Failed to load live metrics:', err);
       } finally {
