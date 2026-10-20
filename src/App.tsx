@@ -2156,15 +2156,11 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
 
   const [liveStats, setLiveStats] = useState<any>(null);
   const [elevateStats, setElevateStats] = useState<any>(null);
-  const [smeSheetData, setSmeSheetData] = useState<any[]>([]); // <--- NEW
+  const [smeSheetData, setSmeSheetData] = useState<any[]>([]); 
   const [loading, setLoading] = useState<boolean>(isCore || isElevate || isSme);
 
   useEffect(() => {
     let isMounted = true;
-
-    useEffect(() => {
-    let isMounted = true;
-
     const fetchMetrics = async () => {
       try {
         if (isCore) {
@@ -2220,13 +2216,16 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
       } finally {
         if (isMounted) setLoading(false);
       }
-    };
+    }; // <--- Properly closes fetchMetrics async function
 
     fetchMetrics();
+
     return () => {
       isMounted = false;
     };
   }, [isCore, isElevate, isSme, startDate, endDate]);
+
+   
 
   if (!usageData) return null;
 
