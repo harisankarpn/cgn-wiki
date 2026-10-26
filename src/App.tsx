@@ -2552,7 +2552,7 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
           </div>
         )}
         
-        {/* ---> LIVE METRICS TILES: DIGITAL SME (Google Sheet Data) <--- */}
+       {/* ---> LIVE METRICS TILES: DIGITAL SME (Google Sheet Data) <--- */}
         {isSme && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
             <div className="live-metrics-grid">
@@ -2566,15 +2566,15 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
                   <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#3b82f6', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <Bot size={14} />
                   </div>
-                  <span className="metric-stat-label" style={{ color: '#1e3a8a', marginBottom: 0 }}>Total Usage Volume</span>
+                  <span className="metric-stat-label" style={{ color: '#1e3a8a', marginBottom: 0 }}>Unique Count</span>
                 </div>
                 <div className="metric-stat-value" style={{ color: '#2563eb' }}>
-                  {loading ? '...' : '12,100'}
+                  {loading ? '...' : '[INSERT_UNIQUE_COUNT_VALUE]'}
                 </div>
                 <span className="metric-stat-sub" style={{ color: '#64748b' }}>
                   {activeCardDef === 'sme-queries' 
-                    ? 'Definition: Aggregate count of queries processed across all cases in MVP2.' 
-                    : 'Processed queries'}
+                    ? 'Definition: [INSERT_UNIQUE_COUNT_DEFINITION]' 
+                    : '[INSERT_SHORT_SUBTITLE]'}
                 </span>
               </div>
 
@@ -2587,15 +2587,15 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
                   <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: '#22c55e', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <FileText size={16} />
                   </div>
-                  <span className="metric-stat-label" style={{ color: '#14532d', marginBottom: 0 }}>Active Cases Handled</span>
+                  <span className="metric-stat-label" style={{ color: '#14532d', marginBottom: 0 }}>Specialization Breakup</span>
                 </div>
                 <div className="metric-stat-value" style={{ color: '#16a34a' }}>
-                  {loading ? '...' : '4,996'}
+                  {loading ? '...' : '[INSERT_BREAKUP_VALUE]'}
                 </div>
                 <span className="metric-stat-sub" style={{ color: '#64748b' }}>
                   {activeCardDef === 'sme-cases' 
-                    ? 'Definition: Total number of unique support/engineering cases served by Digital SME.' 
-                    : 'Unique support cases'}
+                    ? 'Definition: [INSERT_BREAKUP_DEFINITION]' 
+                    : '[INSERT_SHORT_SUBTITLE]'}
                 </span>
               </div>
 
@@ -2713,10 +2713,6 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
             ))}
           </div>
         </div>
-      </div>
-    </div>
-  );
-}
 
 
 
