@@ -2713,6 +2713,10 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
             ))}
           </div>
         </div>
+      </div>
+    </div>
+  );
+}
 
 
 
