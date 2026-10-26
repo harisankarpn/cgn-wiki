@@ -2553,149 +2553,211 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
         )}
         
        {/* ---> LIVE METRICS TILES: DIGITAL SME (Google Sheet Data) <--- */}
-        {isSme && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-            <div className="live-metrics-grid">
-              
-              <div 
-                className="metric-stat-card" 
-                onClick={() => setActiveCardDef(activeCardDef === 'sme-queries' ? null : 'sme-queries')}
-                style={{ backgroundColor: '#f0f7ff', borderColor: '#e0effe', cursor: 'pointer', transition: 'all 0.2s' }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                  <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#3b82f6', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <Bot size={14} />
-                  </div>
-                  <span className="metric-stat-label" style={{ color: '#1e3a8a', marginBottom: 0 }}>Unique Count</span>
-                </div>
-                <div className="metric-stat-value" style={{ color: '#2563eb' }}>
-                  {loading ? '...' : '[INSERT_UNIQUE_COUNT_VALUE]'}
-                </div>
-                <span className="metric-stat-sub" style={{ color: '#64748b' }}>
-                  {activeCardDef === 'sme-queries' 
-                    ? 'Definition: [INSERT_UNIQUE_COUNT_DEFINITION]' 
-                    : '[INSERT_SHORT_SUBTITLE]'}
-                </span>
-              </div>
+       {/* ---> LIVE METRICS TILES: DIGITAL SME (Google Sheet Data) <--- */}
+        {isSme && (() => {
+          // 1. Calculate dynamic values from Google Sheets Data
+          const headers = smeSheetData[0] || [];
+          const caseIdx = headers.findIndex((h: any) => typeof h === 'string' && h.trim().toLowerCase() === 'case_number');
+          const specIdx = headers.findIndex((h: any) => typeof h === 'string' && h.trim().toLowerCase() === 'specialization');
+          
+          let uniqueCaseCount = 0;
+          let specCounts: Record<string, number> = {};
 
-              <div 
-                className="metric-stat-card" 
-                onClick={() => setActiveCardDef(activeCardDef === 'sme-cases' ? null : 'sme-cases')}
-                style={{ backgroundColor: '#f0fdf4', borderColor: '#dcfce7', cursor: 'pointer', transition: 'all 0.2s' }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-                  <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: '#22c55e', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <FileText size={16} />
-                  </div>
-                  <span className="metric-stat-label" style={{ color: '#14532d', marginBottom: 0 }}>Specialization Breakup</span>
-                </div>
-                <div className="metric-stat-value" style={{ color: '#16a34a' }}>
-                  {loading ? '...' : '[INSERT_BREAKUP_VALUE]'}
-                </div>
-                <span className="metric-stat-sub" style={{ color: '#64748b' }}>
-                  {activeCardDef === 'sme-cases' 
-                    ? 'Definition: [INSERT_BREAKUP_DEFINITION]' 
-                    : '[INSERT_SHORT_SUBTITLE]'}
-                </span>
-              </div>
+          if (smeSheetData.length > 1) {
+            const dataRows = smeSheetData.slice(1).filter((r: any) => r && r.length > 0 && r[0]);
+            
+            // Unique Cases Calculation
+            if (caseIdx !== -1) {
+              const uniqueCases = new Set(dataRows.map((r: any[]) => r[caseIdx]?.trim()).filter(Boolean));
+              uniqueCaseCount = uniqueCases.size;
+            } else {
+              uniqueCaseCount = dataRows.length; // Fallback to raw row count if header is missing
+            }
 
-              <div 
-                className="metric-stat-card" 
-                onClick={() => setActiveCardDef(activeCardDef === 'sme-users' ? null : 'sme-users')}
-                style={{ backgroundColor: '#fffbeb', borderColor: '#fef3c7', cursor: 'pointer', transition: 'all 0.2s' }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: '#f59e0b', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <Users size={16} />
+            // Specialization Breakup Calculation
+            if (specIdx !== -1) {
+              dataRows.forEach((r: any[]) => {
+                const spec = r[specIdx]?.trim();
+                if (spec) {
+                  specCounts[spec] = (specCounts[spec] || 0) + 1;
+                }
+              });
+            }
+          }
+
+          const sortedSpecs = Object.entries(specCounts).sort((a, b) => b[1] - a[1]);
+          const maxSpecCount = sortedSpecs.length > 0 ? sortedSpecs[0][1] : 1;
+
+          return (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              <div className="live-metrics-grid">
+                
+                {/* 1st Container: Unique Count */}
+                <div 
+                  className="metric-stat-card" 
+                  onClick={() => setActiveCardDef(activeCardDef === 'sme-queries' ? null : 'sme-queries')}
+                  style={{ backgroundColor: '#f0f7ff', borderColor: '#e0effe', cursor: 'pointer', transition: 'all 0.2s', display: 'flex', flexDirection: 'column' }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                    <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#3b82f6', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <Bot size={14} />
                     </div>
-                    <span className="metric-stat-label" style={{ color: '#78350f', marginBottom: 0 }}>Unique Active Users</span>
+                    <span className="metric-stat-label" style={{ color: '#1e3a8a', marginBottom: 0 }}>Unique Count</span>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '2px', color: '#16a34a', fontSize: '11px', fontWeight: 700, backgroundColor: '#dcfce7', padding: '2px 6px', borderRadius: '4px' }}>
-                    <TrendingUp size={12} />
-                    <span>+38%</span>
+                  <div className="metric-stat-value" style={{ color: '#2563eb' }}>
+                    {loading ? '...' : uniqueCaseCount.toLocaleString()}
                   </div>
+                  <span className="metric-stat-sub" style={{ color: '#64748b', marginTop: 'auto' }}>
+                    {activeCardDef === 'sme-queries' 
+                      ? 'Definition: Total number of unique case numbers served by Digital SME.' 
+                      : 'Unique support cases'}
+                  </span>
                 </div>
-                <div className="metric-stat-value" style={{ color: '#d97706' }}>
-                  {loading ? '...' : '484'}
+
+                {/* 2nd Container: Specialization Breakup (Scrollable Graph) */}
+                <div 
+                  className="metric-stat-card" 
+                  onClick={() => setActiveCardDef(activeCardDef === 'sme-cases' ? null : 'sme-cases')}
+                  style={{ backgroundColor: '#f0fdf4', borderColor: '#dcfce7', cursor: 'pointer', transition: 'all 0.2s', display: 'flex', flexDirection: 'column' }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+                    <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: '#22c55e', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      <FileText size={16} />
+                    </div>
+                    <span className="metric-stat-label" style={{ color: '#14532d', marginBottom: 0 }}>Specialization Breakup</span>
+                  </div>
+                  
+                  {/* Scrollable Graph Area (Fixed Height to maintain layout alignment) */}
+                  <div style={{ height: '45px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '6px', paddingRight: '4px' }}>
+                    {loading ? (
+                      <span style={{ fontSize: '13px', color: '#16a34a', fontWeight: 700 }}>...</span>
+                    ) : sortedSpecs.length > 0 ? (
+                      sortedSpecs.map(([spec, count]) => {
+                        const pct = Math.max(5, Math.round((count / maxSpecCount) * 100));
+                        return (
+                          <div key={spec} style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '10px', color: '#14532d', fontWeight: 700, lineHeight: 1 }}>
+                              <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '80%' }}>{spec}</span>
+                              <span>{count}</span>
+                            </div>
+                            <div style={{ width: '100%', height: '6px', backgroundColor: '#dcfce7', borderRadius: '3px', overflow: 'hidden' }}>
+                              <div style={{ width: `${pct}%`, height: '100%', backgroundColor: '#22c55e', borderRadius: '3px' }}></div>
+                            </div>
+                          </div>
+                        );
+                      })
+                    ) : (
+                      <span style={{ fontSize: '11px', color: '#64748b' }}>No data</span>
+                    )}
+                  </div>
+                  
+                  <span className="metric-stat-sub" style={{ color: '#64748b', marginTop: 'auto', paddingTop: '6px' }}>
+                    {activeCardDef === 'sme-cases' 
+                      ? 'Definition: Distribution of queries/cases handled categorized by specialization.' 
+                      : 'Queries by specialization'}
+                  </span>
                 </div>
-                <span className="metric-stat-sub" style={{ color: '#64748b' }}>
-                  {activeCardDef === 'sme-users' 
-                    ? 'Definition: Count of distinct engineers and support users leveraging Digital SME.' 
-                    : 'Active engineers'}
-                </span>
+
+                {/* 3rd Container: Unique Active Users */}
+                <div 
+                  className="metric-stat-card" 
+                  onClick={() => setActiveCardDef(activeCardDef === 'sme-users' ? null : 'sme-users')}
+                  style={{ backgroundColor: '#fffbeb', borderColor: '#fef3c7', cursor: 'pointer', transition: 'all 0.2s', display: 'flex', flexDirection: 'column' }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: '#f59e0b', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <Users size={16} />
+                      </div>
+                      <span className="metric-stat-label" style={{ color: '#78350f', marginBottom: 0 }}>Unique Active Users</span>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '2px', color: '#16a34a', fontSize: '11px', fontWeight: 700, backgroundColor: '#dcfce7', padding: '2px 6px', borderRadius: '4px' }}>
+                      <TrendingUp size={12} />
+                      <span>+38%</span>
+                    </div>
+                  </div>
+                  <div className="metric-stat-value" style={{ color: '#d97706' }}>
+                    {loading ? '...' : '484'}
+                  </div>
+                  <span className="metric-stat-sub" style={{ color: '#64748b', marginTop: 'auto' }}>
+                    {activeCardDef === 'sme-users' 
+                      ? 'Definition: Count of distinct engineers and support users leveraging Digital SME.' 
+                      : 'Active engineers'}
+                  </span>
+                </div>
+
+                {/* 4th Container: Satisfaction Rate */}
+                <div 
+                  className="metric-stat-card" 
+                  onClick={() => setActiveCardDef(activeCardDef === 'sme-csat' ? null : 'sme-csat')}
+                  style={{ backgroundColor: '#faf5ff', borderColor: '#f3e8ff', cursor: 'pointer', transition: 'all 0.2s', display: 'flex', flexDirection: 'column' }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                    <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#9333ea', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <Star size={14} />
+                    </div>
+                    <span className="metric-stat-label" style={{ color: '#581c87', marginBottom: 0 }}>Satisfaction Rate</span>
+                  </div>
+                  <div className="metric-stat-value" style={{ color: '#9333ea' }}>
+                    {loading ? '...' : '78.9%'}
+                  </div>
+                  <span className="metric-stat-sub" style={{ color: '#64748b', marginTop: 'auto' }}>
+                    {activeCardDef === 'sme-csat' 
+                      ? 'Definition: Percentage of positive feedback (+1 ratings) vs total feedback given.' 
+                      : 'Positive CSAT sentiment'}
+                  </span>
+                </div>
+
               </div>
 
-              <div 
-                className="metric-stat-card" 
-                onClick={() => setActiveCardDef(activeCardDef === 'sme-csat' ? null : 'sme-csat')}
-                style={{ backgroundColor: '#faf5ff', borderColor: '#f3e8ff', cursor: 'pointer', transition: 'all 0.2s' }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                  <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#9333ea', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <Star size={14} />
-                  </div>
-                  <span className="metric-stat-label" style={{ color: '#581c87', marginBottom: 0 }}>Satisfaction Rate</span>
-                </div>
-                <div className="metric-stat-value" style={{ color: '#9333ea' }}>
-                  {loading ? '...' : '78.9%'}
-                </div>
-                <span className="metric-stat-sub" style={{ color: '#64748b' }}>
-                  {activeCardDef === 'sme-csat' 
-                    ? 'Definition: Percentage of positive feedback (+1 ratings) vs total feedback given.' 
-                    : 'Positive CSAT sentiment'}
+              {/* Live Data Preview Table */}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '8px' }}>
+                <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-secondary)' }}>
+                  Live Google Sheet Data ({smeSheetData.length > 0 ? smeSheetData.length - 1 : 0} Rows Loaded)
                 </span>
+                <a 
+                  href="https://docs.google.com/spreadsheets/d/1urRqC4Gwihg730s0J33pW4CcvCEN41qC5exbXgGTlPg/edit?resourcekey=0-QkrqD44Ier5tRhVnYS6HVQ&gid=1775300966#gid=1775300966" 
+                  target="_blank" 
+                  rel="noreferrer"
+                  style={{ fontSize: '12px', color: '#1a73e8', textDecoration: 'none', fontWeight: 600 }}
+                >
+                  Open Source Sheet ↗
+                </a>
               </div>
 
-            </div>
-
-            {/* Live Data Preview Table */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '8px' }}>
-              <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-secondary)' }}>
-                Live Google Sheet Data ({smeSheetData.length > 0 ? smeSheetData.length - 1 : 0} Rows Loaded)
-              </span>
-              <a 
-                href="https://docs.google.com/spreadsheets/d/1urRqC4Gwihg730s0J33pW4CcvCEN41qC5exbXgGTlPg/edit?resourcekey=0-QkrqD44Ier5tRhVnYS6HVQ&gid=1775300966#gid=1775300966" 
-                target="_blank" 
-                rel="noreferrer"
-                style={{ fontSize: '12px', color: '#1a73e8', textDecoration: 'none', fontWeight: 600 }}
-              >
-                Open Source Sheet ↗
-              </a>
-            </div>
-
-            <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border-main)', borderRadius: '12px', overflowX: 'auto', padding: '16px' }}>
-              {loading ? (
-                <p style={{ color: 'var(--text-muted)', textAlign: 'center', margin: '20px 0' }}>Loading live data from Google Sheet...</p>
-              ) : smeSheetData.length > 0 ? (
-                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '12.5px' }}>
-                  <thead>
-                    <tr style={{ borderBottom: '2px solid var(--border-main)' }}>
-                      {smeSheetData[0]?.map((header: string, i: number) => (
-                        <th key={i} style={{ textAlign: 'left', padding: '8px 12px', color: 'var(--text-main)', fontWeight: 700 }}>
-                          {header.trim()}
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {smeSheetData.slice(1, 11).map((row: string[], rowIndex: number) => (
-                      <tr key={rowIndex} style={{ borderBottom: '1px solid var(--border-soft)' }}>
-                        {row.map((cell: string, cellIndex: number) => (
-                          <td key={cellIndex} style={{ padding: '8px 12px', color: 'var(--text-secondary)' }}>
-                            {cell?.trim()}
-                          </td>
+              <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border-main)', borderRadius: '12px', overflowX: 'auto', padding: '16px' }}>
+                {loading ? (
+                  <p style={{ color: 'var(--text-muted)', textAlign: 'center', margin: '20px 0' }}>Loading live data from Google Sheet...</p>
+                ) : smeSheetData.length > 0 ? (
+                  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '12.5px' }}>
+                    <thead>
+                      <tr style={{ borderBottom: '2px solid var(--border-main)' }}>
+                        {smeSheetData[0]?.map((header: string, i: number) => (
+                          <th key={i} style={{ textAlign: 'left', padding: '8px 12px', color: 'var(--text-main)', fontWeight: 700 }}>
+                            {header.trim()}
+                          </th>
                         ))}
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              ) : (
-                <p style={{ color: 'var(--text-muted)', textAlign: 'center', margin: '20px 0' }}>No data available or sheet is restricted.</p>
-              )}
+                    </thead>
+                    <tbody>
+                      {smeSheetData.slice(1, 11).map((row: string[], rowIndex: number) => (
+                        <tr key={rowIndex} style={{ borderBottom: '1px solid var(--border-soft)' }}>
+                          {row.map((cell: string, cellIndex: number) => (
+                            <td key={cellIndex} style={{ padding: '8px 12px', color: 'var(--text-secondary)' }}>
+                              {cell?.trim()}
+                            </td>
+                          ))}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                ) : (
+                  <p style={{ color: 'var(--text-muted)', textAlign: 'center', margin: '20px 0' }}>No data available or sheet is restricted.</p>
+                )}
+              </div>
             </div>
-          </div>
-        )}
+          );
+        })()}
         
         <div className="highlights-container">
           <div className="highlights-title">Programmatic Adoption & Insights</div>
