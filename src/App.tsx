@@ -2557,7 +2557,8 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
         {isSme && (() => {
           // 1. Calculate dynamic values from Google Sheets Data
           const headers = smeSheetData[0] || [];
-          const caseIdx = headers.findIndex((h: any) => typeof h === 'string' && h.trim().toLowerCase() === 'case_number');
+          // const caseIdx = headers.findIndex((h: any) => typeof h === 'string' && h.trim().toLowerCase() === 'case_number');
+          const caseIdx = headers.findIndex((h: any) => typeof h === 'string' && (h.trim().toLowerCase() === 'case_number' || h.trim().toLowerCase() === 'case_id'));
           const specIdx = headers.findIndex((h: any) => typeof h === 'string' && h.trim().toLowerCase() === 'specialization');
           
           let uniqueCaseCount = 0;
