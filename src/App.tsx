@@ -1435,7 +1435,7 @@ function SolutionPage({ solutionId, activeSection, setActiveSection }: SolutionP
       {/* START: Solution Header Block */}
       <div className="solution-header">
         <div className="solution-header-left">
-          <div className="breadcrumbs">Solutions > {content.shortName}</div>
+          <div className="breadcrumbs">Solutions {" > "} {content.shortName}</div>
           <div className="solution-title-row">
             <div className="solution-header-icon" style={{ color: platform.color, backgroundColor: `${platform.color}15` }}>
               <Icon size={28} strokeWidth={2.5} />
