@@ -2225,17 +2225,16 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
   const headerRow = smeSheetData[0] || [];
   const caseNumberIndex = headerRow.findIndex((h: string) => h.toLowerCase() === 'case_number');
   
-  let totalUsageVolume: string | number = '12,100'; // Fallback
-  let uniqueCaseCount: string | number = '4,996'; // Fallback for cases
+  // CHANGED: Removed the confusing fake numbers so we know exactly when the fetch fails
+  let totalUsageVolume: string | number = 'Blocked by SSO'; 
+  let uniqueCaseCount: string | number = 'Blocked by SSO'; 
   
-  // STRICT CHECK: Only calculate if it's the valid live data containing the case_number header
-  if (!loading && smeSheetData.length > 1 && caseNumberIndex !== -1) {
+  if (!loading && smeSheetData.length > 1) {
+    // Total usage volume = total rows excluding header
     totalUsageVolume = (smeSheetData.length - 1).toLocaleString();
-    
-    const caseNumbers = smeSheetData.slice(1).map((row: any) => row[caseNumberIndex]).filter(Boolean);
-    uniqueCaseCount = new Set(caseNumbers).size.toLocaleString();
   }
-
+  
+  
   return (
     <div className="content-section">
       <style>{`
