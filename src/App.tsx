@@ -2229,6 +2229,16 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
 
   if (!usageData) return null;
 
+  // --- ADDED: Dynamically calculate unique case numbers for Total Usage Volume ---
+  const headerRow = smeSheetData[0] || [];
+  const caseNumberIndex = headerRow.findIndex((h: string) => h.trim().toLowerCase() === 'case_number');
+  
+  let totalUsageVolume: string | number = '12,100'; // Fallback
+  if (!loading && caseNumberIndex !== -1 && smeSheetData.length > 1) {
+    const caseNumbers = smeSheetData.slice(1).map((row: any) => row[caseNumberIndex]?.trim()).filter(Boolean);
+    totalUsageVolume = new Set(caseNumbers).size.toLocaleString();
+  }
+
   return (
     <div className="content-section">
       <style>{`
@@ -2568,9 +2578,12 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
                   </div>
                   <span className="metric-stat-label" style={{ color: '#1e3a8a', marginBottom: 0 }}>Total Usage Volume</span>
                 </div>
+                
+                {/* --- CHANGED: Render dynamic deduplicated volume --- */}
                 <div className="metric-stat-value" style={{ color: '#2563eb' }}>
-                  {loading ? '...' : '12,100'}
+                  {loading ? '...' : totalUsageVolume}
                 </div>
+                
                 <span className="metric-stat-sub" style={{ color: '#64748b' }}>
                   {activeCardDef === 'sme-queries' 
                     ? 'Definition: Aggregate count of queries processed across all cases in MVP2.' 
