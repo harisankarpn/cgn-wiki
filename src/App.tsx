@@ -2201,7 +2201,6 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
             const rows = csvText.trim().split(/\r?\n/).map(r => r.split(',').map(c => c.trim()));
             setSmeSheetData(rows);
           }
-        }
         } else if (isCrado) {
           // IMPORTANT: Replace this with the actual JSON API endpoint powering the yogie dashboard
           const CRADO_API_URL = 'https://yogie.users.x20web.corp.google.com/api/metrics'; 
