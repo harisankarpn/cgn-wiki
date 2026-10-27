@@ -2182,35 +2182,28 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
             setElevateStats(data);
           }
         } else if (isSme) {
-          // Proxy restored to bypass CORS, with a cache-buster appended
-          const targetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRhG0u5FnUi5wy5Og6v-RvtPgaTcvwW3wIiCKgCz3kgo4eY-6ULqlDxhD4YStOPEnVGO9cUIoCDbcVu/pub?output=csv';
-          const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}&t=${new Date().getTime()}`;
+          // Fetch DIRECTLY from Google Sheets without the proxy that is timing out
+          const targetUrl = `https://docs.google.com/spreadsheets/d/e/2PACX-1vRhG0u5FnUi5wy5Og6v-RvtPgaTcvwW3wIiCKgCz3kgo4eY-6ULqlDxhD4YStOPEnVGO9cUIoCDbcVu/pub?output=csv&t=${new Date().getTime()}`;
           
-          const res = await fetch(proxyUrl);
+          const res = await fetch(targetUrl);
           if (res.ok && isMounted) {
             const csvText = await res.text();
           
             if (csvText.trim().startsWith('<!DOCTYPE html>') || csvText.includes('<html') || res.status === 401) {
               console.warn('Corporate SSO blocked public fetch. Falling back to default SME metrics.');
-              setSmeSheetData([
-                ['usage_date', 'case_number', 'user_id', 'product', 'specialization', 'query_count', 'Unique_count'],
-                ['2026-10-27', 'AUTH_BLOCKED', 'engineer-1@google.com', 'N/A', 'N/A', '1', '1']
-              ]);
+              setSmeSheetData([]); 
               return;
             }
 
-            // Clean up carriage returns (\r) and trim to ensure exact header matching
-            const rows = csvText.trim().split('\n').map(r => r.split(',').map(c => c.trim()));
+            // Safely parse rows handling \r\n (Windows) or \n (Mac/Linux) line endings
+            const rows = csvText.trim().split(/\r?\n/).map(r => r.split(',').map(c => c.trim()));
             setSmeSheetData(rows);
           }
         }
       } catch (err) { 
         console.error('Failed to load live metrics:', err);
         if (isSme && isMounted) {
-          setSmeSheetData([
-            ['Timestamp', 'User', 'Query Type', 'Status'],
-            ['2026-05-12 10:00', 'engineer-1@google.com', 'GCP Architecture Review', 'Resolved']
-          ]);
+          setSmeSheetData([]);
         }
       } finally {
         if (isMounted) setLoading(false);
@@ -2235,15 +2228,12 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
   let totalUsageVolume: string | number = '12,100'; // Fallback
   let uniqueCaseCount: string | number = '4,996'; // Fallback for cases
   
-  if (!loading && smeSheetData.length > 1) {
-    // Total usage volume = total rows excluding header
+  // STRICT CHECK: Only calculate if it's the valid live data containing the case_number header
+  if (!loading && smeSheetData.length > 1 && caseNumberIndex !== -1) {
     totalUsageVolume = (smeSheetData.length - 1).toLocaleString();
     
-    // Unique case count = deduplicated case_number column
-    if (caseNumberIndex !== -1) {
-      const caseNumbers = smeSheetData.slice(1).map((row: any) => row[caseNumberIndex]).filter(Boolean);
-      uniqueCaseCount = new Set(caseNumbers).size.toLocaleString();
-    }
+    const caseNumbers = smeSheetData.slice(1).map((row: any) => row[caseNumberIndex]).filter(Boolean);
+    uniqueCaseCount = new Set(caseNumbers).size.toLocaleString();
   }
 
   return (
