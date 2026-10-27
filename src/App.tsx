@@ -2185,7 +2185,6 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
         } else if (isSme) {
           const targetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRhG0u5FnUi5wy5Og6v-RvtPgaTcvwW3wIiCKgCz3kgo4eY-6ULqlDxhD4YStOPEnVGO9cUIoCDbcVu/pub?output=csv';
           // const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`; 
-          // const res = await fetch(proxyUrl);
           const res = await fetch(targetUrl);
           if (res.ok && isMounted) {
             const csvText = await res.text();
