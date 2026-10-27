@@ -346,7 +346,7 @@ const CodeGeneratedPuzzleArtwork = () => (
     <div style={{ position: 'absolute', bottom: '65px', left: '0', width: '100%', textAlign: 'center' }}>
       <h2 style={{ margin: 0, color: 'var(--text-main)', fontSize: '32px', fontWeight: 800, letterSpacing: '-0.5px' }}>GCP Tech</h2>
       <h2 style={{ margin: 0, color: '#1a73e8', fontSize: '24px', fontWeight: 700, letterSpacing: '-0.5px' }}>Transformation Solutions</h2>
-      <p style={{ margin: '4px 0 0', color: 'var(--text-secondary)', fontSize: '14px', fontWeight: 500 }}>One Cloud &nbsp;&bull;&nbsp; Many Possibilities</p>
+      <p style={{ margin: '4px 0 0', color: 'var(--text-secondary)', fontSize: '14px', fontWeight: 500 }}>One Cloud  •  Many Possibilities</p>
     </div>
 
     <div style={{ position: 'absolute', bottom: '16px', display: 'flex', justifyContent: 'space-around', width: '100%', padding: '0 24px', boxSizing: 'border-box' }}>
@@ -660,7 +660,6 @@ const solutionContent = {
     feedback: FEEDBACK_URL,
     demo: '',
   },
-  // Add this crado block right after the closing brace of accelerate: { ... },
 
   crado: {
     shortName: 'CRADO',
@@ -1436,7 +1435,7 @@ function SolutionPage({ solutionId, activeSection, setActiveSection }: SolutionP
       {/* START: Solution Header Block */}
       <div className="solution-header">
         <div className="solution-header-left">
-          <div className="breadcrumbs">Solutions &gt; {content.shortName}</div>
+          <div className="breadcrumbs">Solutions > {content.shortName}</div>
           <div className="solution-title-row">
             <div className="solution-header-icon" style={{ color: platform.color, backgroundColor: `${platform.color}15` }}>
               <Icon size={28} strokeWidth={2.5} />
@@ -2183,10 +2182,10 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
             setElevateStats(data);
           }
         } else if (isSme) {
-          const targetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRhG0u5FnUi5wy5Og6v-RvtPgaTcvwW3wIiCKgCz3kgo4eY-6ULqlDxhD4YStOPEnVGO9cUIoCDbcVu/pub?output=csv';
-          const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`;
+          // Fetch directly with a cache-buster to avoid stale proxy data
+          const targetUrl = `https://docs.google.com/spreadsheets/d/e/2PACX-1vRhG0u5FnUi5wy5Og6v-RvtPgaTcvwW3wIiCKgCz3kgo4eY-6ULqlDxhD4YStOPEnVGO9cUIoCDbcVu/pub?output=csv&t=${new Date().getTime()}`;
           
-          const res = await fetch(proxyUrl);
+          const res = await fetch(targetUrl);
           if (res.ok && isMounted) {
             const csvText = await res.text();
           
@@ -2201,7 +2200,8 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
               return;
             }
 
-            const rows = csvText.split('\n').map(r => r.split(','));
+            // Clean up carriage returns (\r) and trim to ensure exact header matching
+            const rows = csvText.trim().split('\n').map(r => r.split(',').map(c => c.trim()));
             setSmeSheetData(rows);
           }
         }
@@ -2216,7 +2216,7 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
       } finally {
         if (isMounted) setLoading(false);
       }
-    }; // <--- Properly closes fetchMetrics async function
+    }; 
 
     fetchMetrics();
 
@@ -2229,18 +2229,22 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
 
   if (!usageData) return null;
 
+  // --- ADDED: Dynamically calculate unique case numbers ---
   const headerRow = smeSheetData[0] || [];
-  const caseNumberIndex = headerRow.findIndex((h: string) => h.trim().toLowerCase() === 'case_number');
+  const caseNumberIndex = headerRow.findIndex((h: string) => h.toLowerCase() === 'case_number');
   
   let totalUsageVolume: string | number = '12,100'; // Fallback
   let uniqueCaseCount: string | number = '4,996'; // Fallback for cases
   
-  if (!loading && caseNumberIndex !== -1 && smeSheetData.length > 1) {
-    const caseNumbers = smeSheetData.slice(1).map((row: any) => row[caseNumberIndex]?.trim()).filter(Boolean);
-    const uniqueCases = new Set(caseNumbers);
+  if (!loading && smeSheetData.length > 1) {
+    // Total usage volume = total rows excluding header
+    totalUsageVolume = (smeSheetData.length - 1).toLocaleString();
     
-    uniqueCaseCount = uniqueCases.size.toLocaleString();
-    totalUsageVolume = (smeSheetData.length - 1).toLocaleString(); 
+    // Unique case count = deduplicated case_number column
+    if (caseNumberIndex !== -1) {
+      const caseNumbers = smeSheetData.slice(1).map((row: any) => row[caseNumberIndex]).filter(Boolean);
+      uniqueCaseCount = new Set(caseNumbers).size.toLocaleString();
+    }
   }
 
   return (
@@ -2582,12 +2586,9 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
                   </div>
                   <span className="metric-stat-label" style={{ color: '#1e3a8a', marginBottom: 0 }}>Total Usage Volume</span>
                 </div>
-                
-                {/* --- CHANGED: Render dynamic deduplicated volume --- */}
                 <div className="metric-stat-value" style={{ color: '#2563eb' }}>
                   {loading ? '...' : totalUsageVolume}
                 </div>
-                
                 <span className="metric-stat-sub" style={{ color: '#64748b' }}>
                   {activeCardDef === 'sme-queries' 
                     ? 'Definition: Aggregate count of queries processed across all cases in MVP2.' 
@@ -2690,7 +2691,7 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
                     <tr style={{ borderBottom: '2px solid var(--border-main)' }}>
                       {smeSheetData[0]?.map((header: string, i: number) => (
                         <th key={i} style={{ textAlign: 'left', padding: '8px 12px', color: 'var(--text-main)', fontWeight: 700 }}>
-                          {header.trim()}
+                          {header}
                         </th>
                       ))}
                     </tr>
@@ -2700,7 +2701,7 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
                       <tr key={rowIndex} style={{ borderBottom: '1px solid var(--border-soft)' }}>
                         {row.map((cell: string, cellIndex: number) => (
                           <td key={cellIndex} style={{ padding: '8px 12px', color: 'var(--text-secondary)' }}>
-                            {cell?.trim()}
+                            {cell}
                           </td>
                         ))}
                       </tr>
