@@ -2182,20 +2182,19 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
             setElevateStats(data);
           }
         } else if (isSme) {
-          // Fetch directly with a cache-buster to avoid stale proxy data
-          const targetUrl = `https://docs.google.com/spreadsheets/d/e/2PACX-1vRhG0u5FnUi5wy5Og6v-RvtPgaTcvwW3wIiCKgCz3kgo4eY-6ULqlDxhD4YStOPEnVGO9cUIoCDbcVu/pub?output=csv&t=${new Date().getTime()}`;
+          // Proxy restored to bypass CORS, with a cache-buster appended
+          const targetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRhG0u5FnUi5wy5Og6v-RvtPgaTcvwW3wIiCKgCz3kgo4eY-6ULqlDxhD4YStOPEnVGO9cUIoCDbcVu/pub?output=csv';
+          const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}&t=${new Date().getTime()}`;
           
-          const res = await fetch(targetUrl);
+          const res = await fetch(proxyUrl);
           if (res.ok && isMounted) {
             const csvText = await res.text();
           
             if (csvText.trim().startsWith('<!DOCTYPE html>') || csvText.includes('<html') || res.status === 401) {
               console.warn('Corporate SSO blocked public fetch. Falling back to default SME metrics.');
               setSmeSheetData([
-                ['Timestamp', 'User', 'Query Type', 'Status'],
-                ['2026-05-12 10:00', 'engineer-1@google.com', 'GCP Architecture Review', 'Resolved'],
-                ['2026-05-12 11:15', 'engineer-2@google.com', 'IAM Policy Debugging', 'Resolved'],
-                ['2026-05-12 13:30', 'engineer-3@google.com', 'GKE Cluster Autoscaling', 'Resolved']
+                ['usage_date', 'case_number', 'user_id', 'product', 'specialization', 'query_count', 'Unique_count'],
+                ['2026-10-27', 'AUTH_BLOCKED', 'engineer-1@google.com', 'N/A', 'N/A', '1', '1']
               ]);
               return;
             }
