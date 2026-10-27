@@ -2149,6 +2149,7 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
   const isCore = content.shortName === 'C.O.R.E.';
   const isElevate = content.shortName === 'Elevate360';
   const isSme = content.shortName === 'Digital SME';
+  const isCrado = content.shortName === 'CRADO';
   const [activeCardDef, setActiveCardDef] = useState<string | null>(null);
   const [startDate, setStartDate] = useState<string>('2026-09-01');
   const [endDate, setEndDate] = useState<string>('2026-10-14');
@@ -2156,7 +2157,8 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
   const [liveStats, setLiveStats] = useState<any>(null);
   const [elevateStats, setElevateStats] = useState<any>(null);
   const [smeSheetData, setSmeSheetData] = useState<any[]>([]); 
-  const [loading, setLoading] = useState<boolean>(isCore || isElevate || isSme);
+  const [cradoStats, setCradoStats] = useState<any>(null);
+  const [loading, setLoading] = useState<boolean>(isCore || isElevate || isSme || isCrado);
 
   useEffect(() => {
     let isMounted = true;
@@ -2198,6 +2200,19 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
             // Safely parse rows handling \r\n (Windows) or \n (Mac/Linux) line endings
             const rows = csvText.trim().split(/\r?\n/).map(r => r.split(',').map(c => c.trim()));
             setSmeSheetData(rows);
+          }
+        }
+        } else if (isCrado) {
+          // IMPORTANT: Replace this with the actual JSON API endpoint powering the yogie dashboard
+          const CRADO_API_URL = 'https://yogie.users.x20web.corp.google.com/api/metrics'; 
+          
+          const res = await fetch(CRADO_API_URL);
+          if (res.ok && isMounted) {
+            const data = await res.json();
+            setCradoStats(data);
+          } else {
+             // Flag if blocked by SSO/CORS so we don't hardcode numbers
+            if (isMounted) setCradoStats({ ssoBlocked: true });
           }
         }
       } catch (err) { 
@@ -2700,6 +2715,53 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
                 <p style={{ color: 'var(--text-muted)', textAlign: 'center', margin: '20px 0' }}>No data available or sheet is restricted.</p>
               )}
             </div>
+          </div>
+        )}
+
+        {/* ---> LIVE METRICS TILES: CRADO <--- */}
+        {isCrado && (
+          <div className="live-metrics-grid">
+            
+            <div className="metric-stat-card" style={{ backgroundColor: '#f0f7ff', borderColor: '#e0effe' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                <Search size={14} color="#2563eb" />
+                <span className="metric-stat-label" style={{ color: '#1e3a8a', marginBottom: 0 }}>CRADO Queries</span>
+              </div>
+              <div className="metric-stat-value" style={{ color: '#2563eb' }}>
+                {loading ? '...' : cradoStats?.ssoBlocked ? 'Auth Required' : (cradoStats?.queries ?? 0).toLocaleString()}
+              </div>
+            </div>
+
+            <div className="metric-stat-card" style={{ backgroundColor: '#faf5ff', borderColor: '#f3e8ff' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                <Users size={14} color="#9333ea" />
+                <span className="metric-stat-label" style={{ color: '#581c87', marginBottom: 0 }}>Cognizant TSRs</span>
+              </div>
+              <div className="metric-stat-value" style={{ color: '#9333ea' }}>
+                {loading ? '...' : cradoStats?.ssoBlocked ? 'Auth Required' : (cradoStats?.tsrs ?? 0).toLocaleString()}
+              </div>
+            </div>
+
+            <div className="metric-stat-card" style={{ backgroundColor: '#ecfdf5', borderColor: '#d1fae5' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                <Clock size={14} color="#059669" />
+                <span className="metric-stat-label" style={{ color: '#064e3b', marginBottom: 0 }}>Agent Sessions</span>
+              </div>
+              <div className="metric-stat-value" style={{ color: '#059669' }}>
+                {loading ? '...' : cradoStats?.ssoBlocked ? 'Auth Required' : (cradoStats?.sessions ?? 0).toLocaleString()}
+              </div>
+            </div>
+
+            <div className="metric-stat-card" style={{ backgroundColor: '#fff7ed', borderColor: '#ffedd5' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                <FileText size={14} color="#ea580c" />
+                <span className="metric-stat-label" style={{ color: '#7c2d12', marginBottom: 0 }}>Unique Cases</span>
+              </div>
+              <div className="metric-stat-value" style={{ color: '#ea580c' }}>
+                {loading ? '...' : cradoStats?.ssoBlocked ? 'Auth Required' : (cradoStats?.uniqueCases ?? 0).toLocaleString()}
+              </div>
+            </div>
+
           </div>
         )}
         
