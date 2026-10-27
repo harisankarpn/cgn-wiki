@@ -2229,14 +2229,18 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
 
   if (!usageData) return null;
 
-  // --- ADDED: Dynamically calculate unique case numbers for Total Usage Volume ---
   const headerRow = smeSheetData[0] || [];
   const caseNumberIndex = headerRow.findIndex((h: string) => h.trim().toLowerCase() === 'case_number');
   
   let totalUsageVolume: string | number = '12,100'; // Fallback
+  let uniqueCaseCount: string | number = '4,996'; // Fallback for cases
+  
   if (!loading && caseNumberIndex !== -1 && smeSheetData.length > 1) {
     const caseNumbers = smeSheetData.slice(1).map((row: any) => row[caseNumberIndex]?.trim()).filter(Boolean);
-    totalUsageVolume = new Set(caseNumbers).size.toLocaleString();
+    const uniqueCases = new Set(caseNumbers);
+    
+    uniqueCaseCount = uniqueCases.size.toLocaleString();
+    totalUsageVolume = (smeSheetData.length - 1).toLocaleString(); 
   }
 
   return (
@@ -2600,10 +2604,10 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
                   <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: '#22c55e', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <FileText size={16} />
                   </div>
-                  <span className="metric-stat-label" style={{ color: '#14532d', marginBottom: 0 }}>Active Cases Handled</span>
+                  <span className="metric-stat-label" style={{ color: '#14532d', marginBottom: 0 }}>Total Unique Case Count</span>
                 </div>
                 <div className="metric-stat-value" style={{ color: '#16a34a' }}>
-                  {loading ? '...' : '4,996'}
+                  {loading ? '...' : uniqueCaseCount}
                 </div>
                 <span className="metric-stat-sub" style={{ color: '#64748b' }}>
                   {activeCardDef === 'sme-cases' 
