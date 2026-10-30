@@ -225,20 +225,6 @@ function GlobalThemeStyles() {
         background-color: var(--border-main);
         border-radius: 10px;
       }
-
-      /* Hub Hero Styles globally accessible for Puzzle Success Screen */
-      .hub-hero { display: flex; align-items: center; justify-content: space-between; padding: 40px 0 60px; margin-bottom: 40px; }
-      .hub-hero-content { max-width: 55%; text-align: left; }
-      .hub-title { font-size: 42px; font-weight: 300; line-height: 1.2; color: var(--text-main); margin: 0 0 20px 0; letter-spacing: -0.5px; }
-      .hub-title strong { font-weight: 700; }
-      .hub-subtitle { font-size: 16px; color: var(--text-secondary); margin-bottom: 32px; line-height: 1.6; max-width: 90%; }
-      .hub-actions { display: flex; gap: 16px; justify-content: flex-start; }
-      .btn-hub-outline { border: 1px solid var(--text-main); color: var(--text-main); padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; background: transparent; transition: all 0.2s; }
-      .btn-hub-outline:hover { background: var(--bg-hover); }
-      .btn-hub-solid { background: #167768; color: #fff; padding: 12px 24px; border-radius: 8px; font-weight: 600; border: none; cursor: pointer; transition: background 0.2s; }
-      .btn-hub-solid:hover { background: #115c50; }
-      .hub-hero-graphic { flex: 1; display: flex; justify-content: center; position: relative; opacity: 0.8; }
-      .dark .btn-hub-outline { border-color: var(--border-main); color: var(--text-main); }
     `}</style>
   );
 }
@@ -1031,13 +1017,13 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
       </div>
        
      <div style={{ position: 'fixed', bottom: '40px', left: '40px', zIndex: 50 }}>
-  <button 
-    onClick={onSkip} 
-    style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid var(--border-main)', background: 'var(--bg-card)', color: 'var(--text-secondary)', fontWeight: 600, cursor: 'pointer', transition: 'background 0.2s', boxShadow: 'var(--shadow-sm)' }}
-  >
-    Skip Puzzle
-  </button>
-</div>
+        <button 
+          onClick={onSkip} 
+          style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid var(--border-main)', background: 'var(--bg-card)', color: 'var(--text-secondary)', fontWeight: 600, cursor: 'pointer', transition: 'background 0.2s', boxShadow: 'var(--shadow-sm)' }}
+        >
+          Skip Puzzle
+        </button>
+      </div>
 
       <div style={{ textAlign: 'center', marginBottom: '32px' }}>
         <h1 style={{ color: 'var(--text-main)', margin: '0 0 12px', fontSize: '32px' }}>Innovation Wiki Access</h1>
@@ -1088,24 +1074,35 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
         </div>
 
         <div className="puzzle-pool" style={{ 
-        width: '500px', height: '428px', boxSizing: 'border-box',
-         overflowY: 'auto', overflowX: 'hidden',
-        display: 'flex', flexDirection: 'column', 
-        padding: '24px', background: 'var(--bg-card)', 
-         borderRadius: '16px', border: '1px solid var(--border-main)' 
-      }}>
+          width: '500px', height: '428px', boxSizing: 'border-box',
+          overflowY: 'auto', overflowX: 'hidden',
+          display: 'flex', flexDirection: 'column', 
+          padding: '24px', background: 'var(--bg-card)', 
+          borderRadius: '16px', border: '1px solid var(--border-main)' 
+        }}>
           {isSolved ? (
-            <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', animation: 'fadeIn 0.5s ease' }}>
-              <div style={{ width: '60px', height: '60px', borderRadius: '50%', backgroundColor: '#dcfce7', color: '#166534', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '20px' }}>
-                <ShieldCheck size={32} />
+            <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', textAlign: 'left', animation: 'fadeIn 0.5s ease', padding: '20px' }}>
+              <h1 style={{ fontSize: '36px', fontWeight: 300, lineHeight: 1.2, color: 'var(--text-main)', margin: '0 0 16px 0', letterSpacing: '-0.5px' }}>
+                Welcome to the <strong style={{ fontWeight: 700 }}>Innovation Wiki</strong><br/>where we build the future together.
+              </h1>
+              <p style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '32px', lineHeight: 1.6, maxWidth: '90%' }}>
+                Explore our transformation solutions, discover deep operational intelligence,
+                and turn collective knowledge into real impact.
+              </p>
+              <div style={{ display: 'flex', gap: '16px' }}>
+                <button 
+                  onClick={onComplete}
+                  style={{ border: '1px solid var(--text-main)', color: 'var(--text-main)', padding: '12px 24px', borderRadius: '8px', fontWeight: 600, cursor: 'pointer', background: 'transparent', transition: 'all 0.2s', fontSize: '14px' }}
+                >
+                  View all solutions →
+                </button>
+                <button 
+                  onClick={onComplete}
+                  style={{ background: '#167768', color: '#fff', padding: '12px 24px', borderRadius: '8px', fontWeight: 600, border: 'none', cursor: 'pointer', transition: 'background 0.2s', fontSize: '14px' }}
+                >
+                  Submit your idea
+                </button>
               </div>
-              <h3 style={{ margin: '0 0 20px', color: 'var(--text-main)' }}>Verification Successful</h3>
-              <button 
-                onClick={onComplete}
-                style={{ padding: '14px 28px', borderRadius: '8px', border: 'none', background: '#1a73e8', color: 'white', fontSize: '16px', fontWeight: 600, cursor: 'pointer', boxShadow: '0 4px 12px rgba(26, 115, 232, 0.3)' }}
-              >
-                Enter Innovation Wiki
-              </button>
             </div>
           ) : isFailed ? (
             <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', animation: 'fadeIn 0.5s ease' }}>
@@ -1148,42 +1145,6 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
           )}
         </div>
       </div>
-
-      {/* NEW: Hub Hero Banner shown upon puzzle success at the bottom */}
-      {isSolved && (
-        <div className="hub-hero" style={{ marginTop: '40px', width: '100%', maxWidth: '1100px', animation: 'fadeIn 0.8s ease', borderTop: '1px solid var(--border-soft)', paddingTop: '60px' }}>
-          <div className="hub-hero-content">
-            <h1 className="hub-title">
-              Welcome to the <strong>Innovation Wiki</strong> where we build the future together.
-            </h1>
-            <p className="hub-subtitle">
-              Explore our transformation solutions, discover deep operational intelligence,
-              and turn collective knowledge into real impact[cite: 4].
-            </p>
-            <div className="hub-actions">
-              {/* Triggering onComplete drops the user into the Wiki main page */}
-              <button className="btn-hub-outline" onClick={onComplete}>View all solutions →</button>
-              <button className="btn-hub-solid" onClick={onComplete}>Submit your idea</button>
-            </div>
-          </div>
-          <div className="hub-hero-graphic">
-             <svg width="350" height="350" viewBox="0 0 350 350" fill="none">
-                <circle cx="175" cy="175" r="150" stroke="url(#gradient)" strokeWidth="1" strokeDasharray="4 6" opacity="0.4" />
-                <circle cx="175" cy="175" r="110" stroke="url(#gradient)" strokeWidth="1" opacity="0.2" />
-                <path d="M175 25 L175 175 L290 220" stroke="var(--text-secondary)" strokeWidth="1" opacity="0.5" />
-                <circle cx="175" cy="25" r="4" fill="var(--text-main)" />
-                <circle cx="290" cy="220" r="4" fill="var(--text-main)" />
-                <text x="310" y="225" fill="var(--text-main)" fontSize="16" fontWeight="bold">01</text>
-                <defs>
-                  <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#4285F4" />
-                    <stop offset="100%" stopColor="#34A853" />
-                  </linearGradient>
-                </defs>
-             </svg>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
@@ -1362,7 +1323,7 @@ function App() {
           </div>
         </section>
 
-        {/* Removed highlighted top navigation ONLY from the main/home page as requested */}
+        {/* Highlighted top navigation removed from the main/home page as requested */}
         {selectedSolution !== 'home' && (
           <section className="platform-card-row five-platforms">
             {solutions.map((platform) => {
@@ -1466,7 +1427,7 @@ function InnovationWikiHome({ onSolutionSelect }: { onSolutionSelect: (id: Navig
         .hub-card:hover .hub-see-more { gap: 8px; }
       `}</style>
 
-      {/* Cards Section Only. Highlighted top sections removed from default view[cite: 5]. */}
+      {/* Cards Section Only. Highlighted top hero banner completely removed from default view. */}
       <div className="hub-programs-header">
         <h2>Explore a solution</h2>
         <p>Discover technical documentation, submit feedback, and collaborate to solve real challenges</p>
