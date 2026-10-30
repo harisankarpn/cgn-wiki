@@ -346,7 +346,7 @@ const CodeGeneratedPuzzleArtwork = () => (
     <div style={{ position: 'absolute', bottom: '65px', left: '0', width: '100%', textAlign: 'center' }}>
       <h2 style={{ margin: 0, color: 'var(--text-main)', fontSize: '32px', fontWeight: 800, letterSpacing: '-0.5px' }}>GCP Tech</h2>
       <h2 style={{ margin: 0, color: '#1a73e8', fontSize: '24px', fontWeight: 700, letterSpacing: '-0.5px' }}>Transformation Solutions</h2>
-      <p style={{ margin: '4px 0 0', color: 'var(--text-secondary)', fontSize: '14px', fontWeight: 500 }}>One Cloud  •  Many Possibilities</p>
+      <p style={{ margin: '4px 0 0', color: 'var(--text-secondary)', fontSize: '14px', fontWeight: 500 }}>One Cloud  •  Many Possibilities</p>
     </div>
 
     <div style={{ position: 'absolute', bottom: '16px', display: 'flex', justifyContent: 'space-around', width: '100%', padding: '0 24px', boxSizing: 'border-box' }}>
@@ -748,15 +748,6 @@ const sections = [
   { id: 'access' as SectionId, label: 'Access Details', icon: KeyRound },
   { id: 'feedback' as SectionId, label: 'Feedback', icon: MessageSquare },
   { id: 'demo' as SectionId, label: 'Demo', icon: PlayCircle },
-];
-
-const wikiTableRows = [
-  { id: 'overview', icon: FileText, color: '#1a73e8', section: 'Overview', covers: 'Purpose, vision and scope of the solution.', details: 'Introduction and key objectives' },
-  { id: 'problem-solution', icon: Target, color: '#ea4335', section: 'Problem & Solution', covers: 'Key challenges, approach and how the solution addresses them.', details: 'Current state, business challenges and solution details' },
-  { id: 'benefits-impact', icon: BarChart3, color: '#16a34a', section: 'Benefits & Impact', covers: 'Value delivered for people, operations and customers.', details: 'Business benefits and key impact metrics' },
-  { id: 'usage', icon: Users, color: '#7c3aed', section: 'Usage & Adoption', covers: 'Explore adoption metrics and usage insights.', details: 'Usage trends and adoption details' },
-  { id: 'access', icon: KeyRound, color: '#06b6d4', section: 'Access & Support', covers: 'Application links, POC details and how to get help.', details: 'Access links, tool owner/POC and support information' },
-  { id: 'feedback-demo', icon: PlayCircle, color: '#1a73e8', section: 'Feedback & Demo', covers: 'Share your feedback and watch a short demo.', details: 'Link to feedback form and embedded video demo' },
 ];
 
 /* =========================================================
@@ -1265,7 +1256,6 @@ function App() {
       <main className="main no-sidebar-main" style={{ minHeight: '100vh' }}>
         
         <section className="hero top-hero premium-hero" style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', position: 'relative' }}>
-          {/* Modify this div to use justify-content: space-between */}
           <div className="hero-copy" style={{ width: '100%', maxWidth: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '20px' }}>
             
             {/* Left Side: Existing Logo and Title Group */}
@@ -1299,7 +1289,7 @@ function App() {
               </div>
             </div>
 
-            {/* ---> NEW: Right Side Visitor Count <--- */}
+            {/* Right Side Visitor Count */}
             {visitorCount !== null && (
               <div style={{ 
                 display: 'flex', flexDirection: 'column', alignItems: 'flex-end', 
@@ -1347,7 +1337,7 @@ function App() {
 
         <div className="page-content main-page-content">
           {selectedSolution === 'home' ? (
-            <InnovationWikiHome />
+            <InnovationWikiHome onSolutionSelect={openSolution} />
           ) : (
             <SolutionPage solutionId={selectedSolution} activeSection={activeSection} setActiveSection={setActiveSection} />
           )}
@@ -1372,41 +1362,141 @@ function App() {
 }
 
 /* =========================================================
-   INNOVATION WIKI HOME
+   INNOVATION WIKI HOME (NEW IDEA HUB LAYOUT)
 ========================================================= */
 
-function InnovationWikiHome() {
+function InnovationWikiHome({ onSolutionSelect }: { onSolutionSelect: (id: NavigationId) => void }) {
+  // Filter out the 'home' solution so we only render cards for actual products
+  const cards = solutions.filter(s => s.id !== 'home');
+
   return (
-    <section className="wiki-home clean-wiki-home">
-      <div className="wiki-home-heading">
-        <h2>What you’ll find here</h2>
-        <p>Explore the key aspects we cover for each solution. Select a solution above to view detailed information.</p>
+    <section className="wiki-home idea-hub-layout">
+      <style>{`
+        .idea-hub-layout { font-family: system-ui, sans-serif; padding: 20px 40px; }
+        
+        /* Hero Section */
+        .hub-hero { display: flex; align-items: center; justify-content: space-between; padding: 40px 0 60px; border-bottom: 1px solid var(--border-soft); margin-bottom: 40px; }
+        .hub-hero-content { max-width: 55%; }
+        .hub-title { font-size: 42px; font-weight: 300; line-height: 1.2; color: var(--text-main); margin: 0 0 20px 0; letter-spacing: -0.5px; }
+        .hub-title strong { font-weight: 700; }
+        .hub-subtitle { font-size: 16px; color: var(--text-secondary); margin-bottom: 32px; line-height: 1.6; max-width: 90%; }
+        .hub-actions { display: flex; gap: 16px; }
+        .btn-hub-outline { border: 1px solid var(--text-main); color: var(--text-main); padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; background: transparent; transition: all 0.2s; }
+        .btn-hub-outline:hover { background: var(--bg-hover); }
+        .btn-hub-solid { background: #167768; color: #fff; padding: 12px 24px; border-radius: 8px; font-weight: 600; border: none; cursor: pointer; transition: background 0.2s; }
+        .btn-hub-solid:hover { background: #115c50; }
+        .hub-hero-graphic { flex: 1; display: flex; justify-content: center; position: relative; opacity: 0.8; }
+        
+        /* Join a Program Section */
+        .hub-programs-header { text-align: center; margin-bottom: 40px; }
+        .hub-programs-header h2 { font-size: 32px; color: var(--text-main); margin: 0 0 12px 0; }
+        .hub-programs-header p { color: var(--text-secondary); font-size: 16px; margin: 0; }
+        
+        /* Grid & Cards */
+        .hub-cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; padding-bottom: 40px; }
+        .hub-card { background: var(--bg-card); border-radius: 16px; overflow: hidden; box-shadow: var(--shadow-sm); border: 1px solid var(--border-main); display: flex; flex-direction: column; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; }
+        .hub-card:hover { transform: translateY(-6px); box-shadow: 0 12px 24px rgba(0,0,0,0.08); }
+        
+        /* Card Top (Color Banner) */
+        .hub-card-top { padding: 40px 24px; color: white; position: relative; overflow: hidden; height: 160px; display: flex; flex-direction: column; justify-content: flex-end; }
+        .hub-card-top h3 { font-size: 26px; font-weight: 800; margin: 0 0 8px 0; position: relative; z-index: 2; text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.1; }
+        .hub-card-top p { font-size: 13px; opacity: 0.95; margin: 0; position: relative; z-index: 2; font-weight: 500; }
+        
+        /* Abstract Card Backgrounds */
+        .hub-deco { position: absolute; background: rgba(255,255,255,0.15); }
+        .hub-deco-circle-1 { width: 200px; height: 200px; border-radius: 50%; bottom: -80px; right: -40px; }
+        .hub-deco-circle-2 { width: 100px; height: 100px; border-radius: 50%; top: -20px; left: -20px; }
+        .hub-deco-path { top: 0; left: 0; right: 0; bottom: 0; background-image: radial-gradient(circle at 80% 20%, rgba(255,255,255,0.2) 2px, transparent 2.5px); background-size: 20px 20px; opacity: 0.5; }
+        
+        /* Card Bottom (Content) */
+        .hub-card-bottom { padding: 24px; display: flex; flex-direction: column; flex-grow: 1; }
+        .hub-card-bottom-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+        .hub-card-bottom h4 { font-size: 18px; color: var(--text-main); margin: 0; }
+        .hub-card-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.6; margin: 0 0 32px 0; flex-grow: 1; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        
+        .hub-card-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 16px; border-top: 1px solid var(--border-soft); font-size: 12px; font-weight: 600; }
+        .hub-status { color: var(--text-muted); }
+        .hub-see-more { display: flex; align-items: center; gap: 4px; font-weight: 700; transition: gap 0.2s; }
+        .hub-card:hover .hub-see-more { gap: 8px; }
+        
+        .dark .hub-hero { border-bottom-color: var(--border-main); }
+        .dark .btn-hub-outline { border-color: var(--border-main); color: var(--text-main); }
+      `}</style>
+
+      {/* Hero Section */}
+      <div className="hub-hero">
+        <div className="hub-hero-content">
+          <h1 className="hub-title">
+            Welcome to the <strong>Innovation Wiki</strong> where we build the future together.
+          </h1>
+          <p className="hub-subtitle">
+            Explore our transformation solutions, discover deep operational intelligence, 
+            and turn collective knowledge into real impact.
+          </p>
+          <div className="hub-actions">
+            <button className="btn-hub-outline">View all solutions →</button>
+            <button className="btn-hub-solid">Submit your idea</button>
+          </div>
+        </div>
+        <div className="hub-hero-graphic">
+           {/* Geometric abstraction representing the circular graphic from the mockup */}
+           <svg width="350" height="350" viewBox="0 0 350 350" fill="none">
+              <circle cx="175" cy="175" r="150" stroke="url(#gradient)" strokeWidth="1" strokeDasharray="4 6" opacity="0.4" />
+              <circle cx="175" cy="175" r="110" stroke="url(#gradient)" strokeWidth="1" opacity="0.2" />
+              <path d="M175 25 L175 175 L290 220" stroke="var(--text-secondary)" strokeWidth="1" opacity="0.5" />
+              <circle cx="175" cy="25" r="4" fill="var(--text-main)" />
+              <circle cx="290" cy="220" r="4" fill="var(--text-main)" />
+              <text x="310" y="225" fill="var(--text-main)" fontSize="16" fontWeight="bold">01</text>
+              <defs>
+                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#4285F4" />
+                  <stop offset="100%" stopColor="#34A853" />
+                </linearGradient>
+              </defs>
+           </svg>
+        </div>
       </div>
-      <div className="wiki-table-wrapper">
-        <table className="wiki-table">
-          <thead>
-            <tr><th>Section</th><th>What it covers</th><th>Details available</th></tr>
-          </thead>
-          <tbody>
-            {wikiTableRows.map((row) => {
-              const Icon = row.icon;
-              return (
-                <tr key={row.id}>
-                  <td>
-                    <div className="table-section-cell">
-                      <div className="table-icon" style={{ color: row.color, backgroundColor: `${row.color}12` }}><Icon size={22} /></div>
-                      <strong>{row.section}</strong>
-                    </div>
-                  </td>
-                  <td>{row.covers}</td>
-                  <td>
-                    <div className="details-cell"><span className="bullet">•</span><span>{row.details}</span></div>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+
+      {/* Cards Section */}
+      <div className="hub-programs-header">
+        <h2>Explore a solution</h2>
+        <p>Discover technical documentation, submit feedback, and collaborate to solve real challenges</p>
+      </div>
+
+      <div className="hub-cards-grid">
+        {cards.map((solution) => {
+          const Icon = solution.icon;
+          const content = solutionContent[solution.id as SolutionId];
+          
+          return (
+            <div key={solution.id} className="hub-card" onClick={() => onSolutionSelect(solution.id)}>
+              <div className="hub-card-top" style={{ backgroundColor: solution.color }}>
+                {/* Decorative Background Patterns */}
+                <div className="hub-deco hub-deco-circle-1" />
+                <div className="hub-deco hub-deco-circle-2" />
+                <div className="hub-deco hub-deco-path" />
+                
+                <h3>{content.shortName}</h3>
+                <p>{content.tagline}</p>
+              </div>
+              
+              <div className="hub-card-bottom">
+                <div className="hub-card-bottom-header">
+                  <Icon size={20} color={solution.color} />
+                  <h4>{content.shortName}</h4>
+                </div>
+                <p className="hub-card-desc">{content.overview}</p>
+                
+                <div className="hub-card-footer">
+                  <span className="hub-status">Status: {content.metadata.status}</span>
+                  <span className="hub-see-more" style={{ color: solution.color }}>
+                    See more →
+                  </span>
+                </div>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </section>
   );
