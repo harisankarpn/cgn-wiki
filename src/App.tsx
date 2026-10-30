@@ -369,11 +369,11 @@ const CodeGeneratedPuzzleArtwork = () => (
 
 const solutions = [
   { id: 'home' as NavigationId, name: 'Innovation Wiki', subtitle: 'Overview & Knowledge Hub', icon: Home, color: '#1a73e8' },
-  { id: 'core' as NavigationId, name: 'C.O.R.E.', subtitle: 'Talent Acquisition & Readiness', icon: Target, color: '#1967d2' },
-  { id: 'elevate' as NavigationId, name: 'Elevate360', subtitle: 'Operational Governance', icon: BarChart3, color: '#16a34a' },
-  { id: 'sme' as NavigationId, name: 'Digital SME', subtitle: 'Real-Time Case Execution', icon: Bot, color: '#7c3aed' },
-  { id: 'accelerate' as NavigationId, name: 'Project Accelerate', subtitle: 'Customer Experience & Risk Control', icon: Zap, color: '#f59e0b' },
-  { id: 'crado' as NavigationId, name: 'CRADO', subtitle: 'Automated Billing Orchestrator', icon: FileText, color: '#0ea5e9' },
+  { id: 'core' as NavigationId, name: 'C.O.R.E.', subtitle: 'Talent Acquisition & Readiness', icon: Target, color: '#1967d2', image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=600&q=80' },
+  { id: 'elevate' as NavigationId, name: 'Elevate360', subtitle: 'Operational Governance', icon: BarChart3, color: '#16a34a', image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80' },
+  { id: 'sme' as NavigationId, name: 'Digital SME', subtitle: 'Real-Time Case Execution', icon: Bot, color: '#7c3aed', image: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=600&q=80' },
+  { id: 'accelerate' as NavigationId, name: 'Project Accelerate', subtitle: 'Customer Experience & Risk Control', icon: Zap, color: '#f59e0b', image: 'https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?auto=format&fit=crop&w=600&q=80' },
+  { id: 'crado' as NavigationId, name: 'CRADO', subtitle: 'Automated Billing Orchestrator', icon: FileText, color: '#0ea5e9', image: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=600&q=80' },
 ];
 
 const FEEDBACK_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSf0zu4Q-0kTjP03BLKMIPfQLePmL0P3xyAaaWr5COiuTGKqlA/viewform?usp=publish-editor';
@@ -947,7 +947,7 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
     return `${m}:${s.toString().padStart(2, '0')}`;
   };
 
-  // NEW: Transition UI shown 2 seconds after the puzzle is solved[cite: 8, 9]
+  // Transition UI shown 2 seconds after the puzzle is solved
   if (showHero) {
     return (
       <div style={{ minHeight: '100vh', width: '100%', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px', fontFamily: 'system-ui, sans-serif', animation: 'fadeIn 0.5s ease' }}>
@@ -992,7 +992,7 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
                 onClick={onComplete}
                 style={{ border: '1px solid var(--text-main)', color: 'var(--text-main)', padding: '12px 24px', borderRadius: '8px', fontWeight: 600, cursor: 'pointer', background: 'transparent', transition: 'all 0.2s', fontSize: '14px' }}
               >
-                View all solutions →
+                View all solutions &rarr;
               </button>
               <button 
                 onClick={onComplete}
@@ -1458,13 +1458,13 @@ function InnovationWikiHome({ onSolutionSelect }: { onSolutionSelect: (id: Navig
         .hub-programs-header p { color: var(--text-secondary); font-size: 16px; margin: 0; }
         
         /* Grid & Cards */
-        .hub-cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; padding-bottom: 40px; }
+        .hub-cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; padding-bottom: 40px; }
         .hub-card { background: var(--bg-card); border-radius: 16px; overflow: hidden; box-shadow: var(--shadow-sm); border: 1px solid var(--border-main); display: flex; flex-direction: column; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; }
         .hub-card:hover { transform: translateY(-6px); box-shadow: 0 12px 24px rgba(0,0,0,0.08); }
         
-        /* Card Top (Color Banner) */
+        /* Card Top (Color Banner with Generated Images) */
         .hub-card-top { padding: 40px 24px; color: white; position: relative; overflow: hidden; height: 160px; display: flex; flex-direction: column; justify-content: flex-end; }
-        .hub-card-top h3 { font-size: 26px; font-weight: 800; margin: 0 0 8px 0; position: relative; z-index: 2; text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.1; }
+        .hub-card-top h3 { font-size: 24px; font-weight: 800; margin: 0 0 8px 0; position: relative; z-index: 2; text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.1; }
         .hub-card-top p { font-size: 13px; opacity: 0.95; margin: 0; position: relative; z-index: 2; font-weight: 500; }
         
         /* Abstract Card Backgrounds */
@@ -1485,7 +1485,6 @@ function InnovationWikiHome({ onSolutionSelect }: { onSolutionSelect: (id: Navig
         .hub-card:hover .hub-see-more { gap: 8px; }
       `}</style>
 
-      {/* Cards Section Only. Highlighted top hero banner completely removed from default view. */}
       <div className="hub-programs-header">
         <h2>Explore a solution</h2>
         <p>Discover technical documentation, submit feedback, and collaborate to solve real challenges</p>
@@ -1499,13 +1498,23 @@ function InnovationWikiHome({ onSolutionSelect }: { onSolutionSelect: (id: Navig
           return (
             <div key={solution.id} className="hub-card" onClick={() => onSolutionSelect(solution.id)}>
               <div className="hub-card-top" style={{ backgroundColor: solution.color }}>
-                {/* Decorative Background Patterns */}
+                {/* Embedded dynamic AI generated background images */}
+                {solution.image && (
+                  <img 
+                    src={solution.image} 
+                    alt={solution.name} 
+                    style={{ 
+                      position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', 
+                      objectFit: 'cover', opacity: 0.35, zIndex: 1, mixBlendMode: 'overlay'
+                    }} 
+                  />
+                )}
                 <div className="hub-deco hub-deco-circle-1" />
                 <div className="hub-deco hub-deco-circle-2" />
                 <div className="hub-deco hub-deco-path" />
                 
-                <h3>{content.shortName}</h3>
-                <p>{content.tagline}</p>
+                <h3 style={{ position: 'relative', zIndex: 2 }}>{content.shortName}</h3>
+                <p style={{ position: 'relative', zIndex: 2 }}>{content.tagline}</p>
               </div>
               
               <div className="hub-card-bottom">
@@ -1518,7 +1527,7 @@ function InnovationWikiHome({ onSolutionSelect }: { onSolutionSelect: (id: Navig
                 <div className="hub-card-footer">
                   <span className="hub-status">Status: {content.metadata.status}</span>
                   <span className="hub-see-more" style={{ color: solution.color }}>
-                    See more →
+                    See more &rarr;
                   </span>
                 </div>
               </div>
