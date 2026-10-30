@@ -225,6 +225,20 @@ function GlobalThemeStyles() {
         background-color: var(--border-main);
         border-radius: 10px;
       }
+
+      /* Hub Hero Styles globally accessible for Puzzle Success Screen */
+      .hub-hero { display: flex; align-items: center; justify-content: space-between; padding: 40px 0 60px; margin-bottom: 40px; }
+      .hub-hero-content { max-width: 55%; text-align: left; }
+      .hub-title { font-size: 42px; font-weight: 300; line-height: 1.2; color: var(--text-main); margin: 0 0 20px 0; letter-spacing: -0.5px; }
+      .hub-title strong { font-weight: 700; }
+      .hub-subtitle { font-size: 16px; color: var(--text-secondary); margin-bottom: 32px; line-height: 1.6; max-width: 90%; }
+      .hub-actions { display: flex; gap: 16px; justify-content: flex-start; }
+      .btn-hub-outline { border: 1px solid var(--text-main); color: var(--text-main); padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; background: transparent; transition: all 0.2s; }
+      .btn-hub-outline:hover { background: var(--bg-hover); }
+      .btn-hub-solid { background: #167768; color: #fff; padding: 12px 24px; border-radius: 8px; font-weight: 600; border: none; cursor: pointer; transition: background 0.2s; }
+      .btn-hub-solid:hover { background: #115c50; }
+      .hub-hero-graphic { flex: 1; display: flex; justify-content: center; position: relative; opacity: 0.8; }
+      .dark .btn-hub-outline { border-color: var(--border-main); color: var(--text-main); }
     `}</style>
   );
 }
@@ -1134,6 +1148,42 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
           )}
         </div>
       </div>
+
+      {/* NEW: Hub Hero Banner shown upon puzzle success at the bottom */}
+      {isSolved && (
+        <div className="hub-hero" style={{ marginTop: '40px', width: '100%', maxWidth: '1100px', animation: 'fadeIn 0.8s ease', borderTop: '1px solid var(--border-soft)', paddingTop: '60px' }}>
+          <div className="hub-hero-content">
+            <h1 className="hub-title">
+              Welcome to the <strong>Innovation Wiki</strong> where we build the future together.
+            </h1>
+            <p className="hub-subtitle">
+              Explore our transformation solutions, discover deep operational intelligence,
+              and turn collective knowledge into real impact[cite: 4].
+            </p>
+            <div className="hub-actions">
+              {/* Triggering onComplete drops the user into the Wiki main page */}
+              <button className="btn-hub-outline" onClick={onComplete}>View all solutions →</button>
+              <button className="btn-hub-solid" onClick={onComplete}>Submit your idea</button>
+            </div>
+          </div>
+          <div className="hub-hero-graphic">
+             <svg width="350" height="350" viewBox="0 0 350 350" fill="none">
+                <circle cx="175" cy="175" r="150" stroke="url(#gradient)" strokeWidth="1" strokeDasharray="4 6" opacity="0.4" />
+                <circle cx="175" cy="175" r="110" stroke="url(#gradient)" strokeWidth="1" opacity="0.2" />
+                <path d="M175 25 L175 175 L290 220" stroke="var(--text-secondary)" strokeWidth="1" opacity="0.5" />
+                <circle cx="175" cy="25" r="4" fill="var(--text-main)" />
+                <circle cx="290" cy="220" r="4" fill="var(--text-main)" />
+                <text x="310" y="225" fill="var(--text-main)" fontSize="16" fontWeight="bold">01</text>
+                <defs>
+                  <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#4285F4" />
+                    <stop offset="100%" stopColor="#34A853" />
+                  </linearGradient>
+                </defs>
+             </svg>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -1311,35 +1361,44 @@ function App() {
 
           </div>
         </section>
-        <section className="platform-card-row five-platforms">
-          {solutions.map((platform) => {
-            const Icon = platform.icon;
-            const isSelected = selectedSolution === platform.id;
-            return (
-              <button
-                type="button"
-                key={platform.id}
-                className={`platform-card ${isSelected ? 'selected-glow' : ''}`}
-                onClick={() => openSolution(platform.id)}
-              >
-                <div className="platform-icon" style={{ color: platform.color, backgroundColor: `${platform.color}10` }}>
-                  <Icon size={44} strokeWidth={2.2} />
-                </div>
-                <div className="platform-copy">
-                  <h3>{platform.name}</h3>
-                  <p>{platform.subtitle}</p>
-                </div>
-                <ChevronRight size={22} className="platform-arrow" />
-              </button>
-            );
-          })}
-        </section>
+
+        {/* Removed highlighted top navigation ONLY from the main/home page as requested */}
+        {selectedSolution !== 'home' && (
+          <section className="platform-card-row five-platforms">
+            {solutions.map((platform) => {
+              const Icon = platform.icon;
+              const isSelected = selectedSolution === platform.id;
+              return (
+                <button
+                  type="button"
+                  key={platform.id}
+                  className={`platform-card ${isSelected ? 'selected-glow' : ''}`}
+                  onClick={() => openSolution(platform.id)}
+                >
+                  <div className="platform-icon" style={{ color: platform.color, backgroundColor: `${platform.color}10` }}>
+                    <Icon size={44} strokeWidth={2.2} />
+                  </div>
+                  <div className="platform-copy">
+                    <h3>{platform.name}</h3>
+                    <p>{platform.subtitle}</p>
+                  </div>
+                  <ChevronRight size={22} className="platform-arrow" />
+                </button>
+              );
+            })}
+          </section>
+        )}
 
         <div className="page-content main-page-content">
           {selectedSolution === 'home' ? (
             <InnovationWikiHome onSolutionSelect={openSolution} />
           ) : (
-            <SolutionPage solutionId={selectedSolution} activeSection={activeSection} setActiveSection={setActiveSection} />
+            <SolutionPage 
+              solutionId={selectedSolution} 
+              activeSection={activeSection} 
+              setActiveSection={setActiveSection} 
+              onGoHome={() => openSolution('home')}
+            />
           )}
         </div>
 
@@ -1374,19 +1433,6 @@ function InnovationWikiHome({ onSolutionSelect }: { onSolutionSelect: (id: Navig
       <style>{`
         .idea-hub-layout { font-family: system-ui, sans-serif; padding: 20px 40px; }
         
-        /* Hero Section */
-        .hub-hero { display: flex; align-items: center; justify-content: space-between; padding: 40px 0 60px; border-bottom: 1px solid var(--border-soft); margin-bottom: 40px; }
-        .hub-hero-content { max-width: 55%; }
-        .hub-title { font-size: 42px; font-weight: 300; line-height: 1.2; color: var(--text-main); margin: 0 0 20px 0; letter-spacing: -0.5px; }
-        .hub-title strong { font-weight: 700; }
-        .hub-subtitle { font-size: 16px; color: var(--text-secondary); margin-bottom: 32px; line-height: 1.6; max-width: 90%; }
-        .hub-actions { display: flex; gap: 16px; }
-        .btn-hub-outline { border: 1px solid var(--text-main); color: var(--text-main); padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; background: transparent; transition: all 0.2s; }
-        .btn-hub-outline:hover { background: var(--bg-hover); }
-        .btn-hub-solid { background: #167768; color: #fff; padding: 12px 24px; border-radius: 8px; font-weight: 600; border: none; cursor: pointer; transition: background 0.2s; }
-        .btn-hub-solid:hover { background: #115c50; }
-        .hub-hero-graphic { flex: 1; display: flex; justify-content: center; position: relative; opacity: 0.8; }
-        
         /* Join a Program Section */
         .hub-programs-header { text-align: center; margin-bottom: 40px; }
         .hub-programs-header h2 { font-size: 32px; color: var(--text-main); margin: 0 0 12px 0; }
@@ -1418,46 +1464,9 @@ function InnovationWikiHome({ onSolutionSelect }: { onSolutionSelect: (id: Navig
         .hub-status { color: var(--text-muted); }
         .hub-see-more { display: flex; align-items: center; gap: 4px; font-weight: 700; transition: gap 0.2s; }
         .hub-card:hover .hub-see-more { gap: 8px; }
-        
-        .dark .hub-hero { border-bottom-color: var(--border-main); }
-        .dark .btn-hub-outline { border-color: var(--border-main); color: var(--text-main); }
       `}</style>
 
-      {/* Hero Section */}
-      <div className="hub-hero">
-        <div className="hub-hero-content">
-          <h1 className="hub-title">
-            Welcome to the <strong>Innovation Wiki</strong> where we build the future together.
-          </h1>
-          <p className="hub-subtitle">
-            Explore our transformation solutions, discover deep operational intelligence, 
-            and turn collective knowledge into real impact.
-          </p>
-          <div className="hub-actions">
-            <button className="btn-hub-outline">View all solutions →</button>
-            <button className="btn-hub-solid">Submit your idea</button>
-          </div>
-        </div>
-        <div className="hub-hero-graphic">
-           {/* Geometric abstraction representing the circular graphic from the mockup */}
-           <svg width="350" height="350" viewBox="0 0 350 350" fill="none">
-              <circle cx="175" cy="175" r="150" stroke="url(#gradient)" strokeWidth="1" strokeDasharray="4 6" opacity="0.4" />
-              <circle cx="175" cy="175" r="110" stroke="url(#gradient)" strokeWidth="1" opacity="0.2" />
-              <path d="M175 25 L175 175 L290 220" stroke="var(--text-secondary)" strokeWidth="1" opacity="0.5" />
-              <circle cx="175" cy="25" r="4" fill="var(--text-main)" />
-              <circle cx="290" cy="220" r="4" fill="var(--text-main)" />
-              <text x="310" y="225" fill="var(--text-main)" fontSize="16" fontWeight="bold">01</text>
-              <defs>
-                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#4285F4" />
-                  <stop offset="100%" stopColor="#34A853" />
-                </linearGradient>
-              </defs>
-           </svg>
-        </div>
-      </div>
-
-      {/* Cards Section */}
+      {/* Cards Section Only. Highlighted top sections removed from default view[cite: 5]. */}
       <div className="hub-programs-header">
         <h2>Explore a solution</h2>
         <p>Discover technical documentation, submit feedback, and collaborate to solve real challenges</p>
@@ -1510,9 +1519,10 @@ type SolutionPageProps = {
   solutionId: SolutionId;
   activeSection: SectionId;
   setActiveSection: Dispatch<SetStateAction<SectionId>>;
+  onGoHome: () => void;
 };
 
-function SolutionPage({ solutionId, activeSection, setActiveSection }: SolutionPageProps) {
+function SolutionPage({ solutionId, activeSection, setActiveSection, onGoHome }: SolutionPageProps) {
   const content = solutionContent[solutionId];
   const platform = solutions.find((item) => item.id === solutionId);
 
@@ -1525,7 +1535,15 @@ function SolutionPage({ solutionId, activeSection, setActiveSection }: SolutionP
       {/* START: Solution Header Block */}
       <div className="solution-header">
         <div className="solution-header-left">
-          <div className="breadcrumbs">Solutions {" > "} {content.shortName}</div>
+          <div className="breadcrumbs">
+            <span 
+              style={{ cursor: 'pointer', color: '#1a73e8', fontWeight: 500 }} 
+              onClick={onGoHome}
+            >
+              Solutions
+            </span> 
+            {" > "} {content.shortName}
+          </div>
           <div className="solution-title-row">
             <div className="solution-header-icon" style={{ color: platform.color, backgroundColor: `${platform.color}15` }}>
               <Icon size={28} strokeWidth={2.5} />
