@@ -141,6 +141,11 @@ function GlobalThemeStyles() {
         70% { box-shadow: 0 0 0 12px rgba(66, 133, 244, 0); }
         100% { box-shadow: 0 0 0 0 rgba(66, 133, 244, 0); }
       }
+        
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
 
       .premium-hero {
         min-height: 90px !important;
@@ -775,11 +780,20 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
   }>({ id: null, source: null, isDragging: false, x: 0, y: 0 });
 
   const [isSolved, setIsSolved] = useState(false);
+  const [showHero, setShowHero] = useState(false);
   const [timeLeft, setTimeLeft] = useState(180); 
   const [isFailed, setIsFailed] = useState(false);
 
   useEffect(() => {
-    if (isSolved || isFailed) return;
+    if (isFailed) return;
+    
+    // When solved, wait 2 seconds and trigger the Hero UI swap
+    if (isSolved) {
+      const timer = setTimeout(() => {
+        setShowHero(true);
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
 
     if (timeLeft <= 0) {
       setIsFailed(true);
@@ -822,6 +836,7 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
     setPoolPieces([...INITIAL_PIECES].sort(() => Math.random() - 0.5));
     setSlots(Array(TOTAL_PIECES).fill(null));
     setIsSolved(false);
+    setShowHero(false);
     setIsFailed(false);
     setTimeLeft(180);
     setDragState({ id: null, source: null, isDragging: false, x: 0, y: 0 });
@@ -931,6 +946,66 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
     const s = seconds % 60;
     return `${m}:${s.toString().padStart(2, '0')}`;
   };
+
+  // NEW: Transition UI shown 2 seconds after the puzzle is solved[cite: 8, 9]
+  if (showHero) {
+    return (
+      <div style={{ minHeight: '100vh', width: '100%', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px', fontFamily: 'system-ui, sans-serif', animation: 'fadeIn 0.5s ease' }}>
+        <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+          <h1 style={{ color: 'var(--text-main)', margin: '0 0 12px', fontSize: '32px', fontWeight: 700 }}>Innovation Wiki Access</h1>
+          <p style={{ color: 'var(--text-secondary)', margin: 0, fontSize: '16px' }}>Assembly complete. System unlocked.</p>
+        </div>
+        
+        <div style={{ display: 'flex', gap: '24px', alignItems: 'stretch', justifyContent: 'center', flexWrap: 'wrap', maxWidth: '1000px', width: '100%' }}>
+          {/* Left: Completed Puzzle Graphic */}
+          <div style={{ 
+            width: '400px', height: '400px', 
+            borderRadius: '16px', overflow: 'hidden', 
+            border: '2px solid #34a853', 
+            boxShadow: '0 12px 30px rgba(52, 168, 83, 0.15)',
+            position: 'relative',
+            backgroundColor: 'white',
+            flexShrink: 0
+          }}>
+            <CodeGeneratedPuzzleArtwork />
+          </div>
+
+          {/* Right: Welcome Card */}
+          <div style={{ 
+            flex: 1, minWidth: '350px',
+            background: 'var(--bg-card)', 
+            borderRadius: '16px', 
+            padding: '48px 40px', 
+            border: '1px solid var(--border-main)',
+            boxShadow: 'var(--shadow-sm)',
+            display: 'flex', flexDirection: 'column', justifyContent: 'center'
+          }}>
+            <h2 style={{ fontSize: '36px', fontWeight: 300, lineHeight: 1.3, color: 'var(--text-main)', margin: '0 0 16px 0', letterSpacing: '-0.5px' }}>
+              Welcome to the <strong style={{ fontWeight: 700 }}>Innovation Wiki</strong><br/>where we build the future together.
+            </h2>
+            <p style={{ fontSize: '15px', color: 'var(--text-secondary)', marginBottom: '32px', lineHeight: 1.6 }}>
+              Explore our transformation solutions, discover deep operational intelligence,
+              and turn collective knowledge into real impact.
+            </p>
+            <div style={{ display: 'flex', gap: '16px' }}>
+              <button 
+                onClick={onComplete}
+                style={{ border: '1px solid var(--text-main)', color: 'var(--text-main)', padding: '12px 24px', borderRadius: '8px', fontWeight: 600, cursor: 'pointer', background: 'transparent', transition: 'all 0.2s', fontSize: '14px' }}
+              >
+                View all solutions →
+              </button>
+              <button 
+                onClick={onComplete}
+                style={{ background: '#167768', color: '#fff', padding: '12px 24px', borderRadius: '8px', fontWeight: 600, border: 'none', cursor: 'pointer', transition: 'background 0.2s', fontSize: '14px' }}
+              >
+                Submit your idea
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
      <div style={{ minHeight: '100vh', width: '100%', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px', fontFamily: 'system-ui, sans-serif', position: 'relative' }}>
@@ -1081,28 +1156,11 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
           borderRadius: '16px', border: '1px solid var(--border-main)' 
         }}>
           {isSolved ? (
-            <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', textAlign: 'left', animation: 'fadeIn 0.5s ease', padding: '20px' }}>
-              <h1 style={{ fontSize: '36px', fontWeight: 300, lineHeight: 1.2, color: 'var(--text-main)', margin: '0 0 16px 0', letterSpacing: '-0.5px' }}>
-                Welcome to the <strong style={{ fontWeight: 700 }}>Innovation Wiki</strong><br/>where we build the future together.
-              </h1>
-              <p style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '32px', lineHeight: 1.6, maxWidth: '90%' }}>
-                Explore our transformation solutions, discover deep operational intelligence,
-                and turn collective knowledge into real impact.
-              </p>
-              <div style={{ display: 'flex', gap: '16px' }}>
-                <button 
-                  onClick={onComplete}
-                  style={{ border: '1px solid var(--text-main)', color: 'var(--text-main)', padding: '12px 24px', borderRadius: '8px', fontWeight: 600, cursor: 'pointer', background: 'transparent', transition: 'all 0.2s', fontSize: '14px' }}
-                >
-                  View all solutions →
-                </button>
-                <button 
-                  onClick={onComplete}
-                  style={{ background: '#167768', color: '#fff', padding: '12px 24px', borderRadius: '8px', fontWeight: 600, border: 'none', cursor: 'pointer', transition: 'background 0.2s', fontSize: '14px' }}
-                >
-                  Submit your idea
-                </button>
+            <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', animation: 'fadeIn 0.5s ease' }}>
+              <div style={{ width: '60px', height: '60px', borderRadius: '50%', backgroundColor: '#dcfce7', color: '#166534', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '20px' }}>
+                <ShieldCheck size={32} />
               </div>
+              <h3 style={{ margin: '0 0 20px', color: 'var(--text-main)' }}>Verification Successful</h3>
             </div>
           ) : isFailed ? (
             <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', animation: 'fadeIn 0.5s ease' }}>
