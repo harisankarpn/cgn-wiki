@@ -55,6 +55,7 @@ import puzzleBg from './background.jpeg';
 import bgImage from './background.jpeg';
 import gcpGif from './gcp.gif';
 import coreVideo from './C.O.R.E.mp4';
+import welcomeImage from './Image.jpg';
 
 /* =========================================================
    TYPES
@@ -759,32 +760,50 @@ const sections = [
    WELCOME BANNER (10-SECOND ANIMATION)
 ========================================================= */
 function WelcomeBanner({ onComplete }: { onComplete: () => void }) {
-  const [displayedText, setDisplayedText] = useState("");
+  const [currentIndex, setCurrentIndex] = useState(0);
   const fullText = "Welcome to the Innovation Wiki! Explore our transformation solutions, discover innovative ideas, and shape a smarter tomorrow.";
   const [animationDone, setAnimationDone] = useState(false);
 
   useEffect(() => {
-    let currentIndex = 0;
     const totalChars = fullText.length;
     const intervalTime = 10000 / totalChars; // Spans exactly 10 seconds
 
     const timer = setInterval(() => {
-      if (currentIndex < totalChars) {
-        setDisplayedText(fullText.slice(0, currentIndex + 1));
-        currentIndex++;
-      } else {
-        clearInterval(timer);
-        setAnimationDone(true);
-      }
+      setCurrentIndex((prev) => {
+        if (prev < totalChars) {
+          return prev + 1;
+        } else {
+          clearInterval(timer);
+          setAnimationDone(true);
+          return prev;
+        }
+      });
     }, intervalTime);
     return () => clearInterval(timer);
   }, [fullText]);
+
+  // Map exact colors to the characters based on your visual reference
+  const getColorForIndex = (index: number) => {
+     // "Innovation" starts at index 15, ends at 24
+     if (index >= 15 && index < 25) {
+         const colors = ['#4285F4', '#4285F4', '#4285F4', '#FBBC04', '#FBBC04', '#4285F4', '#34A853', '#EA4335', '#EA4335', '#4285F4'];
+         return colors[index - 15];
+     }
+     // "transformation" starts at index 44, ends at 58
+     if (index >= 44 && index < 58) return '#4285F4'; 
+     // "innovative" starts at index 79, ends at 89
+     if (index >= 79 && index < 89) return '#34A853'; 
+     // "smarter" starts at index 109, ends at 116
+     if (index >= 109 && index < 116) return '#EA4335'; 
+     
+     return 'var(--text-main)';
+  };
 
   return (
     <div style={{
       minHeight: '100vh', width: '100%', boxSizing: 'border-box',
       display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-      padding: '40px', backgroundColor: 'var(--bg-main)',
+      padding: '40px', backgroundColor: 'transparent', 
       animation: 'fadeIn 1s ease', position: 'relative', overflow: 'hidden'
     }}>
       <style>{`
@@ -824,13 +843,15 @@ function WelcomeBanner({ onComplete }: { onComplete: () => void }) {
         {/* Dynamic Hero Image */}
         <div style={{ position: 'relative', marginBottom: '32px', width: '100%', textAlign: 'center' }}>
            <img
-             src="Image.jpg"
+             src={welcomeImage}
              alt="Welcome to Innovation Wiki"
              style={{
                maxWidth: '100%', height: 'auto', maxHeight: '350px',
                borderRadius: '16px',
-               animation: 'lightbulbGlow 4s infinite'
+               animation: 'lightbulbGlow 4s infinite',
+               objectFit: 'contain'
              }}
+             onError={(e) => { e.currentTarget.src = 'Image.jpg'; }} // Fallback if import fails
            />
            <div className="welcome-sparkle" style={{ top: '15%', left: '20%', animationDelay: '0s' }}></div>
            <div className="welcome-sparkle" style={{ top: '25%', right: '25%', animationDelay: '0.8s' }}></div>
@@ -840,17 +861,21 @@ function WelcomeBanner({ onComplete }: { onComplete: () => void }) {
 
         {/* Handwritten Text */}
         <div style={{
-          fontFamily: '"Segoe Script", "Brush Script MT", cursive',
-          fontSize: '26px',
+          fontFamily: '"Caveat", "Comic Sans MS", "Chalkboard SE", "Brush Script MT", cursive',
+          fontSize: '32px',
           color: 'var(--text-main)',
           textAlign: 'center',
-          minHeight: '85px', 
+          minHeight: '100px', 
           lineHeight: 1.5,
           marginBottom: '40px',
           fontWeight: 600,
           maxWidth: '90%'
         }}>
-          {displayedText}
+          {fullText.slice(0, currentIndex).split('').map((char, index) => (
+             <span key={index} style={{ color: getColorForIndex(index), transition: 'color 0.3s' }}>
+               {char}
+             </span>
+          ))}
           {!animationDone && <span style={{ borderRight: '2px solid var(--text-main)', paddingRight: '4px', animation: 'blinkCursor 0.7s infinite' }}></span>}
         </div>
 
