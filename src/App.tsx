@@ -56,6 +56,7 @@ import bgImage from './background.jpeg';
 import gcpGif from './gcp.gif';
 import coreVideo from './C.O.R.E.mp4';
 import birdArtwork from './Image_2.png';
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&display=swap');
 
 /* =========================================================
    TYPES
@@ -757,47 +758,19 @@ const sections = [
 ];
 
 /* =========================================================
-   WELCOME BANNER (Cursive Text on Left, Bird Artwork on Right)
+   WELCOME BANNER (Handwriting Cursive Animation)
 ========================================================= */
 function WelcomeBanner({ onComplete }: { onComplete: () => void }) {
-  const [currentIndex, setCurrentIndex] = useState(0);
   const fullText = "Welcome to the Innovation Wiki! Explore our transformation solutions, discover innovative ideas, and shape a smarter tomorrow.";
   const [animationDone, setAnimationDone] = useState(false);
 
   useEffect(() => {
-    const totalChars = fullText.length;
-    const intervalTime = 10000 / totalChars; // Spans exactly 10 seconds
-
-    const timer = setInterval(() => {
-      setCurrentIndex((prev) => {
-        if (prev < totalChars) {
-          return prev + 1;
-        } else {
-          clearInterval(timer);
-          setAnimationDone(true);
-          return prev;
-        }
-      });
-    }, intervalTime);
-    return () => clearInterval(timer);
-  }, [fullText]);
-
-  // Map exact colors to specific words based on your visual reference
-  const getColorForIndex = (index: number) => {
-     // "Innovation" starts at index 15, ends at 24
-     if (index >= 15 && index < 25) {
-         const colors = ['#4285F4', '#EA4335', '#FBBC04', '#4285F4', '#34A853', '#EA4335', '#FBBC04', '#4285F4', '#34A853', '#EA4335'];
-         return colors[index - 15];
-     }
-     // "transformation" starts at index 44, ends at 58
-     if (index >= 44 && index < 58) return '#4285F4'; 
-     // "innovative" starts at index 79, ends at 89
-     if (index >= 79 && index < 89) return '#34A853'; 
-     // "smarter" starts at index 109, ends at 116
-     if (index >= 109 && index < 116) return '#EA4335'; 
-     
-     return 'var(--text-main)';
-  };
+    // Total duration of the writing animation (e.g., 6 seconds)
+    const timer = setTimeout(() => {
+      setAnimationDone(true);
+    }, 6000);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <div style={{
@@ -807,25 +780,26 @@ function WelcomeBanner({ onComplete }: { onComplete: () => void }) {
       animation: 'fadeIn 1s ease', position: 'relative', overflow: 'hidden'
     }}>
       <style>{`
-        @keyframes sparkleTwinkle {
-          0%, 100% { opacity: 0; transform: scale(0.5) rotate(0deg); }
-          50% { opacity: 1; transform: scale(1.2) rotate(180deg); }
+        @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&display=swap');
+
+        @keyframes writeEffect {
+          from { stroke-dashoffset: 2000; }
+          to { stroke-dashoffset: 0; }
         }
-        @keyframes blinkCursor {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0; }
+
+        @keyframes fadeInButtons {
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
         }
-        .welcome-sparkle {
-          position: absolute;
-          width: 12px; height: 12px;
-          background: radial-gradient(circle, #fff 20%, #FBBC04 80%);
-          border-radius: 50%;
-          box-shadow: 0 0 10px #FBBC04, 0 0 15px #fff;
-          animation: sparkleTwinkle 2.5s infinite ease-in-out;
+
+        .handwritten-text {
+          font-family: 'Caveat', cursive, sans-serif;
+          font-size: 38px;
+          font-weight: 700;
+          fill: var(--text-main);
         }
       `}</style>
 
-      {/* Main Container Card holding Left Text and Right Image side-by-side */}
       <div style={{
         position: 'relative',
         width: '100%', maxWidth: '1100px',
@@ -841,36 +815,34 @@ function WelcomeBanner({ onComplete }: { onComplete: () => void }) {
         zIndex: 2
       }}>
         
-        {/* Subtle background sparkles */}
-        <div className="welcome-sparkle" style={{ top: '25%', left: '15%', animationDelay: '0s' }}></div>
-        <div className="welcome-sparkle" style={{ top: '15%', left: '40%', animationDelay: '0.8s' }}></div>
-
-        {/* LEFT COLUMN: Cursive Content & Action Buttons */}
+        {/* LEFT COLUMN: SVG Handwriting Animation */}
         <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
           
-          {/* Cursive Animated Text */}
-          <div style={{
-            fontFamily: '"Comic Sans MS", "Chalkboard SE", "Caveat", "Brush Script MT", cursive',
-            fontSize: '30px',
-            color: 'var(--text-main)',
-            textAlign: 'left',
-            lineHeight: 1.5,
-            marginBottom: '40px',
-            fontWeight: 700
-          }}>
-            {fullText.slice(0, currentIndex).split('').map((char, index) => (
-               <span key={index} style={{ color: getColorForIndex(index), transition: 'color 0.3s' }}>
-                 {char}
-               </span>
-            ))}
-            {!animationDone && <span style={{ borderRight: '3px solid var(--text-main)', paddingRight: '4px', animation: 'blinkCursor 0.7s infinite' }}></span>}
+          <div style={{ width: '100%', minHeight: '160px', marginBottom: '20px' }}>
+            <svg viewBox="0 0 700 180" width="100%" height="100%">
+              <text 
+                x="10" 
+                y="50" 
+                className="handwritten-text"
+                style={{
+                  strokeDasharray: 2000,
+                  strokeDashoffset: 2000,
+                  animation: 'writeEffect 5s cubic-bezier(0.4, 0, 0.2, 1) forwards',
+                  stroke: '#1a73e8',
+                  strokeWidth: '1.5px',
+                  paintOrder: 'stroke fill'
+                }}
+              >
+                {fullText}
+              </text>
+            </svg>
           </div>
 
           {/* CTA Buttons */}
           <div style={{
             display: 'flex', gap: '16px',
-            opacity: animationDone ? 1 : 0.4,
-            transition: 'opacity 1s ease',
+            opacity: animationDone ? 1 : 0,
+            animation: animationDone ? 'fadeInButtons 0.8s ease forwards' : 'none',
             pointerEvents: animationDone ? 'auto' : 'none' 
           }}>
             <button
@@ -913,7 +885,7 @@ function WelcomeBanner({ onComplete }: { onComplete: () => void }) {
 
         </div>
 
-        {/* RIGHT COLUMN: The exact Puzzle / Bird Artwork Image */}
+        {/* RIGHT COLUMN: Bird Artwork */}
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <img 
             src={birdArtwork} 
