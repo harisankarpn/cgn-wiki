@@ -885,7 +885,7 @@ function WelcomeBanner({ onComplete }: { onComplete: () => void }) {
             View all solutions →
           </button>
           <button
-            onClick={() => window.open('https://docs.google.com/spreadsheets/create', '_blank')}
+            onClick={() => window.open('https://docs.google.com/spreadsheets/d/1mf9e-ZYGta6SYblrimzog7vSM1ghOJYG23eD-6LGPDc/edit?gid=0&resourcekey=0-3CrGH5vJoBaqyCywtRFZ1w#gid=0', '_blank')}
             style={{
               background: '#167768',
               color: '#fff',
