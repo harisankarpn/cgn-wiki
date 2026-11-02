@@ -55,6 +55,7 @@ import puzzleBg from './background.jpeg';
 import bgImage from './background.jpeg';
 import gcpGif from './gcp.gif';
 import coreVideo from './C.O.R.E.mp4';
+import birdArtwork from './Image_2.png';
 
 /* =========================================================
    TYPES
@@ -756,7 +757,7 @@ const sections = [
 ];
 
 /* =========================================================
-   WELCOME BANNER (10-SECOND ANIMATION)
+   WELCOME BANNER (Cursive Text on Left, Bird Artwork on Right)
 ========================================================= */
 function WelcomeBanner({ onComplete }: { onComplete: () => void }) {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -781,7 +782,7 @@ function WelcomeBanner({ onComplete }: { onComplete: () => void }) {
     return () => clearInterval(timer);
   }, [fullText]);
 
-  // Map exact colors to the characters based on your visual reference
+  // Map exact colors to specific words based on your visual reference
   const getColorForIndex = (index: number) => {
      // "Innovation" starts at index 15, ends at 24
      if (index >= 15 && index < 25) {
@@ -824,90 +825,112 @@ function WelcomeBanner({ onComplete }: { onComplete: () => void }) {
         }
       `}</style>
 
+      {/* Main Container Card holding Left Text and Right Image side-by-side */}
       <div style={{
         position: 'relative',
-        width: '100%', maxWidth: '850px',
+        width: '100%', maxWidth: '1100px',
         background: 'var(--bg-card)',
         borderRadius: '24px',
         border: '1px solid var(--border-main)',
         boxShadow: 'var(--shadow-sm)',
-        display: 'flex', flexDirection: 'column', alignItems: 'center',
-        padding: '80px 48px', zIndex: 2
+        display: 'grid',
+        gridTemplateColumns: '1fr 400px',
+        alignItems: 'center',
+        gap: '40px',
+        padding: '60px 48px', 
+        zIndex: 2
       }}>
-        {/* Subtle background sparkles matching the image */}
-        <div className="welcome-sparkle" style={{ top: '25%', left: '30%', animationDelay: '0s' }}></div>
-        <div className="welcome-sparkle" style={{ top: '15%', left: '50%', animationDelay: '0.8s' }}></div>
-        <div className="welcome-sparkle" style={{ top: '20%', right: '32%', animationDelay: '1.5s' }}></div>
+        
+        {/* Subtle background sparkles */}
+        <div className="welcome-sparkle" style={{ top: '25%', left: '15%', animationDelay: '0s' }}></div>
+        <div className="welcome-sparkle" style={{ top: '15%', left: '40%', animationDelay: '0.8s' }}></div>
 
-        {/* Colorful Handwritten Text */}
-        <div style={{
-          fontFamily: '"Comic Sans MS", "Chalkboard SE", "Caveat", "Brush Script MT", cursive',
-          fontSize: '32px',
-          color: 'var(--text-main)',
-          textAlign: 'center',
-          minHeight: '120px', 
-          lineHeight: 1.6,
-          marginBottom: '40px',
-          fontWeight: 700,
-          maxWidth: '90%'
-        }}>
-          {fullText.slice(0, currentIndex).split('').map((char, index) => (
-             <span key={index} style={{ color: getColorForIndex(index), transition: 'color 0.3s' }}>
-               {char}
-             </span>
-          ))}
-          {!animationDone && <span style={{ borderRight: '3px solid var(--text-main)', paddingRight: '4px', animation: 'blinkCursor 0.7s infinite' }}></span>}
+        {/* LEFT COLUMN: Cursive Content & Action Buttons */}
+        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+          
+          {/* Cursive Animated Text */}
+          <div style={{
+            fontFamily: '"Comic Sans MS", "Chalkboard SE", "Caveat", "Brush Script MT", cursive',
+            fontSize: '30px',
+            color: 'var(--text-main)',
+            textAlign: 'left',
+            lineHeight: 1.5,
+            marginBottom: '40px',
+            fontWeight: 700
+          }}>
+            {fullText.slice(0, currentIndex).split('').map((char, index) => (
+               <span key={index} style={{ color: getColorForIndex(index), transition: 'color 0.3s' }}>
+                 {char}
+               </span>
+            ))}
+            {!animationDone && <span style={{ borderRight: '3px solid var(--text-main)', paddingRight: '4px', animation: 'blinkCursor 0.7s infinite' }}></span>}
+          </div>
+
+          {/* CTA Buttons */}
+          <div style={{
+            display: 'flex', gap: '16px',
+            opacity: animationDone ? 1 : 0.4,
+            transition: 'opacity 1s ease',
+            pointerEvents: animationDone ? 'auto' : 'none' 
+          }}>
+            <button
+              onClick={onComplete}
+              style={{
+                background: 'transparent',
+                color: 'var(--text-main)',
+                border: '2px solid var(--text-main)',
+                padding: '12px 28px',
+                borderRadius: '12px',
+                fontSize: '15px',
+                fontWeight: 700,
+                cursor: 'pointer',
+                transition: 'background 0.2s'
+              }}
+              onMouseOver={(e) => { e.currentTarget.style.background = 'var(--bg-hover)' }}
+              onMouseOut={(e) => { e.currentTarget.style.background = 'transparent' }}
+            >
+              View all solutions →
+            </button>
+            <button
+              onClick={() => window.open('https://docs.google.com/spreadsheets/d/1mf9e-ZYGta6SYblrimzog7vSM1ghOJYG23eD-6LGPDc/edit?gid=0&resourcekey=0-3CrGH5vJoBaqyCywtRFZ1w#gid=0', '_blank')}
+              style={{
+                background: '#167768',
+                color: '#fff',
+                border: 'none',
+                padding: '12px 28px',
+                borderRadius: '12px',
+                fontSize: '15px',
+                fontWeight: 700,
+                cursor: 'pointer',
+                transition: 'background 0.2s'
+              }}
+              onMouseOver={(e) => { e.currentTarget.style.background = '#105a4e' }}
+              onMouseOut={(e) => { e.currentTarget.style.background = '#167768' }}
+            >
+              Submit your idea
+            </button>
+          </div>
+
         </div>
 
-        {/* CTA Buttons - Opacity tied to animation state */}
-        <div style={{
-          display: 'flex', gap: '20px',
-          opacity: animationDone ? 1 : 0.4,
-          transition: 'opacity 1s ease',
-          pointerEvents: animationDone ? 'auto' : 'none' 
-        }}>
-          <button
-            onClick={onComplete}
-            style={{
-              background: 'transparent',
-              color: 'var(--text-main)',
-              border: '2px solid var(--text-main)',
-              padding: '14px 32px',
-              borderRadius: '12px',
-              fontSize: '15px',
-              fontWeight: 700,
-              cursor: 'pointer',
-              transition: 'background 0.2s'
-            }}
-            onMouseOver={(e) => { e.currentTarget.style.background = 'var(--bg-hover)' }}
-            onMouseOut={(e) => { e.currentTarget.style.background = 'transparent' }}
-          >
-            View all solutions →
-          </button>
-          <button
-            onClick={() => window.open('https://docs.google.com/spreadsheets/d/1mf9e-ZYGta6SYblrimzog7vSM1ghOJYG23eD-6LGPDc/edit?gid=0&resourcekey=0-3CrGH5vJoBaqyCywtRFZ1w#gid=0', '_blank')}
-            style={{
-              background: '#167768',
-              color: '#fff',
-              border: 'none',
-              padding: '14px 32px',
-              borderRadius: '12px',
-              fontSize: '15px',
-              fontWeight: 700,
-              cursor: 'pointer',
-              transition: 'background 0.2s'
-            }}
-            onMouseOver={(e) => { e.currentTarget.style.background = '#105a4e' }}
-            onMouseOut={(e) => { e.currentTarget.style.background = '#167768' }}
-          >
-            Submit your idea
-          </button>
+        {/* RIGHT COLUMN: The exact Puzzle / Bird Artwork Image */}
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <img 
+            src={birdArtwork} 
+            alt="Puzzle Bird Artwork" 
+            style={{ 
+              width: '100%', 
+              maxWidth: '380px', 
+              height: 'auto', 
+              objectFit: 'contain' 
+            }} 
+          />
         </div>
+
       </div>
     </div>
   );
 }
-
 /* =========================================================
    SPLASH PUZZLE COMPONENT
 ========================================================= */
