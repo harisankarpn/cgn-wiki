@@ -78,6 +78,8 @@ type BenefitItem = {
 function GlobalThemeStyles() {
   return (
     <style>{`
+      @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&display=swap');
+
       :root {
         --bg-main: #f8fafc;
         --bg-card: #ffffff;
