@@ -56,7 +56,6 @@ import bgImage from './background.jpeg';
 import gcpGif from './gcp.gif';
 import coreVideo from './C.O.R.E.mp4';
 import birdArtwork from './Image_2.png';
-// import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&display=swap');
 
 /* =========================================================
    TYPES
@@ -1217,7 +1216,7 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
        
      <div style={{ position: 'fixed', bottom: '40px', left: '40px', zIndex: 50 }}>
         <button 
-          onClick={onSkip} 
+          onClick={() => setShowHero(true)} 
           style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid var(--border-main)', background: 'var(--bg-card)', color: 'var(--text-secondary)', fontWeight: 600, cursor: 'pointer', transition: 'background 0.2s', boxShadow: 'var(--shadow-sm)' }}
         >
           Skip Puzzle
@@ -1466,19 +1465,41 @@ function App() {
                 />
               </div>
               
-              <div>
-                <h1 className="premium-title" style={{ fontSize: '2.2rem', margin: 0, lineHeight: 1.2 }}>
-                  <span>GCP Tech</span>
-                  <span className="title-highlight"> Transformation </span>
-                  <span>Solutions</span>
-                </h1>
-                <div className="outcome-row" style={{ marginTop: '8px' }}>
-                  <div className="outcome-item"><Users size={16} /><span>Smarter People</span></div>
-                  <div className="outcome-divider"></div>
-                  <div className="outcome-item"><BarChart3 size={16} /><span>Stronger Operations</span></div>
-                  <div className="outcome-divider"></div>
-                  <div className="outcome-item"><Star size={16} /><span>Better Customer Experiences</span></div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
+                <div>
+                  <h1 className="premium-title" style={{ fontSize: '2.2rem', margin: 0, lineHeight: 1.2 }}>
+                    <span>GCP Tech</span>
+                    <span className="title-highlight"> Transformation </span>
+                    <span>Solutions</span>
+                  </h1>
+                  <div className="outcome-row" style={{ marginTop: '8px' }}>
+                    <div className="outcome-item"><Users size={16} /><span>Smarter People</span></div>
+                    <div className="outcome-divider"></div>
+                    <div className="outcome-item"><BarChart3 size={16} /><span>Stronger Operations</span></div>
+                    <div className="outcome-divider"></div>
+                    <div className="outcome-item"><Star size={16} /><span>Better Customer Experiences</span></div>
+                  </div>
                 </div>
+
+                {/* Home Button added beside the header */}
+                {selectedSolution !== 'home' && (
+                  <button 
+                    onClick={() => openSolution('home')}
+                    style={{
+                      display: 'flex', alignItems: 'center', gap: '8px',
+                      padding: '10px 20px', background: 'var(--bg-card)', 
+                      border: '1px solid var(--border-main)', borderRadius: '12px',
+                      color: 'var(--text-main)', fontWeight: 600, fontSize: '15px',
+                      cursor: 'pointer', boxShadow: 'var(--shadow-sm)',
+                      transition: 'all 0.2s ease'
+                    }}
+                    onMouseOver={(e) => { e.currentTarget.style.background = 'var(--bg-hover)' }}
+                    onMouseOut={(e) => { e.currentTarget.style.background = 'var(--bg-card)' }}
+                  >
+                    <Home size={20} color="#1a73e8" />
+                    <span>Home</span>
+                  </button>
+                )}
               </div>
             </div>
 
@@ -1504,33 +1525,6 @@ function App() {
 
           </div>
         </section>
-
-        {/* Highlighted top navigation removed from the main/home page as requested */}
-        {selectedSolution !== 'home' && (
-          <section className="platform-card-row five-platforms">
-            {solutions.map((platform) => {
-              const Icon = platform.icon;
-              const isSelected = selectedSolution === platform.id;
-              return (
-                <button
-                  type="button"
-                  key={platform.id}
-                  className={`platform-card ${isSelected ? 'selected-glow' : ''}`}
-                  onClick={() => openSolution(platform.id)}
-                >
-                  <div className="platform-icon" style={{ color: platform.color, backgroundColor: `${platform.color}10` }}>
-                    <Icon size={44} strokeWidth={2.2} />
-                  </div>
-                  <div className="platform-copy">
-                    <h3>{platform.name}</h3>
-                    <p>{platform.subtitle}</p>
-                  </div>
-                  <ChevronRight size={22} className="platform-arrow" />
-                </button>
-              );
-            })}
-          </section>
-        )}
 
         <div className="page-content main-page-content">
           {selectedSolution === 'home' ? (
