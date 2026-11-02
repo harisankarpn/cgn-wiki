@@ -55,7 +55,6 @@ import puzzleBg from './background.jpeg';
 import bgImage from './background.jpeg';
 import gcpGif from './gcp.gif';
 import coreVideo from './C.O.R.E.mp4';
-import welcomeImage from './Image_2.jpg';
 
 /* =========================================================
    TYPES
@@ -843,7 +842,7 @@ function WelcomeBanner({ onComplete }: { onComplete: () => void }) {
         {/* Dynamic Hero Image */}
         <div style={{ position: 'relative', marginBottom: '32px', width: '100%', textAlign: 'center' }}>
            <img
-             src={welcomeImage}
+             src="/Image_2.jpg"
              alt="Welcome to Innovation Wiki"
              style={{
                maxWidth: '100%', height: 'auto', maxHeight: '350px',
@@ -851,7 +850,7 @@ function WelcomeBanner({ onComplete }: { onComplete: () => void }) {
                animation: 'lightbulbGlow 4s infinite',
                objectFit: 'contain'
              }}
-             onError={(e) => { e.currentTarget.src = 'Image_2.jpg'; }} // Fallback if import fails
+             onError={(e) => { e.currentTarget.src = '/Image.jpg'; }} // Fallback if import fails
            />
            <div className="welcome-sparkle" style={{ top: '15%', left: '20%', animationDelay: '0s' }}></div>
            <div className="welcome-sparkle" style={{ top: '25%', right: '25%', animationDelay: '0.8s' }}></div>
