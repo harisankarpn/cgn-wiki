@@ -785,7 +785,7 @@ function WelcomeBanner({ onComplete }: { onComplete: () => void }) {
   const getColorForIndex = (index: number) => {
      // "Innovation" starts at index 15, ends at 24
      if (index >= 15 && index < 25) {
-         const colors = ['#4285F4', '#4285F4', '#4285F4', '#FBBC04', '#FBBC04', '#4285F4', '#34A853', '#EA4335', '#EA4335', '#4285F4'];
+         const colors = ['#4285F4', '#EA4335', '#FBBC04', '#4285F4', '#34A853', '#EA4335', '#FBBC04', '#4285F4', '#34A853', '#EA4335'];
          return colors[index - 15];
      }
      // "transformation" starts at index 44, ends at 58
@@ -806,11 +806,6 @@ function WelcomeBanner({ onComplete }: { onComplete: () => void }) {
       animation: 'fadeIn 1s ease', position: 'relative', overflow: 'hidden'
     }}>
       <style>{`
-        @keyframes lightbulbGlow {
-          0% { filter: drop-shadow(0 0 10px rgba(251, 188, 4, 0.3)); }
-          50% { filter: drop-shadow(0 0 30px rgba(251, 188, 4, 0.7)); }
-          100% { filter: drop-shadow(0 0 10px rgba(251, 188, 4, 0.3)); }
-        }
         @keyframes sparkleTwinkle {
           0%, 100% { opacity: 0; transform: scale(0.5) rotate(0deg); }
           50% { opacity: 1; transform: scale(1.2) rotate(180deg); }
@@ -821,10 +816,10 @@ function WelcomeBanner({ onComplete }: { onComplete: () => void }) {
         }
         .welcome-sparkle {
           position: absolute;
-          width: 14px; height: 14px;
+          width: 12px; height: 12px;
           background: radial-gradient(circle, #fff 20%, #FBBC04 80%);
           border-radius: 50%;
-          box-shadow: 0 0 15px #FBBC04, 0 0 25px #fff;
+          box-shadow: 0 0 10px #FBBC04, 0 0 15px #fff;
           animation: sparkleTwinkle 2.5s infinite ease-in-out;
         }
       `}</style>
@@ -837,37 +832,23 @@ function WelcomeBanner({ onComplete }: { onComplete: () => void }) {
         border: '1px solid var(--border-main)',
         boxShadow: 'var(--shadow-sm)',
         display: 'flex', flexDirection: 'column', alignItems: 'center',
-        padding: '48px', zIndex: 2
+        padding: '80px 48px', zIndex: 2
       }}>
-        {/* Dynamic Hero Image */}
-        <div style={{ position: 'relative', marginBottom: '32px', width: '100%', textAlign: 'center' }}>
-           <img
-             src="/Image_2.jpg"
-             alt="Welcome to Innovation Wiki"
-             style={{
-               maxWidth: '100%', height: 'auto', maxHeight: '350px',
-               borderRadius: '16px',
-               animation: 'lightbulbGlow 4s infinite',
-               objectFit: 'contain'
-             }}
-             onError={(e) => { e.currentTarget.src = '/Image.jpg'; }} // Fallback if import fails
-           />
-           <div className="welcome-sparkle" style={{ top: '15%', left: '20%', animationDelay: '0s' }}></div>
-           <div className="welcome-sparkle" style={{ top: '25%', right: '25%', animationDelay: '0.8s' }}></div>
-           <div className="welcome-sparkle" style={{ bottom: '20%', left: '30%', animationDelay: '1.5s' }}></div>
-           <div className="welcome-sparkle" style={{ bottom: '40%', right: '15%', animationDelay: '2.2s' }}></div>
-        </div>
+        {/* Subtle background sparkles matching the image */}
+        <div className="welcome-sparkle" style={{ top: '25%', left: '30%', animationDelay: '0s' }}></div>
+        <div className="welcome-sparkle" style={{ top: '15%', left: '50%', animationDelay: '0.8s' }}></div>
+        <div className="welcome-sparkle" style={{ top: '20%', right: '32%', animationDelay: '1.5s' }}></div>
 
-        {/* Handwritten Text */}
+        {/* Colorful Handwritten Text */}
         <div style={{
-          fontFamily: '"Caveat", "Comic Sans MS", "Chalkboard SE", "Brush Script MT", cursive',
+          fontFamily: '"Comic Sans MS", "Chalkboard SE", "Caveat", "Brush Script MT", cursive',
           fontSize: '32px',
           color: 'var(--text-main)',
           textAlign: 'center',
-          minHeight: '100px', 
-          lineHeight: 1.5,
+          minHeight: '120px', 
+          lineHeight: 1.6,
           marginBottom: '40px',
-          fontWeight: 600,
+          fontWeight: 700,
           maxWidth: '90%'
         }}>
           {fullText.slice(0, currentIndex).split('').map((char, index) => (
@@ -875,7 +856,7 @@ function WelcomeBanner({ onComplete }: { onComplete: () => void }) {
                {char}
              </span>
           ))}
-          {!animationDone && <span style={{ borderRight: '2px solid var(--text-main)', paddingRight: '4px', animation: 'blinkCursor 0.7s infinite' }}></span>}
+          {!animationDone && <span style={{ borderRight: '3px solid var(--text-main)', paddingRight: '4px', animation: 'blinkCursor 0.7s infinite' }}></span>}
         </div>
 
         {/* CTA Buttons - Opacity tied to animation state */}
