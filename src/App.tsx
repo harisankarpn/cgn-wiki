@@ -56,7 +56,6 @@ import bgImage from './background.jpeg';
 import gcpGif from './gcp.gif';
 import coreVideo from './C.O.R.E.mp4';
 import birdArtwork from './Image_2.png';
-@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&display=swap');
 
 /* =========================================================
    TYPES
