@@ -756,6 +756,154 @@ const sections = [
 ];
 
 /* =========================================================
+   WELCOME BANNER (10-SECOND ANIMATION)
+========================================================= */
+function WelcomeBanner({ onComplete }: { onComplete: () => void }) {
+  const [displayedText, setDisplayedText] = useState("");
+  const fullText = "Welcome to the Innovation Wiki! Explore our transformation solutions, discover innovative ideas, and shape a smarter tomorrow.";
+  const [animationDone, setAnimationDone] = useState(false);
+
+  useEffect(() => {
+    let currentIndex = 0;
+    const totalChars = fullText.length;
+    const intervalTime = 10000 / totalChars; // Spans exactly 10 seconds
+
+    const timer = setInterval(() => {
+      if (currentIndex < totalChars) {
+        setDisplayedText(fullText.slice(0, currentIndex + 1));
+        currentIndex++;
+      } else {
+        clearInterval(timer);
+        setAnimationDone(true);
+      }
+    }, intervalTime);
+    return () => clearInterval(timer);
+  }, [fullText]);
+
+  return (
+    <div style={{
+      minHeight: '100vh', width: '100%', boxSizing: 'border-box',
+      display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+      padding: '40px', backgroundColor: 'var(--bg-main)',
+      animation: 'fadeIn 1s ease', position: 'relative', overflow: 'hidden'
+    }}>
+      <style>{`
+        @keyframes lightbulbGlow {
+          0% { filter: drop-shadow(0 0 10px rgba(251, 188, 4, 0.3)); }
+          50% { filter: drop-shadow(0 0 30px rgba(251, 188, 4, 0.7)); }
+          100% { filter: drop-shadow(0 0 10px rgba(251, 188, 4, 0.3)); }
+        }
+        @keyframes sparkleTwinkle {
+          0%, 100% { opacity: 0; transform: scale(0.5) rotate(0deg); }
+          50% { opacity: 1; transform: scale(1.2) rotate(180deg); }
+        }
+        @keyframes blinkCursor {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0; }
+        }
+        .welcome-sparkle {
+          position: absolute;
+          width: 14px; height: 14px;
+          background: radial-gradient(circle, #fff 20%, #FBBC04 80%);
+          border-radius: 50%;
+          box-shadow: 0 0 15px #FBBC04, 0 0 25px #fff;
+          animation: sparkleTwinkle 2.5s infinite ease-in-out;
+        }
+      `}</style>
+
+      <div style={{
+        position: 'relative',
+        width: '100%', maxWidth: '850px',
+        background: 'var(--bg-card)',
+        borderRadius: '24px',
+        border: '1px solid var(--border-main)',
+        boxShadow: 'var(--shadow-sm)',
+        display: 'flex', flexDirection: 'column', alignItems: 'center',
+        padding: '48px', zIndex: 2
+      }}>
+        {/* Dynamic Hero Image */}
+        <div style={{ position: 'relative', marginBottom: '32px', width: '100%', textAlign: 'center' }}>
+           <img
+             src="Image.jpg"
+             alt="Welcome to Innovation Wiki"
+             style={{
+               maxWidth: '100%', height: 'auto', maxHeight: '350px',
+               borderRadius: '16px',
+               animation: 'lightbulbGlow 4s infinite'
+             }}
+           />
+           <div className="welcome-sparkle" style={{ top: '15%', left: '20%', animationDelay: '0s' }}></div>
+           <div className="welcome-sparkle" style={{ top: '25%', right: '25%', animationDelay: '0.8s' }}></div>
+           <div className="welcome-sparkle" style={{ bottom: '20%', left: '30%', animationDelay: '1.5s' }}></div>
+           <div className="welcome-sparkle" style={{ bottom: '40%', right: '15%', animationDelay: '2.2s' }}></div>
+        </div>
+
+        {/* Handwritten Text */}
+        <div style={{
+          fontFamily: '"Segoe Script", "Brush Script MT", cursive',
+          fontSize: '26px',
+          color: 'var(--text-main)',
+          textAlign: 'center',
+          minHeight: '85px', 
+          lineHeight: 1.5,
+          marginBottom: '40px',
+          fontWeight: 600,
+          maxWidth: '90%'
+        }}>
+          {displayedText}
+          {!animationDone && <span style={{ borderRight: '2px solid var(--text-main)', paddingRight: '4px', animation: 'blinkCursor 0.7s infinite' }}></span>}
+        </div>
+
+        {/* CTA Buttons - Opacity tied to animation state */}
+        <div style={{
+          display: 'flex', gap: '20px',
+          opacity: animationDone ? 1 : 0.4,
+          transition: 'opacity 1s ease',
+          pointerEvents: animationDone ? 'auto' : 'none' 
+        }}>
+          <button
+            onClick={onComplete}
+            style={{
+              background: 'transparent',
+              color: 'var(--text-main)',
+              border: '2px solid var(--text-main)',
+              padding: '14px 32px',
+              borderRadius: '12px',
+              fontSize: '15px',
+              fontWeight: 700,
+              cursor: 'pointer',
+              transition: 'background 0.2s'
+            }}
+            onMouseOver={(e) => { e.currentTarget.style.background = 'var(--bg-hover)' }}
+            onMouseOut={(e) => { e.currentTarget.style.background = 'transparent' }}
+          >
+            View all solutions →
+          </button>
+          <button
+            onClick={() => window.open('https://docs.google.com/spreadsheets/create', '_blank')}
+            style={{
+              background: '#167768',
+              color: '#fff',
+              border: 'none',
+              padding: '14px 32px',
+              borderRadius: '12px',
+              fontSize: '15px',
+              fontWeight: 700,
+              cursor: 'pointer',
+              transition: 'background 0.2s'
+            }}
+            onMouseOver={(e) => { e.currentTarget.style.background = '#105a4e' }}
+            onMouseOut={(e) => { e.currentTarget.style.background = '#167768' }}
+          >
+            Submit your idea
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* =========================================================
    SPLASH PUZZLE COMPONENT
 ========================================================= */
 
@@ -949,62 +1097,7 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
 
   // Transition UI shown 2 seconds after the puzzle is solved
   if (showHero) {
-    return (
-      <div style={{ minHeight: '100vh', width: '100%', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px', fontFamily: 'system-ui, sans-serif', animation: 'fadeIn 0.5s ease' }}>
-        <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-          <h1 style={{ color: 'var(--text-main)', margin: '0 0 12px', fontSize: '32px', fontWeight: 700 }}>Innovation Wiki Access</h1>
-          <p style={{ color: 'var(--text-secondary)', margin: 0, fontSize: '16px' }}>Assembly complete. System unlocked.</p>
-        </div>
-        
-        <div style={{ display: 'flex', gap: '24px', alignItems: 'stretch', justifyContent: 'center', flexWrap: 'wrap', maxWidth: '1000px', width: '100%' }}>
-          {/* Left: Completed Puzzle Graphic */}
-          <div style={{ 
-            width: '400px', height: '400px', 
-            borderRadius: '16px', overflow: 'hidden', 
-            border: '2px solid #34a853', 
-            boxShadow: '0 12px 30px rgba(52, 168, 83, 0.15)',
-            position: 'relative',
-            backgroundColor: 'white',
-            flexShrink: 0
-          }}>
-            <CodeGeneratedPuzzleArtwork />
-          </div>
-
-          {/* Right: Welcome Card */}
-          <div style={{ 
-            flex: 1, minWidth: '350px',
-            background: 'var(--bg-card)', 
-            borderRadius: '16px', 
-            padding: '48px 40px', 
-            border: '1px solid var(--border-main)',
-            boxShadow: 'var(--shadow-sm)',
-            display: 'flex', flexDirection: 'column', justifyContent: 'center'
-          }}>
-            <h2 style={{ fontSize: '36px', fontWeight: 300, lineHeight: 1.3, color: 'var(--text-main)', margin: '0 0 16px 0', letterSpacing: '-0.5px' }}>
-              Welcome to the <strong style={{ fontWeight: 700 }}>Innovation Wiki</strong><br/>where we build the future together.
-            </h2>
-            <p style={{ fontSize: '15px', color: 'var(--text-secondary)', marginBottom: '32px', lineHeight: 1.6 }}>
-              Explore our transformation solutions, discover deep operational intelligence,
-              and turn collective knowledge into real impact.
-            </p>
-            <div style={{ display: 'flex', gap: '16px' }}>
-              <button 
-                onClick={onComplete}
-                style={{ border: '1px solid var(--text-main)', color: 'var(--text-main)', padding: '12px 24px', borderRadius: '8px', fontWeight: 600, cursor: 'pointer', background: 'transparent', transition: 'all 0.2s', fontSize: '14px' }}
-              >
-                View all solutions &rarr;
-              </button>
-              <button 
-                onClick={onComplete}
-                style={{ background: '#167768', color: '#fff', padding: '12px 24px', borderRadius: '8px', fontWeight: 600, border: 'none', cursor: 'pointer', transition: 'background 0.2s', fontSize: '14px' }}
-              >
-                Submit your idea
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
+    return <WelcomeBanner onComplete={onComplete} />;
   }
 
   return (
@@ -1527,7 +1620,7 @@ function InnovationWikiHome({ onSolutionSelect }: { onSolutionSelect: (id: Navig
                 <div className="hub-card-footer">
                   <span className="hub-status">Status: {content.metadata.status}</span>
                   <span className="hub-see-more" style={{ color: solution.color }}>
-                    See more &rarr;
+                    See more →
                   </span>
                 </div>
               </div>
