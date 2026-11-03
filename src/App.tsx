@@ -831,10 +831,10 @@ function WelcomeBanner({ onComplete }: { onComplete: () => void }) {
       <div style={{
         position: 'relative',
         width: '100%', maxWidth: '1100px',
-        background: 'var(--bg-card)',
+        background: 'transparent',
         borderRadius: '24px',
-        border: '1px solid var(--border-main)',
-        boxShadow: 'var(--shadow-sm)',
+        border: '1px solid transparent',
+        boxShadow: 'none',
         display: 'grid',
         gridTemplateColumns: '1fr 400px',
         alignItems: 'center',
@@ -888,7 +888,7 @@ function WelcomeBanner({ onComplete }: { onComplete: () => void }) {
                 cursor: 'pointer',
                 transition: 'background 0.2s'
               }}
-              onMouseOver={(e) => { e.currentTarget.style.background = 'var(--bg-hover)' }}
+              onMouseOver={(e) => { e.currentTarget.style.background = 'rgba(0,0,0,0.05)' }}
               onMouseOut={(e) => { e.currentTarget.style.background = 'transparent' }}
             >
               View all solutions →
@@ -1285,7 +1285,7 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
               <div style={{ width: '60px', height: '60px', borderRadius: '50%', backgroundColor: '#dcfce7', color: '#166534', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '20px' }}>
                 <ShieldCheck size={32} />
               </div>
-              <h3 style={{ margin: '0 0 20px', color: 'var(--text-main)' }}>Congratulations</h3>
+              <h3 style={{ margin: '0 0 20px', color: 'var(--text-main)' }}>Verification Successful</h3>
             </div>
           ) : isFailed ? (
             <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', animation: 'fadeIn 0.5s ease' }}>
@@ -1449,27 +1449,44 @@ function App() {
       <ThemeToggle />
       <main className="main no-sidebar-main" style={{ minHeight: '100vh' }}>
         
-        {/* NEW GEOMETRIC HEADER */}
+        {/* REFINED SLANTED HEADER */}
         <section className="hero top-hero" style={{ 
           display: 'flex', 
           alignItems: 'center', 
           justifyContent: 'space-between', 
           position: 'relative',
-          padding: '0', /* Remove padding to let geometric edges touch bounds */
-          minHeight: '80px',
-          backgroundColor: '#e6ebf5', /* Fallback background matching the center area */
-          /* Simulated faceted geometric background using multiple angular linear-gradients */
-          backgroundImage: `
-            linear-gradient(135deg, #1c4587 20%, transparent 20.5%),
-            linear-gradient(-45deg, #2a5699 15%, transparent 15.5%),
-            linear-gradient(45deg, #4285f4 10%, transparent 10.5%),
-            linear-gradient(110deg, #1c4587 35%, #e6ebf5 35.5%, #e6ebf5 75%, #1c4587 75.5%)
-          `,
-          boxShadow: '0 4px 15px rgba(0,0,0,0.1)',
-          overflow: 'hidden'
+          padding: '0 40px',
+          minHeight: '86px',
+          backgroundColor: '#eef2f9', /* Light middle background */
+          boxShadow: '0 4px 15px rgba(0,0,0,0.05)',
+          overflow: 'hidden',
+          zIndex: 10
         }}>
-          
-         {/* Left Block: Logo & Title */}
+          {/* Background Left Slant */}
+          <div style={{
+            position: 'absolute',
+            top: 0, left: '-5%',
+            width: '38%', height: '100%',
+            backgroundColor: '#254a8b',
+            transform: 'skewX(-25deg)',
+            transformOrigin: 'top left',
+            boxShadow: '6px 0 15px rgba(0,0,0,0.15)',
+            zIndex: 1
+          }}></div>
+
+          {/* Background Right Slant */}
+          <div style={{
+            position: 'absolute',
+            top: 0, right: '-5%',
+            width: '24%', height: '100%',
+            backgroundColor: '#254a8b',
+            transform: 'skewX(-25deg)',
+            transformOrigin: 'bottom right',
+            boxShadow: '-6px 0 15px rgba(0,0,0,0.15)',
+            zIndex: 1
+          }}></div>
+
+          {/* Left Block: Logo & Title */}
           <div style={{ 
             display: 'flex', alignItems: 'center', gap: '16px',
             position: 'relative', zIndex: 2, width: '330px'
@@ -1478,52 +1495,69 @@ function App() {
               <img src={gcpGif} alt="GCP Animation" style={{ width: '90%', height: '90%', objectFit: 'cover' }} />
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-              {/* CHANGED: fontWeight updated to 700 */}
               <h1 style={{ fontSize: '18px', margin: 0, lineHeight: 1.2, fontWeight: 700, color: '#ffffff' }}>
                 GCP Tech<br/>Transformation<br/>Solutions
               </h1>
             </div>
           </div>
 
-          {/* Center Block: Navigation Links (Living in the light blue/gray center section) */}
+          {/* Center Block: Navigation Links */}
           <div style={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            justifyContent: 'center',
-            gap: '16px',
-            flex: 1,
-            color: '#1e3a8a',
-            fontWeight: 700,
-            fontSize: '14px',
-            letterSpacing: '0.5px'
+            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '24px',
+            position: 'relative', zIndex: 2, flex: 1, paddingLeft: '40px',
+            color: '#1e3a8a', fontWeight: 800, fontSize: '13px', letterSpacing: '0.8px'
           }}>
-            <span style={{ cursor: 'pointer' }} onClick={() => openSolution('home')}>APPLICATIONS</span>
-            <span style={{ color: '#94a3b8' }}>|</span>
-            <span style={{ cursor: 'pointer' }}>ECOSYSTEM</span>
-            <span style={{ color: '#94a3b8' }}>|</span>
-            <span style={{ cursor: 'pointer' }}>INNOVATION HUB</span>
+            <span style={{ cursor: 'pointer', transition: 'opacity 0.2s' }} onClick={() => openSolution('home')} onMouseOver={e => e.currentTarget.style.opacity = '0.7'} onMouseOut={e => e.currentTarget.style.opacity = '1'}>APPLICATIONS</span>
+            <span style={{ color: '#94a3b8', fontWeight: 400 }}>|</span>
+            <span style={{ cursor: 'pointer', transition: 'opacity 0.2s' }} onMouseOver={e => e.currentTarget.style.opacity = '0.7'} onMouseOut={e => e.currentTarget.style.opacity = '1'}>ECOSYSTEM</span>
+            <span style={{ color: '#94a3b8', fontWeight: 400 }}>|</span>
+            <span style={{ cursor: 'pointer', transition: 'opacity 0.2s' }} onMouseOver={e => e.currentTarget.style.opacity = '0.7'} onMouseOut={e => e.currentTarget.style.opacity = '1'}>NEWS</span>
           </div>
 
-          {/* Right Block: User Info & Visitor Count (Living inside the dark blue angular section) */}
+          {/* Right Block: Visitor Count */}
           <div style={{ 
-            display: 'flex', 
-            flexDirection: 'column', 
-            alignItems: 'center', 
-            justifyContent: 'center',
-            padding: '16px 32px',
-            color: 'white',
-            width: '20%'
+            display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'center',
+            position: 'relative', zIndex: 2, width: '160px'
           }}>
-            <span style={{ fontSize: '12px', fontWeight: 500, opacity: 0.9 }}>Total Visitors Count</span>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
-              <Users size={20} color="#ffffff" />
-              <strong style={{ fontSize: '24px', color: '#ffffff', lineHeight: 1 }}>
+            <span style={{ fontSize: '11px', fontWeight: 500, opacity: 0.9, color: '#e2e8f0', marginBottom: '4px', letterSpacing: '0.3px' }}>
+              Total Visitors Count
+            </span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <Users size={22} color="#ffffff" />
+              <strong style={{ fontSize: '26px', color: '#ffffff', lineHeight: 1, fontWeight: 800 }}>
                 {typeof visitorCount === 'number' ? visitorCount.toLocaleString() : visitorCount}
               </strong>
             </div>
           </div>
 
         </section>
+
+        {/* Highlighted top navigation removed from the main/home page as requested */}
+        {selectedSolution !== 'home' && (
+          <section className="platform-card-row five-platforms">
+            {solutions.map((platform) => {
+              const Icon = platform.icon;
+              const isSelected = selectedSolution === platform.id;
+              return (
+                <button
+                  type="button"
+                  key={platform.id}
+                  className={`platform-card ${isSelected ? 'selected-glow' : ''}`}
+                  onClick={() => openSolution(platform.id)}
+                >
+                  <div className="platform-icon" style={{ color: platform.color, backgroundColor: `${platform.color}10` }}>
+                    <Icon size={44} strokeWidth={2.2} />
+                  </div>
+                  <div className="platform-copy">
+                    <h3>{platform.name}</h3>
+                    <p>{platform.subtitle}</p>
+                  </div>
+                  <ChevronRight size={22} className="platform-arrow" />
+                </button>
+              );
+            })}
+          </section>
+        )}
 
         <div className="page-content main-page-content">
           {selectedSolution === 'home' ? (
@@ -2256,7 +2290,7 @@ function EnhancedProblem({ data, platformColor, platformIcon: PlatformIcon }: an
           </div>
         </div>
         <div className="t-right" style={{ color: platformColor }}>
-          <Send size={24} className="t-send" />
+          <Send size={24} className="st-send" />
           <div className="t-tag">{data.tagline}</div>
         </div>
       </div>
