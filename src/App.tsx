@@ -1511,7 +1511,7 @@ function App() {
             <span style={{ color: '#94a3b8', fontWeight: 400 }}>|</span>
             <span style={{ cursor: 'pointer', transition: 'opacity 0.2s' }} onMouseOver={e => e.currentTarget.style.opacity = '0.7'} onMouseOut={e => e.currentTarget.style.opacity = '1'}>ECOSYSTEM</span>
             <span style={{ color: '#94a3b8', fontWeight: 400 }}>|</span>
-            <span style={{ cursor: 'pointer', transition: 'opacity 0.2s' }} onMouseOver={e => e.currentTarget.style.opacity = '0.7'} onMouseOut={e => e.currentTarget.style.opacity = '1'}>NEWS</span>
+            <span style={{ cursor: 'pointer', transition: 'opacity 0.2s' }} onMouseOver={e => e.currentTarget.style.opacity = '0.7'} onMouseOut={e => e.currentTarget.style.opacity = '1'}>INNOVATION HUB</span>
           </div>
 
           {/* Right Block: Visitor Count */}
