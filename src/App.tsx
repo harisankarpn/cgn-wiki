@@ -1530,6 +1530,22 @@ function App() {
             <span style={{ cursor: 'pointer', transition: 'opacity 0.2s' }} onMouseOver={e => e.currentTarget.style.opacity = '0.7'} onMouseOut={e => e.currentTarget.style.opacity = '1'}>INNOVATION HUB</span>
           </div>
 
+          {/* Right Block: Visitor Count */}
+          <div style={{ 
+            display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'center',
+            position: 'relative', zIndex: 2, width: '160px'
+          }}>
+            <span style={{ fontSize: '11px', fontWeight: 500, opacity: 0.9, color: '#e2e8f0', marginBottom: '4px', letterSpacing: '0.3px' }}>
+              Total Visitors Count
+            </span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <Users size={22} color="#ffffff" />
+              <strong style={{ fontSize: '26px', color: '#ffffff', lineHeight: 1, fontWeight: 800 }}>
+                {typeof visitorCount === 'number' ? visitorCount.toLocaleString() : visitorCount}
+              </strong>
+            </div>
+          </div>
+
         </section>
 
         {/* Highlighted top navigation removed from the main/home page as requested */}
