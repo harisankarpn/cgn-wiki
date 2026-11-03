@@ -1560,7 +1560,7 @@ function App() {
 }
 
 /* =========================================================
-   INNOVATION WIKI HOME (Restored Definitions & Layout Pattern)
+   INNOVATION WIKI HOME (Wider, Trimmed Cards - 3x2 Layout)
 ========================================================= */
 function InnovationWikiHome({ onSolutionSelect }: { onSolutionSelect: (id: NavigationId) => void }) {
   // Filter out the 'home' solution so we only render cards for actual products
@@ -1575,14 +1575,14 @@ function InnovationWikiHome({ onSolutionSelect }: { onSolutionSelect: (id: Navig
         .hub-programs-header h2 { font-size: 32px; color: var(--text-main); margin: 0 0 12px 0; }
         .hub-programs-header p { color: var(--text-secondary); font-size: 16px; margin: 0; }
         
-        /* Grid & Cards - Matched to reference images */
+        /* Grid & Cards - Spaced out 3 per row */
         .hub-cards-grid { 
           display: flex;
           flex-wrap: wrap;
           justify-content: center;
-          gap: 20px; 
+          gap: 24px; 
           padding-bottom: 40px;
-          max-width: 1400px;
+          max-width: 1150px; /* Constrains width to force a perfect 3-top, 2-bottom layout */
           margin: 0 auto;
         }
         
@@ -1595,22 +1595,21 @@ function InnovationWikiHome({ onSolutionSelect }: { onSolutionSelect: (id: Navig
           flex-direction: column; 
           cursor: pointer; 
           transition: transform 0.2s ease, box-shadow 0.2s ease; 
-          width: calc(20% - 16px); /* 5 cards per row on large screens */
-          min-width: 240px;
-          min-height: 380px;
+          width: calc(33.333% - 16px); /* Forces 3 cards per row */
+          min-width: 320px; /* Makes cards wider */
         }
         .hub-card:hover { 
           transform: translateY(-6px); 
           box-shadow: 0 12px 24px rgba(0,0,0,0.12); 
         }
         
-        /* Colored Top Section */
+        /* Colored Top Section - Trimmed Height */
         .hub-card-top { 
           padding: 24px; 
           color: white; 
           position: relative; 
           overflow: hidden; 
-          height: 160px;
+          height: 130px; /* Trimmed height */
           display: flex; 
           flex-direction: column; 
           justify-content: flex-start; 
@@ -1663,13 +1662,13 @@ function InnovationWikiHome({ onSolutionSelect }: { onSolutionSelect: (id: Navig
           font-weight: 700;
         }
         .hub-card-desc { 
-          font-size: 12px; 
+          font-size: 13px; 
           color: var(--text-secondary); 
-          line-height: 1.6; 
-          margin: 0 0 24px 0; 
+          line-height: 1.5; 
+          margin: 0 0 20px 0; 
           flex-grow: 1;
           display: -webkit-box; 
-          -webkit-line-clamp: 4; 
+          -webkit-line-clamp: 3; /* Trims text to 3 lines maximum */
           -webkit-box-orient: vertical; 
           overflow: hidden;
         }
@@ -1695,11 +1694,11 @@ function InnovationWikiHome({ onSolutionSelect }: { onSolutionSelect: (id: Navig
         .hub-card:hover .hub-see-more { gap: 8px; }
         
         /* Responsive adjustments */
-        @media (max-width: 1300px) {
-          .hub-card { width: calc(33.333% - 16px); } /* 3 per row on mid screens */
+        @media (max-width: 1050px) {
+          .hub-card { width: calc(50% - 12px); } /* 2 per row on smaller screens */
         }
-        @media (max-width: 850px) {
-          .hub-card { width: calc(50% - 16px); } /* 2 per row on small screens */
+        @media (max-width: 650px) {
+          .hub-card { width: 100%; } /* 1 per row on mobile */
         }
       `}</style>
 
