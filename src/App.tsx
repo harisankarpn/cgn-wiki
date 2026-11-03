@@ -1560,7 +1560,7 @@ function App() {
 }
 
 /* =========================================================
-   INNOVATION WIKI HOME (Wider, Trimmed Cards - 3x2 Layout)
+   INNOVATION WIKI HOME (Wider Dimensions & 3x2 Centered Layout)
 ========================================================= */
 function InnovationWikiHome({ onSolutionSelect }: { onSolutionSelect: (id: NavigationId) => void }) {
   // Filter out the 'home' solution so we only render cards for actual products
@@ -1571,18 +1571,18 @@ function InnovationWikiHome({ onSolutionSelect }: { onSolutionSelect: (id: Navig
       <style>{`
         .idea-hub-layout { font-family: system-ui, sans-serif; padding: 20px 40px; }
         
-        .hub-programs-header { text-align: center; margin-bottom: 40px; }
+        .hub-programs-header { text-align: center; margin-bottom: 50px; }
         .hub-programs-header h2 { font-size: 32px; color: var(--text-main); margin: 0 0 12px 0; }
         .hub-programs-header p { color: var(--text-secondary); font-size: 16px; margin: 0; }
         
-        /* Grid & Cards - Spaced out 3 per row */
+        /* Grid & Cards - Expanded width to match drawn rectangles */
         .hub-cards-grid { 
           display: flex;
           flex-wrap: wrap;
           justify-content: center;
-          gap: 24px; 
-          padding-bottom: 40px;
-          max-width: 1150px; /* Constrains width to force a perfect 3-top, 2-bottom layout */
+          gap: 32px; 
+          padding-bottom: 60px;
+          max-width: 1450px; /* Increased massively to allow much wider cards */
           margin: 0 auto;
         }
         
@@ -1595,40 +1595,41 @@ function InnovationWikiHome({ onSolutionSelect }: { onSolutionSelect: (id: Navig
           flex-direction: column; 
           cursor: pointer; 
           transition: transform 0.2s ease, box-shadow 0.2s ease; 
-          width: calc(33.333% - 16px); /* Forces 3 cards per row */
-          min-width: 320px; /* Makes cards wider */
+          width: calc(33.333% - 22px); /* Forces exactly 3 cards per row */
+          min-width: 380px; /* Ensures the cards stay wide */
         }
         .hub-card:hover { 
           transform: translateY(-6px); 
           box-shadow: 0 12px 24px rgba(0,0,0,0.12); 
         }
         
-        /* Colored Top Section - Trimmed Height */
+        /* Colored Top Section - Adjusted to form a wide rectangle */
         .hub-card-top { 
-          padding: 24px; 
+          padding: 28px; 
           color: white; 
           position: relative; 
           overflow: hidden; 
-          height: 130px; /* Trimmed height */
+          height: 150px; /* Trimmed height relative to new width */
           display: flex; 
           flex-direction: column; 
           justify-content: flex-start; 
         }
         .hub-card-top h3 { 
-          font-size: 20px; 
+          font-size: 22px; 
           font-weight: 700; 
           margin: 0 0 8px 0; 
           position: relative; 
           z-index: 2; 
         }
         .hub-card-top p { 
-          font-size: 13px; 
+          font-size: 14px; 
           margin: 0; 
           position: relative; 
           z-index: 2; 
           font-weight: 500; 
           opacity: 0.95;
           line-height: 1.4;
+          max-width: 85%;
         }
         
         /* Giant background icon inside colored area */
@@ -1638,11 +1639,12 @@ function InnovationWikiHome({ onSolutionSelect }: { onSolutionSelect: (id: Navig
           bottom: -15px;
           opacity: 0.25;
           z-index: 1;
+          transform: scale(1.1); /* Slightly larger to fill the wider space */
         }
         
         /* White Bottom Section */
         .hub-card-bottom { 
-          padding: 20px; 
+          padding: 24px 28px; 
           background: var(--bg-card);
           display: flex; 
           flex-direction: column;
@@ -1652,23 +1654,23 @@ function InnovationWikiHome({ onSolutionSelect }: { onSolutionSelect: (id: Navig
         .hub-card-bottom-header { 
           display: flex; 
           align-items: center; 
-          gap: 8px; 
-          margin-bottom: 12px; 
+          gap: 10px; 
+          margin-bottom: 14px; 
         }
         .hub-card-bottom h4 { 
-          font-size: 15px; 
+          font-size: 16px; 
           color: var(--text-main); 
           margin: 0; 
           font-weight: 700;
         }
         .hub-card-desc { 
-          font-size: 13px; 
+          font-size: 13.5px; 
           color: var(--text-secondary); 
-          line-height: 1.5; 
-          margin: 0 0 20px 0; 
+          line-height: 1.6; 
+          margin: 0 0 24px 0; 
           flex-grow: 1;
           display: -webkit-box; 
-          -webkit-line-clamp: 3; /* Trims text to 3 lines maximum */
+          -webkit-line-clamp: 3; /* Trims text to exactly 3 lines */
           -webkit-box-orient: vertical; 
           overflow: hidden;
         }
@@ -1679,7 +1681,7 @@ function InnovationWikiHome({ onSolutionSelect }: { onSolutionSelect: (id: Navig
           align-items: center; 
           padding-top: 16px; 
           border-top: 1px solid var(--border-soft); 
-          font-size: 11px; 
+          font-size: 12px; 
           font-weight: 600; 
         }
         .hub-status { color: var(--text-muted); }
@@ -1688,17 +1690,17 @@ function InnovationWikiHome({ onSolutionSelect }: { onSolutionSelect: (id: Navig
           align-items: center; 
           gap: 4px; 
           font-weight: 700; 
-          font-size: 12px;
+          font-size: 13px;
           transition: gap 0.2s; 
         }
         .hub-card:hover .hub-see-more { gap: 8px; }
         
         /* Responsive adjustments */
-        @media (max-width: 1050px) {
-          .hub-card { width: calc(50% - 12px); } /* 2 per row on smaller screens */
+        @media (max-width: 1250px) {
+          .hub-card { width: calc(50% - 16px); } /* 2 per row on mid screens */
         }
-        @media (max-width: 650px) {
-          .hub-card { width: 100%; } /* 1 per row on mobile */
+        @media (max-width: 750px) {
+          .hub-card { width: 100%; } /* 1 per row on small screens */
         }
       `}</style>
 
