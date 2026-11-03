@@ -1469,25 +1469,17 @@ function App() {
           overflow: 'hidden'
         }}>
           
-          {/* Left Block: Logo & Title (Living inside the dark blue angular section) */}
+         {/* Left Block: Logo & Title */}
           <div style={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: '16px',
-            padding: '16px 32px',
-            color: 'white',
-            width: '32%'
+            display: 'flex', alignItems: 'center', gap: '16px',
+            position: 'relative', zIndex: 2, width: '330px'
           }}>
-            <div style={{ width: '48px', height: '48px', borderRadius: '50%', overflow: 'hidden', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffffff', boxShadow: '0 2px 8px rgba(0,0,0,0.3)' }}>
-              <img 
-                src={gcpGif} 
-                alt="GCP Animation" 
-                style={{ width: '90%', height: '90%', objectFit: 'cover' }} 
-              />
+            <div style={{ width: '54px', height: '54px', borderRadius: '50%', overflow: 'hidden', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffffff', boxShadow: '0 2px 8px rgba(0,0,0,0.2)' }}>
+              <img src={gcpGif} alt="GCP Animation" style={{ width: '90%', height: '90%', objectFit: 'cover' }} />
             </div>
-            
             <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-              <h1 style={{ fontSize: '18px', margin: 0, lineHeight: 1.2, fontWeight: 500, letterSpacing: '0.3px', color: '#ffffff' }}>
+              {/* CHANGED: fontWeight updated to 700 */}
+              <h1 style={{ fontSize: '18px', margin: 0, lineHeight: 1.2, fontWeight: 700, color: '#ffffff' }}>
                 GCP Tech<br/>Transformation<br/>Solutions
               </h1>
             </div>
