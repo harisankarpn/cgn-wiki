@@ -1285,7 +1285,7 @@ function PuzzleSplash({ onComplete, onSkip }: { onComplete: () => void, onSkip: 
               <div style={{ width: '60px', height: '60px', borderRadius: '50%', backgroundColor: '#dcfce7', color: '#166534', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '20px' }}>
                 <ShieldCheck size={32} />
               </div>
-              <h3 style={{ margin: '0 0 20px', color: 'var(--text-main)' }}>Verification Successful</h3>
+              <h3 style={{ margin: '0 0 20px', color: 'var(--text-main)' }}>Congratulations</h3>
             </div>
           ) : isFailed ? (
             <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', animation: 'fadeIn 0.5s ease' }}>
@@ -1522,7 +1522,7 @@ function App() {
             color: 'white',
             width: '20%'
           }}>
-            <span style={{ fontSize: '12px', fontWeight: 500, opacity: 0.9 }}>David Williams</span>
+            <span style={{ fontSize: '12px', fontWeight: 500, opacity: 0.9 }}>Total Visitors Count</span>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
               <Users size={20} color="#ffffff" />
               <strong style={{ fontSize: '24px', color: '#ffffff', lineHeight: 1 }}>
