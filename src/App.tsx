@@ -1560,7 +1560,7 @@ function App() {
 }
 
 /* =========================================================
-   INNOVATION WIKI HOME (Recreated Card Pattern)
+   INNOVATION WIKI HOME (Restored Definitions & Layout Pattern)
 ========================================================= */
 function InnovationWikiHome({ onSolutionSelect }: { onSolutionSelect: (id: NavigationId) => void }) {
   // Filter out the 'home' solution so we only render cards for actual products
@@ -1575,12 +1575,15 @@ function InnovationWikiHome({ onSolutionSelect }: { onSolutionSelect: (id: Navig
         .hub-programs-header h2 { font-size: 32px; color: var(--text-main); margin: 0 0 12px 0; }
         .hub-programs-header p { color: var(--text-secondary); font-size: 16px; margin: 0; }
         
-        /* Grid & Cards - Matched to reference image 1 */
+        /* Grid & Cards - Matched to reference images */
         .hub-cards-grid { 
-          display: grid; 
-          grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
-          gap: 24px; 
-          padding-bottom: 40px; 
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 20px; 
+          padding-bottom: 40px;
+          max-width: 1400px;
+          margin: 0 auto;
         }
         
         .hub-card { 
@@ -1592,7 +1595,9 @@ function InnovationWikiHome({ onSolutionSelect }: { onSolutionSelect: (id: Navig
           flex-direction: column; 
           cursor: pointer; 
           transition: transform 0.2s ease, box-shadow 0.2s ease; 
-          min-height: 180px;
+          width: calc(20% - 16px); /* 5 cards per row on large screens */
+          min-width: 240px;
+          min-height: 380px;
         }
         .hub-card:hover { 
           transform: translateY(-6px); 
@@ -1605,19 +1610,17 @@ function InnovationWikiHome({ onSolutionSelect }: { onSolutionSelect: (id: Navig
           color: white; 
           position: relative; 
           overflow: hidden; 
-          flex-grow: 1; 
+          height: 160px;
           display: flex; 
           flex-direction: column; 
-          justify-content: center; 
+          justify-content: flex-start; 
         }
         .hub-card-top h3 { 
-          font-size: 22px; 
+          font-size: 20px; 
           font-weight: 700; 
-          margin: 0 0 6px 0; 
+          margin: 0 0 8px 0; 
           position: relative; 
           z-index: 2; 
-          text-transform: uppercase; 
-          letter-spacing: 0.5px; 
         }
         .hub-card-top p { 
           font-size: 13px; 
@@ -1626,7 +1629,6 @@ function InnovationWikiHome({ onSolutionSelect }: { onSolutionSelect: (id: Navig
           z-index: 2; 
           font-weight: 500; 
           opacity: 0.95;
-          max-width: 75%;
           line-height: 1.4;
         }
         
@@ -1639,23 +1641,66 @@ function InnovationWikiHome({ onSolutionSelect }: { onSolutionSelect: (id: Navig
           z-index: 1;
         }
         
-        /* Simple White Bottom Section */
+        /* White Bottom Section */
         .hub-card-bottom { 
-          padding: 16px 24px; 
+          padding: 20px; 
           background: var(--bg-card);
           display: flex; 
-          align-items: center; 
+          flex-direction: column;
+          flex-grow: 1;
           border-top: 1px solid rgba(0,0,0,0.03);
         }
+        .hub-card-bottom-header { 
+          display: flex; 
+          align-items: center; 
+          gap: 8px; 
+          margin-bottom: 12px; 
+        }
+        .hub-card-bottom h4 { 
+          font-size: 15px; 
+          color: var(--text-main); 
+          margin: 0; 
+          font-weight: 700;
+        }
+        .hub-card-desc { 
+          font-size: 12px; 
+          color: var(--text-secondary); 
+          line-height: 1.6; 
+          margin: 0 0 24px 0; 
+          flex-grow: 1;
+          display: -webkit-box; 
+          -webkit-line-clamp: 4; 
+          -webkit-box-orient: vertical; 
+          overflow: hidden;
+        }
+        
+        .hub-card-footer { 
+          display: flex; 
+          justify-content: space-between; 
+          align-items: center; 
+          padding-top: 16px; 
+          border-top: 1px solid var(--border-soft); 
+          font-size: 11px; 
+          font-weight: 600; 
+        }
+        .hub-status { color: var(--text-muted); }
         .hub-see-more { 
           display: flex; 
           align-items: center; 
-          gap: 6px; 
+          gap: 4px; 
           font-weight: 700; 
-          font-size: 14px;
+          font-size: 12px;
           transition: gap 0.2s; 
         }
-        .hub-card:hover .hub-see-more { gap: 10px; }
+        .hub-card:hover .hub-see-more { gap: 8px; }
+        
+        /* Responsive adjustments */
+        @media (max-width: 1300px) {
+          .hub-card { width: calc(33.333% - 16px); } /* 3 per row on mid screens */
+        }
+        @media (max-width: 850px) {
+          .hub-card { width: calc(50% - 16px); } /* 2 per row on small screens */
+        }
       `}</style>
 
       <div className="hub-programs-header">
@@ -1678,18 +1723,25 @@ function InnovationWikiHome({ onSolutionSelect }: { onSolutionSelect: (id: Navig
                   background: `linear-gradient(135deg, ${solution.color}f0, ${solution.color})` 
                 }}
               >
-                {/* Large Background Icon replacing the complex decor */}
                 <Icon size={120} color="#ffffff" className="hub-bg-icon" strokeWidth={1.5} />
-                
                 <h3>{content.shortName}</h3>
                 <p>{content.tagline}</p>
               </div>
               
-              {/* Bottom White Block */}
+              {/* Bottom White Block with Restored Definitions */}
               <div className="hub-card-bottom">
-                <span className="hub-see-more" style={{ color: solution.color }}>
-                  See more →
-                </span>
+                <div className="hub-card-bottom-header">
+                  <Icon size={18} color={solution.color} />
+                  <h4>{content.shortName}</h4>
+                </div>
+                <p className="hub-card-desc">{content.overview}</p>
+                
+                <div className="hub-card-footer">
+                  <span className="hub-status">Status: {content.metadata.status}</span>
+                  <span className="hub-see-more" style={{ color: solution.color }}>
+                    See more →
+                  </span>
+                </div>
               </div>
               
             </div>
