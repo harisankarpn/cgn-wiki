@@ -1509,7 +1509,7 @@ function App() {
             <span style={{ color: '#94a3b8' }}>|</span>
             <span style={{ cursor: 'pointer' }}>ECOSYSTEM</span>
             <span style={{ color: '#94a3b8' }}>|</span>
-            <span style={{ cursor: 'pointer' }}>NEWS</span>
+            <span style={{ cursor: 'pointer' }}>INNOVATION HUB</span>
           </div>
 
           {/* Right Block: User Info & Visitor Count (Living inside the dark blue angular section) */}
