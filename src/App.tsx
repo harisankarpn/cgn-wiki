@@ -1449,83 +1449,88 @@ function App() {
       <ThemeToggle />
       <main className="main no-sidebar-main" style={{ minHeight: '100vh' }}>
         
-        <section className="hero top-hero premium-hero" style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', position: 'relative' }}>
-          <div className="hero-copy" style={{ width: '100%', maxWidth: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '20px' }}>
-            
-            {/* Left Side: Existing Logo and Title Group */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-              <div style={{ width: '75px', height: '75px', borderRadius: '50%', overflow: 'hidden', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffffff' }}>
-                <img 
-                  src={gcpGif} 
-                  alt="GCP Animation" 
-                  style={{ 
-                    width: '90%',   
-                    height: '90%',  
-                    objectFit: 'cover', 
-                    transform: 'translateY(-1%)' 
-                  }} 
-                />
-              </div>
-              
-              <div style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
-                <div>
-                  <h1 className="premium-title" style={{ fontSize: '2.2rem', margin: 0, lineHeight: 1.2 }}>
-                    <span>GCP Tech</span>
-                    <span className="title-highlight"> Transformation </span>
-                    <span>Solutions</span>
-                  </h1>
-                  <div className="outcome-row" style={{ marginTop: '8px' }}>
-                    <div className="outcome-item"><Users size={16} /><span>Smarter People</span></div>
-                    <div className="outcome-divider"></div>
-                    <div className="outcome-item"><BarChart3 size={16} /><span>Stronger Operations</span></div>
-                    <div className="outcome-divider"></div>
-                    <div className="outcome-item"><Star size={16} /><span>Better Customer Experiences</span></div>
-                  </div>
-                </div>
-
-                {/* Home Button added beside the header */}
-                {selectedSolution !== 'home' && (
-                  <button 
-                    onClick={() => openSolution('home')}
-                    style={{
-                      display: 'flex', alignItems: 'center', gap: '8px',
-                      padding: '10px 20px', background: 'var(--bg-card)', 
-                      border: '1px solid var(--border-main)', borderRadius: '12px',
-                      color: 'var(--text-main)', fontWeight: 600, fontSize: '15px',
-                      cursor: 'pointer', boxShadow: 'var(--shadow-sm)',
-                      transition: 'all 0.2s ease'
-                    }}
-                    onMouseOver={(e) => { e.currentTarget.style.background = 'var(--bg-hover)' }}
-                    onMouseOut={(e) => { e.currentTarget.style.background = 'var(--bg-card)' }}
-                  >
-                    <Home size={20} color="#1a73e8" />
-                    <span>Home</span>
-                  </button>
-                )}
-              </div>
+        {/* NEW GEOMETRIC HEADER */}
+        <section className="hero top-hero" style={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          justifyContent: 'space-between', 
+          position: 'relative',
+          padding: '0', /* Remove padding to let geometric edges touch bounds */
+          minHeight: '80px',
+          backgroundColor: '#e6ebf5', /* Fallback background matching the center area */
+          /* Simulated faceted geometric background using multiple angular linear-gradients */
+          backgroundImage: `
+            linear-gradient(135deg, #1c4587 20%, transparent 20.5%),
+            linear-gradient(-45deg, #2a5699 15%, transparent 15.5%),
+            linear-gradient(45deg, #4285f4 10%, transparent 10.5%),
+            linear-gradient(110deg, #1c4587 35%, #e6ebf5 35.5%, #e6ebf5 75%, #1c4587 75.5%)
+          `,
+          boxShadow: '0 4px 15px rgba(0,0,0,0.1)',
+          overflow: 'hidden'
+        }}>
+          
+          {/* Left Block: Logo & Title (Living inside the dark blue angular section) */}
+          <div style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: '16px',
+            padding: '16px 32px',
+            color: 'white',
+            width: '32%'
+          }}>
+            <div style={{ width: '48px', height: '48px', borderRadius: '50%', overflow: 'hidden', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffffff', boxShadow: '0 2px 8px rgba(0,0,0,0.3)' }}>
+              <img 
+                src={gcpGif} 
+                alt="GCP Animation" 
+                style={{ width: '90%', height: '90%', objectFit: 'cover' }} 
+              />
             </div>
-
-            {/* Right Side Visitor Count */}
-            {visitorCount !== null && (
-              <div style={{ 
-                display: 'flex', flexDirection: 'column', alignItems: 'flex-end', 
-                background: 'var(--bg-card)', padding: '8px 16px', 
-                borderRadius: '8px', border: '1px solid var(--border-main)',
-                boxShadow: 'var(--shadow-sm)'
-              }}>
-                <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                  Total Visitors
-                </span>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '2px' }}>
-                  <Users size={18} color="#1a73e8" />
-                  <strong style={{ fontSize: '18px', color: 'var(--text-main)' }}>
-                    {typeof visitorCount === 'number' ? visitorCount.toLocaleString() : visitorCount}
-                  </strong>
-                </div>
-              </div>
-            )}
-
+            
+            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+              <h1 style={{ fontSize: '18px', margin: 0, lineHeight: 1.2, fontWeight: 500, letterSpacing: '0.3px', color: '#ffffff' }}>
+                GCP Tech<br/>Transformation<br/>Solutions
+              </h1>
+            </div>
           </div>
+
+          {/* Center Block: Navigation Links (Living in the light blue/gray center section) */}
+          <div style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'center',
+            gap: '16px',
+            flex: 1,
+            color: '#1e3a8a',
+            fontWeight: 700,
+            fontSize: '14px',
+            letterSpacing: '0.5px'
+          }}>
+            <span style={{ cursor: 'pointer' }} onClick={() => openSolution('home')}>APPLICATIONS</span>
+            <span style={{ color: '#94a3b8' }}>|</span>
+            <span style={{ cursor: 'pointer' }}>ECOSYSTEM</span>
+            <span style={{ color: '#94a3b8' }}>|</span>
+            <span style={{ cursor: 'pointer' }}>NEWS</span>
+          </div>
+
+          {/* Right Block: User Info & Visitor Count (Living inside the dark blue angular section) */}
+          <div style={{ 
+            display: 'flex', 
+            flexDirection: 'column', 
+            alignItems: 'center', 
+            justifyContent: 'center',
+            padding: '16px 32px',
+            color: 'white',
+            width: '20%'
+          }}>
+            <span style={{ fontSize: '12px', fontWeight: 500, opacity: 0.9 }}>David Williams</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
+              <Users size={20} color="#ffffff" />
+              <strong style={{ fontSize: '24px', color: '#ffffff', lineHeight: 1 }}>
+                {typeof visitorCount === 'number' ? visitorCount.toLocaleString() : visitorCount}
+              </strong>
+            </div>
+          </div>
+
         </section>
 
         <div className="page-content main-page-content">
