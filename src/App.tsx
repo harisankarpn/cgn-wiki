@@ -1507,27 +1507,27 @@ function App() {
             position: 'relative', zIndex: 2, flex: 1, paddingLeft: '40px',
             color: '#1e3a8a', fontWeight: 800, fontSize: '13px', letterSpacing: '0.8px'
           }}>
+            <div 
+              onClick={() => openSolution('home')} 
+              style={{
+                display: 'flex', alignItems: 'center', gap: '6px',
+                cursor: 'pointer', transition: 'all 0.2s',
+                backgroundColor: 'rgba(255,255,255,0.6)',
+                padding: '6px 14px', borderRadius: '20px',
+                boxShadow: '0 2px 5px rgba(0,0,0,0.05)'
+              }}
+              onMouseOver={e => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.9)'} 
+              onMouseOut={e => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.6)'}
+            >
+              <Home size={16} strokeWidth={2.5} />
+              <span>HOME</span>
+            </div>
+            <span style={{ color: '#94a3b8', fontWeight: 400 }}>|</span>
             <span style={{ cursor: 'pointer', transition: 'opacity 0.2s' }} onClick={() => openSolution('home')} onMouseOver={e => e.currentTarget.style.opacity = '0.7'} onMouseOut={e => e.currentTarget.style.opacity = '1'}>APPLICATIONS</span>
             <span style={{ color: '#94a3b8', fontWeight: 400 }}>|</span>
             <span style={{ cursor: 'pointer', transition: 'opacity 0.2s' }} onMouseOver={e => e.currentTarget.style.opacity = '0.7'} onMouseOut={e => e.currentTarget.style.opacity = '1'}>ECOSYSTEM</span>
             <span style={{ color: '#94a3b8', fontWeight: 400 }}>|</span>
             <span style={{ cursor: 'pointer', transition: 'opacity 0.2s' }} onMouseOver={e => e.currentTarget.style.opacity = '0.7'} onMouseOut={e => e.currentTarget.style.opacity = '1'}>INNOVATION HUB</span>
-          </div>
-
-          {/* Right Block: Visitor Count */}
-          <div style={{ 
-            display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'center',
-            position: 'relative', zIndex: 2, width: '160px'
-          }}>
-            <span style={{ fontSize: '11px', fontWeight: 500, opacity: 0.9, color: '#e2e8f0', marginBottom: '4px', letterSpacing: '0.3px' }}>
-              Total Visitors Count
-            </span>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <Users size={22} color="#ffffff" />
-              <strong style={{ fontSize: '26px', color: '#ffffff', lineHeight: 1, fontWeight: 800 }}>
-                {typeof visitorCount === 'number' ? visitorCount.toLocaleString() : visitorCount}
-              </strong>
-            </div>
           </div>
 
         </section>
