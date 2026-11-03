@@ -1560,7 +1560,7 @@ function App() {
 }
 
 /* =========================================================
-   INNOVATION WIKI HOME (Wider Dimensions & 3x2 Centered Layout)
+   INNOVATION WIKI HOME (Trimmed Headers & Image Backgrounds)
 ========================================================= */
 function InnovationWikiHome({ onSolutionSelect }: { onSolutionSelect: (id: NavigationId) => void }) {
   // Filter out the 'home' solution so we only render cards for actual products
@@ -1575,14 +1575,14 @@ function InnovationWikiHome({ onSolutionSelect }: { onSolutionSelect: (id: Navig
         .hub-programs-header h2 { font-size: 32px; color: var(--text-main); margin: 0 0 12px 0; }
         .hub-programs-header p { color: var(--text-secondary); font-size: 16px; margin: 0; }
         
-        /* Grid & Cards - Expanded width to match drawn rectangles */
+        /* Grid & Cards */
         .hub-cards-grid { 
           display: flex;
           flex-wrap: wrap;
           justify-content: center;
           gap: 32px; 
           padding-bottom: 60px;
-          max-width: 1450px; /* Increased massively to allow much wider cards */
+          max-width: 1450px;
           margin: 0 auto;
         }
         
@@ -1595,34 +1595,34 @@ function InnovationWikiHome({ onSolutionSelect }: { onSolutionSelect: (id: Navig
           flex-direction: column; 
           cursor: pointer; 
           transition: transform 0.2s ease, box-shadow 0.2s ease; 
-          width: calc(33.333% - 22px); /* Forces exactly 3 cards per row */
-          min-width: 380px; /* Ensures the cards stay wide */
+          width: calc(33.333% - 22px);
+          min-width: 380px; 
         }
         .hub-card:hover { 
           transform: translateY(-6px); 
           box-shadow: 0 12px 24px rgba(0,0,0,0.12); 
         }
         
-        /* Colored Top Section - Adjusted to form a wide rectangle */
+        /* Colored Top Section - Height Trimmed */
         .hub-card-top { 
-          padding: 28px; 
+          padding: 20px 24px; /* Reduced padding */
           color: white; 
           position: relative; 
           overflow: hidden; 
-          height: 150px; /* Trimmed height relative to new width */
+          height: 110px; /* Trimmed height as requested */
           display: flex; 
           flex-direction: column; 
           justify-content: flex-start; 
         }
         .hub-card-top h3 { 
-          font-size: 22px; 
+          font-size: 21px; 
           font-weight: 700; 
-          margin: 0 0 8px 0; 
+          margin: 0 0 6px 0; 
           position: relative; 
           z-index: 2; 
         }
         .hub-card-top p { 
-          font-size: 14px; 
+          font-size: 13.5px; 
           margin: 0; 
           position: relative; 
           z-index: 2; 
@@ -1632,19 +1632,18 @@ function InnovationWikiHome({ onSolutionSelect }: { onSolutionSelect: (id: Navig
           max-width: 85%;
         }
         
-        /* Giant background icon inside colored area */
+        /* Icon styling to blend with the new photo backgrounds */
         .hub-bg-icon {
           position: absolute;
-          right: -10px;
-          bottom: -15px;
-          opacity: 0.25;
+          right: -5px;
+          bottom: -20px;
+          opacity: 0.15;
           z-index: 1;
-          transform: scale(1.1); /* Slightly larger to fill the wider space */
         }
         
         /* White Bottom Section */
         .hub-card-bottom { 
-          padding: 24px 28px; 
+          padding: 20px 24px; 
           background: var(--bg-card);
           display: flex; 
           flex-direction: column;
@@ -1655,7 +1654,7 @@ function InnovationWikiHome({ onSolutionSelect }: { onSolutionSelect: (id: Navig
           display: flex; 
           align-items: center; 
           gap: 10px; 
-          margin-bottom: 14px; 
+          margin-bottom: 12px; 
         }
         .hub-card-bottom h4 { 
           font-size: 16px; 
@@ -1670,7 +1669,7 @@ function InnovationWikiHome({ onSolutionSelect }: { onSolutionSelect: (id: Navig
           margin: 0 0 24px 0; 
           flex-grow: 1;
           display: -webkit-box; 
-          -webkit-line-clamp: 3; /* Trims text to exactly 3 lines */
+          -webkit-line-clamp: 3; 
           -webkit-box-orient: vertical; 
           overflow: hidden;
         }
@@ -1697,10 +1696,10 @@ function InnovationWikiHome({ onSolutionSelect }: { onSolutionSelect: (id: Navig
         
         /* Responsive adjustments */
         @media (max-width: 1250px) {
-          .hub-card { width: calc(50% - 16px); } /* 2 per row on mid screens */
+          .hub-card { width: calc(50% - 16px); } 
         }
         @media (max-width: 750px) {
-          .hub-card { width: 100%; } /* 1 per row on small screens */
+          .hub-card { width: 100%; } 
         }
       `}</style>
 
@@ -1717,14 +1716,14 @@ function InnovationWikiHome({ onSolutionSelect }: { onSolutionSelect: (id: Navig
           return (
             <div key={solution.id} className="hub-card" onClick={() => onSolutionSelect(solution.id)}>
               
-              {/* Top Colored Block */}
+              {/* Top Colored Block with Image Background & Creative Gradient Overlay */}
               <div 
                 className="hub-card-top" 
                 style={{ 
-                  background: `linear-gradient(135deg, ${solution.color}f0, ${solution.color})` 
+                  background: `linear-gradient(105deg, ${solution.color}f5 25%, ${solution.color}cc 65%, ${solution.color}80 100%), url(${solution.image}) center/cover no-repeat` 
                 }}
               >
-                <Icon size={120} color="#ffffff" className="hub-bg-icon" strokeWidth={1.5} />
+                <Icon size={100} color="#ffffff" className="hub-bg-icon" strokeWidth={1.5} />
                 <h3>{content.shortName}</h3>
                 <p>{content.tagline}</p>
               </div>
