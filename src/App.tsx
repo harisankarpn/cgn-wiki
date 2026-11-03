@@ -1560,9 +1560,8 @@ function App() {
 }
 
 /* =========================================================
-   INNOVATION WIKI HOME (NEW IDEA HUB LAYOUT)
+   INNOVATION WIKI HOME (Recreated Card Pattern)
 ========================================================= */
-
 function InnovationWikiHome({ onSolutionSelect }: { onSolutionSelect: (id: NavigationId) => void }) {
   // Filter out the 'home' solution so we only render cards for actual products
   const cards = solutions.filter(s => s.id !== 'home');
@@ -1572,42 +1571,96 @@ function InnovationWikiHome({ onSolutionSelect }: { onSolutionSelect: (id: Navig
       <style>{`
         .idea-hub-layout { font-family: system-ui, sans-serif; padding: 20px 40px; }
         
-        /* Join a Program Section */
         .hub-programs-header { text-align: center; margin-bottom: 40px; }
         .hub-programs-header h2 { font-size: 32px; color: var(--text-main); margin: 0 0 12px 0; }
         .hub-programs-header p { color: var(--text-secondary); font-size: 16px; margin: 0; }
         
-        /* Grid & Cards */
-        .hub-cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; padding-bottom: 40px; }
-        .hub-card { background: var(--bg-card); border-radius: 16px; overflow: hidden; box-shadow: var(--shadow-sm); border: 1px solid var(--border-main); display: flex; flex-direction: column; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; }
-        .hub-card:hover { transform: translateY(-6px); box-shadow: 0 12px 24px rgba(0,0,0,0.08); }
+        /* Grid & Cards - Matched to reference image 1 */
+        .hub-cards-grid { 
+          display: grid; 
+          grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
+          gap: 24px; 
+          padding-bottom: 40px; 
+        }
         
-        /* Card Top (Color Banner with Generated Images) */
-        .hub-card-top { padding: 40px 24px; color: white; position: relative; overflow: hidden; height: 160px; display: flex; flex-direction: column; justify-content: flex-end; }
-        .hub-card-top h3 { font-size: 24px; font-weight: 800; margin: 0 0 8px 0; position: relative; z-index: 2; text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.1; }
-        .hub-card-top p { font-size: 13px; opacity: 0.95; margin: 0; position: relative; z-index: 2; font-weight: 500; }
+        .hub-card { 
+          background: var(--bg-card); 
+          border-radius: 12px; 
+          overflow: hidden; 
+          box-shadow: 0 4px 20px rgba(0,0,0,0.06); 
+          display: flex; 
+          flex-direction: column; 
+          cursor: pointer; 
+          transition: transform 0.2s ease, box-shadow 0.2s ease; 
+          min-height: 180px;
+        }
+        .hub-card:hover { 
+          transform: translateY(-6px); 
+          box-shadow: 0 12px 24px rgba(0,0,0,0.12); 
+        }
         
-        /* Abstract Card Backgrounds */
-        .hub-deco { position: absolute; background: rgba(255,255,255,0.15); }
-        .hub-deco-circle-1 { width: 200px; height: 200px; border-radius: 50%; bottom: -80px; right: -40px; }
-        .hub-deco-circle-2 { width: 100px; height: 100px; border-radius: 50%; top: -20px; left: -20px; }
-        .hub-deco-path { top: 0; left: 0; right: 0; bottom: 0; background-image: radial-gradient(circle at 80% 20%, rgba(255,255,255,0.2) 2px, transparent 2.5px); background-size: 20px 20px; opacity: 0.5; }
+        /* Colored Top Section */
+        .hub-card-top { 
+          padding: 24px; 
+          color: white; 
+          position: relative; 
+          overflow: hidden; 
+          flex-grow: 1; 
+          display: flex; 
+          flex-direction: column; 
+          justify-content: center; 
+        }
+        .hub-card-top h3 { 
+          font-size: 22px; 
+          font-weight: 700; 
+          margin: 0 0 6px 0; 
+          position: relative; 
+          z-index: 2; 
+          text-transform: uppercase; 
+          letter-spacing: 0.5px; 
+        }
+        .hub-card-top p { 
+          font-size: 13px; 
+          margin: 0; 
+          position: relative; 
+          z-index: 2; 
+          font-weight: 500; 
+          opacity: 0.95;
+          max-width: 75%;
+          line-height: 1.4;
+        }
         
-        /* Card Bottom (Content) */
-        .hub-card-bottom { padding: 24px; display: flex; flex-direction: column; flex-grow: 1; }
-        .hub-card-bottom-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-        .hub-card-bottom h4 { font-size: 18px; color: var(--text-main); margin: 0; }
-        .hub-card-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.6; margin: 0 0 32px 0; flex-grow: 1; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        /* Giant background icon inside colored area */
+        .hub-bg-icon {
+          position: absolute;
+          right: -10px;
+          bottom: -15px;
+          opacity: 0.25;
+          z-index: 1;
+        }
         
-        .hub-card-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 16px; border-top: 1px solid var(--border-soft); font-size: 12px; font-weight: 600; }
-        .hub-status { color: var(--text-muted); }
-        .hub-see-more { display: flex; align-items: center; gap: 4px; font-weight: 700; transition: gap 0.2s; }
-        .hub-card:hover .hub-see-more { gap: 8px; }
+        /* Simple White Bottom Section */
+        .hub-card-bottom { 
+          padding: 16px 24px; 
+          background: var(--bg-card);
+          display: flex; 
+          align-items: center; 
+          border-top: 1px solid rgba(0,0,0,0.03);
+        }
+        .hub-see-more { 
+          display: flex; 
+          align-items: center; 
+          gap: 6px; 
+          font-weight: 700; 
+          font-size: 14px;
+          transition: gap 0.2s; 
+        }
+        .hub-card:hover .hub-see-more { gap: 10px; }
       `}</style>
 
       <div className="hub-programs-header">
         <h2>Explore a solution</h2>
-        <p>Discover technical documentation, submit feedback, and collaborate to solve real challenges</p>
+        <p>Discover technical documentation, submit feedback, and collaborate to solve real challenges.</p>
       </div>
 
       <div className="hub-cards-grid">
@@ -1617,40 +1670,28 @@ function InnovationWikiHome({ onSolutionSelect }: { onSolutionSelect: (id: Navig
           
           return (
             <div key={solution.id} className="hub-card" onClick={() => onSolutionSelect(solution.id)}>
-              <div className="hub-card-top" style={{ backgroundColor: solution.color }}>
-                {/* Embedded dynamic AI generated background images */}
-                {solution.image && (
-                  <img 
-                    src={solution.image} 
-                    alt={solution.name} 
-                    style={{ 
-                      position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', 
-                      objectFit: 'cover', opacity: 0.35, zIndex: 1, mixBlendMode: 'overlay'
-                    }} 
-                  />
-                )}
-                <div className="hub-deco hub-deco-circle-1" />
-                <div className="hub-deco hub-deco-circle-2" />
-                <div className="hub-deco hub-deco-path" />
+              
+              {/* Top Colored Block */}
+              <div 
+                className="hub-card-top" 
+                style={{ 
+                  background: `linear-gradient(135deg, ${solution.color}f0, ${solution.color})` 
+                }}
+              >
+                {/* Large Background Icon replacing the complex decor */}
+                <Icon size={120} color="#ffffff" className="hub-bg-icon" strokeWidth={1.5} />
                 
-                <h3 style={{ position: 'relative', zIndex: 2 }}>{content.shortName}</h3>
-                <p style={{ position: 'relative', zIndex: 2 }}>{content.tagline}</p>
+                <h3>{content.shortName}</h3>
+                <p>{content.tagline}</p>
               </div>
               
+              {/* Bottom White Block */}
               <div className="hub-card-bottom">
-                <div className="hub-card-bottom-header">
-                  <Icon size={20} color={solution.color} />
-                  <h4>{content.shortName}</h4>
-                </div>
-                <p className="hub-card-desc">{content.overview}</p>
-                
-                <div className="hub-card-footer">
-                  <span className="hub-status">Status: {content.metadata.status}</span>
-                  <span className="hub-see-more" style={{ color: solution.color }}>
-                    See more →
-                  </span>
-                </div>
+                <span className="hub-see-more" style={{ color: solution.color }}>
+                  See more →
+                </span>
               </div>
+              
             </div>
           );
         })}
