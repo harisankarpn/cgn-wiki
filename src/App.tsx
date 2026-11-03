@@ -1548,33 +1548,6 @@ function App() {
 
         </section>
 
-        {/* Highlighted top navigation removed from the main/home page as requested */}
-        {selectedSolution !== 'home' && (
-          <section className="platform-card-row five-platforms">
-            {solutions.map((platform) => {
-              const Icon = platform.icon;
-              const isSelected = selectedSolution === platform.id;
-              return (
-                <button
-                  type="button"
-                  key={platform.id}
-                  className={`platform-card ${isSelected ? 'selected-glow' : ''}`}
-                  onClick={() => openSolution(platform.id)}
-                >
-                  <div className="platform-icon" style={{ color: platform.color, backgroundColor: `${platform.color}10` }}>
-                    <Icon size={44} strokeWidth={2.2} />
-                  </div>
-                  <div className="platform-copy">
-                    <h3>{platform.name}</h3>
-                    <p>{platform.subtitle}</p>
-                  </div>
-                  <ChevronRight size={22} className="platform-arrow" />
-                </button>
-              );
-            })}
-          </section>
-        )}
-
         <div className="page-content main-page-content">
           {selectedSolution === 'home' ? (
             <InnovationWikiHome onSolutionSelect={openSolution} />
