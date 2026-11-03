@@ -759,7 +759,7 @@ const sections = [
 ];
 
 /* =========================================================
-   WELCOME BANNER (Reverted to standard typing text animation)
+   WELCOME BANNER (Standard typing text + Synchronized Bird Reveal)
 ========================================================= */
 function WelcomeBanner({ onComplete }: { onComplete: () => void }) {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -786,18 +786,13 @@ function WelcomeBanner({ onComplete }: { onComplete: () => void }) {
 
   // Map exact colors to specific words based on your visual reference
   const getColorForIndex = (index: number) => {
-     // "Innovation" starts at index 15, ends at 24
      if (index >= 15 && index < 25) {
          const colors = ['#4285F4', '#EA4335', '#FBBC04', '#4285F4', '#34A853', '#EA4335', '#FBBC04', '#4285F4', '#34A853', '#EA4335'];
          return colors[index - 15];
      }
-     // "transformation" starts at index 44, ends at 58
      if (index >= 44 && index < 58) return '#4285F4'; 
-     // "innovative" starts at index 79, ends at 89
      if (index >= 79 && index < 89) return '#34A853'; 
-     // "smarter" starts at index 109, ends at 116
      if (index >= 109 && index < 116) return '#EA4335'; 
-     
      return 'var(--text-main)';
   };
 
@@ -816,6 +811,11 @@ function WelcomeBanner({ onComplete }: { onComplete: () => void }) {
         @keyframes blinkCursor {
           0%, 100% { opacity: 1; }
           50% { opacity: 0; }
+        }
+        /* New synchronized bird reveal animation */
+        @keyframes revealBird {
+          0% { clip-path: inset(0 100% 0 0); }
+          100% { clip-path: inset(0 0 0 0); }
         }
         .welcome-sparkle {
           position: absolute;
@@ -912,10 +912,9 @@ function WelcomeBanner({ onComplete }: { onComplete: () => void }) {
               Submit your idea
             </button>
           </div>
-
         </div>
 
-        {/* RIGHT COLUMN: The exact Puzzle / Bird Artwork Image */}
+        {/* RIGHT COLUMN: Bird Artwork with CSS Reveal Animation */}
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <img 
             src={birdArtwork} 
@@ -924,7 +923,9 @@ function WelcomeBanner({ onComplete }: { onComplete: () => void }) {
               width: '100%', 
               maxWidth: '380px', 
               height: 'auto', 
-              objectFit: 'contain' 
+              objectFit: 'contain',
+              /* 10s exact match to the typing duration */
+              animation: 'revealBird 10s linear forwards' 
             }} 
           />
         </div>
@@ -933,6 +934,7 @@ function WelcomeBanner({ onComplete }: { onComplete: () => void }) {
     </div>
   );
 }
+
 /* =========================================================
    SPLASH PUZZLE COMPONENT
 ========================================================= */
