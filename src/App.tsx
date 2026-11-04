@@ -859,7 +859,7 @@ function WelcomeBanner({ onComplete }: { onComplete: () => void }) {
           
           {/* Cursive Animated Text */}
           <div style={{
-            fontFamily: '"VintageOne", "Courier New", Courier, monospace',
+            fontFamily: '"Special Elite", "Courier New", Courier, monospace',
             fontSize: '32px',
             color: 'var(--text-main)',
             textAlign: 'left',
