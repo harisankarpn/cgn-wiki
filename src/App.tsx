@@ -2891,56 +2891,57 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
               </span>
             </div>
 
+            {/* Daily Login Velocity Card */}
             <div 
               className="metric-stat-card" 
-              onClick={() => setActiveCardDef(activeCardDef === 'elevate-trend' ? null : 'elevate-trend')}
-              style={{ backgroundColor: '#fffbeb', borderColor: '#fef3c7', cursor: 'pointer', transition: 'all 0.2s' }}
+              onClick={() => setActiveCardDef(activeCardDef === 'elevate-velocity' ? null : 'elevate-velocity')}
+              style={{ backgroundColor: '#fff7ed', borderColor: '#ffedd5', cursor: 'pointer', transition: 'all 0.2s' }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: '#f59e0b', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <TrendingUp size={16} />
-                  </div>
-                  <span className="metric-stat-label" style={{ color: '#78350f', marginBottom: 0 }}>Adoption Trend</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#f59e0b', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <BarChart2 size={14} /> {/* Assuming you use lucide-react */}
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '2px', color: '#16a34a', fontSize: '11px', fontWeight: 700, backgroundColor: '#dcfce7', padding: '2px 6px', borderRadius: '4px' }}>
-                  <TrendingUp size={12} />
-                  <span>+8.4%</span>
-                </div>
+                <span className="metric-stat-label" style={{ color: '#92400e', marginBottom: 0 }}>Daily Login Velocity</span>
               </div>
-              <div className="metric-stat-value" style={{ color: '#d97706' }}>
-                {loading ? '...' : (elevateStats?.rolling_activity?.last_7_days?.sessions ?? 0).toLocaleString()}
+              <div className="metric-stat-value" style={{ color: '#b45309' }}>
+                {loading ? '...' : (elevateStats?.average_daily_logins ?? 0).toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
               </div>
               <span className="metric-stat-sub" style={{ color: '#64748b' }}>
-                {activeCardDef === 'elevate-trend' 
-                  ? 'Definition: Adoption Trend measures recent platform engagement by tracking session counts over specific short-term intervals (such as the last 7 days).' 
-                  : 'Last 7 days sessions'}
+                {activeCardDef === 'elevate-velocity' 
+                  ? 'Definition: Daily Login Velocity represents the average number of login sessions per active day over the selected timeframe.' 
+                  : 'Avg logins per active day'}
               </span>
             </div>
 
+            {/* Peak Activity Day Card */}
             <div 
               className="metric-stat-card" 
-              onClick={() => setActiveCardDef(activeCardDef === 'elevate-returning' ? null : 'elevate-returning')}
-              style={{ backgroundColor: '#faf5ff', borderColor: '#f3e8ff', cursor: 'pointer', transition: 'all 0.2s' }}
+              onClick={() => setActiveCardDef(activeCardDef === 'elevate-peak' ? null : 'elevate-peak')}
+              style={{ backgroundColor: '#f0fdfa', borderColor: '#ccfbf1', cursor: 'pointer', transition: 'all 0.2s' }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#9333ea', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <UserCheck size={14} />
+                <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#8b5cf6', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Flame size={14} /> 
                 </div>
-                <span className="metric-stat-label" style={{ color: '#581c87', marginBottom: 0 }}>Returning Users</span>
+                <span className="metric-stat-label" style={{ color: '#5b21b6', marginBottom: 0 }}>Peak Activity Day</span>
               </div>
-              <div className="metric-stat-value" style={{ color: '#9333ea' }}>
-                {loading ? '...' : (elevateStats?.rolling_activity?.last_30_days?.unique_users ?? 0).toLocaleString()}
+              <div className="metric-stat-value" style={{ color: '#7c3aed' }}>
+                {/* Formats "2026-11-02" into "Nov 2" or falls back to raw string */}
+                {loading ? '...' : (
+                  elevateStats?.peak_activity_day 
+                    ? new Date(elevateStats.peak_activity_day).toLocaleDateString('en-IN', { month: 'short', day: 'numeric' }) 
+                    : '--'
+                )}
               </div>
               <span className="metric-stat-sub" style={{ color: '#64748b' }}>
-                {activeCardDef === 'elevate-returning' 
-                  ? 'Definition: Returning Users counts the distinct individuals who have been active on the platform within a recent rolling window (such as the last 30 days).' 
-                  : 'Last 30 days unique users'}
+                {activeCardDef === 'elevate-peak' 
+                  ? 'Definition: Peak Activity Day identifies the single date with the highest volume of login sessions within the reporting period.' 
+                  : `${(elevateStats?.peak_session_count ?? 0).toLocaleString()} login sessions recorded`}
               </span>
             </div>
+
           </div>
-        )}
-        
+      )}
         {/* ---> LIVE METRICS TILES: DIGITAL SME (Google Sheet Data) <--- */}
         {isSme && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
