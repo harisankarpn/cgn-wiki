@@ -2764,9 +2764,31 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
         }
       `}</style>
 
-      {/* ---> UPDATE CONDITION TO INCLUDE ELEVATE <--- */}
+     {/* ---> CALENDAR UI FOR C.O.R.E. ONLY <--- */}
       <div className="section-heading" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
         <h3>Usage & Adoption</h3>
+        {isCore && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', background: 'var(--bg-card)', padding: '6px 12px', borderRadius: '10px', border: '1px solid var(--border-main)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase' }}>From:</span>
+              <input 
+                type="date" 
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+                style={{ padding: '4px 8px', borderRadius: '6px', border: '1px solid var(--border-main)', backgroundColor: 'var(--bg-main)', color: 'var(--text-main)', fontSize: '12px', cursor: 'pointer', outline: 'none' }}
+              />
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase' }}>To:</span>
+              <input 
+                type="date" 
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+                style={{ padding: '4px 8px', borderRadius: '6px', border: '1px solid var(--border-main)', backgroundColor: 'var(--bg-main)', color: 'var(--text-main)', fontSize: '12px', cursor: 'pointer', outline: 'none' }}
+              />
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="usage-section">
