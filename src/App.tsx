@@ -2622,12 +2622,12 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
   const calculateDerivedMetrics = (stats: any) => {
     if (!stats || !stats.summary) return null;
 
-    // Calculate active days based on earliest and latest login timestamps
+    // Dynamically calculate active days based on the selected calendar window
     const start = new Date(stats.summary.earliest_login_at);
     const end = new Date(stats.summary.latest_login_at);
     const diffTime = Math.abs(end.getTime() - start.getTime());
     
-    // Convert ms to days (default to 1 to prevent division by zero errors)
+    // Convert ms to days (default to 1 to prevent division by zero)
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) || 1; 
 
     const totalSessions = stats.summary.total_login_sessions || 0;
@@ -2635,7 +2635,7 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
 
     return {
       average_daily_logins: velocity,
-      peak_activity_day: 'NA', // Cannot calculate Peak Day without a daily array from the backend
+      peak_activity_day: 'NA', // Awaiting backend fix for time-series array
       peak_session_count: 'NA' 
     };
   };
@@ -2767,7 +2767,7 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
      {/* ---> CALENDAR UI FOR C.O.R.E. ONLY <--- */}
       <div className="section-heading" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
         <h3>Usage & Adoption</h3>
-        {isCore && (
+        {(isCore || isElevate) && (
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', background: 'var(--bg-card)', padding: '6px 12px', borderRadius: '10px', border: '1px solid var(--border-main)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
               <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase' }}>From:</span>
