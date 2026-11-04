@@ -2885,7 +2885,7 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
               </div>
               <span className="metric-stat-sub" style={{ color: '#64748b', marginTop: '6px', display: 'block' }}>
                 {activeCardDef === 'core-star-domain' 
-                  ? 'Definition: New = Skill with highest taken rate. Tenured = Specialization with highest completion rate.' 
+                  ? 'Definition: Highest percentage of completed assessments' 
                   : 'Highest rates by segment'}
               </span>
             </div>
