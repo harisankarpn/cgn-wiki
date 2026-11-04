@@ -2838,7 +2838,7 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
               </div>
               <span className="metric-stat-sub" style={{ color: '#64748b' }}>
                 {activeCardDef === 'core-pass-rate' 
-                  ? 'Definition: Measures the proportion of users who have successfully passed their required assessments.' 
+                  ? 'Definition: Candidates (new or tenured) who secure more than 80% are considered as passed.' 
                   : 'Passed assessments'}
               </span>
             </div>
@@ -2875,13 +2875,18 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
                 </div>
                 <span className="metric-stat-label" style={{ color: '#4c1d95', marginBottom: 0 }}>Star Performer Domain</span>
               </div>
-              <div className="metric-stat-value" style={{ color: '#7c3aed' }}>
-                {loading ? '...' : (liveStats?.starPerformerDomain ?? 'NA')}
+              <div className="metric-stat-value" style={{ color: '#7c3aed', fontSize: '15px', lineHeight: '1.4', marginTop: '2px' }}>
+                {loading ? '...' : (
+                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <div>New: <span style={{ fontWeight: 600 }}>{liveStats?.starPerformerDomain?.new ?? 'NA'}</span></div>
+                    <div>Tenured: <span style={{ fontWeight: 600 }}>{liveStats?.starPerformerDomain?.tenured ?? 'NA'}</span></div>
+                  </div>
+                )}
               </div>
-              <span className="metric-stat-sub" style={{ color: '#64748b' }}>
+              <span className="metric-stat-sub" style={{ color: '#64748b', marginTop: '6px', display: 'block' }}>
                 {activeCardDef === 'core-star-domain' 
-                  ? 'Definition: Domain with the highest assessment completion rate (includes both new and tenured users).' 
-                  : 'Highest completion rate'}
+                  ? 'Definition: New = Skill with highest taken rate. Tenured = Specialization with highest completion rate.' 
+                  : 'Highest rates by segment'}
               </span>
             </div>
           </div>
