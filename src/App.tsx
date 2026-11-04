@@ -2906,7 +2906,11 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
                 <span className="metric-stat-label" style={{ color: '#1e3a8a', marginBottom: 0 }}>Total Unique Users</span>
               </div>
               <div className="metric-stat-value" style={{ color: '#2563eb' }}>
-                {loading ? '...' : (elevateTrendData.length > 0 ? elevateTrendData.length : (elevateStats?.summary?.total_unique_users ?? 0)).toLocaleString()}
+                {loading ? '...' : (
+                  elevateTrendData.length > 0 
+                    ? new Set(elevateTrendData.map((session: any) => session.user_id || session.email)).size 
+                    : (elevateStats?.summary?.total_unique_users ?? 0)
+                ).toLocaleString()}
               </div>
               <span className="metric-stat-sub" style={{ color: '#64748b' }}>
                 {activeCardDef === 'elevate-users' 
