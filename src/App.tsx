@@ -2770,7 +2770,7 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
                 <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#3b82f6', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <Users size={14} />
                 </div>
-                <span className="metric-stat-label" style={{ color: '#1e3a8a', marginBottom: 0 }}>Active Users</span>
+                <span className="metric-stat-label" style={{ color: '#1e3a8a', marginBottom: 0 }}>Registered Users</span>
               </div>
               <div className="metric-stat-value" style={{ color: '#2563eb' }}>
                 {loading ? '...' : (liveStats?.activeUsers?.total ?? 0).toLocaleString()}
