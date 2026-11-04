@@ -77,7 +77,7 @@ type BenefitItem = {
 function GlobalThemeStyles() {
   return (
     <style>{`
-      @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=Special+Elite&display=swap');
 
       :root {
         --bg-main: #f8fafc;
@@ -852,7 +852,7 @@ function WelcomeBanner({ onComplete }: { onComplete: () => void }) {
           
           {/* Cursive Animated Text */}
           <div style={{
-            fontFamily: '"Comic Sans MS", "Chalkboard SE", "Caveat", "Brush Script MT", cursive',
+            fontFamily: '"Special Elite", "Courier New", Courier, monospace',
             fontSize: '30px',
             color: 'var(--text-main)',
             textAlign: 'left',
