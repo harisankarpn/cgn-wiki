@@ -2525,6 +2525,7 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
 
   const [liveStats, setLiveStats] = useState<any>(null);
   const [elevateStats, setElevateStats] = useState<any>(null);
+  const [elevateTrendData, setElevateTrendData] = useState<any[]>([]);
   const [smeSheetData, setSmeSheetData] = useState<any[]>([]); 
   const [cradoStats, setCradoStats] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(isCore || isElevate || isSme || isCrado);
@@ -2541,16 +2542,32 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
             setLiveStats(data);
           }
         } else if (isElevate) {
-          const ELEVATE_BACKEND_URL = 'https://user-session-metrics-803836599959.us-central1.run.app/user_session_metrics';
-          let url = ELEVATE_BACKEND_URL;
+          const ELEVATE_SUMMARY_URL = 'https://user-session-metrics-803836599959.us-central1.run.app/user_session_metrics';
+          const ELEVATE_TREND_URL = 'https://tsrview-notif-worker-prod-dot-digital-sme.uc.r.appspot.com/auth/user-sessions';
+          
+          let summaryUrl = ELEVATE_SUMMARY_URL;
+          let trendUrl = ELEVATE_TREND_URL;
+          
           if (startDate && endDate) {
-            url += `?start_date=${startDate}&end_date=${endDate}`;
+            summaryUrl += `?start_date=${startDate}&end_date=${endDate}`;
+            trendUrl += `?start_date=${startDate}&end_date=${endDate}`;
           }
           
-          const res = await fetch(url);
-          if (res.ok && isMounted) {
-            const data = await res.json();
-            setElevateStats(data);
+          const [summaryRes, trendRes] = await Promise.all([
+            fetch(summaryUrl).catch(() => null),
+            fetch(trendUrl).catch(() => null)
+          ]);
+
+          if (isMounted) {
+            if (summaryRes && summaryRes.ok) {
+              const summaryData = await summaryRes.json();
+              setElevateStats(summaryData);
+            }
+            if (trendRes && trendRes.ok) {
+              const trendData = await trendRes.json();
+              const dataArray = Array.isArray(trendData) ? trendData : (trendData.data || trendData.items || trendData.sessions || []);
+              setElevateTrendData(dataArray);
+            }
           }
         } else if (isSme) {
           // Fetch DIRECTLY from Google Sheets without the proxy that is timing out
@@ -2600,9 +2617,33 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
     };
   }, [isCore, isElevate, isSme, startDate, endDate]);
 
-   
+   if (!usageData) return null;
 
-  if (!usageData) return null;
+  const calculateDerivedMetrics = (dailyTrendArray: any[]) => {
+    if (!dailyTrendArray || dailyTrendArray.length === 0) return null;
+
+    let peakDay = 'NA';
+    let maxSessions = -1;
+    let totalSessions = 0;
+
+    dailyTrendArray.forEach(dayRecord => {
+      const sessionsCount = Number(dayRecord.sessions || dayRecord.login_sessions || 0);
+      totalSessions += sessionsCount;
+      
+      if (sessionsCount > maxSessions) {
+        maxSessions = sessionsCount;
+        peakDay = dayRecord.date || dayRecord.activity_date || 'NA'; 
+      }
+    });
+
+    return {
+      average_daily_logins: totalSessions / dailyTrendArray.length,
+      peak_activity_day: peakDay,
+      peak_session_count: maxSessions === -1 ? 'NA' : maxSessions
+    };
+  };
+
+  const derivedStats = calculateDerivedMetrics(elevateTrendData);
 
   // --- ADDED: Dynamically calculate unique case numbers ---
   const headerRow = smeSheetData[0] || [];
@@ -2884,7 +2925,8 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
               <div className="metric-stat-value" style={{ color: '#16a34a' }}>
                 {loading ? '...' : (elevateStats?.summary?.total_login_sessions ?? 0).toLocaleString()}
               </div>
-              <span className="metric-stat-sub" style={{ color: '#64748b' }}>
+              
+           <span className="metric-stat-sub" style={{ color: '#64748b' }}>
                 {activeCardDef === 'elevate-sessions' 
                   ? 'Definition: Total Login Sessions measures the aggregate count of login sessions recorded across the platform.' 
                   : 'Rolling activity (30d)'}
@@ -2899,16 +2941,16 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
                 <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#f59e0b', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <BarChart2 size={14} /> {/* Assuming you use lucide-react */}
+                  <BarChart size={14} /> 
                 </div>
                 <span className="metric-stat-label" style={{ color: '#92400e', marginBottom: 0 }}>Daily Login Velocity</span>
               </div>
               <div className="metric-stat-value" style={{ color: '#b45309' }}>
-                {loading ? '...' : (elevateStats?.average_daily_logins ?? 0).toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
+                {loading ? '...' : (derivedStats?.average_daily_logins !== undefined && derivedStats?.average_daily_logins !== 'NA' ? derivedStats.average_daily_logins.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 }) : 'NA')}
               </div>
               <span className="metric-stat-sub" style={{ color: '#64748b' }}>
                 {activeCardDef === 'elevate-velocity' 
-                  ? 'Definition: Daily Login Velocity represents the average number of login sessions per active day over the selected timeframe.' 
+                  ? 'Definition: Daily Login Velocity represents the average number of login sessions per active day.' 
                   : 'Avg logins per active day'}
               </span>
             </div>
@@ -2921,27 +2963,27 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
                 <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#8b5cf6', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Flame size={14} /> 
+                  <Zap size={14} /> 
                 </div>
                 <span className="metric-stat-label" style={{ color: '#5b21b6', marginBottom: 0 }}>Peak Activity Day</span>
               </div>
               <div className="metric-stat-value" style={{ color: '#7c3aed' }}>
-                {/* Formats "2026-11-02" into "Nov 2" or falls back to raw string */}
                 {loading ? '...' : (
-                  elevateStats?.peak_activity_day 
-                    ? new Date(elevateStats.peak_activity_day).toLocaleDateString('en-IN', { month: 'short', day: 'numeric' }) 
-                    : '--'
+                  derivedStats?.peak_activity_day && derivedStats.peak_activity_day !== 'NA'
+                    ? new Date(derivedStats.peak_activity_day).toLocaleDateString('en-IN', { month: 'short', day: 'numeric' }) 
+                    : 'NA'
                 )}
               </div>
               <span className="metric-stat-sub" style={{ color: '#64748b' }}>
                 {activeCardDef === 'elevate-peak' 
-                  ? 'Definition: Peak Activity Day identifies the single date with the highest volume of login sessions within the reporting period.' 
-                  : `${(elevateStats?.peak_session_count ?? 0).toLocaleString()} login sessions recorded`}
+                  ? 'Definition: Peak Activity Day identifies the single date with the highest volume of login sessions.' 
+                  : `${derivedStats?.peak_session_count !== undefined && derivedStats?.peak_session_count !== 'NA' ? derivedStats.peak_session_count.toLocaleString() : 'NA'} login sessions`}
               </span>
             </div>
 
           </div>
-      )}
+        )}
+            
         {/* ---> LIVE METRICS TILES: DIGITAL SME (Google Sheet Data) <--- */}
         {isSme && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
