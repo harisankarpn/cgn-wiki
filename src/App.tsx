@@ -77,14 +77,7 @@ type BenefitItem = {
 function GlobalThemeStyles() {
   return (
     <style>{`
-      @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&display=swap');
-
-      @font-face {
-        font-family: 'VintageOne';
-        src: url('./VintageOne.ttf') format('truetype');
-        font-weight: normal;
-        font-style: normal;
-      }
+     @import url('https://fonts.googleapis.com/css2?family=Special+Elite&display=swap');
 
       :root {
         --bg-main: #f8fafc;
