@@ -2627,12 +2627,14 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
     let totalSessions = 0;
 
     dailyTrendArray.forEach(dayRecord => {
-      const sessionsCount = Number(dayRecord.sessions || dayRecord.login_sessions || 0);
+      // Added dayRecord.total_logins
+      const sessionsCount = Number(dayRecord.total_logins || dayRecord.sessions || dayRecord.login_sessions || 0);
       totalSessions += sessionsCount;
       
       if (sessionsCount > maxSessions) {
         maxSessions = sessionsCount;
-        peakDay = dayRecord.date || dayRecord.activity_date || 'NA'; 
+        // Added dayRecord.login_timestamp
+        peakDay = dayRecord.login_timestamp || dayRecord.date || dayRecord.activity_date || 'NA'; 
       }
     });
 
@@ -2814,12 +2816,12 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
                 <span className="metric-stat-label" style={{ color: '#1e3a8a', marginBottom: 0 }}>Registered Users</span>
               </div>
               <div className="metric-stat-value" style={{ color: '#2563eb' }}>
-                {loading ? '...' : (liveStats?.activeUsers?.total ?? 0).toLocaleString()}
+                {loading ? '...' : (liveStats?.activeUsers?.total !== undefined ? liveStats.activeUsers.total.toLocaleString() : 'NA')}
               </div>
               <span className="metric-stat-sub" style={{ color: '#64748b' }}>
                 {activeCardDef === 'core-active' 
                   ? 'Definition: Counts the total number of distinct users actively participating in platform assessments.' 
-                  : (loading ? 'Calculating...' : `New: ${liveStats?.activeUsers?.newUsers || 0} | Tenured: ${liveStats?.activeUsers?.tenuredUsers || 0}`)}
+                  : (loading ? 'Calculating...' : ``New: ${liveStats?.activeUsers?.newUsers ?? 'NA'} | Tenured: ${liveStats?.activeUsers?.tenuredUsers ?? 'NA'}`)}
               </span>
             </div>
 
@@ -2835,7 +2837,7 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
                 <span className="metric-stat-label" style={{ color: '#14532d', marginBottom: 0 }}>Adoption Rate</span>
               </div>
               <div className="metric-stat-value" style={{ color: '#16a34a' }}>
-                {loading ? '...' : (liveStats?.adoptionRate ?? '0.0%')}
+                {loading ? '...' : (liveStats?.adoptionRate ?? 'NA')}
               </div>
               <span className="metric-stat-sub" style={{ color: '#64748b' }}>
                 {activeCardDef === 'core-adoption' 
@@ -2856,7 +2858,7 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
                 <span className="metric-stat-label" style={{ color: '#78350f', marginBottom: 0 }}>Monthly Growth</span>
               </div>
               <div className="metric-stat-value" style={{ color: '#d97706' }}>
-                {loading ? '...' : (liveStats?.monthlyGrowth ?? '+0.0%')}
+                {loading ? '...' : (liveStats?.monthlyGrowth ?? 'NA')}
               </div>
               <span className="metric-stat-sub" style={{ color: '#64748b' }}>
                 {activeCardDef === 'core-growth' 
@@ -2877,12 +2879,12 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
                 <span className="metric-stat-label" style={{ color: '#14532d', marginBottom: 0 }}>Newly Onboarded Users</span>
               </div>
               <div className="metric-stat-value" style={{ color: '#16a34a' }}>
-                {loading ? '...' : (liveStats?.completionStats?.totalCompleted ?? 0).toLocaleString()}
+                {loading ? '...' : (liveStats?.completionStats?.totalCompleted !== undefined ? liveStats.completionStats.totalCompleted.toLocaleString() : 'NA')}
               </div>
               <span className="metric-stat-sub" style={{ color: '#64748b' }}>
                 {activeCardDef === 'core-onboard' 
                   ? 'Definition: Counts the total number of users who have finished their onboarding milestones.' 
-                  : (loading ? 'Calculating...' : `New: ${liveStats?.completionStats?.newCompleted || 0} | Tenured: ${liveStats?.completionStats?.tenuredCompleted || 0}`)}
+                  : (loading ? 'Calculating...' : `New: ${liveStats?.completionStats?.newCompleted ?? 'NA'} | Tenured: ${liveStats?.completionStats?.tenuredCompleted ?? 'NA'}`)}
               </span>
             </div>
           </div>
@@ -3049,7 +3051,7 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
                   </div>
                 </div>
                 <div className="metric-stat-value" style={{ color: '#d97706' }}>
-                  {loading ? '...' : '484'}
+                  {loading ? '...' : 'NA'}
                 </div>
                 <span className="metric-stat-sub" style={{ color: '#64748b' }}>
                   {activeCardDef === 'sme-users' 
@@ -3070,7 +3072,7 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
                   <span className="metric-stat-label" style={{ color: '#581c87', marginBottom: 0 }}>Satisfaction Rate</span>
                 </div>
                 <div className="metric-stat-value" style={{ color: '#9333ea' }}>
-                  {loading ? '...' : '78.9%'}
+                  {loading ? '...' : 'NA'}
                 </div>
                 <span className="metric-stat-sub" style={{ color: '#64748b' }}>
                   {activeCardDef === 'sme-csat' 
@@ -3139,7 +3141,7 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
                 <span className="metric-stat-label" style={{ color: '#1e3a8a', marginBottom: 0 }}>CRADO Queries</span>
               </div>
               <div className="metric-stat-value" style={{ color: '#2563eb' }}>
-                {loading ? '...' : cradoStats?.ssoBlocked ? 'Auth Required' : (cradoStats?.queries ?? 0).toLocaleString()}
+                {loading ? '...' : cradoStats?.ssoBlocked ? 'Auth Required' : (cradoStats?.queries !== undefined ? cradoStats.queries.toLocaleString() : 'NA')}
               </div>
             </div>
 
@@ -3149,7 +3151,7 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
                 <span className="metric-stat-label" style={{ color: '#581c87', marginBottom: 0 }}>Cognizant TSRs</span>
               </div>
               <div className="metric-stat-value" style={{ color: '#9333ea' }}>
-                {loading ? '...' : cradoStats?.ssoBlocked ? 'Auth Required' : (cradoStats?.tsrs ?? 0).toLocaleString()}
+                {loading ? '...' : cradoStats?.ssoBlocked ? 'Auth Required' : (cradoStats?.tsrs !== undefined ? cradoStats.tsrs.toLocaleString() : 'NA')}
               </div>
             </div>
 
@@ -3159,7 +3161,7 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
                 <span className="metric-stat-label" style={{ color: '#064e3b', marginBottom: 0 }}>Agent Sessions</span>
               </div>
               <div className="metric-stat-value" style={{ color: '#059669' }}>
-                {loading ? '...' : cradoStats?.ssoBlocked ? 'Auth Required' : (cradoStats?.sessions ?? 0).toLocaleString()}
+                {loading ? '...' : cradoStats?.ssoBlocked ? 'Auth Required' : (cradoStats?.sessions !== undefined ? cradoStats.sessions.toLocaleString() : 'NA')}
               </div>
             </div>
 
@@ -3169,7 +3171,7 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
                 <span className="metric-stat-label" style={{ color: '#7c2d12', marginBottom: 0 }}>Unique Cases</span>
               </div>
               <div className="metric-stat-value" style={{ color: '#ea580c' }}>
-                {loading ? '...' : cradoStats?.ssoBlocked ? 'Auth Required' : (cradoStats?.uniqueCases ?? 0).toLocaleString()}
+                {loading ? '...' : cradoStats?.ssoBlocked ? 'Auth Required' : (cradoStats?.uniqueCases !== undefined ? cradoStats.uniqueCases.toLocaleString() : 'NA')}
               </div>
             </div>
 
