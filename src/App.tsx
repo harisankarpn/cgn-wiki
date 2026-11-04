@@ -2520,8 +2520,8 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
   const isSme = content.shortName === 'Digital SME';
   const isCrado = content.shortName === 'CRADO';
   const [activeCardDef, setActiveCardDef] = useState<string | null>(null);
-  const [startDate, setStartDate] = useState<string>('2026-09-01');
-  const [endDate, setEndDate] = useState<string>('2026-10-14');
+  const [startDate, setStartDate] = useState<string>('');
+  const [endDate, setEndDate] = useState<string>('');
 
   const [liveStats, setLiveStats] = useState<any>(null);
   const [elevateStats, setElevateStats] = useState<any>(null);
@@ -2535,8 +2535,10 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
     const fetchMetrics = async () => {
       try {
         if (isCore) {
+            if (isCore) {
           const CORE_BACKEND_URL = 'https://terminal-swap-dev-216117029862.us-central1.run.app'; 
-          const res = await fetch(`${CORE_BACKEND_URL}/api/metrics/usage-stats?startDate=${startDate}&endDate=${endDate}`);
+          const queryParams = startDate && endDate ? `?startDate=${startDate}&endDate=${endDate}` : '';
+          const res = await fetch(`${CORE_BACKEND_URL}/api/metrics/usage-stats${queryParams}`);
           if (res.ok && isMounted) {
             const data = await res.json();
             setLiveStats(data);
@@ -2821,66 +2823,66 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
               </span>
             </div>
 
-            <div 
+              <div 
               className="metric-stat-card" 
-              onClick={() => setActiveCardDef(activeCardDef === 'core-adoption' ? null : 'core-adoption')}
+              onClick={() => setActiveCardDef(activeCardDef === 'core-pass-rate' ? null : 'core-pass-rate')}
               style={{ backgroundColor: '#f0fdf4', borderColor: '#dcfce7', cursor: 'pointer', transition: 'all 0.2s' }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
                 <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: '#22c55e', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <TrendingUp size={16} />
                 </div>
-                <span className="metric-stat-label" style={{ color: '#14532d', marginBottom: 0 }}>Adoption Rate</span>
+                <span className="metric-stat-label" style={{ color: '#14532d', marginBottom: 0 }}>Assessment Pass Rate</span>
               </div>
               <div className="metric-stat-value" style={{ color: '#16a34a' }}>
-                {loading ? '...' : (liveStats?.adoptionRate ?? 'NA')}
+                {loading ? '...' : (liveStats?.passRate ?? 'NA')}
               </div>
               <span className="metric-stat-sub" style={{ color: '#64748b' }}>
-                {activeCardDef === 'core-adoption' 
-                  ? 'Definition: Measures the proportion of users who have successfully completed their required assessments.' 
-                  : 'Completed assessments'}
+                {activeCardDef === 'core-pass-rate' 
+                  ? 'Definition: Measures the proportion of users who have successfully passed their required assessments.' 
+                  : 'Passed assessments'}
               </span>
             </div>
 
             <div 
               className="metric-stat-card" 
-              onClick={() => setActiveCardDef(activeCardDef === 'core-growth' ? null : 'core-growth')}
+              onClick={() => setActiveCardDef(activeCardDef === 'core-completed' ? null : 'core-completed')}
               style={{ backgroundColor: '#fffbeb', borderColor: '#fef3c7', cursor: 'pointer', transition: 'all 0.2s' }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
                 <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: '#f59e0b', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <Target size={16} />
                 </div>
-                <span className="metric-stat-label" style={{ color: '#78350f', marginBottom: 0 }}>Monthly Growth</span>
+                <span className="metric-stat-label" style={{ color: '#78350f', marginBottom: 0 }}>Assessment Completed Count</span>
               </div>
               <div className="metric-stat-value" style={{ color: '#d97706' }}>
-                {loading ? '...' : (liveStats?.monthlyGrowth ?? 'NA')}
+                {loading ? '...' : (liveStats?.completionStats?.totalCompleted !== undefined ? liveStats.completionStats.totalCompleted.toLocaleString() : 'NA')}
               </div>
               <span className="metric-stat-sub" style={{ color: '#64748b' }}>
-                {activeCardDef === 'core-growth' 
-                  ? 'Definition: Tracks the percentage change in active user engagement compared to the previous month.' 
-                  : 'vs. previous month'}
+                {activeCardDef === 'core-completed' 
+                  ? 'Definition: Counts the total number of assessments that have been completed.' 
+                  : (loading ? 'Calculating...' : `New: ${liveStats?.completionStats?.newCompleted ?? 'NA'} | Tenured: ${liveStats?.completionStats?.tenuredCompleted ?? 'NA'}`)}
               </span>
             </div>
 
             <div 
               className="metric-stat-card" 
-              onClick={() => setActiveCardDef(activeCardDef === 'core-onboard' ? null : 'core-onboard')}
-              style={{ backgroundColor: '#f0fdf4', borderColor: '#dcfce7', cursor: 'pointer', transition: 'all 0.2s' }}
+              onClick={() => setActiveCardDef(activeCardDef === 'core-star-domain' ? null : 'core-star-domain')}
+              style={{ backgroundColor: '#f5f3ff', borderColor: '#ede9fe', cursor: 'pointer', transition: 'all 0.2s' }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#16a34a', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <UserCheck size={14} />
+                <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#7c3aed', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Star size={14} />
                 </div>
-                <span className="metric-stat-label" style={{ color: '#14532d', marginBottom: 0 }}>Newly Onboarded Users</span>
+                <span className="metric-stat-label" style={{ color: '#4c1d95', marginBottom: 0 }}>Star Performer Domain</span>
               </div>
-              <div className="metric-stat-value" style={{ color: '#16a34a' }}>
-                {loading ? '...' : (liveStats?.completionStats?.totalCompleted !== undefined ? liveStats.completionStats.totalCompleted.toLocaleString() : 'NA')}
+              <div className="metric-stat-value" style={{ color: '#7c3aed' }}>
+                {loading ? '...' : (liveStats?.starPerformerDomain ?? 'NA')}
               </div>
               <span className="metric-stat-sub" style={{ color: '#64748b' }}>
-                {activeCardDef === 'core-onboard' 
-                  ? 'Definition: Counts the total number of users who have finished their onboarding milestones.' 
-                  : (loading ? 'Calculating...' : `New: ${liveStats?.completionStats?.newCompleted ?? 'NA'} | Tenured: ${liveStats?.completionStats?.tenuredCompleted ?? 'NA'}`)}
+                {activeCardDef === 'core-star-domain' 
+                  ? 'Definition: Domain with the highest assessment completion rate (includes both new and tenured users).' 
+                  : 'Highest completion rate'}
               </span>
             </div>
           </div>
