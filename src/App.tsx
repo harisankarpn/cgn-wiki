@@ -2619,33 +2619,29 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
 
    if (!usageData) return null;
 
-  const calculateDerivedMetrics = (dailyTrendArray: any[]) => {
-    if (!dailyTrendArray || dailyTrendArray.length === 0) return null;
+  const calculateDerivedMetrics = (stats: any) => {
+    if (!stats || !stats.summary) return null;
 
-    let peakDay = 'NA';
-    let maxSessions = -1;
-    let totalSessions = 0;
+    // Calculate active days based on earliest and latest login timestamps
+    const start = new Date(stats.summary.earliest_login_at);
+    const end = new Date(stats.summary.latest_login_at);
+    const diffTime = Math.abs(end.getTime() - start.getTime());
+    
+    // Convert ms to days (default to 1 to prevent division by zero errors)
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) || 1; 
 
-    dailyTrendArray.forEach(dayRecord => {
-      // Added dayRecord.total_logins
-      const sessionsCount = Number(dayRecord.total_logins || dayRecord.sessions || dayRecord.login_sessions || 0);
-      totalSessions += sessionsCount;
-      
-      if (sessionsCount > maxSessions) {
-        maxSessions = sessionsCount;
-        // Added dayRecord.login_timestamp
-        peakDay = dayRecord.login_timestamp || dayRecord.date || dayRecord.activity_date || 'NA'; 
-      }
-    });
+    const totalSessions = stats.summary.total_login_sessions || 0;
+    const velocity = totalSessions / diffDays;
 
     return {
-      average_daily_logins: totalSessions / dailyTrendArray.length,
-      peak_activity_day: peakDay,
-      peak_session_count: maxSessions === -1 ? 'NA' : maxSessions
+      average_daily_logins: velocity,
+      peak_activity_day: 'NA', // Cannot calculate Peak Day without a daily array from the backend
+      peak_session_count: 'NA' 
     };
   };
 
-  const derivedStats = calculateDerivedMetrics(elevateTrendData);
+  // Pass the summary stats instead of the empty trend data
+  const derivedStats = calculateDerivedMetrics(elevateStats);
 
   // --- ADDED: Dynamically calculate unique case numbers ---
   const headerRow = smeSheetData[0] || [];
@@ -2771,28 +2767,6 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
       {/* ---> UPDATE CONDITION TO INCLUDE ELEVATE <--- */}
       <div className="section-heading" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
         <h3>Usage & Adoption</h3>
-        {(isCore || isElevate) && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', background: 'var(--bg-card)', padding: '6px 12px', borderRadius: '10px', border: '1px solid var(--border-main)' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase' }}>From:</span>
-              <input 
-                type="date" 
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-                style={{ padding: '4px 8px', borderRadius: '6px', border: '1px solid var(--border-main)', backgroundColor: 'var(--bg-main)', color: 'var(--text-main)', fontSize: '12px', cursor: 'pointer', outline: 'none' }}
-              />
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase' }}>To:</span>
-              <input 
-                type="date" 
-                value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
-                style={{ padding: '4px 8px', borderRadius: '6px', border: '1px solid var(--border-main)', backgroundColor: 'var(--bg-main)', color: 'var(--text-main)', fontSize: '12px', cursor: 'pointer', outline: 'none' }}
-              />
-            </div>
-          </div>
-        )}
       </div>
 
       <div className="usage-section">
