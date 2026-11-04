@@ -2821,7 +2821,7 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
               <span className="metric-stat-sub" style={{ color: '#64748b' }}>
                 {activeCardDef === 'core-active' 
                   ? 'Definition: Counts the total number of distinct users actively participating in platform assessments.' 
-                  : (loading ? 'Calculating...' : ``New: ${liveStats?.activeUsers?.newUsers ?? 'NA'} | Tenured: ${liveStats?.activeUsers?.tenuredUsers ?? 'NA'}`)}
+                  : (loading ? 'Calculating...' : `New: ${liveStats?.activeUsers?.newUsers ?? 'NA'} | Tenured: ${liveStats?.activeUsers?.tenuredUsers ?? 'NA'}`)}
               </span>
             </div>
 
