@@ -2620,7 +2620,7 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
 
    if (!usageData) return null;
 
-  const calculateDerivedMetrics = (stats: any) => {
+  const calculateDerivedMetrics = (stats: any, trendData: any[]) => {
     if (!stats || !stats.summary) return null;
 
     // Default to Dashboard's 30-day rolling window behavior
@@ -2637,16 +2637,42 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
     }
 
     const velocity = totalSessions / diffDays;
+    
+    // Calculate Peak Activity Day from trend data
+    let peakDay = 'NA';
+    let peakCount: number | 'NA' = 'NA';
+
+    if (trendData && trendData.length > 0) {
+      const dailyCounts: Record<string, number> = {};
+      trendData.forEach((session: any) => {
+        if (session.login_time) {
+          // Extract just the date part (e.g., "2026-11-02")
+          const dateOnly = session.login_time.split('T')[0];
+          dailyCounts[dateOnly] = (dailyCounts[dateOnly] || 0) + 1;
+        }
+      });
+      
+      let maxCount = 0;
+      for (const [date, count] of Object.entries(dailyCounts)) {
+        if (count > maxCount) {
+          maxCount = count;
+          peakDay = date;
+        }
+      }
+      if (maxCount > 0) {
+        peakCount = maxCount;
+      }
+    }
 
     return {
       average_daily_logins: velocity,
-      peak_activity_day: 'NA', // Awaiting backend fix for time-series array
-      peak_session_count: 'NA' 
+      peak_activity_day: peakDay, 
+      peak_session_count: peakCount 
     };
   };
 
-  // Pass the summary stats instead of the empty trend data
-  const derivedStats = calculateDerivedMetrics(elevateStats);
+  // Pass the summary stats and trend data
+  const derivedStats = calculateDerivedMetrics(elevateStats, elevateTrendData);
 
   // --- ADDED: Dynamically calculate unique case numbers ---
   const headerRow = smeSheetData[0] || [];
