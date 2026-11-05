@@ -2623,15 +2623,19 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
   const calculateDerivedMetrics = (stats: any) => {
     if (!stats || !stats.summary) return null;
 
-    // Dynamically calculate active days based on the selected calendar window
-    const start = new Date(stats.summary.earliest_login_at);
-    const end = new Date(stats.summary.latest_login_at);
-    const diffTime = Math.abs(end.getTime() - start.getTime());
-    
-    // Convert ms to days (default to 1 to prevent division by zero)
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) || 1; 
+    // Default to Dashboard's 30-day rolling window behavior
+    let diffDays = 30; 
+    let totalSessions = stats.rolling_activity?.last_30_days?.sessions || 0;
 
-    const totalSessions = stats.summary.total_login_sessions || 0;
+    // Override with dynamic calculation if user selects a custom calendar date range
+    if (startDate && endDate) {
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+      const diffTime = Math.abs(end.getTime() - start.getTime());
+      diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) || 1;
+      totalSessions = stats.summary.total_login_sessions || 0; 
+    }
+
     const velocity = totalSessions / diffDays;
 
     return {
