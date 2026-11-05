@@ -2907,9 +2907,9 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
               </div>
               <div className="metric-stat-value" style={{ color: '#2563eb' }}>
                 {loading ? '...' : (
-                  elevateTrendData.length > 0 
-                    ? new Set(elevateTrendData.map((session: any) => session.user_id || session.email)).size 
-                    : (elevateStats?.summary?.total_unique_users ?? 0)
+                  startDate && endDate
+                    ? (elevateStats?.summary?.total_unique_users ?? (elevateTrendData.length > 0 ? new Set(elevateTrendData.map((s: any) => s.user_id || s.email)).size : 0))
+                    : (elevateStats?.rolling_activity?.last_30_days?.unique_users ?? elevateStats?.summary?.total_unique_users ?? 0)
                 ).toLocaleString()}
               </div>
               <span className="metric-stat-sub" style={{ color: '#64748b' }}>
@@ -2931,7 +2931,11 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
                 <span className="metric-stat-label" style={{ color: '#14532d', marginBottom: 0 }}>Total Login Sessions</span>
               </div>
               <div className="metric-stat-value" style={{ color: '#16a34a' }}>
-                {loading ? '...' : (elevateStats?.summary?.total_login_sessions ?? 0).toLocaleString()}
+                {loading ? '...' : (
+                  startDate && endDate
+                    ? (elevateStats?.summary?.total_login_sessions ?? 0)
+                    : (elevateStats?.rolling_activity?.last_30_days?.sessions ?? elevateStats?.summary?.total_login_sessions ?? 0)
+                ).toLocaleString()}
               </div>
               
            <span className="metric-stat-sub" style={{ color: '#64748b' }}>
