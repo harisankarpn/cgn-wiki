@@ -85,9 +85,12 @@ function GlobalThemeStyles() {
         --bg-hover: #f1f5f9;
         --bg-blue-card: #f4f8fd;
         --bg-green-card: #f0fdf4;
-        --text-main: #0f172a;
-        --text-secondary: #475569;
-        --text-muted: #64748b;
+        // --text-main: #0f172a;
+        // --text-secondary: #475569;
+        // --text-muted: #64748b;
+        --text-main: #000000;    
+        --text-secondary: #334155; 
+        --text-muted: #475569;
         --text-green: #166534;
         --border-main: #e2e8f0;
         --border-soft: #f1f5f9;
@@ -1450,7 +1453,7 @@ function App() {
 
         </section>
 
-        <div className="page-content main-page-content" style={{ width: '80%', margin: '32px auto', flexGrow: 1 }}>
+        <div className="page-content main-page-content" style={{ width: '90%', margin: '48px auto', flexGrow: 1 }}>
           {selectedSolution === 'home' ? (
             <InnovationWikiHome onSolutionSelect={openSolution} />
           ) : (
