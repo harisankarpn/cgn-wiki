@@ -774,7 +774,7 @@ function WelcomeBanner({ onComplete }: { onComplete: () => void }) {
         gap: '40px',
         zIndex: 2,
         width: '100%',
-        maxWidth: '1200px' // <-- Changed from 800px
+        maxWidth: '1000px' // <-- Changed from 800px
       }}>
         
         {/* GIF Centered */}
@@ -783,9 +783,10 @@ function WelcomeBanner({ onComplete }: { onComplete: () => void }) {
           alt="Welcome Animation" 
           style={{ 
             width: '100%', 
-            maxWidth: '900px', // <-- Changed from 500px to make it much bigger
+            maxWidth: '750px', // <-- Changed from 500px to make it much bigger
             height: 'auto', 
             objectFit: 'contain',
+            borderRadius: '50%',
             mixBlendMode: 'multiply'
           }} 
         />
