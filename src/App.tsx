@@ -1349,7 +1349,7 @@ function App() {
     <div className={`app no-sidebar-app ${theme}`}>
       <GlobalThemeStyles />
       <ThemeToggle />
-      <main className="main no-sidebar-main" style={{ minHeight: '100vh' }}>
+      <main className="main no-sidebar-main" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
         
         {/* REFINED SLANTED HEADER */}
         <section className="hero top-hero" style={{ 
@@ -1450,7 +1450,7 @@ function App() {
 
         </section>
 
-        <div className="page-content main-page-content">
+        <div className="page-content main-page-content" style={{ width: '80%', margin: '32px auto', flexGrow: 1 }}>
           {selectedSolution === 'home' ? (
             <InnovationWikiHome onSolutionSelect={openSolution} />
           ) : (
