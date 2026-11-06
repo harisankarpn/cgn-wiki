@@ -1412,22 +1412,7 @@ function App() {
             position: 'relative', zIndex: 2, flex: 1, paddingLeft: '40px',
             color: '#1e3a8a', fontWeight: 800, fontSize: '13px', letterSpacing: '0.8px'
           }}>
-            <div 
-              onClick={() => openSolution('home')} 
-              style={{
-                display: 'flex', alignItems: 'center', gap: '6px',
-                cursor: 'pointer', transition: 'all 0.2s',
-                backgroundColor: 'rgba(255,255,255,0.6)',
-                padding: '6px 14px', borderRadius: '20px',
-                boxShadow: '0 2px 5px rgba(0,0,0,0.05)'
-              }}
-              onMouseOver={e => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.9)'} 
-              onMouseOut={e => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.6)'}
-            >
-              <Home size={16} strokeWidth={2.5} />
-              <span>HOME</span>
-            </div>
-            <span style={{ color: '#94a3b8', fontWeight: 400 }}>|</span>
+        
             <span style={{ cursor: 'pointer', transition: 'opacity 0.2s' }} onClick={() => openSolution('home')} onMouseOver={e => e.currentTarget.style.opacity = '0.7'} onMouseOut={e => e.currentTarget.style.opacity = '1'}>APPLICATIONS</span>
             <span style={{ color: '#94a3b8', fontWeight: 400 }}>|</span>
             <span style={{ cursor: 'pointer', transition: 'opacity 0.2s' }} onMouseOver={e => e.currentTarget.style.opacity = '0.7'} onMouseOut={e => e.currentTarget.style.opacity = '1'}>ECOSYSTEM</span>
@@ -1694,7 +1679,9 @@ function SolutionPage({ solutionId, activeSection, setActiveSection, onGoHome }:
 
   if (!platform) return null;
   const Icon = platform.icon;
-
+  
+  const currentIndex = sections.findIndex(s => s.id === activeSection);
+  
   return (
     <section className="solution-page">
       
@@ -1710,7 +1697,7 @@ function SolutionPage({ solutionId, activeSection, setActiveSection, onGoHome }:
             </span> 
             {" > "} {content.shortName}
           </div>
-          <div className="solution-title-row">
+         <div className="solution-title-row" style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
             <div className="solution-header-icon" style={{ color: platform.color, backgroundColor: `${platform.color}15` }}>
               <Icon size={28} strokeWidth={2.5} />
             </div>
@@ -1718,6 +1705,12 @@ function SolutionPage({ solutionId, activeSection, setActiveSection, onGoHome }:
               <h2>{content.name}</h2>
               <p>{content.tagline}</p>
             </div>
+            <button 
+              onClick={onGoHome} 
+              style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '8px 16px', borderRadius: '20px', border: '1px solid var(--border-main)', background: 'var(--bg-card)', cursor: 'pointer', color: 'var(--text-main)', fontWeight: 600, boxShadow: 'var(--shadow-sm)', marginLeft: 'auto' }}
+            >
+              <Home size={16} /> Home
+            </button>
           </div>
         </div>
         <div className="solution-header-right">
@@ -1755,6 +1748,22 @@ function SolutionPage({ solutionId, activeSection, setActiveSection, onGoHome }:
           {activeSection === 'access' && <Access content={content} />}
           {activeSection === 'feedback' && <Feedback content={content} />}
           {activeSection === 'demo' && <Demo content={content} />}
+
+          {/* Navigation Arrows */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '40px', paddingTop: '20px', borderTop: '1px solid var(--border-soft)' }}>
+           {currentIndex > 0 ? (
+             <button onClick={() => setActiveSection(sections[currentIndex - 1].id)} style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--text-secondary)', fontWeight: 600 }}>
+               <ArrowRight size={20} style={{ transform: 'rotate(180deg)' }} /> Previous
+             </button>
+           ) : <div></div>}
+           
+           {currentIndex < sections.length - 1 ? (
+             <button onClick={() => setActiveSection(sections[currentIndex + 1].id)} style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--text-main)', fontWeight: 600 }}>
+               Next <ArrowRight size={20} />
+             </button>
+           ) : <div></div>}
+         </div>
+          
         </div>
       </div>
     </section>
