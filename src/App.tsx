@@ -774,7 +774,7 @@ function WelcomeBanner({ onComplete }: { onComplete: () => void }) {
         gap: '40px',
         zIndex: 2,
         width: '100%',
-        maxWidth: '1500px' 
+        maxWidth: '1200px' // <-- Changed from 800px
       }}>
         
         {/* GIF Centered */}
@@ -783,7 +783,7 @@ function WelcomeBanner({ onComplete }: { onComplete: () => void }) {
           alt="Welcome Animation" 
           style={{ 
             width: '100%', 
-            maxWidth: '1200px', 
+            maxWidth: '900px', // <-- Changed from 500px to make it much bigger
             height: 'auto', 
             objectFit: 'contain',
             mixBlendMode: 'multiply'
@@ -794,7 +794,47 @@ function WelcomeBanner({ onComplete }: { onComplete: () => void }) {
         <div style={{
           display: 'flex', gap: '16px'
         }}>
-          {/* ... existing button code stays exactly the same ... */}
+          <button
+            onClick={onComplete}
+            style={{
+              background: 'transparent',
+              color: 'var(--text-main)',
+              border: '2px solid var(--text-main)',
+              padding: '12px 28px',
+              borderRadius: '12px',
+              fontSize: '15px',
+              fontWeight: 700,
+              cursor: 'pointer',
+              transition: 'background 0.2s'
+            }}
+            onMouseOver={(e) => { e.currentTarget.style.background = 'rgba(0,0,0,0.05)' }}
+            onMouseOut={(e) => { e.currentTarget.style.background = 'transparent' }}
+          >
+            View All Solutions
+          </button>
+          <button
+            onClick={() => window.open('https://docs.google.com/spreadsheets/d/1mf9e-ZYGta6SYblrimzog7vSM1ghOJYG23eD-6LGPDc/edit?gid=0&resourcekey=0-3CrGH5vJoBaqyCywtRFZ1w#gid=0', '_blank')}
+            style={{
+              background: '#167768',
+              color: '#fff',
+              border: 'none',
+              padding: '12px 28px',
+              borderRadius: '12px',
+              fontSize: '15px',
+              fontWeight: 700,
+              cursor: 'pointer',
+              transition: 'background 0.2s'
+            }}
+            onMouseOver={(e) => { e.currentTarget.style.background = '#105a4e' }}
+            onMouseOut={(e) => { e.currentTarget.style.background = '#167768' }}
+          >
+            New Idea to submit
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 /* =========================================================
    SPLASH PUZZLE COMPONENT
