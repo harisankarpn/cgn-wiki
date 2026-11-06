@@ -2750,12 +2750,15 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
               onClick={() => setActiveCardDef(activeCardDef === 'core-active' ? null : 'core-active')}
               style={{ backgroundColor: '#f0f7ff', borderColor: '#e0effe', cursor: 'pointer', transition: 'all 0.2s' }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#3b82f6', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Users size={14} />
-                </div>
-                <span className="metric-stat-label" style={{ color: '#1e3a8a', marginBottom: 0 }}>Registered Users</span>
-              </div>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
+               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                 <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#3b82f6', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                   <Users size={14} />
+                 </div>
+                 <span className="metric-stat-label" style={{ color: '#1e3a8a', marginBottom: 0 }}>Registered Users</span>
+               </div>
+               <a href="https://docs.google.com/spreadsheets/d/1mmjdgtsJDbmkorAcU5-WNLWMPM8B4RcQgsTxn_2fkDU/edit?gid=1149512905#gid=1149512905" target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()} style={{ fontSize: '11px', fontWeight: 600, color: '#dc2626', textDecoration: 'none' }}>Source ↗</a>
+             </div>
               <div className="metric-stat-value" style={{ color: '#2563eb' }}>
                 {loading ? '...' : (liveStats?.activeUsers?.total !== undefined ? liveStats.activeUsers.total.toLocaleString() : 'NA')}
               </div>
@@ -2771,12 +2774,15 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
               onClick={() => setActiveCardDef(activeCardDef === 'core-pass-rate' ? null : 'core-pass-rate')}
               style={{ backgroundColor: '#f0fdf4', borderColor: '#dcfce7', cursor: 'pointer', transition: 'all 0.2s' }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-                <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: '#22c55e', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <TrendingUp size={16} />
-                </div>
-                <span className="metric-stat-label" style={{ color: '#14532d', marginBottom: 0 }}>Assessment Pass Rate</span>
-              </div>
+             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
+               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                 <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: '#22c55e', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                   <TrendingUp size={16} />
+                 </div>
+                 <span className="metric-stat-label" style={{ color: '#14532d', marginBottom: 0 }}>Assessment Pass Rate</span>
+               </div>
+               <a href="https://docs.google.com/spreadsheets/d/1mmjdgtsJDbmkorAcU5-WNLWMPM8B4RcQgsTxn_2fkDU/edit?gid=1938966275#gid=1938966275" target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()} style={{ fontSize: '11px', fontWeight: 600, color: '#dc2626', textDecoration: 'none' }}>Source ↗</a>
+             </div>
               <div className="metric-stat-value" style={{ color: '#16a34a' }}>
                 {loading ? '...' : (liveStats?.passRate ?? 'NA')}
               </div>
@@ -2792,12 +2798,15 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
               onClick={() => setActiveCardDef(activeCardDef === 'core-completed' ? null : 'core-completed')}
               style={{ backgroundColor: '#fffbeb', borderColor: '#fef3c7', cursor: 'pointer', transition: 'all 0.2s' }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-                <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: '#f59e0b', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Target size={16} />
-                </div>
-                <span className="metric-stat-label" style={{ color: '#78350f', marginBottom: 0 }}>Assessment Completed Count</span>
-              </div>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                 <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: '#f59e0b', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                   <Target size={16} />
+                 </div>
+                 <span className="metric-stat-label" style={{ color: '#78350f', marginBottom: 0 }}>Assessment Completed Count</span>
+               </div>
+               <a href="https://docs.google.com/spreadsheets/d/1mmjdgtsJDbmkorAcU5-WNLWMPM8B4RcQgsTxn_2fkDU/edit?gid=2016621243#gid=2016621243" target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()} style={{ fontSize: '11px', fontWeight: 600, color: '#dc2626', textDecoration: 'none' }}>Source ↗</a>
+             </div>
               <div className="metric-stat-value" style={{ color: '#d97706' }}>
                 {loading ? '...' : (liveStats?.completionStats?.totalCompleted !== undefined ? liveStats.completionStats.totalCompleted.toLocaleString() : 'NA')}
               </div>
@@ -2813,12 +2822,15 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
               onClick={() => setActiveCardDef(activeCardDef === 'core-star-domain' ? null : 'core-star-domain')}
               style={{ backgroundColor: '#f5f3ff', borderColor: '#ede9fe', cursor: 'pointer', transition: 'all 0.2s' }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#7c3aed', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Star size={14} />
-                </div>
-                <span className="metric-stat-label" style={{ color: '#4c1d95', marginBottom: 0 }}>Star Performer Domain</span>
-              </div>
+             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
+               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                 <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#7c3aed', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                   <Star size={14} />
+                 </div>
+                 <span className="metric-stat-label" style={{ color: '#4c1d95', marginBottom: 0 }}>Star Performer Domain</span>
+               </div>
+               <a href="https://docs.google.com/spreadsheets/d/1mmjdgtsJDbmkorAcU5-WNLWMPM8B4RcQgsTxn_2fkDU/edit?gid=361513181#gid=361513181" target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()} style={{ fontSize: '11px', fontWeight: 600, color: '#dc2626', textDecoration: 'none' }}>Source ↗</a>
+            </div>
               <div className="metric-stat-value" style={{ color: '#7c3aed', fontSize: '15px', lineHeight: '1.4', marginTop: '2px' }}>
                 {loading ? '...' : (
                   <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -2843,12 +2855,15 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
               onClick={() => setActiveCardDef(activeCardDef === 'elevate-users' ? null : 'elevate-users')}
               style={{ backgroundColor: '#f0f7ff', borderColor: '#e0effe', cursor: 'pointer', transition: 'all 0.2s' }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#3b82f6', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Users size={14} />
-                </div>
-                <span className="metric-stat-label" style={{ color: '#1e3a8a', marginBottom: 0 }}>Total Unique Users</span>
-              </div>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
+               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                 <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#3b82f6', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                   <Users size={14} />
+                 </div>
+                 <span className="metric-stat-label" style={{ color: '#1e3a8a', marginBottom: 0 }}>Total Unique Users</span>
+               </div>
+               <a href="https://docs.google.com/spreadsheets/d/1Jx9O4sOosgekZGbtAITAMKLlnfR-Uf8UKoFowQZP31E/edit?resourcekey=0-T7RobNAZctDZVuEcskWIqg&gid=1693397776#gid=1693397776" target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()} style={{ fontSize: '11px', fontWeight: 600, color: '#dc2626', textDecoration: 'none' }}>Source ↗</a>
+             </div>
               <div className="metric-stat-value" style={{ color: '#2563eb' }}>
                 {loading ? '...' : (
                   startDate && endDate
@@ -2868,12 +2883,15 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
               onClick={() => setActiveCardDef(activeCardDef === 'elevate-sessions' ? null : 'elevate-sessions')}
               style={{ backgroundColor: '#f0fdf4', borderColor: '#dcfce7', cursor: 'pointer', transition: 'all 0.2s' }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-                <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: '#22c55e', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <BarChart3 size={16} />
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
+               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                 <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: '#22c55e', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                   <BarChart3 size={16} />
                 </div>
-                <span className="metric-stat-label" style={{ color: '#14532d', marginBottom: 0 }}>Total Login Sessions</span>
-              </div>
+                 <span className="metric-stat-label" style={{ color: '#14532d', marginBottom: 0 }}>Total Login Sessions</span>
+               </div>
+               <a href="https://docs.google.com/spreadsheets/d/1Jx9O4sOosgekZGbtAITAMKLlnfR-Uf8UKoFowQZP31E/edit?resourcekey=0-T7RobNAZctDZVuEcskWIqg&gid=2076439777#gid=2076439777" target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()} style={{ fontSize: '11px', fontWeight: 600, color: '#dc2626', textDecoration: 'none' }}>Source ↗</a>
+             </div>
               <div className="metric-stat-value" style={{ color: '#16a34a' }}>
                 {loading ? '...' : (
                   startDate && endDate
@@ -2895,12 +2913,15 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
               onClick={() => setActiveCardDef(activeCardDef === 'elevate-velocity' ? null : 'elevate-velocity')}
               style={{ backgroundColor: '#fff7ed', borderColor: '#ffedd5', cursor: 'pointer', transition: 'all 0.2s' }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#f59e0b', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <BarChart size={14} /> 
-                </div>
-                <span className="metric-stat-label" style={{ color: '#92400e', marginBottom: 0 }}>Daily Login Velocity</span>
-              </div>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
+               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                 <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#f59e0b', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                   <BarChart size={14} /> 
+                 </div>
+                 <span className="metric-stat-label" style={{ color: '#92400e', marginBottom: 0 }}>Daily Login Velocity</span>
+               </div>
+               <a href="https://docs.google.com/spreadsheets/d/1Jx9O4sOosgekZGbtAITAMKLlnfR-Uf8UKoFowQZP31E/edit?resourcekey=0-T7RobNAZctDZVuEcskWIqg&gid=1831683342#gid=1831683342" target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()} style={{ fontSize: '11px', fontWeight: 600, color: '#dc2626', textDecoration: 'none' }}>Source ↗</a>
+             </div>
               <div className="metric-stat-value" style={{ color: '#b45309' }}>
                 {loading ? '...' : (derivedStats?.average_daily_logins !== undefined && derivedStats?.average_daily_logins !== 'NA' ? derivedStats.average_daily_logins.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 }) : 'NA')}
               </div>
@@ -2917,12 +2938,15 @@ function Usage({ content, platformColor }: { content: any; platformColor: string
               onClick={() => setActiveCardDef(activeCardDef === 'elevate-peak' ? null : 'elevate-peak')}
               style={{ backgroundColor: '#f0fdfa', borderColor: '#ccfbf1', cursor: 'pointer', transition: 'all 0.2s' }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#8b5cf6', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Zap size={14} /> 
-                </div>
-                <span className="metric-stat-label" style={{ color: '#5b21b6', marginBottom: 0 }}>Peak Activity Day</span>
-              </div>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
+               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                 <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#8b5cf6', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                   <Zap size={14} /> 
+                 </div>
+                 <span className="metric-stat-label" style={{ color: '#5b21b6', marginBottom: 0 }}>Peak Activity Day</span>
+               </div>
+               <a href="https://docs.google.com/spreadsheets/d/1Jx9O4sOosgekZGbtAITAMKLlnfR-Uf8UKoFowQZP31E/edit?resourcekey=0-T7RobNAZctDZVuEcskWIqg&gid=506667368#gid=506667368" target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()} style={{ fontSize: '11px', fontWeight: 600, color: '#dc2626', textDecoration: 'none' }}>Source ↗</a>
+             </div>
               <div className="metric-stat-value" style={{ color: '#7c3aed' }}>
                 {loading ? '...' : (
                   derivedStats?.peak_activity_day && derivedStats.peak_activity_day !== 'NA'
