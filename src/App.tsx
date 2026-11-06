@@ -55,7 +55,7 @@ import puzzleBg from './background.jpeg';
 import bgImage from './background.jpeg';
 import gcpGif from './gcp.gif';
 import coreVideo from './C.O.R.E.mp4';
-import birdArtwork from './Image_2.png';
+import welcomeGif from './image0.gif';
 
 /* =========================================================
    TYPES
@@ -758,44 +758,7 @@ const sections = [
   { id: 'demo' as SectionId, label: 'Demo', icon: PlayCircle },
 ];
 
-/* =========================================================
-   WELCOME BANNER (Standard typing text + Synchronized Bird Reveal)
-========================================================= */
 function WelcomeBanner({ onComplete }: { onComplete: () => void }) {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const fullText = "Welcome to the Innovation Wiki! Explore our transformation solutions, discover innovative ideas, and shape a smarter tomorrow.";
-  const [animationDone, setAnimationDone] = useState(false);
-
-  useEffect(() => {
-    const totalChars = fullText.length;
-    const intervalTime = 10000 / totalChars; // Spans exactly 10 seconds
-
-    const timer = setInterval(() => {
-      setCurrentIndex((prev) => {
-        if (prev < totalChars) {
-          return prev + 1;
-        } else {
-          clearInterval(timer);
-          setAnimationDone(true);
-          return prev;
-        }
-      });
-    }, intervalTime);
-    return () => clearInterval(timer);
-  }, [fullText]);
-
-  // Map exact colors to specific words based on your visual reference
-  const getColorForIndex = (index: number) => {
-     if (index >= 15 && index < 25) {
-         const colors = ['#4285F4', '#EA4335', '#FBBC04', '#4285F4', '#34A853', '#EA4335', '#FBBC04', '#4285F4', '#34A853', '#EA4335'];
-         return colors[index - 15];
-     }
-     if (index >= 44 && index < 58) return '#4285F4'; 
-     if (index >= 79 && index < 89) return '#34A853'; 
-     if (index >= 109 && index < 116) return '#EA4335'; 
-     return 'var(--text-main)';
-  };
-
   return (
     <div style={{
       minHeight: '100vh', width: '100%', boxSizing: 'border-box',
@@ -803,133 +766,70 @@ function WelcomeBanner({ onComplete }: { onComplete: () => void }) {
       padding: '40px', backgroundColor: 'transparent', 
       animation: 'fadeIn 1s ease', position: 'relative', overflow: 'hidden'
     }}>
-      <style>{`
-        @keyframes sparkleTwinkle {
-          0%, 100% { opacity: 0; transform: scale(0.5) rotate(0deg); }
-          50% { opacity: 1; transform: scale(1.2) rotate(180deg); }
-        }
-        @keyframes blinkCursor {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0; }
-        }
-        /* New synchronized bird reveal animation */
-        @keyframes revealBird {
-          0% { clip-path: inset(0 100% 0 0); }
-          100% { clip-path: inset(0 0 0 0); }
-        }
-        .welcome-sparkle {
-          position: absolute;
-          width: 12px; height: 12px;
-          background: radial-gradient(circle, #fff 20%, #FBBC04 80%);
-          border-radius: 50%;
-          box-shadow: 0 0 10px #FBBC04, 0 0 15px #fff;
-          animation: sparkleTwinkle 2.5s infinite ease-in-out;
-        }
-      `}</style>
-
-      {/* Main Container Card holding Left Cursive Text and Right Bird Artwork side-by-side */}
+      {/* Main Container */}
       <div style={{
-        position: 'relative',
-        width: '100%', maxWidth: '1100px',
-        background: 'transparent',
-        borderRadius: '24px',
-        border: '1px solid transparent',
-        boxShadow: 'none',
-        display: 'grid',
-        gridTemplateColumns: '1fr 400px',
+        display: 'flex',
+        flexDirection: 'column',
         alignItems: 'center',
         gap: '40px',
-        padding: '60px 48px', 
-        zIndex: 2
+        zIndex: 2,
+        width: '100%',
+        maxWidth: '800px'
       }}>
         
-        {/* Subtle background sparkles */}
-        <div className="welcome-sparkle" style={{ top: '25%', left: '15%', animationDelay: '0s' }}></div>
-        <div className="welcome-sparkle" style={{ top: '15%', left: '40%', animationDelay: '0.8s' }}></div>
+        {/* GIF Centered */}
+        <img 
+          src={welcomeGif} 
+          alt="Welcome Animation" 
+          style={{ 
+            width: '100%', 
+            maxWidth: '500px', 
+            height: 'auto', 
+            objectFit: 'contain'
+          }} 
+        />
 
-        {/* LEFT COLUMN: Cursive Content & Action Buttons */}
-        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-          
-          {/* Cursive Animated Text */}
-          <div style={{
-            fontFamily: '"Special Elite", "Courier New", Courier, monospace',
-            fontSize: '32px',
-            color: 'var(--text-main)',
-            textAlign: 'left',
-            lineHeight: 1.5,
-            marginBottom: '40px',
-            fontWeight: 700
-          }}>
-            {fullText.slice(0, currentIndex).split('').map((char, index) => (
-               <span key={index} style={{ color: getColorForIndex(index), transition: 'color 0.3s' }}>
-                 {char}
-               </span>
-            ))}
-            {!animationDone && <span style={{ borderRight: '3px solid var(--text-main)', paddingRight: '4px', animation: 'blinkCursor 0.7s infinite' }}></span>}
-          </div>
-
-          {/* CTA Buttons */}
-          <div style={{
-            display: 'flex', gap: '16px',
-            opacity: animationDone ? 1 : 0.4,
-            transition: 'opacity 1s ease',
-            pointerEvents: animationDone ? 'auto' : 'none' 
-          }}>
-            <button
-              onClick={onComplete}
-              style={{
-                background: 'transparent',
-                color: 'var(--text-main)',
-                border: '2px solid var(--text-main)',
-                padding: '12px 28px',
-                borderRadius: '12px',
-                fontSize: '15px',
-                fontWeight: 700,
-                cursor: 'pointer',
-                transition: 'background 0.2s'
-              }}
-              onMouseOver={(e) => { e.currentTarget.style.background = 'rgba(0,0,0,0.05)' }}
-              onMouseOut={(e) => { e.currentTarget.style.background = 'transparent' }}
-            >
-              View all solutions →
-            </button>
-            <button
-              onClick={() => window.open('https://docs.google.com/spreadsheets/d/1mf9e-ZYGta6SYblrimzog7vSM1ghOJYG23eD-6LGPDc/edit?gid=0&resourcekey=0-3CrGH5vJoBaqyCywtRFZ1w#gid=0', '_blank')}
-              style={{
-                background: '#167768',
-                color: '#fff',
-                border: 'none',
-                padding: '12px 28px',
-                borderRadius: '12px',
-                fontSize: '15px',
-                fontWeight: 700,
-                cursor: 'pointer',
-                transition: 'background 0.2s'
-              }}
-              onMouseOver={(e) => { e.currentTarget.style.background = '#105a4e' }}
-              onMouseOut={(e) => { e.currentTarget.style.background = '#167768' }}
-            >
-              Submit your idea
-            </button>
-          </div>
+        {/* CTA Buttons */}
+        <div style={{
+          display: 'flex', gap: '16px'
+        }}>
+          <button
+            onClick={onComplete}
+            style={{
+              background: 'transparent',
+              color: 'var(--text-main)',
+              border: '2px solid var(--text-main)',
+              padding: '12px 28px',
+              borderRadius: '12px',
+              fontSize: '15px',
+              fontWeight: 700,
+              cursor: 'pointer',
+              transition: 'background 0.2s'
+            }}
+            onMouseOver={(e) => { e.currentTarget.style.background = 'rgba(0,0,0,0.05)' }}
+            onMouseOut={(e) => { e.currentTarget.style.background = 'transparent' }}
+          >
+            View All Solutions
+          </button>
+          <button
+            onClick={() => window.open('https://docs.google.com/spreadsheets/d/1mf9e-ZYGta6SYblrimzog7vSM1ghOJYG23eD-6LGPDc/edit?gid=0&resourcekey=0-3CrGH5vJoBaqyCywtRFZ1w#gid=0', '_blank')}
+            style={{
+              background: '#167768',
+              color: '#fff',
+              border: 'none',
+              padding: '12px 28px',
+              borderRadius: '12px',
+              fontSize: '15px',
+              fontWeight: 700,
+              cursor: 'pointer',
+              transition: 'background 0.2s'
+            }}
+            onMouseOver={(e) => { e.currentTarget.style.background = '#105a4e' }}
+            onMouseOut={(e) => { e.currentTarget.style.background = '#167768' }}
+          >
+            New Idea to submit
+          </button>
         </div>
-
-        {/* RIGHT COLUMN: Bird Artwork with CSS Reveal Animation */}
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <img 
-            src={birdArtwork} 
-            alt="Puzzle Bird Artwork" 
-            style={{ 
-              width: '100%', 
-              maxWidth: '380px', 
-              height: 'auto', 
-              objectFit: 'contain',
-              /* 10s exact match to the typing duration */
-              animation: 'revealBird 10s linear forwards' 
-            }} 
-          />
-        </div>
-
       </div>
     </div>
   );
